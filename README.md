@@ -57,11 +57,11 @@ Working with an Animation Skeleton:
 >boneIndices: SCNGeometrySource)
 
 Sharing a Skinner Object:
-"""
+```
 let hero = SCNScene(named:"hero").rootNode
 let hat = SCNScene(named:"hat").rootNode
 hat.skinner.skeleton = hero.skinner.skeleton;
-"""
+```
 
 ### SCNShadable
 https://developer.apple.com/documentation/scenekit/scnshadable
@@ -75,7 +75,7 @@ Methods for customizing SceneKit's rendering of geometry and materials using Met
 👀 Writing a Shader Modifier Snippet
 The code below rotates the position of the object
 
-"""
+```
 // 1. Custom variable declarations (optional)
 // For Metal, a pragma directive and one custom variable on each line:
 #pragma arguments
@@ -93,7 +93,7 @@ vec2 sincos(float t) { return vec2(sin(t), cos(t)); }
 // 4. Code snippet
 _geometry.position.xy = sincos(u_time);
 _geometry.position.z = intensity;
-"""
+```
 
 ### SCNGeometrySource, SCNGeometryElement
 Create a custom geometry from vertex data
@@ -112,7 +112,7 @@ See **Configuring Texture Mapping Attributes** for more.
 Link: https://developer.apple.com/documentation/scenekit/scnmaterialproperty/1395405-mappingchannel
 
 ### SCNGeometrySource
-"""
+```
 typedef struct {
 float x, y, z;    // position
 float nx, ny, nz; // normal
@@ -149,17 +149,17 @@ componentsPerVector:2 // s, t
 bytesPerComponent:sizeof(float)
 dataOffset:offsetof(MyVertex, s)
 dataStride:sizeof(MyVertex)];
-"""
+```
 
 ### SCNGeometryElement
 https://developer.apple.com/documentation/scenekit/scngeometryelement
 
-"""
+```
 convenience init(data: Data?, 
 primitiveType: SCNGeometryPrimitiveType, 
 primitiveCount: Int, 
 bytesPerIndex: Int)
-"""
+```
 
 
 ### SCNMaterial

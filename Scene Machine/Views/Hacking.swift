@@ -72,10 +72,16 @@ struct Hacking: View {
         }
     }
     
-    
-    
-    
     func saveImage() {
+        
+        // Saving with SwiftUI
+        // https://stackoverflow.com/questions/56645819/how-to-open-file-dialog-with-swiftui-on-platform-uikit-for-mac
+        // Swift 5
+        // https://ourcodeworld.com/articles/read/1117/how-to-implement-a-file-and-directory-picker-in-macos-using-swift-5
+        
+        // ----------
+        // Change the following using the above tutorials/sources
+        // ==========
         
         let fileUrl = folder.appendingPathComponent("\(imageName).png")
         
