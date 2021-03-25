@@ -1,0 +1,688 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		856491D02578100B00D1FE00 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856491CF2578100B00D1FE00 /* AppDelegate.swift */; };
+		856491D22578100B00D1FE00 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856491D12578100B00D1FE00 /* ContentView.swift */; };
+		856491D52578100B00D1FE00 /* Scene_Machine.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 856491D32578100B00D1FE00 /* Scene_Machine.xcdatamodeld */; };
+		856491D72578100C00D1FE00 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 856491D62578100C00D1FE00 /* Assets.xcassets */; };
+		856491DA2578100C00D1FE00 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 856491D92578100C00D1FE00 /* Preview Assets.xcassets */; };
+		856491DD2578100C00D1FE00 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 856491DB2578100C00D1FE00 /* Main.storyboard */; };
+		856491E92578100D00D1FE00 /* Scene_MachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856491E82578100D00D1FE00 /* Scene_MachineTests.swift */; };
+		856491F42578100D00D1FE00 /* Scene_MachineUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856491F32578100D00D1FE00 /* Scene_MachineUITests.swift */; };
+		8564920C2578CD0100D1FE00 /* NoiseScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8564920B2578CD0100D1FE00 /* NoiseScene.swift */; };
+		8564921125792F9F00D1FE00 /* NoiseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8564921025792F9F00D1FE00 /* NoiseView.swift */; };
+		85649219257953A900D1FE00 /* ImageCompositionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85649218257953A900D1FE00 /* ImageCompositionController.swift */; };
+		856492222579547900D1FE00 /* ImageCompositionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856492212579547900D1FE00 /* ImageCompositionView.swift */; };
+		8564922A25795F3C00D1FE00 /* DragDropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8564922925795F3C00D1FE00 /* DragDropView.swift */; };
+		8564922F25796F9C00D1FE00 /* TestImageDragDrop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8564922E25796F9C00D1FE00 /* TestImageDragDrop.swift */; };
+		85649234257976AB00D1FE00 /* SceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85649233257976AB00D1FE00 /* SceneView.swift */; };
+		85649239257976C700D1FE00 /* Scenes.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 85649238257976C700D1FE00 /* Scenes.scnassets */; };
+		8564923E2579828100D1FE00 /* dissolve.fragment.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8564923D2579828100D1FE00 /* dissolve.fragment.txt */; };
+		8597BB7925BC8B2E00C705A0 /* Hacking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8597BB7825BC8B2E00C705A0 /* Hacking.swift */; };
+		8597BB7E25BCA8B200C705A0 /* ImageFXController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8597BB7D25BCA8B200C705A0 /* ImageFXController.swift */; };
+		8597BB7F25BCA8B200C705A0 /* ImageFXController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8597BB7D25BCA8B200C705A0 /* ImageFXController.swift */; };
+		8597BB8425BCAEF600C705A0 /* Metal.metal in Sources */ = {isa = PBXBuildFile; fileRef = 8597BB8325BCAEF600C705A0 /* Metal.metal */; };
+		8597BB8525BCAEF600C705A0 /* Metal.metal in Sources */ = {isa = PBXBuildFile; fileRef = 8597BB8325BCAEF600C705A0 /* Metal.metal */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		856491E52578100D00D1FE00 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 856491C42578100B00D1FE00 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 856491CB2578100B00D1FE00;
+			remoteInfo = "Scene Machine";
+		};
+		856491F02578100D00D1FE00 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 856491C42578100B00D1FE00 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 856491CB2578100B00D1FE00;
+			remoteInfo = "Scene Machine";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		856491CC2578100B00D1FE00 /* Scene Machine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Scene Machine.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		856491CF2578100B00D1FE00 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		856491D12578100B00D1FE00 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		856491D42578100B00D1FE00 /* Scene_Machine.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Scene_Machine.xcdatamodel; sourceTree = "<group>"; };
+		856491D62578100C00D1FE00 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		856491D92578100C00D1FE00 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		856491DC2578100C00D1FE00 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		856491DE2578100C00D1FE00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		856491DF2578100C00D1FE00 /* Scene_Machine.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Scene_Machine.entitlements; sourceTree = "<group>"; };
+		856491E42578100D00D1FE00 /* Scene MachineTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Scene MachineTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		856491E82578100D00D1FE00 /* Scene_MachineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scene_MachineTests.swift; sourceTree = "<group>"; };
+		856491EA2578100D00D1FE00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		856491EF2578100D00D1FE00 /* Scene MachineUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Scene MachineUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		856491F32578100D00D1FE00 /* Scene_MachineUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scene_MachineUITests.swift; sourceTree = "<group>"; };
+		856491F52578100D00D1FE00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		856492042578AECF00D1FE00 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		8564920B2578CD0100D1FE00 /* NoiseScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseScene.swift; sourceTree = "<group>"; };
+		8564921025792F9F00D1FE00 /* NoiseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseView.swift; sourceTree = "<group>"; };
+		85649218257953A900D1FE00 /* ImageCompositionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCompositionController.swift; sourceTree = "<group>"; };
+		856492212579547900D1FE00 /* ImageCompositionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCompositionView.swift; sourceTree = "<group>"; };
+		8564922925795F3C00D1FE00 /* DragDropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragDropView.swift; sourceTree = "<group>"; };
+		8564922E25796F9C00D1FE00 /* TestImageDragDrop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestImageDragDrop.swift; sourceTree = "<group>"; };
+		85649233257976AB00D1FE00 /* SceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneView.swift; sourceTree = "<group>"; };
+		85649238257976C700D1FE00 /* Scenes.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Scenes.scnassets; sourceTree = "<group>"; };
+		8564923D2579828100D1FE00 /* dissolve.fragment.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dissolve.fragment.txt; sourceTree = "<group>"; };
+		8597BB7825BC8B2E00C705A0 /* Hacking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hacking.swift; sourceTree = "<group>"; };
+		8597BB7D25BCA8B200C705A0 /* ImageFXController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFXController.swift; sourceTree = "<group>"; };
+		8597BB8325BCAEF600C705A0 /* Metal.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Metal.metal; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		856491C92578100B00D1FE00 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		856491E12578100D00D1FE00 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		856491EC2578100D00D1FE00 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		856491C32578100B00D1FE00 = {
+			isa = PBXGroup;
+			children = (
+				856492042578AECF00D1FE00 /* README.md */,
+				856491CE2578100B00D1FE00 /* Scene Machine */,
+				856491E72578100D00D1FE00 /* Scene MachineTests */,
+				856491F22578100D00D1FE00 /* Scene MachineUITests */,
+				856491CD2578100B00D1FE00 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		856491CD2578100B00D1FE00 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				856491CC2578100B00D1FE00 /* Scene Machine.app */,
+				856491E42578100D00D1FE00 /* Scene MachineTests.xctest */,
+				856491EF2578100D00D1FE00 /* Scene MachineUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		856491CE2578100B00D1FE00 /* Scene Machine */ = {
+			isa = PBXGroup;
+			children = (
+				856492202579546600D1FE00 /* Views */,
+				856492172579538B00D1FE00 /* Controllers */,
+				856491CF2578100B00D1FE00 /* AppDelegate.swift */,
+				856491D12578100B00D1FE00 /* ContentView.swift */,
+				8564921025792F9F00D1FE00 /* NoiseView.swift */,
+				8564923D2579828100D1FE00 /* dissolve.fragment.txt */,
+				856491D62578100C00D1FE00 /* Assets.xcassets */,
+				856491DB2578100C00D1FE00 /* Main.storyboard */,
+				856491DE2578100C00D1FE00 /* Info.plist */,
+				856491DF2578100C00D1FE00 /* Scene_Machine.entitlements */,
+				856491D32578100B00D1FE00 /* Scene_Machine.xcdatamodeld */,
+				856491D82578100C00D1FE00 /* Preview Content */,
+				8564920B2578CD0100D1FE00 /* NoiseScene.swift */,
+				85649238257976C700D1FE00 /* Scenes.scnassets */,
+				8597BB8325BCAEF600C705A0 /* Metal.metal */,
+			);
+			path = "Scene Machine";
+			sourceTree = "<group>";
+		};
+		856491D82578100C00D1FE00 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				856491D92578100C00D1FE00 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		856491E72578100D00D1FE00 /* Scene MachineTests */ = {
+			isa = PBXGroup;
+			children = (
+				856491E82578100D00D1FE00 /* Scene_MachineTests.swift */,
+				856491EA2578100D00D1FE00 /* Info.plist */,
+			);
+			path = "Scene MachineTests";
+			sourceTree = "<group>";
+		};
+		856491F22578100D00D1FE00 /* Scene MachineUITests */ = {
+			isa = PBXGroup;
+			children = (
+				856491F32578100D00D1FE00 /* Scene_MachineUITests.swift */,
+				856491F52578100D00D1FE00 /* Info.plist */,
+			);
+			path = "Scene MachineUITests";
+			sourceTree = "<group>";
+		};
+		856492172579538B00D1FE00 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				85649218257953A900D1FE00 /* ImageCompositionController.swift */,
+				8597BB7D25BCA8B200C705A0 /* ImageFXController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		856492202579546600D1FE00 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				856492212579547900D1FE00 /* ImageCompositionView.swift */,
+				8564922925795F3C00D1FE00 /* DragDropView.swift */,
+				8564922E25796F9C00D1FE00 /* TestImageDragDrop.swift */,
+				85649233257976AB00D1FE00 /* SceneView.swift */,
+				8597BB7825BC8B2E00C705A0 /* Hacking.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		856491CB2578100B00D1FE00 /* Scene Machine */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 856491F82578100D00D1FE00 /* Build configuration list for PBXNativeTarget "Scene Machine" */;
+			buildPhases = (
+				856491C82578100B00D1FE00 /* Sources */,
+				856491C92578100B00D1FE00 /* Frameworks */,
+				856491CA2578100B00D1FE00 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Scene Machine";
+			productName = "Scene Machine";
+			productReference = 856491CC2578100B00D1FE00 /* Scene Machine.app */;
+			productType = "com.apple.product-type.application";
+		};
+		856491E32578100D00D1FE00 /* Scene MachineTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 856491FB2578100D00D1FE00 /* Build configuration list for PBXNativeTarget "Scene MachineTests" */;
+			buildPhases = (
+				856491E02578100D00D1FE00 /* Sources */,
+				856491E12578100D00D1FE00 /* Frameworks */,
+				856491E22578100D00D1FE00 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				856491E62578100D00D1FE00 /* PBXTargetDependency */,
+			);
+			name = "Scene MachineTests";
+			productName = "Scene MachineTests";
+			productReference = 856491E42578100D00D1FE00 /* Scene MachineTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		856491EE2578100D00D1FE00 /* Scene MachineUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 856491FE2578100D00D1FE00 /* Build configuration list for PBXNativeTarget "Scene MachineUITests" */;
+			buildPhases = (
+				856491EB2578100D00D1FE00 /* Sources */,
+				856491EC2578100D00D1FE00 /* Frameworks */,
+				856491ED2578100D00D1FE00 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				856491F12578100D00D1FE00 /* PBXTargetDependency */,
+			);
+			name = "Scene MachineUITests";
+			productName = "Scene MachineUITests";
+			productReference = 856491EF2578100D00D1FE00 /* Scene MachineUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		856491C42578100B00D1FE00 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1220;
+				LastUpgradeCheck = 1220;
+				TargetAttributes = {
+					856491CB2578100B00D1FE00 = {
+						CreatedOnToolsVersion = 12.2;
+					};
+					856491E32578100D00D1FE00 = {
+						CreatedOnToolsVersion = 12.2;
+						TestTargetID = 856491CB2578100B00D1FE00;
+					};
+					856491EE2578100D00D1FE00 = {
+						CreatedOnToolsVersion = 12.2;
+						TestTargetID = 856491CB2578100B00D1FE00;
+					};
+				};
+			};
+			buildConfigurationList = 856491C72578100B00D1FE00 /* Build configuration list for PBXProject "Scene Machine" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 856491C32578100B00D1FE00;
+			productRefGroup = 856491CD2578100B00D1FE00 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				856491CB2578100B00D1FE00 /* Scene Machine */,
+				856491E32578100D00D1FE00 /* Scene MachineTests */,
+				856491EE2578100D00D1FE00 /* Scene MachineUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		856491CA2578100B00D1FE00 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				856491DD2578100C00D1FE00 /* Main.storyboard in Resources */,
+				856491DA2578100C00D1FE00 /* Preview Assets.xcassets in Resources */,
+				85649239257976C700D1FE00 /* Scenes.scnassets in Resources */,
+				856491D72578100C00D1FE00 /* Assets.xcassets in Resources */,
+				8564923E2579828100D1FE00 /* dissolve.fragment.txt in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		856491E22578100D00D1FE00 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		856491ED2578100D00D1FE00 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		856491C82578100B00D1FE00 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				856492222579547900D1FE00 /* ImageCompositionView.swift in Sources */,
+				85649234257976AB00D1FE00 /* SceneView.swift in Sources */,
+				8564921125792F9F00D1FE00 /* NoiseView.swift in Sources */,
+				856491D22578100B00D1FE00 /* ContentView.swift in Sources */,
+				8597BB8425BCAEF600C705A0 /* Metal.metal in Sources */,
+				8564922F25796F9C00D1FE00 /* TestImageDragDrop.swift in Sources */,
+				8564922A25795F3C00D1FE00 /* DragDropView.swift in Sources */,
+				85649219257953A900D1FE00 /* ImageCompositionController.swift in Sources */,
+				856491D52578100B00D1FE00 /* Scene_Machine.xcdatamodeld in Sources */,
+				8597BB7925BC8B2E00C705A0 /* Hacking.swift in Sources */,
+				856491D02578100B00D1FE00 /* AppDelegate.swift in Sources */,
+				8564920C2578CD0100D1FE00 /* NoiseScene.swift in Sources */,
+				8597BB7E25BCA8B200C705A0 /* ImageFXController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		856491E02578100D00D1FE00 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				856491E92578100D00D1FE00 /* Scene_MachineTests.swift in Sources */,
+				8597BB8525BCAEF600C705A0 /* Metal.metal in Sources */,
+				8597BB7F25BCA8B200C705A0 /* ImageFXController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		856491EB2578100D00D1FE00 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				856491F42578100D00D1FE00 /* Scene_MachineUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		856491E62578100D00D1FE00 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 856491CB2578100B00D1FE00 /* Scene Machine */;
+			targetProxy = 856491E52578100D00D1FE00 /* PBXContainerItemProxy */;
+		};
+		856491F12578100D00D1FE00 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 856491CB2578100B00D1FE00 /* Scene Machine */;
+			targetProxy = 856491F02578100D00D1FE00 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		856491DB2578100C00D1FE00 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				856491DC2578100C00D1FE00 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		856491F62578100D00D1FE00 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		856491F72578100D00D1FE00 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		856491F92578100D00D1FE00 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Scene Machine/Scene_Machine.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"Scene Machine/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "Scene Machine/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MTLLINKER_FLAGS = "";
+				MTL_COMPILER_FLAGS = "-fcikernel";
+				PRODUCT_BUNDLE_IDENTIFIER = "cfarini.Scene-Machine";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		856491FA2578100D00D1FE00 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Scene Machine/Scene_Machine.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"Scene Machine/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "Scene Machine/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MTLLINKER_FLAGS = "";
+				MTL_COMPILER_FLAGS = "-fcikernel";
+				PRODUCT_BUNDLE_IDENTIFIER = "cfarini.Scene-Machine";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		856491FC2578100D00D1FE00 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Scene MachineTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = "cfarini.Scene-MachineTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Scene Machine.app/Contents/MacOS/Scene Machine";
+			};
+			name = Debug;
+		};
+		856491FD2578100D00D1FE00 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Scene MachineTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = "cfarini.Scene-MachineTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Scene Machine.app/Contents/MacOS/Scene Machine";
+			};
+			name = Release;
+		};
+		856491FF2578100D00D1FE00 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Scene MachineUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "cfarini.Scene-MachineUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "Scene Machine";
+			};
+			name = Debug;
+		};
+		856492002578100D00D1FE00 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Scene MachineUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "cfarini.Scene-MachineUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "Scene Machine";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		856491C72578100B00D1FE00 /* Build configuration list for PBXProject "Scene Machine" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				856491F62578100D00D1FE00 /* Debug */,
+				856491F72578100D00D1FE00 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		856491F82578100D00D1FE00 /* Build configuration list for PBXNativeTarget "Scene Machine" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				856491F92578100D00D1FE00 /* Debug */,
+				856491FA2578100D00D1FE00 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		856491FB2578100D00D1FE00 /* Build configuration list for PBXNativeTarget "Scene MachineTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				856491FC2578100D00D1FE00 /* Debug */,
+				856491FD2578100D00D1FE00 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		856491FE2578100D00D1FE00 /* Build configuration list for PBXNativeTarget "Scene MachineUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				856491FF2578100D00D1FE00 /* Debug */,
+				856492002578100D00D1FE00 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		856491D32578100B00D1FE00 /* Scene_Machine.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				856491D42578100B00D1FE00 /* Scene_Machine.xcdatamodel */,
+			);
+			currentVersion = 856491D42578100B00D1FE00 /* Scene_Machine.xcdatamodel */;
+			path = Scene_Machine.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 856491C42578100B00D1FE00 /* Project object */;
+}
