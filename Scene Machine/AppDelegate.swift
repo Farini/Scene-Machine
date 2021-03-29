@@ -132,6 +132,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return .terminateNow
     }
     
+    // MARK: - Menu
     
     @IBAction func openFinder(_ sender: NSMenuItem) {
         
@@ -172,7 +173,35 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         newWindow.center()
         newWindow.setFrameAutosaveName("Drag and Drop Image Window")
         //        window.toolbarStyle = .unified
+        window = newWindow
         window.contentView = NSHostingView(rootView: SceneAView())
+        window.makeKeyAndOrderFront(nil)
+    }
+    
+    @IBAction func openNoiseMaker(_ sender: NSMenuItem) {
+        
+        let newWindow = NSWindow(
+            contentRect: NSRect(x: 0, y: 0, width: 1200, height: 800),
+            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+            backing: .buffered, defer: false)
+        newWindow.center()
+        newWindow.setFrameAutosaveName("Drag and Drop Image Window")
+        //        window.toolbarStyle = .unified
+        window = newWindow
+        window.contentView = NSHostingView(rootView: NoiseMakerView())
+        window.makeKeyAndOrderFront(nil)
+    }
+    
+    @IBAction func openSpriteKitNoise(_ sender: NSMenuItem) {
+        let newWindow = NSWindow(
+            contentRect: NSRect(x: 0, y: 0, width: 1200, height: 800),
+            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+            backing: .buffered, defer: false)
+        newWindow.center()
+        newWindow.setFrameAutosaveName("Drag and Drop Image Window")
+        //        window.toolbarStyle = .unified
+        window = newWindow
+        window.contentView = NSHostingView(rootView: SpriteNoiseMaker())
         window.makeKeyAndOrderFront(nil)
     }
     

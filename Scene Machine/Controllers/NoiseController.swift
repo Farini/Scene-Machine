@@ -1,89 +1,35 @@
 //
-//  NoiseView.swift
+//  NoiseController.swift
 //  Scene Machine
 //
-//  Created by Carlos Farini on 12/3/20.
+//  Created by Carlos Farini on 3/29/21.
 //
 
-import SwiftUI
+import Foundation
 import SpriteKit
-import CoreImage
-
-struct NoiseView: View {
-    @ObservedObject var controller:NoiseController = NoiseController()
-    @State var sliderVal:Float = Float(0.5)
-    var body: some View {
-        HSplitView {
-            // Left
-            List {
-                Button("Save") {
-                    
-                    // Saving with SwiftUI
-                    // https://stackoverflow.com/questions/56645819/how-to-open-file-dialog-with-swiftui-on-platform-uikit-for-mac
-                    // Swift 5
-                    // https://ourcodeworld.com/articles/read/1117/how-to-implement-a-file-and-directory-picker-in-macos-using-swift-5
-                    
-                    print("Should save. Where?")
-                    LastNode.shared.saveTexture()
-                }
-                Button("Change (Add)") {
-                    print("Should change")
-                    controller.addNoise()
-                }
-                Button("MixImages") {
-                    print("Sepia")
-                    controller.mixImages()
-                }
-                Button("Filter dic") {
-                    controller.buildFilterDictionary()
-                }
-                Slider(value: $sliderVal, in: 0...1) { changed in
-                    print("Slider Changed")
-                    controller.generateNode(smooth:CGFloat(sliderVal))
-                }
-            }
-            .listStyle(SidebarListStyle())
-            .frame(maxWidth:200, idealHeight: 1024, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-            
-            // Right
-            ScrollView(.horizontal, showsIndicators: true) {
-                Image(nsImage: controller.currentImage)
-            }
-            .frame(idealWidth:1024, idealHeight: 1024, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-        }
-    }
-    
-    func runact() {
-        print("actions")
-    }
-}
-
-struct NoiseView_Previews: PreviewProvider {
-    static var previews: some View {
-        NoiseView()
-    }
-}
 
 class NoiseController:ObservableObject {
     
-    @Published var noises:[String]
+//    @Published var noises:[String]
     @Published var currentImage:NSImage
     
+    @Published var fileName:String = "Noise"
+    
     init() {
-        self.noises = ["Tester"]
+//        self.noises = ["Tester"]
         let texture = SKTexture.init(noiseWithSmoothness: 0.5, size: CGSize(width: 512, height: 512), grayscale: true)
         let img = texture.cgImage()
         let image = NSImage(cgImage: img, size: texture.size())
         self.currentImage = image
     }
     
-    func addNoise() {
-        print("Adding noise ??")
-        self.noises.append("Noise \(noises.count)")
-        for n in noises {
-            print("\(n)")
-        }
-    }
+//    func addNoise() {
+//        print("Adding noise ??")
+//        self.noises.append("Noise \(noises.count)")
+//        for n in noises {
+//            print("\(n)")
+//        }
+//    }
     
     func generateNode(smooth:CGFloat) {
         let texture = SKTexture.init(noiseWithSmoothness: smooth, size: CGSize(width: 512, height: 512), grayscale: true)
@@ -92,11 +38,44 @@ class NoiseController:ObservableObject {
         self.currentImage = image
     }
     
+    // This opens the Finder, but not to save...
+    func openSavePanel() {
+        
+        let dialog = NSOpenPanel();
+        
+        dialog.title                   = "Choose a directory";
+        dialog.showsResizeIndicator    = true;
+        dialog.showsHiddenFiles        = false;
+        dialog.allowsMultipleSelection = false;
+        dialog.canChooseDirectories = true;
+        dialog.canChooseFiles = true;
+        
+        if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
+            let result = dialog.url // Pathname of the file
+            
+            if let result = result {
+                if result.isFileURL {
+                    print("Picked a file")
+                } else {
+                    // this doesn't happen
+                    print("Picked what?")
+                }
+                let path: String = result.path
+                print("Picked Path: \(path)")
+            }
+            
+        } else {
+            // User clicked on "Cancel"
+            return
+        }
+    }
+    
+    // Deprecate
     func mixImages() {
         let texture = SKTexture.init(noiseWithSmoothness: 0.5, size: CGSize(width: 512, height: 512), grayscale: true)
         let img = currentImage.cgImage(forProposedRect: nil, context: nil, hints: nil) ?? texture.cgImage()
         let ciimg = CIImage(cgImage: img)
-
+        
         let newTexture = SKTexture.init(noiseWithSmoothness: 0.85, size: CGSize(width: 512, height: 512), grayscale: true).cgImage()
         let newImage = ciimg.composited(over: CIImage(cgImage:newTexture))
         
@@ -106,6 +85,7 @@ class NoiseController:ObservableObject {
         self.currentImage = nsImage
     }
     
+    // Deprecate
     func buildFilterDictionary() {
         print("Filter Dictionary")
         let filters = CIFilter.filterNames(inCategory: "CICategoryCompositeOperation")
@@ -135,7 +115,9 @@ class NoiseController:ObservableObject {
 }
 
 class LastNode {
+    
     static let shared = LastNode()
+    
     private init() {
         let texture = SKTexture.init(noiseWithSmoothness: 0.5, size: CGSize(width: 512, height: 512), grayscale: true)
         let node = SKSpriteNode(texture: texture)

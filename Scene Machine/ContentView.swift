@@ -20,23 +20,19 @@ struct ContentView: View {
     @State var sliderVal:Float = Float(0.5)
     
     init() {
-        self.noises = controller.noises
+//        self.noises = controller.noises
     }
     
     var body: some View {
         HSplitView {
             
                 List {
-                    ForEach(self.controller.noises, id:\.self) { noise in
-                        Text("\(noise)")
-                    }
                     Button("Save") {
                         print("Should save. Where?")
                         LastNode.shared.saveTexture()
                     }
                     Button("Change (Add)") {
                         print("Should change")
-                        controller.addNoise()
                     }
                     Slider(value: $sliderVal, in: 0...1) { changed in
                         print("Slider Changed")
@@ -44,7 +40,6 @@ struct ContentView: View {
 
                 }
                 .listStyle(SidebarListStyle())
-//                .presentedWindowStyle(WindowToolbarStyle)
                 .toolbar {
                     Button(action: {
                         recordProgress()
@@ -65,21 +60,16 @@ struct ContentView: View {
                     }
                     Button("Change (Add)") {
                         print("Should change")
-                        controller.addNoise()
                     }
                 }
                 ScrollView(.horizontal, showsIndicators: true){
                     
                     HStack {
-//                        ForEach(self.controller.noises, id:\.self) { noise in
-//                                                    Text("\(noise)")
                         SpriteKitContainer(smoothness: CGFloat(sliderVal)) // or 256x256 for full screen
                                 .frame(width: 512, height: 512)
                                 .onTapGesture {
                                     print("Select Noise ??")
                                 }
-//                            SpriteKitContainer(controller: controller, smoothness: CGFloat(sliderVal))
-//                        }
                     }
                 }
                 .frame(maxWidth: 1024, minHeight: 100, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
@@ -98,9 +88,6 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
-
-
-
 
 struct SpriteKitContainer: NSViewRepresentable {
     

@@ -11,12 +11,9 @@
 		856491D22578100B00D1FE00 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856491D12578100B00D1FE00 /* ContentView.swift */; };
 		856491D52578100B00D1FE00 /* Scene_Machine.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 856491D32578100B00D1FE00 /* Scene_Machine.xcdatamodeld */; };
 		856491D72578100C00D1FE00 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 856491D62578100C00D1FE00 /* Assets.xcassets */; };
-		856491DA2578100C00D1FE00 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 856491D92578100C00D1FE00 /* Preview Assets.xcassets */; };
 		856491DD2578100C00D1FE00 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 856491DB2578100C00D1FE00 /* Main.storyboard */; };
 		856491E92578100D00D1FE00 /* Scene_MachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856491E82578100D00D1FE00 /* Scene_MachineTests.swift */; };
 		856491F42578100D00D1FE00 /* Scene_MachineUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856491F32578100D00D1FE00 /* Scene_MachineUITests.swift */; };
-		8564920C2578CD0100D1FE00 /* NoiseScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8564920B2578CD0100D1FE00 /* NoiseScene.swift */; };
-		8564921125792F9F00D1FE00 /* NoiseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8564921025792F9F00D1FE00 /* NoiseView.swift */; };
 		85649219257953A900D1FE00 /* ImageCompositionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85649218257953A900D1FE00 /* ImageCompositionController.swift */; };
 		856492222579547900D1FE00 /* ImageCompositionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856492212579547900D1FE00 /* ImageCompositionView.swift */; };
 		8564922A25795F3C00D1FE00 /* DragDropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8564922925795F3C00D1FE00 /* DragDropView.swift */; };
@@ -24,6 +21,9 @@
 		85649234257976AB00D1FE00 /* SceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85649233257976AB00D1FE00 /* SceneView.swift */; };
 		85649239257976C700D1FE00 /* Scenes.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 85649238257976C700D1FE00 /* Scenes.scnassets */; };
 		8564923E2579828100D1FE00 /* dissolve.fragment.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8564923D2579828100D1FE00 /* dissolve.fragment.txt */; };
+		857A93CD26124F3F004FFEBB /* NoiseMakerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857A93CC26124F3F004FFEBB /* NoiseMakerView.swift */; };
+		857A93D226124FE7004FFEBB /* NoiseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857A93D126124FE7004FFEBB /* NoiseController.swift */; };
+		857A93E526126613004FFEBB /* SpriteNoiseMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857A93E426126613004FFEBB /* SpriteNoiseMaker.swift */; };
 		8597BB7925BC8B2E00C705A0 /* Hacking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8597BB7825BC8B2E00C705A0 /* Hacking.swift */; };
 		8597BB7E25BCA8B200C705A0 /* ImageFXController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8597BB7D25BCA8B200C705A0 /* ImageFXController.swift */; };
 		8597BB7F25BCA8B200C705A0 /* ImageFXController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8597BB7D25BCA8B200C705A0 /* ImageFXController.swift */; };
@@ -54,7 +54,6 @@
 		856491D12578100B00D1FE00 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		856491D42578100B00D1FE00 /* Scene_Machine.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Scene_Machine.xcdatamodel; sourceTree = "<group>"; };
 		856491D62578100C00D1FE00 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		856491D92578100C00D1FE00 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		856491DC2578100C00D1FE00 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		856491DE2578100C00D1FE00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		856491DF2578100C00D1FE00 /* Scene_Machine.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Scene_Machine.entitlements; sourceTree = "<group>"; };
@@ -65,8 +64,6 @@
 		856491F32578100D00D1FE00 /* Scene_MachineUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scene_MachineUITests.swift; sourceTree = "<group>"; };
 		856491F52578100D00D1FE00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		856492042578AECF00D1FE00 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		8564920B2578CD0100D1FE00 /* NoiseScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseScene.swift; sourceTree = "<group>"; };
-		8564921025792F9F00D1FE00 /* NoiseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseView.swift; sourceTree = "<group>"; };
 		85649218257953A900D1FE00 /* ImageCompositionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCompositionController.swift; sourceTree = "<group>"; };
 		856492212579547900D1FE00 /* ImageCompositionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCompositionView.swift; sourceTree = "<group>"; };
 		8564922925795F3C00D1FE00 /* DragDropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragDropView.swift; sourceTree = "<group>"; };
@@ -74,6 +71,10 @@
 		85649233257976AB00D1FE00 /* SceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneView.swift; sourceTree = "<group>"; };
 		85649238257976C700D1FE00 /* Scenes.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Scenes.scnassets; sourceTree = "<group>"; };
 		8564923D2579828100D1FE00 /* dissolve.fragment.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dissolve.fragment.txt; sourceTree = "<group>"; };
+		857A93BA2612105D004FFEBB /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = MyPlayground.playground; path = ../../../../../MyPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		857A93CC26124F3F004FFEBB /* NoiseMakerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseMakerView.swift; sourceTree = "<group>"; };
+		857A93D126124FE7004FFEBB /* NoiseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseController.swift; sourceTree = "<group>"; };
+		857A93E426126613004FFEBB /* SpriteNoiseMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteNoiseMaker.swift; sourceTree = "<group>"; };
 		8597BB7825BC8B2E00C705A0 /* Hacking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hacking.swift; sourceTree = "<group>"; };
 		8597BB7D25BCA8B200C705A0 /* ImageFXController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFXController.swift; sourceTree = "<group>"; };
 		8597BB8325BCAEF600C705A0 /* Metal.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Metal.metal; sourceTree = "<group>"; };
@@ -128,31 +129,22 @@
 		856491CE2578100B00D1FE00 /* Scene Machine */ = {
 			isa = PBXGroup;
 			children = (
+				856491CF2578100B00D1FE00 /* AppDelegate.swift */,
+				857A93B926121043004FFEBB /* Playgrounds */,
 				856492202579546600D1FE00 /* Views */,
 				856492172579538B00D1FE00 /* Controllers */,
-				856491CF2578100B00D1FE00 /* AppDelegate.swift */,
 				856491D12578100B00D1FE00 /* ContentView.swift */,
-				8564921025792F9F00D1FE00 /* NoiseView.swift */,
 				8564923D2579828100D1FE00 /* dissolve.fragment.txt */,
 				856491D62578100C00D1FE00 /* Assets.xcassets */,
 				856491DB2578100C00D1FE00 /* Main.storyboard */,
 				856491DE2578100C00D1FE00 /* Info.plist */,
 				856491DF2578100C00D1FE00 /* Scene_Machine.entitlements */,
 				856491D32578100B00D1FE00 /* Scene_Machine.xcdatamodeld */,
-				856491D82578100C00D1FE00 /* Preview Content */,
-				8564920B2578CD0100D1FE00 /* NoiseScene.swift */,
+				857A93C726124CE7004FFEBB /* Preview Content */,
 				85649238257976C700D1FE00 /* Scenes.scnassets */,
 				8597BB8325BCAEF600C705A0 /* Metal.metal */,
 			);
 			path = "Scene Machine";
-			sourceTree = "<group>";
-		};
-		856491D82578100C00D1FE00 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				856491D92578100C00D1FE00 /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		856491E72578100D00D1FE00 /* Scene MachineTests */ = {
@@ -178,6 +170,7 @@
 			children = (
 				85649218257953A900D1FE00 /* ImageCompositionController.swift */,
 				8597BB7D25BCA8B200C705A0 /* ImageFXController.swift */,
+				857A93D126124FE7004FFEBB /* NoiseController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -185,6 +178,7 @@
 		856492202579546600D1FE00 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				857A93CB26124F1F004FFEBB /* NoiseMaker */,
 				856492212579547900D1FE00 /* ImageCompositionView.swift */,
 				8564922925795F3C00D1FE00 /* DragDropView.swift */,
 				8564922E25796F9C00D1FE00 /* TestImageDragDrop.swift */,
@@ -192,6 +186,30 @@
 				8597BB7825BC8B2E00C705A0 /* Hacking.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		857A93B926121043004FFEBB /* Playgrounds */ = {
+			isa = PBXGroup;
+			children = (
+				857A93BA2612105D004FFEBB /* MyPlayground.playground */,
+			);
+			path = Playgrounds;
+			sourceTree = "<group>";
+		};
+		857A93C726124CE7004FFEBB /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		857A93CB26124F1F004FFEBB /* NoiseMaker */ = {
+			isa = PBXGroup;
+			children = (
+				857A93CC26124F3F004FFEBB /* NoiseMakerView.swift */,
+				857A93E426126613004FFEBB /* SpriteNoiseMaker.swift */,
+			);
+			path = NoiseMaker;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -257,7 +275,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1220;
-				LastUpgradeCheck = 1220;
+				LastUpgradeCheck = 1240;
 				TargetAttributes = {
 					856491CB2578100B00D1FE00 = {
 						CreatedOnToolsVersion = 12.2;
@@ -298,7 +316,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				856491DD2578100C00D1FE00 /* Main.storyboard in Resources */,
-				856491DA2578100C00D1FE00 /* Preview Assets.xcassets in Resources */,
 				85649239257976C700D1FE00 /* Scenes.scnassets in Resources */,
 				856491D72578100C00D1FE00 /* Assets.xcassets in Resources */,
 				8564923E2579828100D1FE00 /* dissolve.fragment.txt in Resources */,
@@ -327,17 +344,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				856492222579547900D1FE00 /* ImageCompositionView.swift in Sources */,
+				857A93D226124FE7004FFEBB /* NoiseController.swift in Sources */,
 				85649234257976AB00D1FE00 /* SceneView.swift in Sources */,
-				8564921125792F9F00D1FE00 /* NoiseView.swift in Sources */,
+				857A93CD26124F3F004FFEBB /* NoiseMakerView.swift in Sources */,
 				856491D22578100B00D1FE00 /* ContentView.swift in Sources */,
 				8597BB8425BCAEF600C705A0 /* Metal.metal in Sources */,
 				8564922F25796F9C00D1FE00 /* TestImageDragDrop.swift in Sources */,
 				8564922A25795F3C00D1FE00 /* DragDropView.swift in Sources */,
 				85649219257953A900D1FE00 /* ImageCompositionController.swift in Sources */,
 				856491D52578100B00D1FE00 /* Scene_Machine.xcdatamodeld in Sources */,
+				857A93E526126613004FFEBB /* SpriteNoiseMaker.swift in Sources */,
 				8597BB7925BC8B2E00C705A0 /* Hacking.swift in Sources */,
 				856491D02578100B00D1FE00 /* AppDelegate.swift in Sources */,
-				8564920C2578CD0100D1FE00 /* NoiseScene.swift in Sources */,
 				8597BB7E25BCA8B200C705A0 /* ImageFXController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -508,6 +526,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Scene Machine/Scene_Machine.entitlements";
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Scene Machine/Preview Content\"";
@@ -532,6 +551,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Scene Machine/Scene_Machine.entitlements";
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Scene Machine/Preview Content\"";

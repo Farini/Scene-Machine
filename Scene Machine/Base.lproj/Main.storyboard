@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17506"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -130,14 +130,23 @@
                                         <menuItem title="Create New" id="1qb-Ce-Oqv">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                         </menuItem>
+                                        <menuItem title="Noise Maker" id="2iJ-C4-3Vv">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="openNoiseMaker:" target="Voe-Tx-rLC" id="11G-0A-b46"/>
+                                            </connections>
+                                        </menuItem>
                                         <menuItem title="New Image (Drag and Drop)" id="0Ln-dE-pkc">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="openNewImagePlaceholder:" target="Voe-Tx-rLC" id="7pz-uI-w8p"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Item 3" id="vSH-i8-Iyj">
+                                        <menuItem title="SpriteKit Noise" id="vSH-i8-Iyj">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="openSpriteKitNoise:" target="Voe-Tx-rLC" id="yUP-YG-ziH"/>
+                                            </connections>
                                         </menuItem>
                                     </items>
                                 </menu>

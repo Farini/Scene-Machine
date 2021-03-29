@@ -3,6 +3,12 @@ Scene Machine is a tool for SceneKit, with a few additional features for SpriteK
 
 Although SpriteKit offers ways to generate noise textures, the options are limited. In Blender, for example, there are many more options, and graphics operations that can be performed to generate a texture. Plus, those patterns can be generated and placed in an UV map.
 
+### Noise Interface
+The Noise Interface (From the Menu Noise) should generate different types of noises.
+The SpriteKit Noise generates `SpriteKit`s default noise generators
+The Noise Maker generates other types of noises that SpriteKit can't generate, such as the CausticNoise, and Lens flare
+
+
 ## Expected Features
 
 - [ ] Generate many different noise textures.
