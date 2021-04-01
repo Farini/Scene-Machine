@@ -39,6 +39,20 @@ The Noise Maker generates other types of noises that SpriteKit can't generate, s
 - [ ] Main menu routing to main interfaces
 - [ ] SpriteKit noise textures (all)
 
+### Scene Ideas
+
+1. Forest
+2. Terrain
+3. Beach
+4. Maze
+5. House in the forest
+
+### Animatable Ideas
+
+1. Car, or Rover
+2. Monkey
+3. Person
+
 # 🍎 SceneKit
 
 ## SCNGeometry
