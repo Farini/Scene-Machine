@@ -24,6 +24,7 @@
 		857A93CD26124F3F004FFEBB /* NoiseMakerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857A93CC26124F3F004FFEBB /* NoiseMakerView.swift */; };
 		857A93D226124FE7004FFEBB /* NoiseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857A93D126124FE7004FFEBB /* NoiseController.swift */; };
 		857A93E526126613004FFEBB /* SpriteNoiseMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857A93E426126613004FFEBB /* SpriteNoiseMaker.swift */; };
+		85954043261C3144001D9040 /* SpriteKitNoiseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85954042261C3144001D9040 /* SpriteKitNoiseController.swift */; };
 		8597BB7925BC8B2E00C705A0 /* Hacking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8597BB7825BC8B2E00C705A0 /* Hacking.swift */; };
 		8597BB7E25BCA8B200C705A0 /* ImageFXController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8597BB7D25BCA8B200C705A0 /* ImageFXController.swift */; };
 		8597BB7F25BCA8B200C705A0 /* ImageFXController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8597BB7D25BCA8B200C705A0 /* ImageFXController.swift */; };
@@ -75,6 +76,7 @@
 		857A93CC26124F3F004FFEBB /* NoiseMakerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseMakerView.swift; sourceTree = "<group>"; };
 		857A93D126124FE7004FFEBB /* NoiseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseController.swift; sourceTree = "<group>"; };
 		857A93E426126613004FFEBB /* SpriteNoiseMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteNoiseMaker.swift; sourceTree = "<group>"; };
+		85954042261C3144001D9040 /* SpriteKitNoiseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteKitNoiseController.swift; sourceTree = "<group>"; };
 		8597BB7825BC8B2E00C705A0 /* Hacking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hacking.swift; sourceTree = "<group>"; };
 		8597BB7D25BCA8B200C705A0 /* ImageFXController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFXController.swift; sourceTree = "<group>"; };
 		8597BB8325BCAEF600C705A0 /* Metal.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Metal.metal; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 				85649218257953A900D1FE00 /* ImageCompositionController.swift */,
 				8597BB7D25BCA8B200C705A0 /* ImageFXController.swift */,
 				857A93D126124FE7004FFEBB /* NoiseController.swift */,
+				85954042261C3144001D9040 /* SpriteKitNoiseController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -353,6 +356,7 @@
 				8564922A25795F3C00D1FE00 /* DragDropView.swift in Sources */,
 				85649219257953A900D1FE00 /* ImageCompositionController.swift in Sources */,
 				856491D52578100B00D1FE00 /* Scene_Machine.xcdatamodeld in Sources */,
+				85954043261C3144001D9040 /* SpriteKitNoiseController.swift in Sources */,
 				857A93E526126613004FFEBB /* SpriteNoiseMaker.swift in Sources */,
 				8597BB7925BC8B2E00C705A0 /* Hacking.swift in Sources */,
 				856491D02578100B00D1FE00 /* AppDelegate.swift in Sources */,

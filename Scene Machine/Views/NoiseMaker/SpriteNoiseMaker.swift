@@ -12,7 +12,70 @@ import GameKit
 struct SpriteNoiseMaker: View {
     
     var scene: GameScene = GameScene(size: CGSize(width: 600, height: 600))
+    @ObservedObject var controller:SpriteKitNoiseController = SpriteKitNoiseController()
     
+    // Colors Sources
+    // Color palette
+    // Image Size: 256, 512, 1024, 2048, 4096
+    
+    @State var noisePop:Bool = false
+    
+    var body: some View {
+        VStack {
+            HStack {
+                Text("GK Noise").font(.title3).padding().foregroundColor(.orange)
+                
+                Group {
+                    Button("Update") {
+                        self.prepMap()
+                    }
+                    Button("Save") {
+                        self.saveTexture()
+                    }
+                    Button("Pop") {
+                        noisePop.toggle()
+                    }
+                    .popover(isPresented: $noisePop, content: {
+                        SpriteNoisePopover(controller:controller)
+                    })
+                }
+            }
+            
+            Divider()
+            SpriteView(scene: controller.scene).frame(width: 600, height: 600)
+        }
+    }
+    
+    func prepMap() {
+        controller.updateScene()
+    }
+    
+    func saveTexture() {
+        
+        guard let texture = controller.scene.texture else { return }
+        let randomNumber:Int = Int.random(in: 1...1000)
+        let fileUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("Noise_\(randomNumber).png")
+        
+        let img = texture.cgImage()
+        let image = NSImage(cgImage: img, size: texture.size())
+        
+        controller.openSavePanel(for: image)
+        /*
+        let data = image.tiffRepresentation
+        if !FileManager.default.fileExists(atPath: fileUrl.path) {
+            FileManager.default.createFile(atPath: fileUrl.path, contents: data, attributes: nil)
+            print("File created")
+            return
+        }
+        */
+    }
+}
+
+struct SpriteNoisePopover:View {
+    
+    @ObservedObject var controller:SpriteKitNoiseController
+    
+    @State var noiseType:NoiseType = .Perlin
     @State var frequencyString:String = "2.0"
     @State var octavesString:String = "4"
     @State var persistanceString:String = "0.5"
@@ -20,71 +83,92 @@ struct SpriteNoiseMaker: View {
     
     var body: some View {
         VStack {
-            HStack {
-                Text("GK Noise Maps").font(.title3).padding()
-                Text("Freq:")
-                TextField("Freq.", text: $frequencyString)
-                    .frame(maxWidth:50)
-                Text("Octaves:")
-                TextField("Octaves.", text: $octavesString)
-                    .frame(maxWidth:50)
-                Text("Persist.:")
-                TextField("Persistance", text: $persistanceString)
-                    .frame(maxWidth:50)
-                Text("Lacuna:")
-                TextField("Lacunarity.", text: $lacunaString)
-                    .frame(maxWidth:50)
-                Group {
-                    Button("Build") {
-                        self.prepMap()
-                    }
-                    Button("Save") {
-                        self.saveTexture()
-                    }
+            
+            Text("GK Noise Maps").font(.title3).padding().foregroundColor(.orange)
+            Picker(selection: $noiseType, label: Text("Noise Type"), content: {
+                ForEach(NoiseType.allCases, id:\.self) { nType in
+                    Text("\(nType.rawValue)")
+                        .onTapGesture {
+                            controller.noiseType = nType
+                        }
+                }
+            })
+            .frame(maxWidth:200)
+            Divider()
+                .frame(maxWidth:250)
+            
+            Group {
+                HStack {
+                    Text("Frequency")
+                    TextField("Freq.", text: $frequencyString)
+                        .frame(maxWidth:50)
+                }
+                HStack {
+                    Text("Octaves")
+                    TextField("Octaves.", text: $octavesString)
+                        .frame(maxWidth:50)
+                }
+                HStack {
+                    Text("Persistency")
+                    TextField("Persistance", text: $persistanceString)
+                        .frame(maxWidth:50)
+                }
+                HStack {
+                    Text("Lacunarity")
+                    TextField("Lacunarity.", text: $lacunaString)
+                        .frame(maxWidth:50)
                 }
             }
             
             Divider()
-            SpriteView(scene: scene).frame(width: 600, height: 600)
+                .frame(maxWidth:250)
+            
+            Group {
+                Button("Build") {
+                      self.prepMap()
+                }
+                .padding(.bottom, 8)
+            }
         }
     }
     
     func prepMap() {
-        self.scene.frequency = Double(frequencyString) ?? 2.0
-        self.scene.octaves = Int(octavesString) ?? 4
-        self.scene.persistance = Double(persistanceString) ?? 0.5
-        self.scene.lacunarity = Double(lacunaString) ?? 0.5
-        
-        self.scene.makePerlin()
-    }
-    
-    func saveTexture() {
-        
-        guard let texture = scene.texture else { return }
-        let randomNumber:Int = Int.random(in: 1...1000)
-        let fileUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("Noise_\(randomNumber).png")
-        
-        let img = texture.cgImage()
-        let image = NSImage(cgImage: img, size: texture.size())
-        let data = image.tiffRepresentation
-        if !FileManager.default.fileExists(atPath: fileUrl.path) {
-            FileManager.default.createFile(atPath: fileUrl.path, contents: data, attributes: nil)
-            print("File created")
-            return
-        }
+        controller.noiseType = noiseType
+        controller.frequency = Double(frequencyString) ?? 2.0
+        controller.octaves = Int(octavesString) ?? 4
+        controller.persistance = Double(persistanceString) ?? 0.5
+        controller.lacunarity = Double(lacunaString) ?? 0.5
+        controller.updateScene()
     }
 }
 
 struct SpriteNoiseMaker_Previews: PreviewProvider {
     static var previews: some View {
         SpriteNoiseMaker()
-            .frame(width: 700, height: 500, alignment: .top)
+            .frame(width: 700, height: 700, alignment: .top)
     }
+}
+
+struct SpritePopover_Previews:PreviewProvider {
+    static var previews: some View {
+        SpriteNoisePopover(controller:SpriteKitNoiseController())
+    }
+}
+
+enum NoiseType:String, CaseIterable {
+    case Perlin
+    case Billow
+    case Ridged
+    case Voronoi
+    case Cylinder
+    case Sphere
+    case Checker
 }
 
 // A simple game scene with falling boxes
 class GameScene: SKScene {
     var texture:SKTexture?
+    var noiseType:NoiseType = .Perlin
     
     override func didMove(to view: SKView) {
         
@@ -109,9 +193,24 @@ class GameScene: SKScene {
         print("Lacu: \(lacunarity)")
         print("Pers: \(persistance)")
         
-        let source = GKPerlinNoiseSource(frequency: frequency, octaveCount: octaves, persistence: persistance, lacunarity: lacunarity, seed: 1)
+        var source:GKNoiseSource!
+        switch noiseType {
+            case .Perlin:
+                source = GKPerlinNoiseSource(frequency: frequency, octaveCount: octaves, persistence: persistance, lacunarity: lacunarity, seed: 1)
+            case .Billow:
+                source = GKBillowNoiseSource(frequency: frequency, octaveCount: octaves, persistence: persistance, lacunarity: lacunarity, seed: 1)
+            case .Checker:
+                source = GKCheckerboardNoiseSource(squareSize: frequency)
+            case .Cylinder, .Sphere:
+                source = GKCylindersNoiseSource(frequency: frequency)
+            case .Ridged:
+                source = GKRidgedNoiseSource(frequency: frequency, octaveCount: octaves, lacunarity: lacunarity, seed: 1)
+            case .Voronoi:
+                source = GKVoronoiNoiseSource(frequency: frequency, displacement: 1, distanceEnabled: true, seed: 1)
+        }
         
-//        let source = GKRidgedNoiseSource(frequency: 6.0, octaveCount: 4, lacunarity: 0.9, seed: 5)
+        
+        
         let noise = GKNoise.init(source)
         let map = GKNoiseMap.init(noise, size: vector2(1.0, 1.0), origin: vector2(0, 0), sampleCount: vector2(50, 50), seamless: true)
         self.makeSpriteTexture(noiseMap: map)
@@ -135,9 +234,9 @@ class GameScene: SKScene {
     func createNoiseMap() -> GKNoiseMap {
         //Get our noise source, this can be customized further
         
-//        let source = GKPerlinNoiseSource()
+        let source = GKPerlinNoiseSource()
 //        let source = GKPerlinNoiseSource(frequency: 2.0, octaveCount: 3, persistence: 0.5, lacunarity: 3.0, seed: 1)
-        let source = GKBillowNoiseSource(frequency: 2.0, octaveCount: 6, persistence: 0.1, lacunarity: 2.0, seed: 32)
+//        let source = GKBillowNoiseSource(frequency: 3.0, octaveCount: 4, persistence: 0.4, lacunarity: 3, seed: 32)
 //        let source = GKRidgedNoiseSource(frequency: 6.0, octaveCount: 4, lacunarity: 0.9, seed: 5)
 //        let source = GKVoronoiNoiseSource(frequency: 6.0, displacement: 1.0, distanceEnabled: true, seed: 1)
         

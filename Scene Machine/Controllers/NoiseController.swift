@@ -8,28 +8,19 @@
 import Foundation
 import SpriteKit
 
+
+
 class NoiseController:ObservableObject {
     
-//    @Published var noises:[String]
     @Published var currentImage:NSImage
-    
     @Published var fileName:String = "Noise"
     
     init() {
-//        self.noises = ["Tester"]
         let texture = SKTexture.init(noiseWithSmoothness: 0.5, size: CGSize(width: 512, height: 512), grayscale: true)
         let img = texture.cgImage()
         let image = NSImage(cgImage: img, size: texture.size())
         self.currentImage = image
     }
-    
-//    func addNoise() {
-//        print("Adding noise ??")
-//        self.noises.append("Noise \(noises.count)")
-//        for n in noises {
-//            print("\(n)")
-//        }
-//    }
     
     func generateNode(smooth:CGFloat) {
         let texture = SKTexture.init(noiseWithSmoothness: smooth, size: CGSize(width: 512, height: 512), grayscale: true)
@@ -48,7 +39,7 @@ class NoiseController:ObservableObject {
         dialog.showsHiddenFiles        = false;
         dialog.allowsMultipleSelection = false;
         dialog.canChooseDirectories = true;
-        dialog.canChooseFiles = true;
+        dialog.canChooseFiles = false;
         
         if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
             let result = dialog.url // Pathname of the file
