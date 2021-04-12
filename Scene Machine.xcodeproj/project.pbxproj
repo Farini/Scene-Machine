@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8515B3302624E6EE00A886BD /* ImageBasics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B32F2624E6EE00A886BD /* ImageBasics.swift */; };
+		8515B3312624E6EE00A886BD /* ImageBasics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B32F2624E6EE00A886BD /* ImageBasics.swift */; };
+		8515B3322624E6EE00A886BD /* ImageBasics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B32F2624E6EE00A886BD /* ImageBasics.swift */; };
 		856491D02578100B00D1FE00 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856491CF2578100B00D1FE00 /* AppDelegate.swift */; };
 		856491D22578100B00D1FE00 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856491D12578100B00D1FE00 /* ContentView.swift */; };
 		856491D52578100B00D1FE00 /* Scene_Machine.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 856491D32578100B00D1FE00 /* Scene_Machine.xcdatamodeld */; };
@@ -50,6 +53,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8515B32F2624E6EE00A886BD /* ImageBasics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageBasics.swift; sourceTree = "<group>"; };
 		856491CC2578100B00D1FE00 /* Scene Machine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Scene Machine.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		856491CF2578100B00D1FE00 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		856491D12578100B00D1FE00 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -107,6 +111,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8515B32D2624E63E00A886BD /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				8564923D2579828100D1FE00 /* dissolve.fragment.txt */,
+			);
+			path = Shaders;
+			sourceTree = "<group>";
+		};
+		8515B32E2624E69800A886BD /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				856491D32578100B00D1FE00 /* Scene_Machine.xcdatamodeld */,
+				8515B32F2624E6EE00A886BD /* ImageBasics.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		856491C32578100B00D1FE00 = {
 			isa = PBXGroup;
 			children = (
@@ -135,13 +156,12 @@
 				857A93B926121043004FFEBB /* Playgrounds */,
 				856492202579546600D1FE00 /* Views */,
 				856492172579538B00D1FE00 /* Controllers */,
-				856491D12578100B00D1FE00 /* ContentView.swift */,
-				8564923D2579828100D1FE00 /* dissolve.fragment.txt */,
+				8515B32E2624E69800A886BD /* Model */,
+				8515B32D2624E63E00A886BD /* Shaders */,
 				856491D62578100C00D1FE00 /* Assets.xcassets */,
 				856491DB2578100C00D1FE00 /* Main.storyboard */,
 				856491DE2578100C00D1FE00 /* Info.plist */,
 				856491DF2578100C00D1FE00 /* Scene_Machine.entitlements */,
-				856491D32578100B00D1FE00 /* Scene_Machine.xcdatamodeld */,
 				857A93C726124CE7004FFEBB /* Preview Content */,
 				85649238257976C700D1FE00 /* Scenes.scnassets */,
 				8597BB8325BCAEF600C705A0 /* Metal.metal */,
@@ -181,6 +201,7 @@
 		856492202579546600D1FE00 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				856491D12578100B00D1FE00 /* ContentView.swift */,
 				857A93CB26124F1F004FFEBB /* NoiseMaker */,
 				856492212579547900D1FE00 /* ImageCompositionView.swift */,
 				8564922925795F3C00D1FE00 /* DragDropView.swift */,
@@ -350,6 +371,7 @@
 				857A93D226124FE7004FFEBB /* NoiseController.swift in Sources */,
 				85649234257976AB00D1FE00 /* SceneView.swift in Sources */,
 				857A93CD26124F3F004FFEBB /* NoiseMakerView.swift in Sources */,
+				8515B3302624E6EE00A886BD /* ImageBasics.swift in Sources */,
 				856491D22578100B00D1FE00 /* ContentView.swift in Sources */,
 				8597BB8425BCAEF600C705A0 /* Metal.metal in Sources */,
 				8564922F25796F9C00D1FE00 /* TestImageDragDrop.swift in Sources */,
@@ -368,6 +390,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8515B3312624E6EE00A886BD /* ImageBasics.swift in Sources */,
 				856491E92578100D00D1FE00 /* Scene_MachineTests.swift in Sources */,
 				8597BB8525BCAEF600C705A0 /* Metal.metal in Sources */,
 				8597BB7F25BCA8B200C705A0 /* ImageFXController.swift in Sources */,
@@ -378,6 +401,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8515B3322624E6EE00A886BD /* ImageBasics.swift in Sources */,
 				856491F42578100D00D1FE00 /* Scene_MachineUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

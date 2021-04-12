@@ -8,6 +8,11 @@ The Noise Interface (From the Menu Noise) should generate different types of noi
 The SpriteKit Noise generates `SpriteKit`s default noise generators
 The Noise Maker generates other types of noises that SpriteKit can't generate, such as the CausticNoise, and Lens flare
 
+Properties
+    
+    - Image Size
+    - Type, and noise properties
+    - Colors Array
 
 ## Expected Features
 

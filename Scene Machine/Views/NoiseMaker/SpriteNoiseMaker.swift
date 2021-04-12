@@ -11,7 +11,7 @@ import GameKit
 
 struct SpriteNoiseMaker: View {
     
-    var scene: GameScene = GameScene(size: CGSize(width: 600, height: 600))
+    @State var scene: GameScene = GameScene(size: CGSize(width: 600, height: 600))
     @ObservedObject var controller:SpriteKitNoiseController = SpriteKitNoiseController()
     
     // Colors Sources
@@ -19,31 +19,54 @@ struct SpriteNoiseMaker: View {
     // Image Size: 256, 512, 1024, 2048, 4096
     
     @State var noisePop:Bool = false
+    @State var sizePop:Bool = false
     
     var body: some View {
-        VStack {
-            HStack {
-                Text("GK Noise").font(.title3).padding().foregroundColor(.orange)
-                
-                Group {
-                    Button("Update") {
-                        self.prepMap()
-                    }
-                    Button("Save") {
-                        self.saveTexture()
-                    }
-                    Button("Pop") {
-                        noisePop.toggle()
-                    }
-                    .popover(isPresented: $noisePop, content: {
-                        SpriteNoisePopover(controller:controller)
-                    })
-                }
-            }
+        ZStack(alignment: .top) {
             
-            Divider()
-            SpriteView(scene: controller.scene).frame(width: 600, height: 600)
+            SpriteView(scene: controller.scene).frame(width: scene.size.width, height: scene.size.height)
+            
+            VStack {
+                HStack {
+                    Text("GK Noise").font(.title3).padding().foregroundColor(.orange)
+                    
+                    Group {
+                        Button("Grow") {
+                            sizePop = true
+                        }
+                        .popover(isPresented: $sizePop, content: {
+                            List(TextureSize.allCases, id:\.self) { imSize in
+                                HStack {
+                                    Text("\(imSize.label)")
+                                    Spacer()
+                                    
+                                }
+                                .onTapGesture {
+                                    self.scene = GameScene(size: CGSize(width: imSize.size.width, height: imSize.size.height))
+                                }
+                            }
+                            .frame(minWidth:300)
+                        })
+                        Button("Update") {
+                            self.prepMap()
+                        }
+                        Button("Save") {
+                            self.saveTexture()
+                        }
+                        Button("Noise") {
+                            noisePop.toggle()
+                        }
+                        .popover(isPresented: $noisePop, content: {
+                            SpriteNoisePopover(controller:controller)
+                        })
+                    }
+                }
+                Divider()
+            }
+            .frame(height:40)
+            .background(Color.black.opacity(0.5))
         }
+  
     }
     
     func prepMap() {
@@ -53,21 +76,12 @@ struct SpriteNoiseMaker: View {
     func saveTexture() {
         
         guard let texture = controller.scene.texture else { return }
-        let randomNumber:Int = Int.random(in: 1...1000)
-        let fileUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("Noise_\(randomNumber).png")
         
         let img = texture.cgImage()
         let image = NSImage(cgImage: img, size: texture.size())
         
+        // Call the Save Panel
         controller.openSavePanel(for: image)
-        /*
-        let data = image.tiffRepresentation
-        if !FileManager.default.fileExists(atPath: fileUrl.path) {
-            FileManager.default.createFile(atPath: fileUrl.path, contents: data, attributes: nil)
-            print("File created")
-            return
-        }
-        */
     }
 }
 
@@ -145,7 +159,9 @@ struct SpriteNoisePopover:View {
 struct SpriteNoiseMaker_Previews: PreviewProvider {
     static var previews: some View {
         SpriteNoiseMaker()
-            .frame(width: 700, height: 700, alignment: .top)
+//            .frame(width: 700, height: 700, alignment: .top)
+            .frame(minWidth: 400, maxWidth: 2048, minHeight: 700, maxHeight: 1856, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+        
     }
 }
 
@@ -180,8 +196,13 @@ class GameScene: SKScene {
         let noiseMap = createNoiseMap()
 
         let texture = SKTexture(noiseMap: noiseMap)
-        let sprite = SKSpriteNode(texture: texture, size: CGSize(width: 512, height: 512))
+        let sprite = SKSpriteNode(texture: texture, size: self.size)
         addChild(sprite)
+        
+//        if texture.size().height > view.bounds.size.height {
+//            let scale = view.bounds.height / sprite.size.height
+//            sprite.scale(to: CGSize(width: scale*texture.size().width, height: scale*texture.size().height))
+//        }
     }
     
     func makePerlin() {

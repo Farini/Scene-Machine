@@ -39,9 +39,6 @@ class SpriteKitNoiseController:ObservableObject {
         dialog.title                   = "Choose a directory";
         dialog.showsResizeIndicator    = true;
         dialog.showsHiddenFiles        = false;
-//        dialog.allowsMultipleSelection = false;
-//        dialog.canChooseDirectories = true;
-//        dialog.canChooseFiles = false;
         
         if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
             let result = dialog.url // Pathname of the file
@@ -55,12 +52,18 @@ class SpriteKitNoiseController:ObservableObject {
                 }
                 let path: String = result.path
                 print("Picked Path: \(path)")
+                
+                
+                do {
+                    try data?.write(to: URL(fileURLWithPath: path))
+                    print("File saved")
+                } catch {
+                    print("ERROR: \(error.localizedDescription)")
+                }
             }
-            
         } else {
             // User clicked on "Cancel"
             return
         }
     }
-    
 }
