@@ -10,6 +10,8 @@
 		8515B3302624E6EE00A886BD /* ImageBasics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B32F2624E6EE00A886BD /* ImageBasics.swift */; };
 		8515B3312624E6EE00A886BD /* ImageBasics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B32F2624E6EE00A886BD /* ImageBasics.swift */; };
 		8515B3322624E6EE00A886BD /* ImageBasics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B32F2624E6EE00A886BD /* ImageBasics.swift */; };
+		8515B33D26254C8300A886BD /* GradientMakerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B33C26254C8300A886BD /* GradientMakerView.swift */; };
+		8515B342262554A700A886BD /* GradientController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B341262554A700A886BD /* GradientController.swift */; };
 		856491D02578100B00D1FE00 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856491CF2578100B00D1FE00 /* AppDelegate.swift */; };
 		856491D22578100B00D1FE00 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856491D12578100B00D1FE00 /* ContentView.swift */; };
 		856491D52578100B00D1FE00 /* Scene_Machine.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 856491D32578100B00D1FE00 /* Scene_Machine.xcdatamodeld */; };
@@ -54,6 +56,8 @@
 
 /* Begin PBXFileReference section */
 		8515B32F2624E6EE00A886BD /* ImageBasics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageBasics.swift; sourceTree = "<group>"; };
+		8515B33C26254C8300A886BD /* GradientMakerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientMakerView.swift; sourceTree = "<group>"; };
+		8515B341262554A700A886BD /* GradientController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientController.swift; sourceTree = "<group>"; };
 		856491CC2578100B00D1FE00 /* Scene Machine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Scene Machine.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		856491CF2578100B00D1FE00 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		856491D12578100B00D1FE00 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -152,6 +156,7 @@
 		856491CE2578100B00D1FE00 /* Scene Machine */ = {
 			isa = PBXGroup;
 			children = (
+				856491DB2578100C00D1FE00 /* Main.storyboard */,
 				856491CF2578100B00D1FE00 /* AppDelegate.swift */,
 				857A93B926121043004FFEBB /* Playgrounds */,
 				856492202579546600D1FE00 /* Views */,
@@ -159,7 +164,6 @@
 				8515B32E2624E69800A886BD /* Model */,
 				8515B32D2624E63E00A886BD /* Shaders */,
 				856491D62578100C00D1FE00 /* Assets.xcassets */,
-				856491DB2578100C00D1FE00 /* Main.storyboard */,
 				856491DE2578100C00D1FE00 /* Info.plist */,
 				856491DF2578100C00D1FE00 /* Scene_Machine.entitlements */,
 				857A93C726124CE7004FFEBB /* Preview Content */,
@@ -194,6 +198,7 @@
 				8597BB7D25BCA8B200C705A0 /* ImageFXController.swift */,
 				857A93D126124FE7004FFEBB /* NoiseController.swift */,
 				85954042261C3144001D9040 /* SpriteKitNoiseController.swift */,
+				8515B341262554A700A886BD /* GradientController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -232,6 +237,7 @@
 			children = (
 				857A93CC26124F3F004FFEBB /* NoiseMakerView.swift */,
 				857A93E426126613004FFEBB /* SpriteNoiseMaker.swift */,
+				8515B33C26254C8300A886BD /* GradientMakerView.swift */,
 			);
 			path = NoiseMaker;
 			sourceTree = "<group>";
@@ -368,6 +374,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				856492222579547900D1FE00 /* ImageCompositionView.swift in Sources */,
+				8515B33D26254C8300A886BD /* GradientMakerView.swift in Sources */,
 				857A93D226124FE7004FFEBB /* NoiseController.swift in Sources */,
 				85649234257976AB00D1FE00 /* SceneView.swift in Sources */,
 				857A93CD26124F3F004FFEBB /* NoiseMakerView.swift in Sources */,
@@ -381,6 +388,7 @@
 				85954043261C3144001D9040 /* SpriteKitNoiseController.swift in Sources */,
 				857A93E526126613004FFEBB /* SpriteNoiseMaker.swift in Sources */,
 				8597BB7925BC8B2E00C705A0 /* Hacking.swift in Sources */,
+				8515B342262554A700A886BD /* GradientController.swift in Sources */,
 				856491D02578100B00D1FE00 /* AppDelegate.swift in Sources */,
 				8597BB7E25BCA8B200C705A0 /* ImageFXController.swift in Sources */,
 			);

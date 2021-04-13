@@ -19,7 +19,9 @@ struct SpriteNoiseMaker: View {
     // Image Size: 256, 512, 1024, 2048, 4096
     
     @State var noisePop:Bool = false
+    @State var gradientPop:Bool = false
     @State var sizePop:Bool = false
+    @State var stops:[GradientStop] = []
     
     var body: some View {
         ZStack(alignment: .top) {
@@ -59,6 +61,17 @@ struct SpriteNoiseMaker: View {
                         .popover(isPresented: $noisePop, content: {
                             SpriteNoisePopover(controller:controller)
                         })
+                        
+                        Button("Colors \(stops.count)") {
+                            gradientPop.toggle()
+                        }
+                        .popover(isPresented: $gradientPop, content: {
+                            GradientMakerView { (stops) -> Void in
+                                print("Gradient with colors: \(stops?.count ?? 0)")
+                                self.stops = (stops)!
+                                self.prepMap()
+                            }
+                        })
                     }
                 }
                 Divider()
@@ -70,7 +83,11 @@ struct SpriteNoiseMaker: View {
     }
     
     func prepMap() {
-        controller.updateScene()
+        var predict:[Float:Color] = [:]
+        for stop in self.stops {
+            predict[Float(stop.location)] = stop.color
+        }
+        controller.updateScene(colors: predict)
     }
     
     func saveTexture() {
@@ -82,6 +99,10 @@ struct SpriteNoiseMaker: View {
         
         // Call the Save Panel
         controller.openSavePanel(for: image)
+    }
+    
+    func didPick(colors:[GradientStop]) {
+        print("Picked colors !!!")
     }
 }
 
@@ -152,7 +173,7 @@ struct SpriteNoisePopover:View {
         controller.octaves = Int(octavesString) ?? 4
         controller.persistance = Double(persistanceString) ?? 0.5
         controller.lacunarity = Double(lacunaString) ?? 0.5
-        controller.updateScene()
+        controller.updateScene(colors: [:])
     }
 }
 
@@ -185,6 +206,7 @@ enum NoiseType:String, CaseIterable {
 class GameScene: SKScene {
     var texture:SKTexture?
     var noiseType:NoiseType = .Perlin
+    var noiseColors:[NSNumber:NSColor]?
     
     override func didMove(to view: SKView) {
         
@@ -232,7 +254,12 @@ class GameScene: SKScene {
         
         
         
+        
         let noise = GKNoise.init(source)
+        var oldColors = noise.gradientColors
+        if let nColors = noiseColors {
+            noise.gradientColors = nColors
+        }
         let map = GKNoiseMap.init(noise, size: vector2(1.0, 1.0), origin: vector2(0, 0), sampleCount: vector2(50, 50), seamless: true)
         self.makeSpriteTexture(noiseMap: map)
        

@@ -7,6 +7,7 @@
 
 import Foundation
 import Cocoa
+import SwiftUI
 
 class SpriteKitNoiseController:ObservableObject {
     
@@ -20,13 +21,22 @@ class SpriteKitNoiseController:ObservableObject {
     @Published var persistance:Double = 0.5
     @Published var lacunarity:Double = 0.5
     
-    func updateScene() {
+    func updateScene(colors:[Float:Color]) {
         scene.noiseType = noiseType
         scene.frequency = frequency
         scene.octaves = octaves
         scene.persistance = persistance
         scene.lacunarity = lacunarity
         scene.makePerlin()
+        if !colors.isEmpty {
+            var cDict:[NSNumber:NSColor] = [:]
+            for (k, v) in colors {
+                let num = NSNumber(value: -1 + (2 * k))
+                let col = NSColor(v)
+                cDict[num] = col
+            }
+            scene.noiseColors = cDict
+        }
     }
     
     // This opens the Finder, but not to save...
