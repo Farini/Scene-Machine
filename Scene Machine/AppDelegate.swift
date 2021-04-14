@@ -12,20 +12,23 @@ import SwiftUI
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     var window: NSWindow!
-
+    var spriteNoiseWindow: NSWindow!
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // Create the SwiftUI view and set the context as the value for the managedObjectContext environment keyPath.
+        
         // Add `@Environment(\.managedObjectContext)` in the views that will need the context.
-        let contentView = Hacking().environment(\.managedObjectContext, persistentContainer.viewContext) // NoiseView().environment(\.managedObjectContext, persistentContainer.viewContext)
-
+//        let contentView = Hacking().environment(\.managedObjectContext, persistentContainer.viewContext)
+        let contentView = FrontView().environment(\.managedObjectContext, persistentContainer.viewContext)
+        
+        
         // Create the window and set the content view.
         window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
             styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
             backing: .buffered, defer: false)
         window.center()
-        window.setFrameAutosaveName("Main Window")
+        window.setFrameAutosaveName("Front Window")
+        // window.title = "Scene Machine"
         window.toolbarStyle = .unified
         window.contentView = NSHostingView(rootView: contentView)
         window.makeKeyAndOrderFront(nil)
@@ -174,7 +177,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         newWindow.setFrameAutosaveName("Drag and Drop Image Window")
         //        window.toolbarStyle = .unified
         window = newWindow
-        window.contentView = NSHostingView(rootView: SceneAView())
+        window.contentView = NSHostingView(rootView: SuzanneSceneView())
         window.makeKeyAndOrderFront(nil)
     }
     
@@ -203,6 +206,39 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window = newWindow
         window.contentView = NSHostingView(rootView: SpriteNoiseMaker())
         window.makeKeyAndOrderFront(nil)
+    }
+    
+    @IBAction func openFrontWindow(_ sender: NSMenuItem) {
+        let newWindow = NSWindow(
+            contentRect: NSRect(x: 0, y: 0, width: 1200, height: 800),
+            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+            backing: .buffered, defer: false)
+        newWindow.center()
+        newWindow.setFrameAutosaveName("FrontView")
+        //        window.toolbarStyle = .unified
+        window = newWindow
+        window.contentView = NSHostingView(rootView: FrontView())
+        window.makeKeyAndOrderFront(nil)
+    }
+    
+    
+    
+    @objc func openSpriteNoiseWindow() {
+        if nil == spriteNoiseWindow {
+            let spriteNoiseView = SpriteNoiseMaker()
+            // Create the preferences window and set content
+            spriteNoiseWindow = NSWindow(
+                contentRect: NSRect(x: 20, y: 20, width: 480, height: 300),
+                styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+                backing: .buffered,
+                defer: false)
+            spriteNoiseWindow.center()
+            spriteNoiseWindow.setFrameAutosaveName("SpriteNoiseWindow")
+            spriteNoiseWindow.title = "Scene Machine"
+            spriteNoiseWindow.isReleasedWhenClosed = false
+            spriteNoiseWindow.contentView = NSHostingView(rootView: spriteNoiseView)
+        }
+        spriteNoiseWindow.makeKeyAndOrderFront(nil)
     }
     
 }

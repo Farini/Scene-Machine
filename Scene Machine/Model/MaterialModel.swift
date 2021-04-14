@@ -1,0 +1,167 @@
+//
+//  MaterialModel.swift
+//  Scene Machine
+//
+//  Created by Carlos Farini on 4/13/21.
+//
+
+import Cocoa
+import Foundation
+import SwiftUI
+import SceneKit
+
+/// An object that stores `SCNMaterial` properties
+class SceneMaterial: Codable, Identifiable {
+    
+    var id:UUID = UUID()
+    
+    var lightModel:MaterialShading?
+    var diffuse:SubMaterialData?
+    
+    var metalness:SubMaterialData?
+    var roughness:SubMaterialData?
+    var normal:SubMaterialData?
+    var occlusion:SubMaterialData?
+    var emission:SubMaterialData?
+    
+    func make() -> SCNMaterial {
+        let material = SCNMaterial()
+        material.lightingModel = lightModel?.make() ?? .physicallyBased
+        
+        material.diffuse.contents =  diffuse?.makeAnyProperty()
+        material.metalness.contents = metalness?.makeAnyProperty() ?? 0.0
+        material.roughness.contents = roughness?.makeAnyProperty() ?? 0.4
+        material.normal.contents = roughness?.makeAnyProperty() ?? Color.white
+        material.ambientOcclusion.contents = occlusion?.makeAnyProperty() ?? Color.white
+        material.emission.contents = emission?.makeAnyProperty() ?? NSColor.black
+        material.selfIllumination.contents = NSColor.black
+        material.multiply.contents = 0.5
+        
+        return material
+    }
+    
+    /// Makes an example material with a color resembling that of a `Skin`
+    static func skinExample() -> SceneMaterial {
+        
+        let mat = SceneMaterial()
+        mat.lightModel = .PhysicallyBased
+        
+        let d2:SubMaterialData = SubMaterialData(spectrum: 1, specColor: ColorData(r: 0.9, g: 0.5, b: 0.5, a: 1))
+        let d3 = d2.specColor!
+        let d4 = d3.makeNSColor()
+        print("DDD | \(d4.debugDescription) | \(d3) | \(d2)")
+        
+        mat.diffuse = d2
+        
+        return mat
+    }
+    
+    /**
+        Materials
+     - Diffuse
+     - Metalness
+     - Roughness
+     - Normal
+     - Transparent
+     - Occlusion
+     - Illumination
+     - Emission
+     - Multiply
+     - Coat
+     - CoatNormal
+     - CoatRoughness
+     - Displacement
+     */
+}
+
+/// An object that stores `SCNMaterialProperty` variables
+struct SubMaterialData:Codable {
+    
+    /// For materials that need a number only
+    var spectrum:Double = 0
+    
+    /// A Color, for some material types
+    var specColor:ColorData?
+    
+    /// An Image associated with this material
+    var imageURL:URL?
+    
+    /// Any must be an `Image`, a` Color`, or a `Double`
+    func makeAnyProperty() -> Any {
+        
+        // Any must be an Image, a Color, or a Float
+        
+        if let url = imageURL, let data = try? Data(contentsOf: url) {
+            if let nsimage = NSImage(data: data) {
+                let image = Image(nsImage: nsimage)
+                return image
+            }
+        }
+        
+        if let colorData = specColor {
+            print("Submaterial Color(r): \(colorData.r)")
+            let suicol = colorData.getColor()
+            let nscol = colorData.makeNSColor()
+            print("SUI Color: \(suicol.description)")
+            print("NS Color: \(nscol.description)")
+            // let suiColor = colorData.makeNSColor()
+            return colorData.makeNSColor() // getColor() //makeNSColor()
+        } else {
+            return spectrum
+        }
+    }
+}
+
+/// An object that stores `Color`
+struct ColorData: Codable {
+    var r: Double
+    var g: Double
+    var b: Double
+    var a: Double
+    
+    init(suiColor:Color) {
+        print("DE: \(suiColor.cgColor.debugDescription)")
+        let nativeColor = NSColor(suiColor).usingColorSpace(.deviceRGB)!
+        var (r, g, b, a) = (CGFloat.zero, CGFloat.zero, CGFloat.zero, CGFloat.zero)
+        nativeColor.getRed(&r, green: &g, blue: &b, alpha: &a)
+        
+        self.r = Double(r)
+        self.g = Double(g)
+        self.b = Double(b)
+        self.a = Double(a)
+    }
+    
+    init(r:Double, g:Double, b:Double, a:Double) {
+        self.r = r
+        self.g = g
+        self.b = b
+        self.a = a
+    }
+    
+    func getColor() -> Color {
+        return Color(.sRGB, red: r, green: g, blue: b, opacity: a)
+    }
+    
+    func makeNSColor() -> NSColor {
+        return NSColor(calibratedRed: CGFloat(r), green: CGFloat(g), blue: CGFloat(b), alpha: CGFloat(a)).usingColorSpace(.sRGB)!
+    }
+}
+
+/// `LightingModel` Data used for Rendering
+enum MaterialShading:String, Codable, CaseIterable {
+    
+    case PhysicallyBased
+    case Lambert
+    case Blinn
+    case Phong
+    
+    func make() -> SCNMaterial.LightingModel {
+        switch self {
+            case .PhysicallyBased: return .physicallyBased
+            case .Lambert: return .lambert
+            case .Blinn: return .blinn
+            case .Phong: return .phong
+        }
+    }
+}
+

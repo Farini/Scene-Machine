@@ -12,6 +12,10 @@
 		8515B3322624E6EE00A886BD /* ImageBasics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B32F2624E6EE00A886BD /* ImageBasics.swift */; };
 		8515B33D26254C8300A886BD /* GradientMakerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B33C26254C8300A886BD /* GradientMakerView.swift */; };
 		8515B342262554A700A886BD /* GradientController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B341262554A700A886BD /* GradientController.swift */; };
+		8515B3472625EC6300A886BD /* FrontView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B3462625EC6300A886BD /* FrontView.swift */; };
+		8515B3532626305F00A886BD /* SuzanneSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B3522626305F00A886BD /* SuzanneSceneView.swift */; };
+		8515B35E26263C6100A886BD /* MaterialEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B35D26263C6100A886BD /* MaterialEditView.swift */; };
+		8515B36A26263FFE00A886BD /* MaterialModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B36926263FFE00A886BD /* MaterialModel.swift */; };
 		856491D02578100B00D1FE00 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856491CF2578100B00D1FE00 /* AppDelegate.swift */; };
 		856491D22578100B00D1FE00 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856491D12578100B00D1FE00 /* ContentView.swift */; };
 		856491D52578100B00D1FE00 /* Scene_Machine.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 856491D32578100B00D1FE00 /* Scene_Machine.xcdatamodeld */; };
@@ -58,6 +62,10 @@
 		8515B32F2624E6EE00A886BD /* ImageBasics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageBasics.swift; sourceTree = "<group>"; };
 		8515B33C26254C8300A886BD /* GradientMakerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientMakerView.swift; sourceTree = "<group>"; };
 		8515B341262554A700A886BD /* GradientController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientController.swift; sourceTree = "<group>"; };
+		8515B3462625EC6300A886BD /* FrontView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrontView.swift; sourceTree = "<group>"; };
+		8515B3522626305F00A886BD /* SuzanneSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuzanneSceneView.swift; sourceTree = "<group>"; };
+		8515B35D26263C6100A886BD /* MaterialEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialEditView.swift; sourceTree = "<group>"; };
+		8515B36926263FFE00A886BD /* MaterialModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialModel.swift; sourceTree = "<group>"; };
 		856491CC2578100B00D1FE00 /* Scene Machine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Scene Machine.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		856491CF2578100B00D1FE00 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		856491D12578100B00D1FE00 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -128,8 +136,26 @@
 			children = (
 				856491D32578100B00D1FE00 /* Scene_Machine.xcdatamodeld */,
 				8515B32F2624E6EE00A886BD /* ImageBasics.swift */,
+				8515B36926263FFE00A886BD /* MaterialModel.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		8515B34E26262EB200A886BD /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				85649233257976AB00D1FE00 /* SceneView.swift */,
+				8515B3522626305F00A886BD /* SuzanneSceneView.swift */,
+			);
+			path = Scenes;
+			sourceTree = "<group>";
+		};
+		8515B36526263C6A00A886BD /* Materials */ = {
+			isa = PBXGroup;
+			children = (
+				8515B35D26263C6100A886BD /* MaterialEditView.swift */,
+			);
+			path = Materials;
 			sourceTree = "<group>";
 		};
 		856491C32578100B00D1FE00 = {
@@ -206,12 +232,14 @@
 		856492202579546600D1FE00 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				856491D12578100B00D1FE00 /* ContentView.swift */,
+				8515B3462625EC6300A886BD /* FrontView.swift */,
+				8515B34E26262EB200A886BD /* Scenes */,
 				857A93CB26124F1F004FFEBB /* NoiseMaker */,
+				8515B36526263C6A00A886BD /* Materials */,
+				856491D12578100B00D1FE00 /* ContentView.swift */,
 				856492212579547900D1FE00 /* ImageCompositionView.swift */,
 				8564922925795F3C00D1FE00 /* DragDropView.swift */,
 				8564922E25796F9C00D1FE00 /* TestImageDragDrop.swift */,
-				85649233257976AB00D1FE00 /* SceneView.swift */,
 				8597BB7825BC8B2E00C705A0 /* Hacking.swift */,
 			);
 			path = Views;
@@ -377,9 +405,13 @@
 				8515B33D26254C8300A886BD /* GradientMakerView.swift in Sources */,
 				857A93D226124FE7004FFEBB /* NoiseController.swift in Sources */,
 				85649234257976AB00D1FE00 /* SceneView.swift in Sources */,
+				8515B36A26263FFE00A886BD /* MaterialModel.swift in Sources */,
+				8515B3472625EC6300A886BD /* FrontView.swift in Sources */,
 				857A93CD26124F3F004FFEBB /* NoiseMakerView.swift in Sources */,
+				8515B3532626305F00A886BD /* SuzanneSceneView.swift in Sources */,
 				8515B3302624E6EE00A886BD /* ImageBasics.swift in Sources */,
 				856491D22578100B00D1FE00 /* ContentView.swift in Sources */,
+				8515B35E26263C6100A886BD /* MaterialEditView.swift in Sources */,
 				8597BB8425BCAEF600C705A0 /* Metal.metal in Sources */,
 				8564922F25796F9C00D1FE00 /* TestImageDragDrop.swift in Sources */,
 				8564922A25795F3C00D1FE00 /* DragDropView.swift in Sources */,

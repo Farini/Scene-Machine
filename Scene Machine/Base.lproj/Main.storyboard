@@ -158,7 +158,7 @@
                                         <menuItem title="New Material" id="cgm-Mi-gwO">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                         </menuItem>
-                                        <menuItem title="Monkey Test" id="Cya-K0-Gz3">
+                                        <menuItem title="Suzanne" id="Cya-K0-Gz3">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="displayMonkeyTest:" target="Voe-Tx-rLC" id="szZ-9G-wIA"/>
@@ -699,6 +699,12 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="eu3-7i-yIM"/>
+                                        <menuItem title="Front Window" id="MF1-HG-Zzu">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="openFrontWindow:" target="Voe-Tx-rLC" id="MbT-GD-mgf"/>
+                                            </connections>
+                                        </menuItem>
                                         <menuItem title="Bring All to Front" id="LE2-aR-0XJ">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>

@@ -33,6 +33,7 @@ struct ScenekitView : NSViewRepresentable {
     let scene = SCNScene(named: "Scenes.scnassets/monkey.scn")!
 
     func makeNSView(context: Context) -> SCNView {
+        
         // create and add a camera to the scene
 //        let cameraNode = SCNNode()
 //        cameraNode.camera = SCNCamera()
