@@ -203,9 +203,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         newWindow.center()
         newWindow.setFrameAutosaveName("Drag and Drop Image Window")
         //        window.toolbarStyle = .unified
-        window = newWindow
-        window.contentView = NSHostingView(rootView: SpriteNoiseMaker())
-        window.makeKeyAndOrderFront(nil)
+//        window = newWindow
+        newWindow.contentView = NSHostingView(rootView: SpriteNoiseMaker())
+        newWindow.makeKeyAndOrderFront(nil)
     }
     
     @IBAction func openFrontWindow(_ sender: NSMenuItem) {

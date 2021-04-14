@@ -13,20 +13,32 @@ Properties
     - Image Size
     - Type, and noise properties
     - Colors Array
+    
+<iframe src="https://drive.google.com/file/d/1wEuXcVkOmv2KEQ-dtnwprrbh7oqcBdLU/preview" width="640" height="480"></iframe>
 
 ## Expected Features
 
-- [ ] Generate many different noise textures.
-- [ ] Have more sample geometries than the ones provided by SceneKit
-- [ ] Baking textures into UV maps
-- [ ] Enable the use of  `TrimSheets`
-- [ ] Save and export scene `.scn` files
-- [ ] Basic Materials library (Wood, bricks, asphalt, plastic, metals, dirt, etc.)
-- [ ] Automatically "beautify" `.dae` files made in blender - Adjust lighting, colors, etc.
-- [ ] Have some sample code + shaders written in `Metal` 
+### Image Composition + Noise
+
+- [X] SpriteKit noise generation
+- [X] CIFilter with Kernels
+- [X] Save CIImage
+- [X] Save SKNoise image
 - [ ] SpriteKit shaders
-- [ ] SpriteKit noise generation
-- [ ] SpriteKit tiles
+
+### Scene Materials
+- [X] Material Model for Persistency
+- [ ] Enable the use of  `TrimSheets`
+- [ ] Basic Materials library (Wood, bricks, asphalt, plastic, metals, dirt, etc.)
+- [ ] Save Materials
+- [ ] Material Editor
+
+### SceneKit
+
+- [ ] Have more sample geometries than the ones provided by SceneKit
+- [ ] Save and export scene `.scn` files >> https://developer.apple.com/documentation/scenekit/scnscene/1523577-write
+- [ ] Automatically "beautify" `.dae` files made in blender - Adjust lighting, colors, etc.
+- [ ] Have some sample code + shaders written in `Metal`  - `SCNProgram`
 - [ ] Test animated characters - Bones(in blender) vs SCNSkinner(Swift)
 
 ## To-Do list
@@ -35,14 +47,24 @@ Properties
 - [X] Save Images generated
 - [X] Basic Textures
 - [X] Texture - filters and save
+- [X] Materials persistency in data `SceneMaterial` object
+- [X] Better interface - Noise, Scene, Material
+- [X] Main menu routing to main interfaces
+- [X] SpriteKit noise textures (all)
 
-- [ ] Better interface (Options: Generate textures, Test scenes, Animate scenes, Baking materials)
+- [ ] Save Materials Property `SceneMaterial`
+- [ ] Fix bug with SpriteKit Noise
+- [ ] SCNProgram -> Shaders
+
 - [ ] AppDelegate, or SwiftUI? See `Fruta` app for latter.
 - [ ] Blender made textures
 - [ ] Save and export Scenes `.scn` for your project
-- [ ] Have a few predefined scenes - Monkey, Station Module, Person
-- [ ] Main menu routing to main interfaces
-- [ ] SpriteKit noise textures (all)
+- [ ] 2/4 Basic Scenes
+    - [X] Monkey
+    - [X] Terrain
+    - [ ] Woman
+    - [ ] StreetView
+
 
 ### Scene Ideas
 
