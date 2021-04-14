@@ -16,6 +16,7 @@
 		8515B3532626305F00A886BD /* SuzanneSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B3522626305F00A886BD /* SuzanneSceneView.swift */; };
 		8515B35E26263C6100A886BD /* MaterialEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B35D26263C6100A886BD /* MaterialEditView.swift */; };
 		8515B36A26263FFE00A886BD /* MaterialModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B36926263FFE00A886BD /* MaterialModel.swift */; };
+		8515B372262743D000A886BD /* TerrainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B371262743D000A886BD /* TerrainView.swift */; };
 		856491D02578100B00D1FE00 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856491CF2578100B00D1FE00 /* AppDelegate.swift */; };
 		856491D22578100B00D1FE00 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856491D12578100B00D1FE00 /* ContentView.swift */; };
 		856491D52578100B00D1FE00 /* Scene_Machine.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 856491D32578100B00D1FE00 /* Scene_Machine.xcdatamodeld */; };
@@ -66,6 +67,7 @@
 		8515B3522626305F00A886BD /* SuzanneSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuzanneSceneView.swift; sourceTree = "<group>"; };
 		8515B35D26263C6100A886BD /* MaterialEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialEditView.swift; sourceTree = "<group>"; };
 		8515B36926263FFE00A886BD /* MaterialModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialModel.swift; sourceTree = "<group>"; };
+		8515B371262743D000A886BD /* TerrainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerrainView.swift; sourceTree = "<group>"; };
 		856491CC2578100B00D1FE00 /* Scene Machine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Scene Machine.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		856491CF2578100B00D1FE00 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		856491D12578100B00D1FE00 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 			children = (
 				85649233257976AB00D1FE00 /* SceneView.swift */,
 				8515B3522626305F00A886BD /* SuzanneSceneView.swift */,
+				8515B371262743D000A886BD /* TerrainView.swift */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -409,6 +412,7 @@
 				8515B3472625EC6300A886BD /* FrontView.swift in Sources */,
 				857A93CD26124F3F004FFEBB /* NoiseMakerView.swift in Sources */,
 				8515B3532626305F00A886BD /* SuzanneSceneView.swift in Sources */,
+				8515B372262743D000A886BD /* TerrainView.swift in Sources */,
 				8515B3302624E6EE00A886BD /* ImageBasics.swift in Sources */,
 				856491D22578100B00D1FE00 /* ContentView.swift in Sources */,
 				8515B35E26263C6100A886BD /* MaterialEditView.swift in Sources */,

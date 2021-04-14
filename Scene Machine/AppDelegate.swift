@@ -241,5 +241,23 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         spriteNoiseWindow.makeKeyAndOrderFront(nil)
     }
     
+    @objc func openTerrainWindow() {
+        if nil == spriteNoiseWindow {
+            let terrainView = TerrainView()
+            // Create the preferences window and set content
+            spriteNoiseWindow = NSWindow(
+                contentRect: NSRect(x: 20, y: 20, width: 480, height: 300),
+                styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+                backing: .buffered,
+                defer: false)
+            spriteNoiseWindow.center()
+            spriteNoiseWindow.setFrameAutosaveName("SpriteNoiseWindow")
+            spriteNoiseWindow.title = "Terrain Machine"
+            spriteNoiseWindow.isReleasedWhenClosed = false
+            spriteNoiseWindow.contentView = NSHostingView(rootView: terrainView)
+        }
+        spriteNoiseWindow.makeKeyAndOrderFront(nil)
+    }
+    
 }
 

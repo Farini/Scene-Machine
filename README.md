@@ -16,8 +16,6 @@ Properties
     
 ![image](https://drive.google.com/uc?export=view&id=1wEuXcVkOmv2KEQ-dtnwprrbh7oqcBdLU)
 
-<a href="https://drive.google.com/uc?export=view&id=1wEuXcVkOmv2KEQ-dtnwprrbh7oqcBdLU"><img src="https://drive.google.com/uc?export=view&id=1wEuXcVkOmv2KEQ-dtnwprrbh7oqcBdLU" style="width: 650px; max-width: 100%; height: auto" title="Click to enlarge picture" />
-
 ## Expected Features
 
 ### Image Composition + Noise
@@ -27,6 +25,7 @@ Properties
 - [X] Save CIImage
 - [X] Save SKNoise image
 - [ ] SpriteKit shaders
+- [ ] Mix Images
 
 ### Scene Materials
 - [X] Material Model for Persistency

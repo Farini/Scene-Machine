@@ -93,6 +93,9 @@ struct OpenSceneView: View {
             Divider()
             Text("Suzanne")
             Text("Terrain")
+            Button("Terrain") {
+                NSApp.sendAction(#selector(AppDelegate.openTerrainWindow), to: nil, from: nil)
+            }
             Text("Woman")
             Text("DNA")
         }
