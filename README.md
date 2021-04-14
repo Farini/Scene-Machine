@@ -14,7 +14,7 @@ Properties
     - Type, and noise properties
     - Colors Array
     
-<iframe src="https://drive.google.com/file/d/1wEuXcVkOmv2KEQ-dtnwprrbh7oqcBdLU/preview" width="640" height="480"></iframe>
+![image](https://drive.google.comuc?export=view&id=1wEuXcVkOmv2KEQ-dtnwprrbh7oqcBdLU)
 
 ## Expected Features
 
