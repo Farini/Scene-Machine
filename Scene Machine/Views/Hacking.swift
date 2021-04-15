@@ -37,31 +37,41 @@ struct Hacking: View {
                 .popover(isPresented: $popover) {
                     VStack {
                         
+                        Group {
+                            Button("Blurr") {
+                                controller.blurrImage()
+                            }
+                            Button("Crystalize") {
+                                controller.crystallize()
+                            }
+                            Button("Pixellate") {
+                                controller.pixellate()
+                            }
+                            Button("Twirl") {
+                                controller.twirlDistortion()
+                            }
+                        }
                         
-                        Button("Blurr") {
-                            controller.blurrImage()
+                        Group {
+                            Button("Caustic Noise") {
+                                controller.causticNoise()
+                            }
+                            Button("Caustic Refraction") {
+                                controller.causticRefraction()
+                            }
+                            Button("Lens Flare") {
+                                controller.lensFlare()
+                            }
                         }
-                        Button("Crystalize") {
-                            controller.crystallize()
-                        }
-                        Button("Pixellate") {
-                            controller.pixellate()
-                        }
-                        Button("Twirl") {
-                            controller.twirlDistortion()
-                        }
-                        Button("Caustic Noise") {
-                            controller.causticNoise()
-                        }
-                        Button("Caustic Refraction") {
-                            controller.causticRefraction()
-                        }
-                        Button("Lens Flare") {
-                            controller.lensFlare()
-                        }
+                        
                         Button("Metal Color") {
                             controller.metalColor()
                         }
+                        Button("Mix last") {
+                            controller.mixImages()
+                        }
+                        .disabled(controller.secondImage == nil)
+                        
                         Divider()
                         Button("Save") {
                             self.saveImage()

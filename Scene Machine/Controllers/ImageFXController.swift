@@ -16,6 +16,7 @@ import SpriteKit
 class ImageFXController:ObservableObject {
     
     @Published var openingImage:NSImage
+    @Published var secondImage:NSImage?
     
     init(image:NSImage?) {
         // Init with an image or one will be created
@@ -53,6 +54,8 @@ class ImageFXController:ObservableObject {
     
     func crystallize() {
         
+        self.secondImage = openingImage
+        
         // guard let inputImage = NSImage(named: "Example") else { return }
         let inputImage = openingImage
         let inputData = inputImage.tiffRepresentation!
@@ -78,6 +81,8 @@ class ImageFXController:ObservableObject {
     
     func pixellate() {
         
+        self.secondImage = openingImage
+        
         let inputImage = openingImage
         let inputData = inputImage.tiffRepresentation!
         let bitmap = NSBitmapImageRep(data: inputData)!
@@ -94,6 +99,40 @@ class ImageFXController:ObservableObject {
         
         // attempt to get a CGImage from our CIImage
         if let cgimg = context.createCGImage(outputImage, from: outputImage.extent) {
+            // convert that to a UIImage
+            let nsImage = NSImage(cgImage: cgimg, size:inputImage.size)
+            self.openingImage = nsImage
+        }
+    }
+    
+    /// Mixes 2 images
+    func mixImages() {
+        
+        guard let secondImage = secondImage else {
+            print("no second image")
+            return
+        }
+        
+        let inputImage = openingImage
+        let inputData = inputImage.tiffRepresentation!
+        let bitmap = NSBitmapImageRep(data: inputData)!
+        let inputCIImage = CIImage(bitmapImageRep: bitmap)
+        
+        // Second
+        let inputData2 = secondImage.tiffRepresentation!
+        let bitmap2 = NSBitmapImageRep(data: inputData2)!
+        let inputCIImage2 = CIImage(bitmapImageRep: bitmap2)
+        
+        let context = CIContext()
+        
+        let currentFilter = CIFilter.screenBlendMode()
+        currentFilter.inputImage = inputCIImage
+        currentFilter.backgroundImage = inputCIImage2
+    
+        let finalImage = currentFilter.outputImage!
+        
+        if let cgimg = context.createCGImage(finalImage, from: finalImage.extent) {
+            print("Final image in")
             // convert that to a UIImage
             let nsImage = NSImage(cgImage: cgimg, size:inputImage.size)
             self.openingImage = nsImage
@@ -127,6 +166,8 @@ class ImageFXController:ObservableObject {
     
     func causticNoise() {
         
+        // Save previous aside
+        self.secondImage = openingImage
 //        let inputImage = openingImage
 //        let inputData = inputImage.tiffRepresentation!
 //        let bitmap = NSBitmapImageRep(data: inputData)!
@@ -258,8 +299,6 @@ class CausticNoise: CIFilter {
                             kCIAttributeType: kCIAttributeTypeScalar]
         ]
     }
-    
-    //    let k2 = CIColorKernel(functionName: <#T##String#>, fromMetalLibraryData: <#T##Data#>)
     
     let causticNoiseKernel = CIColorKernel(
         source: "kernel vec4 mainImage(float time, float tileSize) " +

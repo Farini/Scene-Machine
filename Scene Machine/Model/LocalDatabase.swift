@@ -15,8 +15,6 @@ class LocalDatabase {
     static let shared = LocalDatabase()
     
     // MARK: - Materials
-    static let materialsFile = "Materials.json"
-    
     /// Saves
     func saveMaterial(material:SceneMaterial) {
         
@@ -51,7 +49,7 @@ class LocalDatabase {
             print("Error writting data to local url: \(error)")
         }
     }
-    
+    static let materialsFile = "Materials.json"
     private static func loadMaterials() -> [SceneMaterial] {
         //        print("Loading Station")
         let finalUrl = LocalDatabase.folder.appendingPathComponent(materialsFile)
@@ -82,6 +80,15 @@ class LocalDatabase {
     
     /// Materials Loaded
     var materials:[SceneMaterial]
+    
+    
+    // FIXME: - Persist Image References, and other work progress?
+    // URL
+    // Data
+    // Undo History?
+    
+    
+    // MARK: - General
     
     static var folder:URL {
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else{

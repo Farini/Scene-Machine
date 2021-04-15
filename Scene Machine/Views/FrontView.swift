@@ -102,10 +102,20 @@ struct ImageFXMenuView: View {
                 .foregroundColor(.gray)
                 .frame(maxWidth:400)
             
-            Button("Open Image Editor") {
-                NSApp.sendAction(#selector(AppDelegate.openNoiseMaker), to: nil, from: nil)
+            Button("Composition") {
+//                NSApp.sendAction(#selector(AppDelegate.openNoiseMaker), to: nil, from: nil)
+                // openCompositionView
+                NSApp.sendAction(#selector(AppDelegate.openCompositionView), to: nil, from: nil)
             }
             .padding()
+            
+            Button("Other Generators") {
+                print("Not implemented yet")
+                // BarCode generator
+                // QR Generator
+                // Sky Generator?
+                // HDRI Images?
+            }
         }
         .toolbar(content: {
             Button("Tool") {
@@ -117,6 +127,8 @@ struct ImageFXMenuView: View {
 
 struct OpenFileView: View {
     
+    @State var materials = LocalDatabase.shared.materials
+    
     // Needs a Grid showing the pictures
     var body: some View {
         VStack {
@@ -125,10 +137,23 @@ struct OpenFileView: View {
             
             Text("Directory Picker")
             Divider()
-            Text("File: 1")
-            Text("File: 2")
-            Text("File: 3")
-            Text("File: 4")
+            Group {
+                Text("File: 1")
+                Text("File: 2")
+                Text("File: 3")
+                Text("File: 4")
+            }
+            
+            Divider()
+            
+            // Materials
+            Text("Materials").font(.title2).foregroundColor(.orange)
+                .padding()
+            Group {
+                ForEach(materials) { material in
+                    Text("Material \(material.id.uuidString)")
+                }
+            }
         }
     }
 }
@@ -145,12 +170,21 @@ struct OpenSceneView: View {
                 Button("Terrain") {
                     NSApp.sendAction(#selector(AppDelegate.openTerrainWindow), to: nil, from: nil)
                 }
+                Divider()
             }
             
-            Divider()
+            Group {
+                Text("Material Editor")
+                Button("Suzanne") {
+                    NSApp.sendAction(#selector(AppDelegate.displayMonkeyTest), to: nil, from: nil)
+                }
+                Divider()
+            }
+            
+            
             Text("Others").font(.title3).foregroundColor(.orange)
             Text("(Needs Implementation)").foregroundColor(.gray)
-            Text("Suzanne")
+            
             Text("Woman")
             Text("DNA")
         }
