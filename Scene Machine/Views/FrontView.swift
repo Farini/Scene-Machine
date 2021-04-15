@@ -11,11 +11,12 @@ struct FrontView: View {
     
     enum NavigationItem {
         case noise
+        case imageFX
         case open
         case scene
     }
     
-    @State private var selection:NavigationItem? = .scene
+    @State private var selection:NavigationItem? = .noise
     
     // To Open New Window:
     // https://stackoverflow.com/questions/62779479/button-to-open-view-in-new-window-swiftui-5-3-for-mac-os-x
@@ -26,9 +27,14 @@ struct FrontView: View {
             List(selection:$selection) {
                 
                 NavigationLink(destination: NoiseMenuView(), tag: NavigationItem.noise, selection: $selection) {
-                    Label("New Noise", systemImage: "puzzlepiece")
+                    Label("Noise", systemImage: "puzzlepiece")
                 }
                 .tag(NavigationItem.noise)
+                
+                NavigationLink(destination: ImageFXMenuView(), tag: NavigationItem.imageFX, selection: $selection) {
+                    Label("Image FX", systemImage: "puzzlepiece")
+                }
+                .tag(NavigationItem.imageFX)
                 
                 NavigationLink(destination: OpenFileView(), tag: NavigationItem.open, selection: $selection) {
                     Label("Open", systemImage: "folder")
@@ -49,17 +55,57 @@ struct FrontView: View {
 struct NoiseMenuView: View {
     var body: some View {
         VStack {
-            Text("Noise").font(.title2).foregroundColor(.orange)
+            Text("Noise Generators").font(.title2).foregroundColor(.orange)
                 .padding()
             
-            Text("SpriteKit Noise")
-            Button("Create") {
-                NSApp.sendAction(#selector(AppDelegate.openSpriteNoiseWindow), to: nil, from: nil)
+            HStack(spacing:12) {
+                
+                // SpriteKit Noise
+                VStack {
+                    Image("SpriteKitIcon")
+                        .resizable()
+                        .frame(width: 64, height: 64, alignment: .center)
+                    Text("SpriteKit Noise")
+                }.onTapGesture {
+                    NSApp.sendAction(#selector(AppDelegate.openSpriteNoiseWindow), to: nil, from: nil)
+                }
+                
+                // CIFilter Noise
+                VStack {
+                    Image("Core_Image_icon")
+                        .resizable()
+                        .frame(width: 64, height: 64, alignment: .center)
+                    // Core_Image_icon
+                    Text("CIFilter Noise")
+                }
+                .onTapGesture {
+                    NSApp.sendAction(#selector(AppDelegate.openSpecialCIFilters), to: nil, from: nil)
+                }
             }
-            Text("Other Noise")
-            Text("Lens Flare")
-            Divider()
-            Text("Size: ??")
+        }
+        .toolbar(content: {
+            Button("Tool") {
+                print("Tool button clicked")
+            }
+        })
+    }
+}
+
+struct ImageFXMenuView: View {
+    
+    var body: some View {
+        VStack {
+            Text("Image Effects").font(.title2).foregroundColor(.orange)
+                .padding()
+            
+            Text("Image effects need an Input image to transform it into an Output image. Be prepared to have an image as source")
+                .foregroundColor(.gray)
+                .frame(maxWidth:400)
+            
+            Button("Open Image Editor") {
+                NSApp.sendAction(#selector(AppDelegate.openNoiseMaker), to: nil, from: nil)
+            }
+            .padding()
         }
         .toolbar(content: {
             Button("Tool") {
@@ -74,7 +120,9 @@ struct OpenFileView: View {
     // Needs a Grid showing the pictures
     var body: some View {
         VStack {
-            Text("Open File")
+            Text("Files").font(.title2).foregroundColor(.orange)
+                .padding()
+            
             Text("Directory Picker")
             Divider()
             Text("File: 1")
@@ -88,14 +136,21 @@ struct OpenFileView: View {
 struct OpenSceneView: View {
     var body: some View {
         VStack {
-            Text("Choose Scene")
+            Text("Scenekit Scenes").font(.title2).foregroundColor(.orange)
             Text("Scene Picker")
             Divider()
-            Text("Suzanne")
-            Text("Terrain")
-            Button("Terrain") {
-                NSApp.sendAction(#selector(AppDelegate.openTerrainWindow), to: nil, from: nil)
+            
+            Group {
+                Text("Terrain Editor")
+                Button("Terrain") {
+                    NSApp.sendAction(#selector(AppDelegate.openTerrainWindow), to: nil, from: nil)
+                }
             }
+            
+            Divider()
+            Text("Others").font(.title3).foregroundColor(.orange)
+            Text("(Needs Implementation)").foregroundColor(.gray)
+            Text("Suzanne")
             Text("Woman")
             Text("DNA")
         }

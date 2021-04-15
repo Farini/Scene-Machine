@@ -59,6 +59,9 @@ struct Hacking: View {
                         Button("Lens Flare") {
                             controller.lensFlare()
                         }
+                        Button("Metal Color") {
+                            controller.metalColor()
+                        }
                         Divider()
                         Button("Save") {
                             self.saveImage()

@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		8515B3302624E6EE00A886BD /* ImageBasics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B32F2624E6EE00A886BD /* ImageBasics.swift */; };
 		8515B3312624E6EE00A886BD /* ImageBasics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B32F2624E6EE00A886BD /* ImageBasics.swift */; };
-		8515B3322624E6EE00A886BD /* ImageBasics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B32F2624E6EE00A886BD /* ImageBasics.swift */; };
 		8515B33D26254C8300A886BD /* GradientMakerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B33C26254C8300A886BD /* GradientMakerView.swift */; };
 		8515B342262554A700A886BD /* GradientController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B341262554A700A886BD /* GradientController.swift */; };
 		8515B3472625EC6300A886BD /* FrontView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B3462625EC6300A886BD /* FrontView.swift */; };
@@ -17,13 +16,15 @@
 		8515B35E26263C6100A886BD /* MaterialEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B35D26263C6100A886BD /* MaterialEditView.swift */; };
 		8515B36A26263FFE00A886BD /* MaterialModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B36926263FFE00A886BD /* MaterialModel.swift */; };
 		8515B372262743D000A886BD /* TerrainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B371262743D000A886BD /* TerrainView.swift */; };
+		8515B37A2627F3CE00A886BD /* SceneProgramView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B3792627F3CE00A886BD /* SceneProgramView.swift */; };
+		8515B38226287DAD00A886BD /* Kernel1.metal in Sources */ = {isa = PBXBuildFile; fileRef = 8515B38126287DAD00A886BD /* Kernel1.metal */; };
+		8515B3D52628A58B00A886BD /* LocalDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B3D42628A58B00A886BD /* LocalDatabase.swift */; };
 		856491D02578100B00D1FE00 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856491CF2578100B00D1FE00 /* AppDelegate.swift */; };
 		856491D22578100B00D1FE00 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856491D12578100B00D1FE00 /* ContentView.swift */; };
 		856491D52578100B00D1FE00 /* Scene_Machine.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 856491D32578100B00D1FE00 /* Scene_Machine.xcdatamodeld */; };
 		856491D72578100C00D1FE00 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 856491D62578100C00D1FE00 /* Assets.xcassets */; };
 		856491DD2578100C00D1FE00 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 856491DB2578100C00D1FE00 /* Main.storyboard */; };
 		856491E92578100D00D1FE00 /* Scene_MachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856491E82578100D00D1FE00 /* Scene_MachineTests.swift */; };
-		856491F42578100D00D1FE00 /* Scene_MachineUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856491F32578100D00D1FE00 /* Scene_MachineUITests.swift */; };
 		85649219257953A900D1FE00 /* ImageCompositionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85649218257953A900D1FE00 /* ImageCompositionController.swift */; };
 		856492222579547900D1FE00 /* ImageCompositionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856492212579547900D1FE00 /* ImageCompositionView.swift */; };
 		8564922A25795F3C00D1FE00 /* DragDropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8564922925795F3C00D1FE00 /* DragDropView.swift */; };
@@ -50,13 +51,6 @@
 			remoteGlobalIDString = 856491CB2578100B00D1FE00;
 			remoteInfo = "Scene Machine";
 		};
-		856491F02578100D00D1FE00 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 856491C42578100B00D1FE00 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 856491CB2578100B00D1FE00;
-			remoteInfo = "Scene Machine";
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +62,9 @@
 		8515B35D26263C6100A886BD /* MaterialEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialEditView.swift; sourceTree = "<group>"; };
 		8515B36926263FFE00A886BD /* MaterialModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialModel.swift; sourceTree = "<group>"; };
 		8515B371262743D000A886BD /* TerrainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerrainView.swift; sourceTree = "<group>"; };
+		8515B3792627F3CE00A886BD /* SceneProgramView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneProgramView.swift; sourceTree = "<group>"; };
+		8515B38126287DAD00A886BD /* Kernel1.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Kernel1.metal; sourceTree = "<group>"; };
+		8515B3D42628A58B00A886BD /* LocalDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDatabase.swift; sourceTree = "<group>"; };
 		856491CC2578100B00D1FE00 /* Scene Machine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Scene Machine.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		856491CF2578100B00D1FE00 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		856491D12578100B00D1FE00 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -79,9 +76,6 @@
 		856491E42578100D00D1FE00 /* Scene MachineTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Scene MachineTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		856491E82578100D00D1FE00 /* Scene_MachineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scene_MachineTests.swift; sourceTree = "<group>"; };
 		856491EA2578100D00D1FE00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		856491EF2578100D00D1FE00 /* Scene MachineUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Scene MachineUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		856491F32578100D00D1FE00 /* Scene_MachineUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scene_MachineUITests.swift; sourceTree = "<group>"; };
-		856491F52578100D00D1FE00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		856492042578AECF00D1FE00 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		85649218257953A900D1FE00 /* ImageCompositionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCompositionController.swift; sourceTree = "<group>"; };
 		856492212579547900D1FE00 /* ImageCompositionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCompositionView.swift; sourceTree = "<group>"; };
@@ -90,7 +84,6 @@
 		85649233257976AB00D1FE00 /* SceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneView.swift; sourceTree = "<group>"; };
 		85649238257976C700D1FE00 /* Scenes.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Scenes.scnassets; sourceTree = "<group>"; };
 		8564923D2579828100D1FE00 /* dissolve.fragment.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dissolve.fragment.txt; sourceTree = "<group>"; };
-		857A93BA2612105D004FFEBB /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = MyPlayground.playground; path = ../../../../../MyPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		857A93CC26124F3F004FFEBB /* NoiseMakerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseMakerView.swift; sourceTree = "<group>"; };
 		857A93D126124FE7004FFEBB /* NoiseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseController.swift; sourceTree = "<group>"; };
 		857A93E426126613004FFEBB /* SpriteNoiseMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteNoiseMaker.swift; sourceTree = "<group>"; };
@@ -115,13 +108,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		856491EC2578100D00D1FE00 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -129,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				8564923D2579828100D1FE00 /* dissolve.fragment.txt */,
+				8515B38126287DAD00A886BD /* Kernel1.metal */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -136,6 +123,7 @@
 		8515B32E2624E69800A886BD /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				8515B3D42628A58B00A886BD /* LocalDatabase.swift */,
 				856491D32578100B00D1FE00 /* Scene_Machine.xcdatamodeld */,
 				8515B32F2624E6EE00A886BD /* ImageBasics.swift */,
 				8515B36926263FFE00A886BD /* MaterialModel.swift */,
@@ -167,7 +155,6 @@
 				856492042578AECF00D1FE00 /* README.md */,
 				856491CE2578100B00D1FE00 /* Scene Machine */,
 				856491E72578100D00D1FE00 /* Scene MachineTests */,
-				856491F22578100D00D1FE00 /* Scene MachineUITests */,
 				856491CD2578100B00D1FE00 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -177,7 +164,6 @@
 			children = (
 				856491CC2578100B00D1FE00 /* Scene Machine.app */,
 				856491E42578100D00D1FE00 /* Scene MachineTests.xctest */,
-				856491EF2578100D00D1FE00 /* Scene MachineUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -211,15 +197,6 @@
 			path = "Scene MachineTests";
 			sourceTree = "<group>";
 		};
-		856491F22578100D00D1FE00 /* Scene MachineUITests */ = {
-			isa = PBXGroup;
-			children = (
-				856491F32578100D00D1FE00 /* Scene_MachineUITests.swift */,
-				856491F52578100D00D1FE00 /* Info.plist */,
-			);
-			path = "Scene MachineUITests";
-			sourceTree = "<group>";
-		};
 		856492172579538B00D1FE00 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -244,6 +221,7 @@
 				8564922925795F3C00D1FE00 /* DragDropView.swift */,
 				8564922E25796F9C00D1FE00 /* TestImageDragDrop.swift */,
 				8597BB7825BC8B2E00C705A0 /* Hacking.swift */,
+				8515B3792627F3CE00A886BD /* SceneProgramView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -251,7 +229,6 @@
 		857A93B926121043004FFEBB /* Playgrounds */ = {
 			isa = PBXGroup;
 			children = (
-				857A93BA2612105D004FFEBB /* MyPlayground.playground */,
 			);
 			path = Playgrounds;
 			sourceTree = "<group>";
@@ -311,24 +288,6 @@
 			productReference = 856491E42578100D00D1FE00 /* Scene MachineTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		856491EE2578100D00D1FE00 /* Scene MachineUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 856491FE2578100D00D1FE00 /* Build configuration list for PBXNativeTarget "Scene MachineUITests" */;
-			buildPhases = (
-				856491EB2578100D00D1FE00 /* Sources */,
-				856491EC2578100D00D1FE00 /* Frameworks */,
-				856491ED2578100D00D1FE00 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				856491F12578100D00D1FE00 /* PBXTargetDependency */,
-			);
-			name = "Scene MachineUITests";
-			productName = "Scene MachineUITests";
-			productReference = 856491EF2578100D00D1FE00 /* Scene MachineUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -342,10 +301,6 @@
 						CreatedOnToolsVersion = 12.2;
 					};
 					856491E32578100D00D1FE00 = {
-						CreatedOnToolsVersion = 12.2;
-						TestTargetID = 856491CB2578100B00D1FE00;
-					};
-					856491EE2578100D00D1FE00 = {
 						CreatedOnToolsVersion = 12.2;
 						TestTargetID = 856491CB2578100B00D1FE00;
 					};
@@ -366,7 +321,6 @@
 			targets = (
 				856491CB2578100B00D1FE00 /* Scene Machine */,
 				856491E32578100D00D1FE00 /* Scene MachineTests */,
-				856491EE2578100D00D1FE00 /* Scene MachineUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -390,13 +344,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		856491ED2578100D00D1FE00 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -412,10 +359,13 @@
 				8515B3472625EC6300A886BD /* FrontView.swift in Sources */,
 				857A93CD26124F3F004FFEBB /* NoiseMakerView.swift in Sources */,
 				8515B3532626305F00A886BD /* SuzanneSceneView.swift in Sources */,
+				8515B3D52628A58B00A886BD /* LocalDatabase.swift in Sources */,
 				8515B372262743D000A886BD /* TerrainView.swift in Sources */,
 				8515B3302624E6EE00A886BD /* ImageBasics.swift in Sources */,
+				8515B37A2627F3CE00A886BD /* SceneProgramView.swift in Sources */,
 				856491D22578100B00D1FE00 /* ContentView.swift in Sources */,
 				8515B35E26263C6100A886BD /* MaterialEditView.swift in Sources */,
+				8515B38226287DAD00A886BD /* Kernel1.metal in Sources */,
 				8597BB8425BCAEF600C705A0 /* Metal.metal in Sources */,
 				8564922F25796F9C00D1FE00 /* TestImageDragDrop.swift in Sources */,
 				8564922A25795F3C00D1FE00 /* DragDropView.swift in Sources */,
@@ -441,15 +391,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		856491EB2578100D00D1FE00 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8515B3322624E6EE00A886BD /* ImageBasics.swift in Sources */,
-				856491F42578100D00D1FE00 /* Scene_MachineUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -457,11 +398,6 @@
 			isa = PBXTargetDependency;
 			target = 856491CB2578100B00D1FE00 /* Scene Machine */;
 			targetProxy = 856491E52578100D00D1FE00 /* PBXContainerItemProxy */;
-		};
-		856491F12578100D00D1FE00 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 856491CB2578100B00D1FE00 /* Scene Machine */;
-			targetProxy = 856491F02578100D00D1FE00 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -529,6 +465,8 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MTLLINKER_FLAGS = "-cikernel";
+				MTL_COMPILER_FLAGS = "-fcikernel";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -584,6 +522,8 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MTLLINKER_FLAGS = "-cikernel";
+				MTL_COMPILER_FLAGS = "-fcikernel";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -609,7 +549,6 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MTLLINKER_FLAGS = "";
 				MTL_COMPILER_FLAGS = "-fcikernel";
 				PRODUCT_BUNDLE_IDENTIFIER = "cfarini.Scene-Machine";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -634,7 +573,6 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MTLLINKER_FLAGS = "";
 				MTL_COMPILER_FLAGS = "-fcikernel";
 				PRODUCT_BUNDLE_IDENTIFIER = "cfarini.Scene-Machine";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -684,44 +622,6 @@
 			};
 			name = Release;
 		};
-		856491FF2578100D00D1FE00 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = "Scene MachineUITests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "cfarini.Scene-MachineUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = "Scene Machine";
-			};
-			name = Debug;
-		};
-		856492002578100D00D1FE00 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = "Scene MachineUITests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "cfarini.Scene-MachineUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = "Scene Machine";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -748,15 +648,6 @@
 			buildConfigurations = (
 				856491FC2578100D00D1FE00 /* Debug */,
 				856491FD2578100D00D1FE00 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		856491FE2578100D00D1FE00 /* Build configuration list for PBXNativeTarget "Scene MachineUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				856491FF2578100D00D1FE00 /* Debug */,
-				856492002578100D00D1FE00 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

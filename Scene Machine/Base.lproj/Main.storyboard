@@ -148,6 +148,12 @@
                                                 <action selector="openSpriteKitNoise:" target="Voe-Tx-rLC" id="yUP-YG-ziH"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem title="Special Filters" id="aw7-0m-KuI">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="openSpecialCIFilters:" target="Voe-Tx-rLC" id="TML-Jm-Sip"/>
+                                            </connections>
+                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>
