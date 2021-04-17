@@ -25,7 +25,7 @@ struct ImageCompositionView: View {
                 }
                 Button("MixImages") {
                     print("Sepia")
-                    controller.mixImages()
+//                    controller.mixImages()
                 }
                 Button("Filter dic") {
                     controller.buildFilterDictionary()

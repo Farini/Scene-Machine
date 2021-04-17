@@ -230,6 +230,7 @@ class ImageFXController:ObservableObject {
     // MARK: - Metal Filters
     
     func metalColor() {
+        
         let context = CIContext()
         
         let currentFilter = MetalFilter()

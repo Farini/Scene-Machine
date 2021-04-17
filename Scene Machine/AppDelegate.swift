@@ -293,7 +293,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
             backing: .buffered, defer: false)
         newWindow.center()
-        newWindow.setFrameAutosaveName("FrontView")
+        newWindow.setFrameAutosaveName("CompositionView")
         //        window.toolbarStyle = .unified
 //        window = newWindow
         newWindow.contentView = NSHostingView(rootView: CompositionView())

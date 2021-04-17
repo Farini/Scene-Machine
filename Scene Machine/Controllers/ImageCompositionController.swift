@@ -34,9 +34,10 @@ enum CompositionType:String, CaseIterable {
     case CIColorBlendMode
     case CIColorBurnBlendMode
     case CIColorDodgeBlendMode
-//    case CIDarkenBlendMode
+    case CIDarkenBlendMode
+    
 //    case CIDifferenceBlendMode
-//    case CIDivideBlendMode
+    case CIDivideBlendMode
 //    case CIExclusionBlendMode
 //    case CIHardLightBlendMode
 //    case CIHueBlendMode
@@ -51,7 +52,8 @@ enum CompositionType:String, CaseIterable {
 //    case CIOverlayBlendMode
 //    case CIPinLightBlendMode
 //    case CISaturationBlendMode
-//    case CIScreenBlendMode
+    case CIScreenBlendMode
+    
 }
 
 
@@ -101,27 +103,27 @@ class ImageCompositionController:ObservableObject {
         return croppedImage
     }
     
-    func mixImages() {
-        
-        // Image Left
-        let texture = SKTexture.init(noiseWithSmoothness: 0.5, size: CGSize(width: 512, height: 512), grayscale: true)
-        let img = leftImage.cgImage(forProposedRect: nil, context: nil, hints: nil) ?? texture.cgImage()
-        let ciimg = CIImage(cgImage: img)
-        
-        // Image Right
-        let newTexture = SKTexture.init(noiseWithSmoothness: 0.85, size: CGSize(width: 512, height: 512), grayscale: true)
-        let newRightImage = NSImage(cgImage: newTexture.cgImage(), size: newTexture.size())
-        self.rightImage = newRightImage
-        
-        // Result
-        let newImage = ciimg.composited(over: CIImage(cgImage:newTexture.cgImage()))
-        
-        let rep = NSCIImageRep(ciImage: newImage)
-        let nsImage = NSImage(size: rep.size)
-        nsImage.addRepresentation(rep)
-        
-        self.resultImage = nsImage
-    }
+//    func mixImages() {
+//
+//        // Image Left
+//        let texture = SKTexture.init(noiseWithSmoothness: 0.5, size: CGSize(width: 512, height: 512), grayscale: true)
+//        let img = leftImage.cgImage(forProposedRect: nil, context: nil, hints: nil) ?? texture.cgImage()
+//        let ciimg = CIImage(cgImage: img)
+//
+//        // Image Right
+//        let newTexture = SKTexture.init(noiseWithSmoothness: 0.85, size: CGSize(width: 512, height: 512), grayscale: true)
+//        let newRightImage = NSImage(cgImage: newTexture.cgImage(), size: newTexture.size())
+//        self.rightImage = newRightImage
+//
+//        // Result
+//        let newImage = ciimg.composited(over: CIImage(cgImage:newTexture.cgImage()))
+//
+//        let rep = NSCIImageRep(ciImage: newImage)
+//        let nsImage = NSImage(size: rep.size)
+//        nsImage.addRepresentation(rep)
+//
+//        self.resultImage = nsImage
+//    }
     
     /// Mixes 2 images
     func compositeImages() {
@@ -143,24 +145,17 @@ class ImageCompositionController:ObservableObject {
         
         let context = CIContext()
         
-        var currentFilter = CIFilter.screenBlendMode() // CIFilter & Composite op
-        switch self.compositionType {
-            case .CIAdditionCompositing: currentFilter = CIFilter.additionCompositing()
-            case .CIColorBlendMode: currentFilter = CIFilter.colorBlendMode()
-            case .CIColorBurnBlendMode: currentFilter = CIFilter.colorBurnBlendMode()
-            case .CIColorDodgeBlendMode: currentFilter = CIFilter.colorDodgeBlendMode()
+        if let finalImage = self.apply(filter: self.compositionType, left: inputCIImage!, right: inputCIImage2!) {
+            if let cgimg = context.createCGImage(finalImage, from: finalImage.extent) {
+                print("Final image in")
+                // convert that to a UIImage
+                let nsImage = NSImage(cgImage: cgimg, size:inputImage.size)
+                self.resultImage = nsImage
+                return
+            }
         }
-        currentFilter.inputImage = inputCIImage
-        currentFilter.backgroundImage = inputCIImage2
-        
-        let finalImage = currentFilter.outputImage!
-        
-        if let cgimg = context.createCGImage(finalImage, from: finalImage.extent) {
-            print("Final image in")
-            // convert that to a UIImage
-            let nsImage = NSImage(cgImage: cgimg, size:inputImage.size)
-            self.resultImage = nsImage
-        }
+        print("⚠️ Error: No result Image")
+   
     }
     
     func changeRightImage(new image:NSImage) {
@@ -182,6 +177,49 @@ class ImageCompositionController:ObservableObject {
         let filters = CIFilter.filterNames(inCategory: "CICategoryCompositeOperation")
         for filterName in filters {
             print("Filter name: \(filterName)")
+        }
+    }
+}
+
+extension ImageCompositionController {
+    func apply(filter type:CompositionType, left:CIImage, right:CIImage) -> CIImage? {
+        switch type {
+            case .CIAdditionCompositing:
+                let filter = CIFilter.additionCompositing()
+                filter.backgroundImage = right
+                filter.inputImage = left
+                return filter.outputImage
+                
+            case .CIColorBlendMode:
+                let filter = CIFilter.colorBlendMode()
+                filter.backgroundImage = right
+                filter.inputImage = left
+                return filter.outputImage
+            case .CIColorBurnBlendMode:
+                let filter = CIFilter.colorBurnBlendMode()
+                filter.backgroundImage = right
+                filter.inputImage = left
+                return filter.outputImage
+            case .CIColorDodgeBlendMode:
+                let filter = CIFilter.colorDodgeBlendMode()
+                filter.backgroundImage = right
+                filter.inputImage = left
+                return filter.outputImage
+            case .CIDarkenBlendMode:
+                let filter = CIFilter.darkenBlendMode()
+                filter.backgroundImage = right
+                filter.inputImage = left
+                return filter.outputImage
+            case .CIDivideBlendMode:
+                let filter = CIFilter.divideBlendMode()
+                filter.backgroundImage = right
+                filter.inputImage = left
+                return filter.outputImage
+            case .CIScreenBlendMode:
+                let filter = CIFilter.screenBlendMode()
+                filter.backgroundImage = right
+                filter.inputImage = left
+                return filter.outputImage
         }
     }
 }

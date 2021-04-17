@@ -95,11 +95,15 @@ struct CompositionView: View {
                             .padding(8)
                         
                         Spacer()
-                        Picker(selection: $controller.compositionType, label: Text("Type"), content: {
-                            ForEach(CompositionType.allCases, id:\.self) { cType in
-                                Text("\(cType.rawValue)")
-                            }
-                        })
+                        VStack {
+                            Picker(selection: $controller.compositionType, label: Text("Type"), content: {
+                                ForEach(CompositionType.allCases, id:\.self) { cType in
+                                    Text("\(cType.rawValue)")
+                                }
+                            })
+                            Text("\(controller.compositionType.rawValue)")
+                        }
+                        
                         Spacer()
                         // Right
                         if let second = controller.rightImage {

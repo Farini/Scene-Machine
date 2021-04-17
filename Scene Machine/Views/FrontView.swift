@@ -109,6 +109,11 @@ struct ImageFXMenuView: View {
             }
             .padding()
             
+            Button("Filter FX") {
+                NSApp.sendAction(#selector(AppDelegate.openSpecialCIFilters), to: nil, from: nil)
+            }
+            .padding()
+            
             Button("Other Generators") {
                 print("Not implemented yet")
                 // BarCode generator
