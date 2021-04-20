@@ -21,7 +21,6 @@ struct FrontView: View {
     // To Open New Window:
     // https://stackoverflow.com/questions/62779479/button-to-open-view-in-new-window-swiftui-5-3-for-mac-os-x
     
-    
     var body: some View {
         NavigationView {
             List(selection:$selection) {
@@ -50,7 +49,24 @@ struct FrontView: View {
             Text("Select menu item")
         }
     }
+    
+    static func loadableImages() -> [NSImage] {
+        let directory:URL = LocalDatabase.folder
+        let fileManager = FileManager.default
+        var array:[NSImage] = []
+        if let fileItems = try? fileManager.contentsOfDirectory(atPath: directory.path) {
+            for file in fileItems {
+                let url = URL(fileURLWithPath: file)
+                if let image = NSImage(contentsOf: url) {
+                    array.append(image)
+                }
+            }
+        }
+        return array
+    }
 }
+
+// MARK: - Menu Views
 
 struct NoiseMenuView: View {
     var body: some View {
@@ -81,11 +97,19 @@ struct NoiseMenuView: View {
                 .onTapGesture {
                     NSApp.sendAction(#selector(AppDelegate.openSpecialCIFilters), to: nil, from: nil)
                 }
+                
+                VStack {
+                    Image("SpriteBot")
+                        .resizable()
+                        .frame(width: 64, height: 64, alignment: .center)
+                    Text("Quick Noise")
+                }
+                .onTapGesture {
+                    NSApp.sendAction(#selector(AppDelegate.openNoiseMaker), to: nil, from: nil)
+                }
             }
-            
         }
         .navigationTitle("Noise")
-        
     }
 }
 
@@ -93,32 +117,50 @@ struct ImageFXMenuView: View {
     
     var body: some View {
         VStack {
-            Text("Image Effects").font(.title2).foregroundColor(.orange)
-                .padding()
             
-            Text("Image effects need an Input image to transform it into an Output image. Be prepared to have an image as source")
-                .foregroundColor(.gray)
-                .frame(maxWidth:400)
+            Group {
+                Text("Image Effects").font(.title2).foregroundColor(.orange).padding()
+                
+                Text("Image effects need an Input image to transform it into an Output image. Be prepared to have an image as source")
+                    .foregroundColor(.gray)
+                    .frame(maxWidth:400)
+                
+                Divider()
+            }
             
-            Button("Composition") {
-//                NSApp.sendAction(#selector(AppDelegate.openNoiseMaker), to: nil, from: nil)
-                // openCompositionView
-                NSApp.sendAction(#selector(AppDelegate.openCompositionView), to: nil, from: nil)
+            HStack {
+                Text("Compose Images. The CompositionView uses 2 images, and merge them using one of the chosen operations").foregroundColor(.gray)
+                Spacer()
+                Button("Composition") {
+                    //
+                    // openCompositionView
+                    NSApp.sendAction(#selector(AppDelegate.openCompositionView), to: nil, from: nil)
+                }
             }
             .padding()
             
-            Button("Filter FX") {
-                NSApp.sendAction(#selector(AppDelegate.openSpecialCIFilters), to: nil, from: nil)
+            HStack {
+                Text("Apply Image FX. The Image FX View has filters that can be applied to an image").foregroundColor(.gray)
+                Spacer()
+                Button("Image FX") {
+                    NSApp.sendAction(#selector(AppDelegate.openImageFXView), to: nil, from: nil)
+                }
             }
             .padding()
             
-            Button("Other Generators") {
-                print("Not implemented yet")
-                // BarCode generator
-                // QR Generator
-                // Sky Generator?
-                // HDRI Images?
+            HStack {
+                Text("Other CI Filters are kept here.").foregroundColor(.gray)
+                Spacer()
+                Button("Filter FX") {
+                    NSApp.sendAction(#selector(AppDelegate.openSpecialCIFilters), to: nil, from: nil)
+                }
             }
+            .padding()
+            
+            // BarCode generator
+            // QR Generator
+            // Sky Generator?
+            // HDRI Images?
         }
         .toolbar(content: {
             Button("Tool") {
@@ -131,30 +173,58 @@ struct ImageFXMenuView: View {
 struct OpenFileView: View {
     
     @State var materials = LocalDatabase.shared.materials
+    @State var urls = LocalDatabase.shared.savedURLS
+    
+    var dirImages:[NSImage] = FrontView.loadableImages()
     
     // Needs a Grid showing the pictures
     var body: some View {
-        VStack {
-            Text("Files").font(.title2).foregroundColor(.orange)
-                .padding()
-            
-            Text("Directory Picker")
-            Divider()
-            Group {
-                Text("File: 1")
-                Text("File: 2")
-                Text("File: 3")
-                Text("File: 4")
-            }
-            
-            Divider()
-            
-            // Materials
-            Text("Materials").font(.title2).foregroundColor(.orange)
-                .padding()
-            Group {
-                ForEach(materials) { material in
-                    Text("Material \(material.id.uuidString)")
+        ScrollView {
+            VStack {
+                Group {
+                    Text("Files").font(.title2).foregroundColor(.orange)
+                        .padding(6)
+                    Text("You may also go to File >> Open Finder to see what is there").foregroundColor(.gray)
+                    Divider()
+                }
+                .padding(6)
+                
+                Text("App Directory").font(.title2).foregroundColor(.orange)
+                LazyVGrid(columns: [GridItem(.fixed(200)), GridItem(.fixed(200))], alignment: .center, spacing: 8, pinnedViews: [], content: {
+                    
+                    ForEach(0..<dirImages.count) { idx in
+                        Image(nsImage:dirImages[idx])
+                            .resizable()
+                            .frame(width:200, height:200, alignment:.center)
+                    }
+                })
+                
+                
+                Divider()
+                Group {
+                    Text("Saved URLs").font(.title2).foregroundColor(.orange)
+                        .padding()
+                    Text("File: 1...")
+                    LazyVGrid(columns: [GridItem(.fixed(200)), GridItem(.fixed(200))], alignment: .center, spacing: 8, pinnedViews: [], content: {
+                        
+                        ForEach(0..<urls.count) { idx in
+                            Text(urls[idx].lastPathComponent)
+                                .onTapGesture {
+                                    NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: urls[idx].absoluteString)
+                                }
+                        }
+                    })
+                }
+                
+                Divider()
+                
+                // Materials
+                Text("Materials").font(.title2).foregroundColor(.orange)
+                    .padding()
+                Group {
+                    ForEach(materials) { material in
+                        Text("Material \(material.id.uuidString)")
+                    }
                 }
             }
         }

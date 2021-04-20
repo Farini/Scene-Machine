@@ -26,6 +26,7 @@ Properties
 - [X] Save SKNoise image
 - [ ] SpriteKit shaders
 - [ ] Mix Images
+- [ ] Test new Metal shader: makeBlackTransparent >> With that ugly SpriteKit image (black background)
 
 ### Scene Materials
 - [X] Material Model for Persistency

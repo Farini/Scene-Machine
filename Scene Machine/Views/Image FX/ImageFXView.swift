@@ -10,113 +10,130 @@ import SwiftUI
 enum FXState {
     case empty
     case Blurr
+    case Color
 }
 
 struct ImageFXView: View {
     
     @ObservedObject var controller:ImageFXController = ImageFXController(image: nil)
     
-    @State private var imageName:String = "Untitled"
     @State private var popover:Bool = false
     @State private var state:FXState = .empty
     
     @State var sliderValue:Double = 0
     
     var body: some View {
-
-        VStack {
-            
-            HStack {
-                
-                
-                TextField("Image name", text: $imageName)
-                    .frame(width: 100)
-                Button("Save") {
-                    self.saveImage()
-                }
-                
-                Spacer()
-                
+        NavigationView {
+            VStack {
                 switch state {
                     case .empty:
-                        Button("More") {
-                            popover.toggle()
-                        }
-                        .popover(isPresented: $popover) {
-                            VStack {
-                                
-                                Group {
-                                    Button("Blurr") {
-//                                        controller.blurrImage()
-                                        self.state = .Blurr
-                                    }
-                                    Button("Crystalize") {
-                                        controller.crystallize()
-                                    }
-                                    Button("Pixellate") {
-                                        controller.pixellate()
-                                    }
-                                    Button("Twirl") {
-                                        controller.twirlDistortion()
-                                    }
-                                }
-                                
-                                Group {
-                                    Button("Caustic Noise") {
-                                        controller.causticNoise()
-                                    }
-                                    Button("Caustic Refraction") {
-                                        controller.causticRefraction()
-                                    }
-                                    Button("Lens Flare") {
-                                        controller.lensFlare()
-                                    }
-                                }
-                                
-                                Button("Metal Color") {
-                                    controller.metalColor()
-                                }
-                                Button("Mix last") {
-                                    controller.mixImages()
-                                }
-                                .disabled(controller.secondImage == nil)
-                                
-                                Divider()
-                                Button("Save") {
-                                    self.saveImage()
-                                }
-                            }
-                            .padding()
-                        }
+                        Text("Left View")
                     case .Blurr:
-//                        VStack {
-                        Text("Blurr amount")
-                        InputSlider(sliderRange: 0...100, value: 10, finish: didSetSlier(value:))
-                        Text("Slider: \(self.sliderValue)")
-//                        }
+                        FXBlurrView(applied: { img in
+                                        apply(image: img) },
+                                    image: controller.openingImage,
+                                    isPreviewing: true)
                         
-                        
-                        Button("Apply") {
-                            controller.blurrImage(radius: sliderValue)
-                        }
+                    default:
+                        Text("Left View")
+                        Text("Needs implementation")
                 }
             }
             
-            Divider()
-            
-            ScrollView {
-                Image(nsImage: controller.openingImage)
-                    .resizable()
-                    .scaledToFit()
-                    .padding(20)
+            VStack {
+                
+                // Top Bar
+                HStack {
+                    
+                    Button("Save") {
+                        self.saveImage()
+                    }
+                    
+                    Button("Load") {
+                        // Load an image
+                        print("Load an image")
+                        controller.loadImage()
+                    }
+                    
+                    Divider().frame(height:32)
+                    
+                    Button("Blur") {
+//                        let v = CIVector(values: [2, 3, 4], count: 3)
+                        self.state = .Blurr
+                    }
+                    
+                    Spacer()
+                    
+                    Button("More") {
+                        popover.toggle()
+                    }
+                    .popover(isPresented: $popover) {
+                        VStack {
+                            
+                            Group {
+                                Button("Blurr") {
+                                    //                                        controller.blurrImage()
+                                    self.state = .Blurr
+                                }
+                                Button("Crystalize") {
+                                    controller.crystallize()
+                                }
+                                Button("Pixellate") {
+                                    controller.pixellate()
+                                }
+                                Button("Twirl") {
+                                    controller.twirlDistortion()
+                                }
+                            }
+                            
+                            Group {
+                                Button("Caustic Noise") {
+                                    controller.causticNoise()
+                                }
+                                Button("Caustic Refraction") {
+                                    controller.causticRefraction()
+                                }
+                                Button("Lens Flare") {
+                                    controller.lensFlare()
+                                }
+                            }
+                            
+                            Button("Metal Color") {
+                                controller.metalColor()
+                            }
+                            Button("Mix last") {
+                                controller.mixImages()
+                            }
+                            .disabled(controller.secondImage == nil)
+                            
+                            Divider()
+                            Button("Save") {
+                                self.saveImage()
+                            }
+                        }
+                        .padding()
+                    }
+                }
+                .padding(.horizontal, 8)
+                
+                Divider()
+                
+                // Current Image
+                ScrollView {
+                    Image(nsImage: controller.openingImage)
+                        .resizable()
+                        .scaledToFit()
+                        .padding(20)
+                }
             }
         }
-        
     }
     
-    func didSetSlier(value:Double) {
-        print("Did set slider: \(value)")
-        self.sliderValue = value
+
+    /// Used When Filter views wants to Apply image
+    func apply(image:NSImage) {
+        // Set the image in the controller
+        controller.openingImage = image
     }
     
     func saveImage() {
@@ -126,28 +143,9 @@ struct ImageFXView: View {
         // Swift 5
         // https://ourcodeworld.com/articles/read/1117/how-to-implement-a-file-and-directory-picker-in-macos-using-swift-5
         
-        // ----------
-        // Change the following using the above tutorials/sources
-        // ==========
-        
-        let fileUrl = folder.appendingPathComponent("\(imageName).png")
-        
-        let savingImage = controller.openingImage
-        let data = savingImage.tiffRepresentation
-        
-        if !FileManager.default.fileExists(atPath: fileUrl.path) {
-            FileManager.default.createFile(atPath: fileUrl.path, contents: data, attributes: nil)
-            print("File created")
-            return
-        }
+        controller.openSavePanel(for: controller.openingImage)
     }
     
-    private var folder:URL {
-        guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else{
-            fatalError("Default folder for ap not found")
-        }
-        return url
-    }
 }
 
 struct InputSlider: View {

@@ -27,6 +27,66 @@ class ImageFXController:ObservableObject {
         }
     }
     
+    // MARK: - Saving
+    
+    // This opens the Finder, but not to save...
+    func openSavePanel(for image:NSImage) {
+        
+        let data = image.tiffRepresentation
+        
+        let dialog = NSSavePanel() //NSOpenPanel();
+        
+        dialog.title                   = "Choose a directory";
+        dialog.showsResizeIndicator    = true;
+        dialog.showsHiddenFiles        = false;
+        
+        if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
+            let result = dialog.url // Pathname of the file
+            
+            if let result = result {
+                if result.isFileURL {
+                    print("Picked a file")
+                } else {
+                    // this doesn't happen
+                    print("Picked what?")
+                }
+                let path: String = result.path
+                print("Picked Path: \(path)")
+                
+                
+                do {
+                    try data?.write(to: URL(fileURLWithPath: path))
+                    print("File saved")
+                } catch {
+                    print("ERROR: \(error.localizedDescription)")
+                }
+            }
+        } else {
+            // User clicked on "Cancel"
+            return
+        }
+    }
+    
+    /// Loads another image
+    func loadImage() {
+        let dialog = NSOpenPanel()
+        dialog.title                   = "Choose an image";
+        dialog.showsResizeIndicator    = true;
+        dialog.showsHiddenFiles        = false;
+        dialog.canChooseFiles = true
+        dialog.canChooseDirectories = true
+        dialog.allowsMultipleSelection = false
+        dialog.isAccessoryViewDisclosed = true
+        
+        if dialog.runModal() == NSApplication.ModalResponse.OK {
+            if let imageURL = dialog.url, imageURL.isFileURL {
+                if let image = NSImage(contentsOf: imageURL) {
+                    self.openingImage = image
+                }
+            }
+        }
+    }
+    
     // MARK: - Efffects
     
     func blurrImage(radius:Double = 10) {

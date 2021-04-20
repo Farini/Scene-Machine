@@ -16,6 +16,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     // noiseMakerWindow
     // sceneViewWindow
+    // ImageFXView
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         
@@ -309,6 +310,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 //        window = newWindow
         newWindow.contentView = NSHostingView(rootView: CompositionView())
         newWindow.makeKeyAndOrderFront(nil)
+    }
+    
+    @objc func openImageFXView() {
+        let newWindow = NSWindow(
+            contentRect: NSRect(x: 0, y: 0, width: 1200, height: 800),
+            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+            backing: .buffered, defer: false)
+        newWindow.center()
+        newWindow.setFrameAutosaveName("ImageFX")
+        newWindow.contentView = NSHostingView(rootView: ImageFXView())
+        newWindow.makeKeyAndOrderFront(self)
     }
     
 }
