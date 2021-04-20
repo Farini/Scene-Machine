@@ -29,7 +29,7 @@ class ImageFXController:ObservableObject {
     
     // MARK: - Efffects
     
-    func blurrImage() {
+    func blurrImage(radius:Double = 10) {
         
         let inputImage = openingImage
         let inputData = inputImage.tiffRepresentation!
@@ -39,7 +39,7 @@ class ImageFXController:ObservableObject {
         let context = CIContext()
         let currentFilter = CIFilter.boxBlur()
         currentFilter.inputImage = inputCIImage
-        currentFilter.radius = 10
+        currentFilter.radius = Float(radius)
         
         // get a CIImage from our filter or exit if that fails
         guard let outputImage = currentFilter.outputImage else { return }
@@ -478,8 +478,8 @@ class CausticRefraction: CIFilter {
     )
 }
 
-class LensFlare: CIFilter
-{
+class LensFlare: CIFilter {
+    
     var inputOrigin = CIVector(x: 150, y: 150)
     var inputSize = CIVector(x: 640, y: 640)
     
@@ -774,8 +774,6 @@ class MetalFilter: CIFilter {
         return kernel.apply(extent: inputImage.extent, arguments: [inputImage])
     }
 }
-
-
 
 func + <T, U>(left: Dictionary<T, U>, right: Dictionary<T, U>) -> Dictionary<T, U>
 {

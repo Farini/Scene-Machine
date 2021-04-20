@@ -24,6 +24,7 @@ struct Hacking: View {
                 .resizable()
                 .scaledToFit()
                 .padding(8)
+            
             Divider()
             HStack {
                 TextField("Image name", text: $imageName)

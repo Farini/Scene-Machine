@@ -20,6 +20,9 @@
 		8515B38226287DAD00A886BD /* Kernel1.metal in Sources */ = {isa = PBXBuildFile; fileRef = 8515B38126287DAD00A886BD /* Kernel1.metal */; };
 		8515B3D52628A58B00A886BD /* LocalDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B3D42628A58B00A886BD /* LocalDatabase.swift */; };
 		8515B3DC2628B16600A886BD /* CompositionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B3DB2628B16600A886BD /* CompositionView.swift */; };
+		8515B46D262D3B3B00A886BD /* TopBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B46C262D3B3B00A886BD /* TopBar.swift */; };
+		8515B474262E124300A886BD /* ImageFXView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B473262E124300A886BD /* ImageFXView.swift */; };
+		8515B47C262E4B5F00A886BD /* FXBlurrView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B47B262E4B5F00A886BD /* FXBlurrView.swift */; };
 		856491D02578100B00D1FE00 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856491CF2578100B00D1FE00 /* AppDelegate.swift */; };
 		856491D22578100B00D1FE00 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856491D12578100B00D1FE00 /* ContentView.swift */; };
 		856491D52578100B00D1FE00 /* Scene_Machine.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 856491D32578100B00D1FE00 /* Scene_Machine.xcdatamodeld */; };
@@ -67,6 +70,9 @@
 		8515B38126287DAD00A886BD /* Kernel1.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Kernel1.metal; sourceTree = "<group>"; };
 		8515B3D42628A58B00A886BD /* LocalDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDatabase.swift; sourceTree = "<group>"; };
 		8515B3DB2628B16600A886BD /* CompositionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositionView.swift; sourceTree = "<group>"; };
+		8515B46C262D3B3B00A886BD /* TopBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBar.swift; sourceTree = "<group>"; };
+		8515B473262E124300A886BD /* ImageFXView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFXView.swift; sourceTree = "<group>"; };
+		8515B47B262E4B5F00A886BD /* FXBlurrView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FXBlurrView.swift; sourceTree = "<group>"; };
 		856491CC2578100B00D1FE00 /* Scene Machine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Scene Machine.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		856491CF2578100B00D1FE00 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		856491D12578100B00D1FE00 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -162,6 +168,15 @@
 			path = Composition;
 			sourceTree = "<group>";
 		};
+		8515B472262E121900A886BD /* Image FX */ = {
+			isa = PBXGroup;
+			children = (
+				8515B473262E124300A886BD /* ImageFXView.swift */,
+				8515B47B262E4B5F00A886BD /* FXBlurrView.swift */,
+			);
+			path = "Image FX";
+			sourceTree = "<group>";
+		};
 		856491C32578100B00D1FE00 = {
 			isa = PBXGroup;
 			children = (
@@ -186,9 +201,8 @@
 			children = (
 				856491DB2578100C00D1FE00 /* Main.storyboard */,
 				856491CF2578100B00D1FE00 /* AppDelegate.swift */,
-				857A93B926121043004FFEBB /* Playgrounds */,
-				856492202579546600D1FE00 /* Views */,
 				856492172579538B00D1FE00 /* Controllers */,
+				856492202579546600D1FE00 /* Views */,
 				8515B32E2624E69800A886BD /* Model */,
 				8515B32D2624E63E00A886BD /* Shaders */,
 				856491D62578100C00D1FE00 /* Assets.xcassets */,
@@ -227,21 +241,16 @@
 			children = (
 				8515B3462625EC6300A886BD /* FrontView.swift */,
 				8515B34E26262EB200A886BD /* Scenes */,
-				857A93CB26124F1F004FFEBB /* NoiseMaker */,
 				8515B36526263C6A00A886BD /* Materials */,
+				857A93CB26124F1F004FFEBB /* NoiseMaker */,
 				8515B3DA2628B12A00A886BD /* Composition */,
+				8515B472262E121900A886BD /* Image FX */,
 				856491D12578100B00D1FE00 /* ContentView.swift */,
 				8597BB7825BC8B2E00C705A0 /* Hacking.swift */,
 				8515B3792627F3CE00A886BD /* SceneProgramView.swift */,
+				8515B46C262D3B3B00A886BD /* TopBar.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		857A93B926121043004FFEBB /* Playgrounds */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Playgrounds;
 			sourceTree = "<group>";
 		};
 		857A93C726124CE7004FFEBB /* Preview Content */ = {
@@ -369,10 +378,12 @@
 				8515B36A26263FFE00A886BD /* MaterialModel.swift in Sources */,
 				8515B3472625EC6300A886BD /* FrontView.swift in Sources */,
 				857A93CD26124F3F004FFEBB /* NoiseMakerView.swift in Sources */,
+				8515B46D262D3B3B00A886BD /* TopBar.swift in Sources */,
 				8515B3532626305F00A886BD /* SuzanneSceneView.swift in Sources */,
 				8515B3D52628A58B00A886BD /* LocalDatabase.swift in Sources */,
 				8515B372262743D000A886BD /* TerrainView.swift in Sources */,
 				8515B3302624E6EE00A886BD /* ImageBasics.swift in Sources */,
+				8515B47C262E4B5F00A886BD /* FXBlurrView.swift in Sources */,
 				8515B37A2627F3CE00A886BD /* SceneProgramView.swift in Sources */,
 				856491D22578100B00D1FE00 /* ContentView.swift in Sources */,
 				8515B35E26263C6100A886BD /* MaterialEditView.swift in Sources */,
@@ -385,6 +396,7 @@
 				85954043261C3144001D9040 /* SpriteKitNoiseController.swift in Sources */,
 				857A93E526126613004FFEBB /* SpriteNoiseMaker.swift in Sources */,
 				8515B3DC2628B16600A886BD /* CompositionView.swift in Sources */,
+				8515B474262E124300A886BD /* ImageFXView.swift in Sources */,
 				8597BB7925BC8B2E00C705A0 /* Hacking.swift in Sources */,
 				8515B342262554A700A886BD /* GradientController.swift in Sources */,
 				856491D02578100B00D1FE00 /* AppDelegate.swift in Sources */,

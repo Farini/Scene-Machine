@@ -13,12 +13,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     var window: NSWindow!
     var spriteNoiseWindow: NSWindow!
-
+    
+    // noiseMakerWindow
+    // sceneViewWindow
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         
         // Add `@Environment(\.managedObjectContext)` in the views that will need the context.
-//        let contentView = Hacking().environment(\.managedObjectContext, persistentContainer.viewContext)
         let contentView = FrontView().environment(\.managedObjectContext, persistentContainer.viewContext)
+        
+        // Top Bar
+        let topBar = TopBar()
+        let accessoryHostingView = NSHostingView(rootView: topBar)
+        accessoryHostingView.frame.size = accessoryHostingView.fittingSize
+        let tbarAccessory = NSTitlebarAccessoryViewController()
+        tbarAccessory.view = accessoryHostingView
         
         
         // Create the window and set the content view.
@@ -28,7 +37,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             backing: .buffered, defer: false)
         window.center()
         window.setFrameAutosaveName("Front Window")
-        // window.title = "Scene Machine"
+        
+        // Top bar (again)
+        window.addTitlebarAccessoryViewController(tbarAccessory)
+        window.title = "Scene Machine"
         window.toolbarStyle = .unified
         window.contentView = NSHostingView(rootView: contentView)
         window.makeKeyAndOrderFront(nil)
@@ -233,7 +245,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.contentView = NSHostingView(rootView: Hacking())
         window.makeKeyAndOrderFront(nil)
     }
-    
     
     @objc func openSpriteNoiseWindow() {
         if nil == spriteNoiseWindow {

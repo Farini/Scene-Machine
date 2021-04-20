@@ -82,12 +82,10 @@ struct NoiseMenuView: View {
                     NSApp.sendAction(#selector(AppDelegate.openSpecialCIFilters), to: nil, from: nil)
                 }
             }
+            
         }
-        .toolbar(content: {
-            Button("Tool") {
-                print("Tool button clicked")
-            }
-        })
+        .navigationTitle("Noise")
+        
     }
 }
 
