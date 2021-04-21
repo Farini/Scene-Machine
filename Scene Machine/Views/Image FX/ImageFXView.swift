@@ -101,6 +101,9 @@ struct ImageFXView: View {
                             Button("Metal Color") {
                                 controller.metalColor()
                             }
+                            Button("Black2Alpha") {
+                                controller.metalBlackToTransparent()
+                            }
                             Button("Mix last") {
                                 controller.mixImages()
                             }

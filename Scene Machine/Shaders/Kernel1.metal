@@ -30,6 +30,14 @@ extern "C" { namespace coreimage {
         return float4(color.r, 0.0, color.b, 1.0);
     }
     
+    /** GREAT IDEA
+     Make a Shader that Takes a black pixel and transform into a transparent pixel
+     */
+    float4 makeBlackTransparent(sample_t sample, float threshold) {
+        float4 filtered = (sample.r < threshold && sample.g < threshold && sample.b < threshold) == true ? float4(0):float4(sample.r, sample.g, sample.b, sample.a);
+        return filtered;
+    }
+    
     // MARK: - Black & White
     
     float lumin601(float3 p)
@@ -314,13 +322,7 @@ extern "C" { namespace coreimage {
     }
     
     
-    /** GREAT IDEA
-        Make a Shader that Takes a black pixel and transform into a transparent pixel
-     */
-    float4 makeBlackTransparent (sample_t sample, float threshold) {
-        float4 filtered = (sample.r < threshold && sample.g < threshold && sample.b < threshold) == true ? float4(0):float4(sample.r, sample.g, sample.b, sample.a);
-        return filtered;
-    }
+   
 
 }}
 

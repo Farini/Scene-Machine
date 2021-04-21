@@ -313,6 +313,35 @@ class ImageFXController:ObservableObject {
             self.openingImage = nsImage
         }
     }
+    
+    func metalBlackToTransparent() {
+        
+        let inputImage:NSImage = openingImage
+        
+        guard let inputData = inputImage.tiffRepresentation,
+              let bitmap = NSBitmapImageRep(data: inputData),
+              let inputCIImage = CIImage(bitmapImageRep: bitmap) else {
+            
+            print("Missing something. Check references.")
+            fatalError()
+        }
+        
+        // Create the filter
+        let context = CIContext()
+        let shade = BLKTransparent()
+        shade.inputImage = inputCIImage
+        shade.threshold = 0.15
+        
+        // get a CIImage from our filter or exit if that fails
+        guard let outputImage = shade.outputImage() else { return }
+        
+        // attempt to get a CGImage from our CIImage
+        if let cgimg = context.createCGImage(outputImage, from: outputImage.extent) {
+            // convert that to a UIImage
+            let nsImage = NSImage(cgImage: cgimg, size:openingImage.size)
+            self.openingImage = nsImage
+        }
+    }
 }
 
 class CausticNoise: CIFilter {
@@ -820,7 +849,7 @@ class MetalFilter: CIFilter {
     override init() {
         let url = Bundle.main.url(forResource: "default", withExtension: "metallib")!
         guard let data = try? Data(contentsOf: url) else { fatalError() }
-        guard let kkk = try? CIColorKernel(functionName: "myColor", fromMetalLibraryData: data) else { fatalError() }
+        guard let kkk = try? CIColorKernel(functionName: "myColor", fromMetalLibraryData: data) else { fatalError() } // myColor
         self.kernel = kkk
         super.init()
     }
@@ -834,6 +863,37 @@ class MetalFilter: CIFilter {
         return kernel.apply(extent: inputImage.extent, arguments: [inputImage])
     }
 }
+
+/**
+ A CIFilter that uses a Metal function that converts a black pixel (or almost black) to a transparent pixel.
+ */
+class BLKTransparent: CIFilter {
+    
+    private var kernel: CIColorKernel
+    
+    var inputImage: CIImage?
+    var threshold: Float?
+    
+    override init() {
+        
+        let url = Bundle.main.url(forResource: "default", withExtension: "metallib")!
+        guard let data = try? Data(contentsOf: url) else { fatalError() }
+        guard let kkk = try? CIColorKernel(functionName: "makeBlackTransparent", fromMetalLibraryData: data) else { fatalError() } // makeBlackTransparent
+        self.kernel = kkk
+        
+        super.init()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func outputImage() -> CIImage? {
+        guard let inputImage = inputImage else {return nil}
+        return kernel.apply(extent: inputImage.extent, arguments: [inputImage, threshold ?? 0.15]) // 0.15 is threshold
+    }
+}
+
 
 func + <T, U>(left: Dictionary<T, U>, right: Dictionary<T, U>) -> Dictionary<T, U>
 {

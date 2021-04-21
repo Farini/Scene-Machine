@@ -17,6 +17,7 @@ struct Hacking: View {
     @State private var nsimage:NSImage?
     @State private var imageName:String = "Untitled"
     @State private var popover:Bool = false
+   
     
     var body: some View {
         VStack {
@@ -68,6 +69,7 @@ struct Hacking: View {
                         Button("Metal Color") {
                             controller.metalColor()
                         }
+                        
                         Button("Mix last") {
                             controller.mixImages()
                         }
@@ -122,3 +124,4 @@ struct Hacking_Previews: PreviewProvider {
         Hacking()
     }
 }
+
