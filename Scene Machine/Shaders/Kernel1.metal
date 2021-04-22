@@ -27,6 +27,7 @@ extern "C" { namespace coreimage {
     
     float4 colorTransform(sampler src) {
         float4 color = src.sample(src.coord());
+//        float2 uv = src.coord()
         return float4(color.r, 0.0, color.b, 1.0);
     }
     
@@ -35,7 +36,82 @@ extern "C" { namespace coreimage {
      */
     float4 makeBlackTransparent(sample_t sample, float threshold) {
         float4 filtered = (sample.r < threshold && sample.g < threshold && sample.b < threshold) == true ? float4(0):float4(sample.r, sample.g, sample.b, sample.a);
+//        float2 uv = sample.coord()
         return filtered;
+    }
+    
+    float4 caustic(sample_t sample, float time, float tileSize, destination dest) {
+        // "kernel vec4 mainImage(float time, float tileSize) " +
+        // "{ " +
+        float2 uv = dest.coord() / tileSize; // " +
+        
+        float2 p = fmod(uv * 6.28318530718, 6.28318530718) - 250.0; //" +
+        
+        float2 i = float2(p); // " +
+        float c = 1.0; // " +
+        float inten = .005; //" +
+        
+        for (int n = 0; n < 5; n++) {
+            float t = time * (1.0 - (3.5 / float(n+1))); // " +
+            i = p + float2(cos(t - i.x) + sin(t + i.y), sin(t - i.y) + cos(t + i.x)); // " +
+            c += 1.0/length(float2(p.x / (sin(i.x+t)/inten),p.y / (cos(i.y+t)/inten))); //" +
+        }//" +
+        
+        
+       
+        c /= 5.0; // " +
+        c = 1.17-pow(c, 1.4);//" +
+        float3 colour = float3(pow(abs(c), 8.0)); //" +
+        colour = clamp(colour, 0.0, 1.0); // " +
+        
+        return float4(colour, 1.0);// " +
+        
+    }
+    
+    float4 hexagons(sample_t sample, destination dest) {
+        
+        float2 iResolution = float2(1,1); //scn_frame.inverseResolution;
+//        float2 iResolution = float2(1,1);
+        
+        float2 uv = (dest.coord() - 0.5 * iResolution.xy/iResolution.y); // * iResolution.xy) / iResolution.y; //_surface.position.xy; //(_surface.diffuseTexcoord-0.5*iResolution.xy)/iResolution.y;
+        float3 col = float3(0);
+        
+        uv *= 2;
+        
+        float2 r = float2(1, 1.73);
+        float2 h = r * 0.5;
+        float2 a = (uv - r * floor(uv/r)) - h; //fract(uv)-0.5; // (uv - r * floor(uv / r)) - h; //fract(uv)-0.5; //fmod(uv, r)-h; //fract(uv)-0.5;
+        float2 b = ((uv - h) - r * floor((uv-h)/r)) - h; //fract(uv-0.5)-0.5; // ((uv-0.5) - r * floor((uv-0.5)/r)) - h; //fract(uv-0.5)-0.5; //fmod(uv-h, r)-h; // fract(uv-0.5)-0.5;
+        
+        // func
+        float2 gv;
+        if (length(a)<length(b)) {
+            gv = a;
+        } else {
+            gv = b;
+        }
+        // end func
+        
+        // func HexDist
+        uv = abs(gv);
+        float c = dot(uv, normalize(float2(1,1.73)));
+        c = max(c, uv.x);
+        // col += step(c, .2);
+        
+        float2 hid = uv-gv;
+        // float x = atan(gv.x / gv.y);
+        float y = 0.5 - c;
+        float4 hexCoords = float4(gv.x, y, hid.x, hid.y);
+        float blackThick = 0.01;
+        
+        // Draw
+        float d = smoothstep(0.02, blackThick, hexCoords.y); //hexCoords.y;
+        // float d = smoothstep(0.02, blackThick, hexCoords.y*sin(hexCoords.z*hexCoords.w+scn_frame.time));
+        
+        col.rg = hexCoords.xy;
+        col += d;
+        
+        return float4(col, 1);
     }
     
     // MARK: - Black & White

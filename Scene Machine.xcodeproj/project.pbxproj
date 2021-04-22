@@ -25,7 +25,6 @@
 		8515B47C262E4B5F00A886BD /* FXBlurrView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B47B262E4B5F00A886BD /* FXBlurrView.swift */; };
 		8515B480262E7DDA00A886BD /* FXColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B47F262E7DDA00A886BD /* FXColorView.swift */; };
 		856491D02578100B00D1FE00 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856491CF2578100B00D1FE00 /* AppDelegate.swift */; };
-		856491D22578100B00D1FE00 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856491D12578100B00D1FE00 /* ContentView.swift */; };
 		856491D52578100B00D1FE00 /* Scene_Machine.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 856491D32578100B00D1FE00 /* Scene_Machine.xcdatamodeld */; };
 		856491D72578100C00D1FE00 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 856491D62578100C00D1FE00 /* Assets.xcassets */; };
 		856491DD2578100C00D1FE00 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 856491DB2578100C00D1FE00 /* Main.storyboard */; };
@@ -41,11 +40,11 @@
 		857A93D226124FE7004FFEBB /* NoiseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857A93D126124FE7004FFEBB /* NoiseController.swift */; };
 		857A93E526126613004FFEBB /* SpriteNoiseMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857A93E426126613004FFEBB /* SpriteNoiseMaker.swift */; };
 		85954043261C3144001D9040 /* SpriteKitNoiseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85954042261C3144001D9040 /* SpriteKitNoiseController.swift */; };
-		8597BB7925BC8B2E00C705A0 /* Hacking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8597BB7825BC8B2E00C705A0 /* Hacking.swift */; };
 		8597BB7E25BCA8B200C705A0 /* ImageFXController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8597BB7D25BCA8B200C705A0 /* ImageFXController.swift */; };
 		8597BB7F25BCA8B200C705A0 /* ImageFXController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8597BB7D25BCA8B200C705A0 /* ImageFXController.swift */; };
 		8597BB8425BCAEF600C705A0 /* Metal.metal in Sources */ = {isa = PBXBuildFile; fileRef = 8597BB8325BCAEF600C705A0 /* Metal.metal */; };
 		8597BB8525BCAEF600C705A0 /* Metal.metal in Sources */ = {isa = PBXBuildFile; fileRef = 8597BB8325BCAEF600C705A0 /* Metal.metal */; };
+		85B913352631057E0065D6D2 /* SceneKit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B913342631057E0065D6D2 /* SceneKit+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,7 +76,6 @@
 		8515B47F262E7DDA00A886BD /* FXColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FXColorView.swift; sourceTree = "<group>"; };
 		856491CC2578100B00D1FE00 /* Scene Machine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Scene Machine.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		856491CF2578100B00D1FE00 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		856491D12578100B00D1FE00 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		856491D42578100B00D1FE00 /* Scene_Machine.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Scene_Machine.xcdatamodel; sourceTree = "<group>"; };
 		856491D62578100C00D1FE00 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		856491DC2578100C00D1FE00 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -98,9 +96,9 @@
 		857A93D126124FE7004FFEBB /* NoiseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseController.swift; sourceTree = "<group>"; };
 		857A93E426126613004FFEBB /* SpriteNoiseMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteNoiseMaker.swift; sourceTree = "<group>"; };
 		85954042261C3144001D9040 /* SpriteKitNoiseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteKitNoiseController.swift; sourceTree = "<group>"; };
-		8597BB7825BC8B2E00C705A0 /* Hacking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hacking.swift; sourceTree = "<group>"; };
 		8597BB7D25BCA8B200C705A0 /* ImageFXController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFXController.swift; sourceTree = "<group>"; };
 		8597BB8325BCAEF600C705A0 /* Metal.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Metal.metal; sourceTree = "<group>"; };
+		85B913342631057E0065D6D2 /* SceneKit+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SceneKit+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -208,6 +206,7 @@
 				856492202579546600D1FE00 /* Views */,
 				8515B32E2624E69800A886BD /* Model */,
 				8515B32D2624E63E00A886BD /* Shaders */,
+				85B91332263105460065D6D2 /* Utilities */,
 				856491D62578100C00D1FE00 /* Assets.xcassets */,
 				856491DE2578100C00D1FE00 /* Info.plist */,
 				856491DF2578100C00D1FE00 /* Scene_Machine.entitlements */,
@@ -248,8 +247,6 @@
 				857A93CB26124F1F004FFEBB /* NoiseMaker */,
 				8515B3DA2628B12A00A886BD /* Composition */,
 				8515B472262E121900A886BD /* Image FX */,
-				856491D12578100B00D1FE00 /* ContentView.swift */,
-				8597BB7825BC8B2E00C705A0 /* Hacking.swift */,
 				8515B3792627F3CE00A886BD /* SceneProgramView.swift */,
 				8515B46C262D3B3B00A886BD /* TopBar.swift */,
 			);
@@ -271,6 +268,22 @@
 				8515B33C26254C8300A886BD /* GradientMakerView.swift */,
 			);
 			path = NoiseMaker;
+			sourceTree = "<group>";
+		};
+		85B91332263105460065D6D2 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				85B913332631055E0065D6D2 /* Extensions */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		85B913332631055E0065D6D2 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				85B913342631057E0065D6D2 /* SceneKit+Extensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -379,6 +392,7 @@
 				857A93D226124FE7004FFEBB /* NoiseController.swift in Sources */,
 				85649234257976AB00D1FE00 /* SceneView.swift in Sources */,
 				8515B36A26263FFE00A886BD /* MaterialModel.swift in Sources */,
+				85B913352631057E0065D6D2 /* SceneKit+Extensions.swift in Sources */,
 				8515B3472625EC6300A886BD /* FrontView.swift in Sources */,
 				857A93CD26124F3F004FFEBB /* NoiseMakerView.swift in Sources */,
 				8515B46D262D3B3B00A886BD /* TopBar.swift in Sources */,
@@ -388,7 +402,6 @@
 				8515B3302624E6EE00A886BD /* ImageBasics.swift in Sources */,
 				8515B47C262E4B5F00A886BD /* FXBlurrView.swift in Sources */,
 				8515B37A2627F3CE00A886BD /* SceneProgramView.swift in Sources */,
-				856491D22578100B00D1FE00 /* ContentView.swift in Sources */,
 				8515B35E26263C6100A886BD /* MaterialEditView.swift in Sources */,
 				8515B38226287DAD00A886BD /* Kernel1.metal in Sources */,
 				8597BB8425BCAEF600C705A0 /* Metal.metal in Sources */,
@@ -400,7 +413,6 @@
 				857A93E526126613004FFEBB /* SpriteNoiseMaker.swift in Sources */,
 				8515B3DC2628B16600A886BD /* CompositionView.swift in Sources */,
 				8515B474262E124300A886BD /* ImageFXView.swift in Sources */,
-				8597BB7925BC8B2E00C705A0 /* Hacking.swift in Sources */,
 				8515B342262554A700A886BD /* GradientController.swift in Sources */,
 				8515B480262E7DDA00A886BD /* FXColorView.swift in Sources */,
 				856491D02578100B00D1FE00 /* AppDelegate.swift in Sources */,

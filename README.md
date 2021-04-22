@@ -24,7 +24,7 @@ Properties
 - [X] CIFilter with Kernels
 - [X] Save CIImage
 - [X] Save SKNoise image
-- [ ] SpriteKit shaders
+
 - [ ] Mix Images
 - [ ] Test new Metal shader: makeBlackTransparent >> With that ugly SpriteKit image (black background)
 
@@ -37,6 +37,7 @@ Properties
 
 ### SceneKit
 
+- [X] Show a Geometry's `UVMap`
 - [ ] Have more sample geometries than the ones provided by SceneKit
 - [ ] Save and export scene `.scn` files >> https://developer.apple.com/documentation/scenekit/scnscene/1523577-write
 - [ ] Automatically "beautify" `.dae` files made in blender - Adjust lighting, colors, etc.
@@ -56,11 +57,17 @@ Properties
 
 - [ ] Save Materials Property `SceneMaterial`
 - [ ] Fix bug with SpriteKit Noise
+
+- [ ] Export UVMap
+- [ ] Edit UVMap
+
 - [ ] SCNProgram -> Shaders
 
 - [ ] AppDelegate, or SwiftUI? See `Fruta` app for latter.
 - [ ] Blender made textures
 - [ ] Save and export Scenes `.scn` for your project
+- [ ] SpriteKit shaders
+
 - [ ] 2/4 Basic Scenes
     - [X] Monkey
     - [X] Terrain

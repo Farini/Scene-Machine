@@ -190,7 +190,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         newWindow.setFrameAutosaveName("Drag and Drop Image Window")
         //        window.toolbarStyle = .unified
         window = newWindow
-        window.contentView = NSHostingView(rootView: SuzanneSceneView())
+        window.contentView = NSHostingView(rootView: MaterialEditView()) //SuzanneSceneView())
         window.makeKeyAndOrderFront(nil)
     }
     
@@ -235,6 +235,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     @IBAction func openSpecialCIFilters(_ sender: NSMenuItem) {
+        /*
         let newWindow = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 1200, height: 800),
             styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
@@ -245,6 +246,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window = newWindow
         window.contentView = NSHostingView(rootView: Hacking())
         window.makeKeyAndOrderFront(nil)
+        */
+        print("Deprecated")
     }
     
     @objc func openSpriteNoiseWindow() {
