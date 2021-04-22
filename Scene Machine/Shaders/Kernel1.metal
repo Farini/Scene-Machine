@@ -41,31 +41,27 @@ extern "C" { namespace coreimage {
     }
     
     float4 caustic(sample_t sample, float time, float tileSize, destination dest) {
-        // "kernel vec4 mainImage(float time, float tileSize) " +
-        // "{ " +
-        float2 uv = dest.coord() / tileSize; // " +
         
-        float2 p = fmod(uv * 6.28318530718, 6.28318530718) - 250.0; //" +
+        float2 uv = dest.coord() / tileSize;
         
-        float2 i = float2(p); // " +
-        float c = 1.0; // " +
-        float inten = .005; //" +
+        float2 p = fmod(uv * 6.28318530718, 6.28318530718) - 250.0;
+        
+        float2 i = float2(p);
+        float c = 1.0;
+        float inten = .005;
         
         for (int n = 0; n < 5; n++) {
-            float t = time * (1.0 - (3.5 / float(n+1))); // " +
-            i = p + float2(cos(t - i.x) + sin(t + i.y), sin(t - i.y) + cos(t + i.x)); // " +
-            c += 1.0/length(float2(p.x / (sin(i.x+t)/inten),p.y / (cos(i.y+t)/inten))); //" +
-        }//" +
+            float t = time * (1.0 - (3.5 / float(n+1)));
+            i = p + float2(cos(t - i.x) + sin(t + i.y), sin(t - i.y) + cos(t + i.x));
+            c += 1.0/length(float2(p.x / (sin(i.x+t)/inten),p.y / (cos(i.y+t)/inten)));
+        }
+     
+        c /= 5.0;
+        c = 1.17-pow(c, 1.4);
+        float3 colour = float3(pow(abs(c), 8.0));
+        colour = clamp(colour, 0.0, 1.0);
         
-        
-       
-        c /= 5.0; // " +
-        c = 1.17-pow(c, 1.4);//" +
-        float3 colour = float3(pow(abs(c), 8.0)); //" +
-        colour = clamp(colour, 0.0, 1.0); // " +
-        
-        return float4(colour, 1.0);// " +
-        
+        return float4(colour, 1.0);
     }
     
     float4 hexagons(sample_t sample, destination dest) {

@@ -18,9 +18,11 @@ struct FXColorView: View {
     @State var colorType:ColorType = .Threshold
     
     // Image used to Preview effect
-    @State var image:NSImage? = NSImage(named:"Example")
+    @State var image:NSImage? = NSImage(named:"ModuleBake4")
     
     @State var isPreviewing:Bool = true
+    
+    @State var inputColor:Color = .white
     
     var body: some View {
         VStack {
@@ -41,22 +43,28 @@ struct FXColorView: View {
                             print("Value changed")
                         })
                     HStack {
-//                        Button("/10") {
-//                            print("divide magnitude")
-//                        }
                         Spacer()
                         Text("Threshold: \(value)")
                         Spacer()
-//                        Button("x10") {
-//                            print("multiply magnitude")
-//                            if sliderRange.lowerBound == 0 {
-//                                self.sliderRange = 1...10
-//                                self.value = 5
-//                            }
-//                        }
                     }
+                    
+                case .Monochrome:
+                    // Color, and Intensity
+                    ColorPicker("", selection:$inputColor)
+                    
+                    SliderInputView(value: 0.4, vRange: 0...1, title: "Intensity") { newValue in
+                        self.value = Float(newValue)
+                    }
+                    .padding(.bottom, 20)
+                    
                 case .AbsoluteDifference:
                     Image("Example")
+                    Slider(value: $value, in: sliderRange)
+                        .onChange(of: value, perform: { value in
+                            //                            finish(Double(value))
+                            print("Value changed")
+                        })
+                    
                 /*
                  A droppable image should be implemented here
                  */
@@ -203,6 +211,8 @@ struct FXColorView: View {
                 if let img = image {
                     Text("Preview")
                     Image(nsImage: img)
+                        .resizable()
+                        
                 } else {
                     Text("No preview Image").foregroundColor(.gray).padding(12)
                 }
@@ -239,6 +249,28 @@ struct FXColorView: View {
                         self.image = nsImage
                     }
                 }
+            case .Monochrome:
+                if let inputImage = image {
+                    let inputData = inputImage.tiffRepresentation!
+                    let bitmap = NSBitmapImageRep(data: inputData)!
+                    let inputCIImage = CIImage(bitmapImageRep: bitmap)
+                    
+                    let context = CIContext()
+                    let currentFilter = CIFilter.colorMonochrome()
+                    currentFilter.inputImage = inputCIImage
+                    currentFilter.color = CIColor(cgColor: inputColor.cgColor!)
+                    currentFilter.intensity = self.value
+                    
+                    // get a CIImage from our filter or exit if that fails
+                    guard let outputImage = currentFilter.outputImage else { return }
+                    
+                    // attempt to get a CGImage from our CIImage
+                    if let cgimg = context.createCGImage(outputImage, from: outputImage.extent) {
+                        // convert that to a UIImage
+                        let nsImage = NSImage(cgImage: cgimg, size:inputImage.size)
+                        self.image = nsImage
+                    }
+                }
                 
             default:
                 print("Needs Implementation")
@@ -260,6 +292,8 @@ struct FXColorView: View {
     
     enum ColorType:String, CaseIterable {
         case Threshold
+        
+        case Monochrome
         
         case AbsoluteDifference
         

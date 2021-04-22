@@ -11,9 +11,10 @@ import SwiftUI
 import SceneKit
 
 /// An object that stores `SCNMaterial` properties
-class SceneMaterial: Codable, Identifiable {
+class SceneMaterial: Codable, Identifiable, Equatable {
     
     var id:UUID = UUID()
+    var name:String?
     
     var lightModel:MaterialShading?
     var diffuse:SubMaterialData?
@@ -46,7 +47,7 @@ class SceneMaterial: Codable, Identifiable {
         let mat = SceneMaterial()
         mat.lightModel = .PhysicallyBased
         
-        let d2:SubMaterialData = SubMaterialData(spectrum: 1, specColor: ColorData(r: 0.9, g: 0.5, b: 0.5, a: 1))
+        let d2:SubMaterialData = SubMaterialData(spectrum: 1, sColor: ColorData(r: 0.9, g: 0.5, b: 0.5, a: 1))
         let d3 = d2.specColor!
         let d4 = d3.makeNSColor()
         print("DDD | \(d4.debugDescription) | \(d3) | \(d2)")
@@ -54,6 +55,62 @@ class SceneMaterial: Codable, Identifiable {
         mat.diffuse = d2
         
         return mat
+    }
+    
+    /// Initialize an empty one (to create)
+    init() {
+        
+    }
+    
+    static func == (lhs: SceneMaterial, rhs: SceneMaterial) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    func save() {
+        if let idx = LocalDatabase.shared.materials.firstIndex(where: { $0.id == id }) {
+            LocalDatabase.shared.materials[idx] = self
+            LocalDatabase.shared.saveMaterial(material: self)
+        }
+    }
+    
+    /// Initialize from a SceneKit Material
+    init(material:SCNMaterial) {
+        self.name = material.name
+        
+        self.lightModel = MaterialShading.fromMaterial(material: material)
+        
+        // Contents
+        if let diffuseContent = material.diffuse.contents {
+            self.diffuse = SubMaterialData()
+            self.diffuse?.storeAnyProperty(property: diffuseContent)
+            self.diffuse?.intensity = Double(material.diffuse.intensity)
+        }
+        
+        if let metalnessContent = material.metalness.contents {
+            self.metalness = SubMaterialData()
+            self.metalness?.storeAnyProperty(property: metalnessContent)
+            self.metalness?.intensity = Double(material.metalness.intensity)
+        }
+        if let roughContent = material.roughness.contents {
+            self.roughness = SubMaterialData()
+            self.roughness?.storeAnyProperty(property: roughContent)
+            self.roughness?.intensity = Double(material.roughness.intensity)
+        }
+        if let normalContent = material.normal.contents {
+            self.normal = SubMaterialData()
+            self.normal?.storeAnyProperty(property: normalContent)
+            self.normal?.intensity = Double(material.normal.intensity)
+        }
+        if let occlusionContents = material.ambientOcclusion.contents {
+            self.occlusion = SubMaterialData()
+            self.occlusion?.storeAnyProperty(property: occlusionContents)
+            self.occlusion?.intensity = Double(material.ambientOcclusion.intensity)
+        }
+        if let emissionContents = material.emission.contents {
+            self.emission = SubMaterialData()
+            self.emission?.storeAnyProperty(property: emissionContents)
+            self.emission?.intensity = Double(material.emission.intensity)
+        }
     }
     
     /**
@@ -75,7 +132,7 @@ class SceneMaterial: Codable, Identifiable {
 }
 
 /// An object that stores `SCNMaterialProperty` variables
-struct SubMaterialData:Codable {
+class SubMaterialData:Codable {
     
     /// For materials that need a number only
     var spectrum:Double = 0
@@ -85,6 +142,26 @@ struct SubMaterialData:Codable {
     
     /// An Image associated with this material
     var imageURL:URL?
+    
+    var intensity:Double = 1.0
+    
+    init() {
+        
+    }
+    
+    init(spectrum:Double, sColor:ColorData?) {
+        if let color = sColor {
+            self.specColor = color
+        } else {
+            self.spectrum = spectrum
+        }
+        self.spectrum = spectrum
+    }
+    
+    /// Sets the Intensity of the material
+    func changeIntensity(new:Double) {
+        self.intensity = new
+    }
     
     /// Any must be an `Image`, a` Color`, or a `Double`
     func makeAnyProperty() -> Any {
@@ -110,6 +187,17 @@ struct SubMaterialData:Codable {
             return spectrum
         }
     }
+    
+    func storeAnyProperty(property:Any) {
+        if let color = property as? NSColor {
+            let colorData = ColorData(nsColor: color)
+            self.specColor = colorData
+        } else if let dNumber = property as? Double {
+            self.spectrum = dNumber
+        } else if let url = property as? URL {
+            self.imageURL = url
+        }
+    }
 }
 
 /// An object that stores `Color`
@@ -124,6 +212,16 @@ struct ColorData: Codable {
         let nativeColor = NSColor(suiColor).usingColorSpace(.deviceRGB)!
         var (r, g, b, a) = (CGFloat.zero, CGFloat.zero, CGFloat.zero, CGFloat.zero)
         nativeColor.getRed(&r, green: &g, blue: &b, alpha: &a)
+        
+        self.r = Double(r)
+        self.g = Double(g)
+        self.b = Double(b)
+        self.a = Double(a)
+    }
+    
+    init(nsColor:NSColor) {
+        var (r, g, b, a) = (CGFloat.zero, CGFloat.zero, CGFloat.zero, CGFloat.zero)
+        nsColor.getRed(&r, green: &g, blue: &b, alpha: &a)
         
         self.r = Double(r)
         self.g = Double(g)
@@ -161,6 +259,16 @@ enum MaterialShading:String, Codable, CaseIterable {
             case .Lambert: return .lambert
             case .Blinn: return .blinn
             case .Phong: return .phong
+        }
+    }
+    
+    static func fromMaterial(material:SCNMaterial) -> MaterialShading {
+        switch material.lightingModel {
+            case .physicallyBased: return .PhysicallyBased
+            case .lambert: return .Lambert
+            case .blinn: return .Blinn
+            case .phong: return .Phong
+            default: return .PhysicallyBased
         }
     }
 }

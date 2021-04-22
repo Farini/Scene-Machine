@@ -43,8 +43,13 @@
 		8597BB7E25BCA8B200C705A0 /* ImageFXController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8597BB7D25BCA8B200C705A0 /* ImageFXController.swift */; };
 		8597BB7F25BCA8B200C705A0 /* ImageFXController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8597BB7D25BCA8B200C705A0 /* ImageFXController.swift */; };
 		8597BB8425BCAEF600C705A0 /* Metal.metal in Sources */ = {isa = PBXBuildFile; fileRef = 8597BB8325BCAEF600C705A0 /* Metal.metal */; };
-		8597BB8525BCAEF600C705A0 /* Metal.metal in Sources */ = {isa = PBXBuildFile; fileRef = 8597BB8325BCAEF600C705A0 /* Metal.metal */; };
 		85B913352631057E0065D6D2 /* SceneKit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B913342631057E0065D6D2 /* SceneKit+Extensions.swift */; };
+		85B913402631C00E0065D6D2 /* GraphicsImageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B9133F2631C00E0065D6D2 /* GraphicsImageRenderer.swift */; };
+		85B913412631C00E0065D6D2 /* GraphicsImageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B9133F2631C00E0065D6D2 /* GraphicsImageRenderer.swift */; };
+		85B913472631C0ED0065D6D2 /* UVMapShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B913462631C0ED0065D6D2 /* UVMapShape.swift */; };
+		85B913482631C0ED0065D6D2 /* UVMapShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B913462631C0ED0065D6D2 /* UVMapShape.swift */; };
+		85B9134C2631C13B0065D6D2 /* SwiftUI+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B9134B2631C13B0065D6D2 /* SwiftUI+Extensions.swift */; };
+		85B9134D2631C13B0065D6D2 /* SwiftUI+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B9134B2631C13B0065D6D2 /* SwiftUI+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -99,6 +104,9 @@
 		8597BB7D25BCA8B200C705A0 /* ImageFXController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFXController.swift; sourceTree = "<group>"; };
 		8597BB8325BCAEF600C705A0 /* Metal.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Metal.metal; sourceTree = "<group>"; };
 		85B913342631057E0065D6D2 /* SceneKit+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SceneKit+Extensions.swift"; sourceTree = "<group>"; };
+		85B9133F2631C00E0065D6D2 /* GraphicsImageRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicsImageRenderer.swift; sourceTree = "<group>"; };
+		85B913462631C0ED0065D6D2 /* UVMapShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UVMapShape.swift; sourceTree = "<group>"; };
+		85B9134B2631C13B0065D6D2 /* SwiftUI+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUI+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +132,7 @@
 			children = (
 				8564923D2579828100D1FE00 /* dissolve.fragment.txt */,
 				8515B38126287DAD00A886BD /* Kernel1.metal */,
+				8597BB8325BCAEF600C705A0 /* Metal.metal */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -153,6 +162,7 @@
 			isa = PBXGroup;
 			children = (
 				8515B35D26263C6100A886BD /* MaterialEditView.swift */,
+				85B913462631C0ED0065D6D2 /* UVMapShape.swift */,
 			);
 			path = Materials;
 			sourceTree = "<group>";
@@ -212,7 +222,6 @@
 				856491DF2578100C00D1FE00 /* Scene_Machine.entitlements */,
 				857A93C726124CE7004FFEBB /* Preview Content */,
 				85649238257976C700D1FE00 /* Scenes.scnassets */,
-				8597BB8325BCAEF600C705A0 /* Metal.metal */,
 			);
 			path = "Scene Machine";
 			sourceTree = "<group>";
@@ -273,6 +282,7 @@
 		85B91332263105460065D6D2 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				85B9133E2631BFDD0065D6D2 /* ImageRenderer */,
 				85B913332631055E0065D6D2 /* Extensions */,
 			);
 			path = Utilities;
@@ -282,8 +292,17 @@
 			isa = PBXGroup;
 			children = (
 				85B913342631057E0065D6D2 /* SceneKit+Extensions.swift */,
+				85B9134B2631C13B0065D6D2 /* SwiftUI+Extensions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		85B9133E2631BFDD0065D6D2 /* ImageRenderer */ = {
+			isa = PBXGroup;
+			children = (
+				85B9133F2631C00E0065D6D2 /* GraphicsImageRenderer.swift */,
+			);
+			path = ImageRenderer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -391,6 +410,8 @@
 				8515B33D26254C8300A886BD /* GradientMakerView.swift in Sources */,
 				857A93D226124FE7004FFEBB /* NoiseController.swift in Sources */,
 				85649234257976AB00D1FE00 /* SceneView.swift in Sources */,
+				85B913402631C00E0065D6D2 /* GraphicsImageRenderer.swift in Sources */,
+				85B913472631C0ED0065D6D2 /* UVMapShape.swift in Sources */,
 				8515B36A26263FFE00A886BD /* MaterialModel.swift in Sources */,
 				85B913352631057E0065D6D2 /* SceneKit+Extensions.swift in Sources */,
 				8515B3472625EC6300A886BD /* FrontView.swift in Sources */,
@@ -404,6 +425,7 @@
 				8515B37A2627F3CE00A886BD /* SceneProgramView.swift in Sources */,
 				8515B35E26263C6100A886BD /* MaterialEditView.swift in Sources */,
 				8515B38226287DAD00A886BD /* Kernel1.metal in Sources */,
+				85B9134C2631C13B0065D6D2 /* SwiftUI+Extensions.swift in Sources */,
 				8597BB8425BCAEF600C705A0 /* Metal.metal in Sources */,
 				8564922F25796F9C00D1FE00 /* TestImageDragDrop.swift in Sources */,
 				8564922A25795F3C00D1FE00 /* DragDropView.swift in Sources */,
@@ -425,8 +447,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				8515B3312624E6EE00A886BD /* ImageBasics.swift in Sources */,
+				85B9134D2631C13B0065D6D2 /* SwiftUI+Extensions.swift in Sources */,
+				85B913412631C00E0065D6D2 /* GraphicsImageRenderer.swift in Sources */,
+				85B913482631C0ED0065D6D2 /* UVMapShape.swift in Sources */,
 				856491E92578100D00D1FE00 /* Scene_MachineTests.swift in Sources */,
-				8597BB8525BCAEF600C705A0 /* Metal.metal in Sources */,
 				8597BB7F25BCA8B200C705A0 /* ImageFXController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

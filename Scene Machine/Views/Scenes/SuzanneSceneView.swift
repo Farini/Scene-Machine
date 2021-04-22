@@ -12,7 +12,7 @@ struct SuzanneSceneView: View {
     
     @State var selectedColor:Color = .red
     
-    var subColor:NSColor = SubMaterialData(spectrum: 1, specColor: ColorData(r: 1, g: 0.1, b: 0.1, a: 1)).specColor!.makeNSColor()
+    var subColor:NSColor = SubMaterialData(spectrum: 1, sColor: ColorData(r: 1, g: 0.1, b: 0.1, a: 1)).specColor!.makeNSColor()
     
     @State var scene = SCNScene(named: "Scenes.scnassets/monkey.scn")!
     @State private var roughness:Float = 0.6
@@ -73,7 +73,7 @@ struct SuzanneSceneView: View {
             // New
             let newMat = SceneMaterial()
             let diffColor = ColorData(suiColor: self.selectedColor) //buildObject(color: NSColor(self.selectedColor))
-            let diffData = SubMaterialData(spectrum: 0, specColor: diffColor)
+            let diffData = SubMaterialData(spectrum: 0, sColor: diffColor)
             newMat.diffuse = diffData
             
             //let skin = newMat.make() //SceneMaterial.skinExample()

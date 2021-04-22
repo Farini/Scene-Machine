@@ -34,6 +34,7 @@ Properties
 - [ ] Basic Materials library (Wood, bricks, asphalt, plastic, metals, dirt, etc.)
 - [ ] Save Materials
 - [ ] Material Editor
+- [ ] UVMap
 
 ### SceneKit
 
@@ -43,6 +44,7 @@ Properties
 - [ ] Automatically "beautify" `.dae` files made in blender - Adjust lighting, colors, etc.
 - [ ] Have some sample code + shaders written in `Metal`  - `SCNProgram`
 - [ ] Test animated characters - Bones(in blender) vs SCNSkinner(Swift)
+- [ ] Background `HDRI` Images
 
 ## To-Do list
 

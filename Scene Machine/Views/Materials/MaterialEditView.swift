@@ -212,32 +212,92 @@ struct MaterialEditView: View {
 struct MaterialView: View {
     
     var material:SCNMaterial
+    @State var active:Bool = false
+    
+    @State var diffuseURL:URL?
+    @State var diffuseColor:Color = .white
+    @State var diffuseImage:NSImage = NSImage()
+    
+    @State var metalnessURL:URL?
+    @State var metalnessColor:Color = .white
+    @State var metalnessImage:NSImage = NSImage()
+    
+    @State var roughnessURL:URL?
+    @State var roughnessColor:Color = .white
+    @State var roughnessImage:NSImage = NSImage()
+    
+    @State var emissionURL:URL?
+    @State var emissionColor:Color = .white
+    @State var emissionImage:NSImage = NSImage()
+    
+    @State var displacementURL:URL?
+    @State var displacementColor:Color = .white
+    @State var displacementImage:NSImage = NSImage()
     
     var body: some View {
         VStack {
-            Text("Material")
-            Text(material.name ?? "untitled")
+            
+            Group {
+                Text("Material")
+                Text(material.name ?? "untitled")
+            }
+            
+            
+            // Diffuse
             if let diff = material.diffuse.contents {
                 HStack {
-                    Text("Diffuse")
-                    Spacer()
-                    if let color = diff as? NSColor {
-                        ColorPicker("", selection:.constant(Color(color)))
+                    Group {
+                        Text("Diffuse")
+                        Spacer()
+                        Image(systemName: "rectangle.dashed.and.paperclip").font(.title2).foregroundColor(.gray)
+                            .onDrop(of: ["public.file-url"], isTargeted: $active) { providers -> Bool in
+                                providers.first?.loadDataRepresentation(forTypeIdentifier: "public.file-url", completionHandler: { (data, error) in
+                                    if let data = data, let uu = URL(dataRepresentation: data, relativeTo: nil) {
+                                        if let dropImage = NSImage(contentsOf: uu) {
+                                            self.material.diffuse.contents = dropImage
+                                            self.diffuseURL = uu
+                                        }
+                                    }
+                                })
+                                return true
+                            }
+                    }
+                    if let image = diff as? NSImage {
+                        Image(nsImage: image)
                     } else if let number = diff as? Float {
                         Text("\(number)")
                     }
+                    ColorPicker("", selection: $diffuseColor)
+                        .onChange(of: diffuseColor, perform: { value in
+                            self.material.diffuse.contents = NSColor(diffuseColor)
+                        })
                 }
             }
             
+            // Metalness
             if let metalness = material.metalness.contents {
                 HStack {
                     Text("Metalness:")
                     Spacer()
                     if let number = metalness as? CGFloat {
                         Text("\(number)")
-                    } else
-                    if let color = metalness as? NSColor {
-                        ColorPicker("", selection:.constant(Color(color)))
+                    } else {
+                        Image(systemName: "rectangle.dashed.and.paperclip").font(.title2).foregroundColor(.gray)
+                            .onDrop(of: ["public.file-url"], isTargeted: $active) { providers -> Bool in
+                                providers.first?.loadDataRepresentation(forTypeIdentifier: "public.file-url", completionHandler: { (data, error) in
+                                    if let data = data, let uu = URL(dataRepresentation: data, relativeTo: nil) {
+                                        if let dropImage = NSImage(contentsOf: uu) {
+                                            self.material.metalness.contents = dropImage
+                                            self.metalnessURL = uu
+                                        }
+                                    }
+                                })
+                                return true
+                            }
+                        ColorPicker("", selection:$metalnessColor)
+                            .onChange(of: metalnessColor, perform: { value in
+                                self.material.metalness.contents = NSColor(metalnessColor)
+                            })
                     }
                 }
             }
@@ -249,28 +309,133 @@ struct MaterialView: View {
                     Spacer()
                     if let number = rough as? CGFloat {
                         Text("\(number)")
-                    } else
-                    if let color = rough as? NSColor {
-                        ColorPicker("", selection:.constant(Color(color)))
+                    } else {
+                        
+                        ColorPicker("", selection:$roughnessColor)
+                            .onChange(of: roughnessColor, perform: { value in
+                                self.material.roughness.contents = NSColor(roughnessColor)
+                            })
+                    }
+                    Image(systemName: "rectangle.dashed.and.paperclip").font(.title2).foregroundColor(.gray)
+                        .onDrop(of: ["public.file-url"], isTargeted: $active) { providers -> Bool in
+                            providers.first?.loadDataRepresentation(forTypeIdentifier: "public.file-url", completionHandler: { (data, error) in
+                                if let data = data, let uu = URL(dataRepresentation: data, relativeTo: nil) {
+                                    if let dropImage = NSImage(contentsOf: uu) {
+                                        self.material.roughness.contents = dropImage
+                                        self.roughnessURL = uu
+                                    }
+                                }
+                            })
+                            return true
+                        }
+                }
+            }
+            
+            // Emission
+            if let _ = material.emission.contents {
+                HStack {
+                    Text("Emission:")
+                    Spacer()
+                    Image(systemName: "rectangle.dashed.and.paperclip").font(.title2).foregroundColor(.gray)
+                        .onDrop(of: ["public.file-url"], isTargeted: $active) { providers -> Bool in
+                            providers.first?.loadDataRepresentation(forTypeIdentifier: "public.file-url", completionHandler: { (data, error) in
+                                if let data = data, let uu = URL(dataRepresentation: data, relativeTo: nil) {
+                                    if let dropImage = NSImage(contentsOf: uu) {
+                                        self.material.emission.contents = dropImage
+                                        self.emissionURL = uu
+                                    }
+                                }
+                            })
+                            return true
+                        }
+                    
+                    ColorPicker("", selection:$emissionColor)
+                        .onChange(of: emissionColor, perform: { value in
+                            self.material.emission.contents = NSColor(emissionColor)
+                        })
+                }
+            }
+            
+            // Displacement
+            if let _ = material.displacement.contents {
+                HStack {
+                    Text("Displacement:")
+                    Spacer()
+                    Image(systemName: "rectangle.dashed.and.paperclip").font(.title2).foregroundColor(.gray)
+                        .onDrop(of: ["public.file-url"], isTargeted: $active) { providers -> Bool in
+                            providers.first?.loadDataRepresentation(forTypeIdentifier: "public.file-url", completionHandler: { (data, error) in
+                                if let data = data, let uu = URL(dataRepresentation: data, relativeTo: nil) {
+                                    if let dropImage = NSImage(contentsOf: uu) {
+                                        self.material.displacement.contents = dropImage
+                                        self.displacementURL = uu
+                                    }
+                                }
+                            })
+                            return true
+                        }
+                    
+                    ColorPicker("", selection:$displacementColor)
+                        .onChange(of: displacementColor, perform: { value in
+                            self.material.displacement.contents = NSColor(displacementColor)
+                        })
+                }
+            }
+            
+            // Buttons
+            Group {
+                Divider()
+                HStack {
+                    Button("Save") {
+                        print("Save Material")
                     }
                 }
             }
             
-            if let emission = material.emission.contents {
-                HStack {
-                    Text("Emission:")
-                    Spacer()
-                    if let number = emission as? CGFloat {
-                        Text("\(number)")
-                    } else
-                    if let color = emission as? NSColor {
-                        ColorPicker("", selection:.constant(Color(color)))
-                    }
-                }
-            }
         }
         .frame(width:200)
         .padding(.horizontal, 6)
+        .onAppear() {
+            self.prepareUI()
+        }
+    }
+    
+    func prepareUI() {
+        // Diffuse
+        if let difImage = material.diffuse.contents as? NSImage {
+            self.diffuseImage = difImage
+        } else if let difColor = material.diffuse.contents as? NSColor {
+            self.diffuseColor = Color(difColor)
+        }
+        // Metalness
+        if let metalImage = material.metalness.contents as? NSImage {
+            self.metalnessImage = metalImage
+        } else if let color = material.metalness.contents as? NSColor {
+            self.metalnessColor = Color(color)
+        }
+        // Roughness
+        if let image = material.roughness.contents as? NSImage {
+            self.roughnessImage = image
+        } else if let color = material.roughness.contents as? NSColor {
+            self.roughnessColor = Color(color)
+        }
+        // Emission
+        if let image = material.emission.contents as? NSImage {
+            self.emissionImage = image
+        } else if let color = material.emission.contents as? NSColor {
+            self.emissionColor = Color(color)
+        }
+        // Displacement
+        if let image = material.displacement.contents as? NSImage {
+            self.displacementImage = image
+        } else if let color = material.displacement.contents as? NSColor {
+            self.displacementColor = Color(color)
+        }
+        
+        // Should use MaterialModel instead?
+        // PROs
+        // Direct access to save, etc
+        // CONs
+        // Not the original object
     }
 }
 
@@ -297,261 +462,3 @@ struct MaterialExample {
         self.material = newMat
     }
 }
-
-
-
-/**
- A `Shape` showing a UVMap.
- See: https://stackoverflow.com/questions/17250501/extracting-vertices-from-scenekit */
-struct UVShape: Shape {
-    
-    var uv:[CGPoint]
-//    let multi:CGFloat = 10
-    
-    // MARK:- functions
-    func path(in rect: CGRect) -> Path {
-        
-        // Path
-        var path = Path()
-        
-        // Start in first
-        path.move(to: uv.first!)
-        
-        var substack:[CGPoint] = []
-        
-        for uvPoint in uv {
-            
-            if uvPoint == .zero { break }
-            
-            if substack.count >= 3 {
-                
-                path.closeSubpath()
-                substack = []
-                
-                substack.append(uvPoint)
-                path.move(to: CGPoint(x:uvPoint.x * 1024, y:uvPoint.y * 1024))
-                
-            } else if substack.isEmpty {
-                
-                path.move(to: CGPoint(x:uvPoint.x * 1024, y:uvPoint.y * 1024))
-                substack.append(uvPoint)
-                
-            } else {
-                
-                path.addLine(to: CGPoint(x:uvPoint.x * 1024, y:uvPoint.y * 1024))
-                substack.append(uvPoint)
-            }
-        }
-        
-        path.closeSubpath()
-        
-        return path
-    }
-}
-
-extension View {
-    func snapShot() -> NSImage? {
-        let controller = NSHostingController(rootView: self)
-        
-        let rView = controller.rootView
-        
-        let view = controller.view
-        let targetSize = controller.view.intrinsicContentSize
-        print("Target Size: \(targetSize)")
-        
-        view.bounds = CGRect(origin: .zero, size: targetSize)
-        
-        
-//        let renderer = GraphicsImageRenderer(size: targetSize)
-//        return renderer.image { _ in
-//            layer.render
-//        }
-        
-        let image = view.asImage(size: CGSize(width: 1000, height: 1000))
-            // image.draw(in: NSMakeRect(0, 0, targetSize.width, targetSize.height))
-        
-        
-//        let image:NSImage = NSImage(size: targetSize)
-//
-//        let rep = NSBitmapImageRep(bitmapDataPlanes: nil, pixelsWide: Int(targetSize.width), pixelsHigh: Int(targetSize.height), bitsPerSample: 8, samplesPerPixel: 4, hasAlpha: true, isPlanar: false, colorSpaceName: .calibratedRGB, bytesPerRow: 0, bitsPerPixel: 0)!
-//
-//        image.addRepresentation(rep)
-//        image.lockFocus()
-//
-////        image.draw(at: NSPoint.zero, from: CGRect(origin: .zero, size: targetSize), operation: .overlay, fraction: 1.0) // = view.draw(NSRect(origin: .zero, size: targetSize))
-//
-//        let rect = NSMakeRect(0, 0, targetSize.width, targetSize.height)
-//        let ctx = NSGraphicsContext.current!.cgContext
-//        ctx.clear(rect)
-//        ctx.setFillColor(NSColor.black.cgColor)
-//        ctx.fill(rect)
-//
-//        image.unlockFocus()
-        
-        
-        
-        return image
-    }
-}
-
-extension NSView {
-    func asImage(size: CGSize) -> NSImage {
-        let format = GraphicsImageRendererFormat()
-//        format.scale = 1.0
-        return GraphicsImageRenderer(size: size, format: format).image { context in
-            
-            self.layer!.render(in: context.cgContext)
-        }
-    }
-}
-
-#if os(OSX)
-public class MacGraphicsImageRendererFormat: NSObject {
-    public var opaque: Bool = false
-    public var prefersExtendedRange: Bool = false
-    public var scale: CGFloat = 2.0
-    public var bounds: CGRect = .zero
-}
-
-public typealias GraphicsImageRendererFormat = MacGraphicsImageRendererFormat
-#else
-public typealias GraphicsImageRendererFormat = UIGraphicsImageRendererFormat
-#endif
-
-#if os(OSX)
-public class MacGraphicsImageRendererContext: NSObject {
-    
-    public var format: GraphicsImageRendererFormat
-    
-    public var cgContext: CGContext {
-        guard let context = NSGraphicsContext.current?.cgContext
-        else { fatalError("Unavailable cgContext while drawing") }
-        return context
-    }
-    
-    public func clip(to rect: CGRect) {
-        cgContext.clip(to: rect)
-    }
-    
-    public func fill(_ rect: CGRect) {
-        cgContext.fill(rect)
-    }
-    
-    public func fill(_ rect: CGRect, blendMode: CGBlendMode) {
-        NSGraphicsContext.saveGraphicsState()
-        cgContext.setBlendMode(blendMode)
-        cgContext.fill(rect)
-        NSGraphicsContext.restoreGraphicsState()
-    }
-    
-    public func stroke(_ rect: CGRect) {
-        cgContext.stroke(rect)
-    }
-    
-    public func stroke(_ rect: CGRect, blendMode: CGBlendMode) {
-        NSGraphicsContext.saveGraphicsState()
-        cgContext.setBlendMode(blendMode)
-        cgContext.stroke(rect)
-        NSGraphicsContext.restoreGraphicsState()
-    }
-    
-    public override init() {
-        self.format = GraphicsImageRendererFormat()
-        super.init()
-    }
-    
-    public var currentImage: NSImage {
-        guard let cgImage = cgContext.makeImage()
-        else { fatalError("Cannot retrieve cgImage from current context") }
-        return NSImage(cgImage: cgImage, size: format.bounds.size)
-    }
-}
-
-public typealias GraphicsImageRendererContext = MacGraphicsImageRendererContext
-#else
-public typealias GraphicsImageRendererContext = UIGraphicsImageRendererContext
-#endif
-
-#if os(OSX)
-public class MacGraphicsImageRenderer: NSObject {
-    
-    public class func context(with format: GraphicsImageRendererFormat) -> CGContext? {
-        fatalError("Not implemented")
-    }
-    
-    public class func prepare(_ context: CGContext, with: GraphicsImageRendererContext) {
-        fatalError("Not implemented")
-    }
-    
-    public class func rendererContextClass() {
-        fatalError("Not implemented")
-    }
-    
-    public var allowsImageOutput: Bool = true
-    
-    public let format: GraphicsImageRendererFormat
-    
-    public let bounds: CGRect
-    
-    public init(bounds: CGRect, format: GraphicsImageRendererFormat) {
-        (self.bounds, self.format) = (bounds, format)
-        self.format.bounds = self.bounds
-        super.init()
-    }
-    
-    public convenience init(size: CGSize, format: GraphicsImageRendererFormat) {
-        self.init(bounds: CGRect(origin: .zero, size: size), format: format)
-    }
-    
-    public convenience init(size: CGSize) {
-        self.init(bounds: CGRect(origin: .zero, size: size), format: GraphicsImageRendererFormat())
-    }
-    
-    public func image(actions: @escaping (GraphicsImageRendererContext) -> Void) -> NSImage {
-        let image = NSImage(size: format.bounds.size, flipped: false) {
-            (drawRect: NSRect) -> Bool in
-            
-            let imageContext = GraphicsImageRendererContext()
-            imageContext.format = self.format
-            actions(imageContext)
-            
-            return true
-        }
-        return image
-    }
-    
-    public func pngData(actions: @escaping (GraphicsImageRendererContext) -> Void) -> Data {
-        let image = self.image(actions: actions)
-        var imageRect = CGRect(origin: .zero, size: image.size)
-        guard let cgImage = image.cgImage(forProposedRect: &imageRect, context: nil, hints: nil)
-        else { fatalError("Could not construct PNG data from drawing request") }
-        let bitmapRep = NSBitmapImageRep(cgImage: cgImage)
-        bitmapRep.size = image.size
-        guard let data = bitmapRep.representation(using: .png, properties: [:])
-        else { fatalError("Could not retrieve data from drawing request") }
-        return data
-    }
-    
-    public func jpegData(withCompressionQuality compressionQuality: CGFloat, actions: @escaping (GraphicsImageRendererContext) -> Void) -> Data {
-        let image = self.image(actions: actions)
-        var imageRect = CGRect(origin: .zero, size: image.size)
-        guard let cgImage = image.cgImage(forProposedRect: &imageRect, context: nil, hints: nil)
-        else { fatalError("Could not construct PNG data from drawing request") }
-        let bitmapRep = NSBitmapImageRep(cgImage: cgImage)
-        bitmapRep.size = image.size
-        guard let data = bitmapRep.representation(using: .jpeg, properties: [NSBitmapImageRep.PropertyKey.compressionFactor: compressionQuality])
-        else { fatalError("Could not retrieve data from drawing request") }
-        return data
-    }
-    
-    public func runDrawingActions(_ drawingActions: (GraphicsImageRendererContext) -> Void, completionActions: ((GraphicsImageRendererContext) -> Void)? = nil) throws {
-        fatalError("Not implemented")
-    }
-}
-#endif
-
-#if os(OSX)
-public typealias GraphicsImageRenderer = MacGraphicsImageRenderer
-#else
-public typealias GraphicsImageRenderer = UIGraphicsImageRenderer
-#endif

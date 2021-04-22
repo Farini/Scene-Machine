@@ -26,20 +26,29 @@ struct TerrainView: View {
                     .foregroundColor(.gray)
                     .frame(maxWidth:180)
                 
-                TextField("UV", text: $imagePath)
-                    .frame(width:150)
-                    .onDrop(of: ["public.file-url"], isTargeted: $dragOver) { providers -> Bool in
-                        providers.first?.loadDataRepresentation(forTypeIdentifier: "public.file-url", completionHandler: { (data, error) in
-                            if let data = data, let uu = URL(dataRepresentation: data, relativeTo: nil) {
-                                self.imagePath = uu.path
-                                self.textDropped()
-                            }
-                        })
-                        return true
-                    }
-                DroppableArea()
-                    .frame(maxWidth:120, maxHeight:70)
-                    .offset(x: 0, y: 0)
+//                TextField("UV", text: $imagePath)
+//                    .frame(width:150)
+//                    .onDrop(of: ["public.file-url"], isTargeted: $dragOver) { providers -> Bool in
+//                        providers.first?.loadDataRepresentation(forTypeIdentifier: "public.file-url", completionHandler: { (data, error) in
+//                            if let data = data, let uu = URL(dataRepresentation: data, relativeTo: nil) {
+//                                self.imagePath = uu.path
+//                                self.textDropped()
+//                            }
+//                        })
+//                        return true
+//                    }
+                
+//                DroppableArea()
+//                    .frame(maxWidth:120, maxHeight:70)
+//                    .offset(x: 0, y: 0)
+                
+                SubMatImageArea(url: nil, active: true, image: nil) { droppedImage, droppedURL in
+                    print("Image dropped. Size: \(droppedImage.size)")
+                    self.imagePath = droppedURL.path
+                    self.textDropped()
+                }
+                
+                
                 Button("Geometry") {
                     self.describeTerrain()
                 }
@@ -95,6 +104,7 @@ class TerrainDelegate: NSObject, SCNSceneRendererDelegate {
 }
 
 struct DroppableArea: View {
+    
     @State private var imageUrls: [Int: URL] = [:]
     @State private var active = 0
     
@@ -130,7 +140,47 @@ struct DroppableArea: View {
     }
 }
 
+// 1 Image Only
+// SubMatImageArea -> Drop Image
+struct SubMatImageArea: View {
+    
+    @State var url:URL?
+    @State var active:Bool = false
+    @State var image:NSImage?
+    
+    /// Callback function. Returns an image
+    var dropped: (_ image:NSImage, _ url:URL) -> Void = {_,_  in }
+    
+    var body: some View {
+        VStack {
+//            Text("Drop Image")
+            Group {
+                if let dropped = image {
+                    Image(nsImage: dropped)
+                        .resizable()
+                        .frame(width:100, height:100)
+                } else {
+                    Text(" [ Drop Image ] ").foregroundColor(.gray).padding(.vertical, 30)
+                }
+            }
+            .onDrop(of: ["public.file-url"], isTargeted: $active) { providers -> Bool in
+                providers.first?.loadDataRepresentation(forTypeIdentifier: "public.file-url", completionHandler: { (data, error) in
+                    if let data = data, let uu = URL(dataRepresentation: data, relativeTo: nil) {
+                        if let dropImage = NSImage(contentsOf: uu) {
+                            self.image = dropImage
+                            dropped(dropImage, uu)
+                        }
+                    }
+                })
+                return true
+            }
+        }
+    }
+}
+// MatImageDelegate -> DropDelegate
+
 struct MyDropDelegate: DropDelegate {
+    
     @Binding var imageUrls: [Int: URL]
     @Binding var active: Int
     
@@ -167,7 +217,6 @@ struct MyDropDelegate: DropDelegate {
     
     func dropUpdated(info: DropInfo) -> DropProposal? {
         self.active = getGridPosition(location: info.location)
-        
         return nil
     }
     
@@ -186,6 +235,7 @@ struct MyDropDelegate: DropDelegate {
     }
 }
 
+/*
 struct BookmarksList: View {
     @State private var links: [URL] = []
     
@@ -225,3 +275,5 @@ struct BookmarksDropDelegate: DropDelegate {
         return true
     }
 }
+*/
+

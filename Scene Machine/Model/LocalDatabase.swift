@@ -23,6 +23,9 @@ class LocalDatabase {
         encoder.outputFormatting = .prettyPrinted
         
         var allMaterials:[SceneMaterial] = LocalDatabase.loadMaterials()
+        if let idx = allMaterials.firstIndex(where: { $0.id == material.id}) {
+            allMaterials.remove(at: idx)
+        }
         allMaterials.append(material)
         
         guard let encodedData:Data = try? encoder.encode(allMaterials) else { fatalError() }

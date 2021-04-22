@@ -33,6 +33,12 @@ struct ImageFXView: View {
                                         apply(image: img) },
                                     image: controller.openingImage,
                                     isPreviewing: true)
+                    case .Color:
+                        FXColorView(value: 1,
+                                    applied: { (image) in
+                            apply(image: image)},
+                                    image: controller.openingImage,
+                                    inputColor: .white)
                         
                     default:
                         Text("Left View")
@@ -60,6 +66,10 @@ struct ImageFXView: View {
                     Button("Blur") {
 //                        let v = CIVector(values: [2, 3, 4], count: 3)
                         self.state = .Blurr
+                    }
+                    
+                    Button("Color") {
+                        self.state = .Color
                     }
                     
                     Spacer()
