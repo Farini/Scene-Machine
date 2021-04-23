@@ -13,6 +13,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     var window: NSWindow!
     var spriteNoiseWindow: NSWindow!
+    var metalGenWindow: NSWindow?
     
     // noiseMakerWindow
     // sceneViewWindow
@@ -250,6 +251,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         print("Deprecated")
     }
     
+    
+    
     @objc func openSpriteNoiseWindow() {
         if nil == spriteNoiseWindow {
             let spriteNoiseView = SpriteNoiseMaker()
@@ -266,6 +269,27 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             spriteNoiseWindow.contentView = NSHostingView(rootView: spriteNoiseView)
         }
         spriteNoiseWindow.makeKeyAndOrderFront(nil)
+    }
+    
+    @objc func openMetalGenerators() {
+        
+        if let mWindow = metalGenWindow {
+            mWindow.contentView = NSHostingView(rootView: MetalGenView())
+            mWindow.makeKeyAndOrderFront(self)
+        } else {
+            let newWindow = NSWindow(
+                contentRect: NSRect(x: 0, y: 0, width: 1200, height: 800),
+                styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+                backing: .buffered, defer: false)
+            newWindow.center()
+            newWindow.setFrameAutosaveName("MetalGenerators")
+            //        window.toolbarStyle = .unified
+            newWindow.contentView = NSHostingView(rootView: MetalGenView())
+            newWindow.makeKeyAndOrderFront(nil)
+            
+            self.metalGenWindow = newWindow
+        }
+        
     }
     
     @objc func openTerrainWindow() {

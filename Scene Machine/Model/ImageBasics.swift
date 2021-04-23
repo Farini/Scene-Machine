@@ -38,4 +38,14 @@ enum TextureSize:Double, CaseIterable {
             case .large: return "large \(self.rawValue)"
         }
     }
+    
+    var fullLabel:String {
+        switch self {
+            case .small: return "256 x 256"
+            case .medSmall: return "512 x 512"
+            case .medium: return "1024 x 1024"
+            case .medLarge: return "2048 x 2048"
+            case .large: return "4096 x 4096"
+        }
+    }
 }

@@ -86,16 +86,16 @@ struct NoiseMenuView: View {
                     NSApp.sendAction(#selector(AppDelegate.openSpriteNoiseWindow), to: nil, from: nil)
                 }
                 
-                // CIFilter Noise
+                // Metal Noise
                 VStack {
-                    Image("Core_Image_icon")
+                    Image("MetalIcon")
                         .resizable()
                         .frame(width: 64, height: 64, alignment: .center)
                     // Core_Image_icon
-                    Text("CIFilter Noise")
+                    Text("Pedal 2 Metal")
                 }
                 .onTapGesture {
-                    NSApp.sendAction(#selector(AppDelegate.openSpecialCIFilters), to: nil, from: nil)
+                    NSApp.sendAction(#selector(AppDelegate.openMetalGenerators), to: nil, from: nil)
                 }
                 
                 VStack {
@@ -131,9 +131,14 @@ struct ImageFXMenuView: View {
             HStack {
                 Text("Compose Images. The CompositionView uses 2 images, and merge them using one of the chosen operations").foregroundColor(.gray)
                 Spacer()
-                Button("Composition") {
-                    //
-                    // openCompositionView
+                VStack {
+                    Image("Core_Image_icon")
+                        .resizable()
+                        .frame(width: 64, height: 64, alignment: .center)
+                        
+                    Text("Compose")
+                }
+                .onTapGesture {
                     NSApp.sendAction(#selector(AppDelegate.openCompositionView), to: nil, from: nil)
                 }
             }
@@ -234,9 +239,15 @@ struct OpenFileView: View {
 struct OpenSceneView: View {
     var body: some View {
         VStack {
-            Text("Scenekit Scenes").font(.title2).foregroundColor(.orange)
-            Text("Scene Picker")
-            Divider()
+            
+            Group {
+                Image("SceneKitIcon")
+                    .resizable()
+                    .frame(width: 64, height: 64, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                Text("SceneKit Scenes").font(.title2).foregroundColor(.orange)
+                
+                Divider()
+            }
             
             Group {
                 Text("Terrain Editor")

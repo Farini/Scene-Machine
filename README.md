@@ -5,7 +5,7 @@ The objective is to provide an easy way to generate textures and 3D geometries t
 Although SpriteKit offers ways to generate noise textures, the options are limited. In Blender, for example, there are many more options, and graphics operations that can be performed to generate a texture. 
 Plus, those patterns can be generated and placed in an UV map.
 
-The objective of this app is to create a moe user friendly way to build a `.scn` file, or to facilitate the conversion of `.dae` files into `.scn` while maintaining good quality meshes.
+The objective of this app is to create a more user friendly way to build a `.scn` file, or to facilitate the conversion of `.dae` files into `.scn` while maintaining good quality meshes.
 
 ![Alt text](https://user-images.githubusercontent.com/5069713/115817657-40738a80-a3c9-11eb-8f5c-9c586c1ff0af.png)
 ![Alt text](https://user-images.githubusercontent.com/5069713/115817718-6731c100-a3c9-11eb-8f38-03e8f4298bc7.png)
@@ -77,9 +77,11 @@ The objective of this app is to create a moe user friendly way to build a `.scn`
 - [X] Better interface - Noise, Scene, Material
 - [X] Main menu routing to main interfaces
 - [X] SpriteKit noise textures (all)
+- [X] ImageFX -> Undo
 
 - [ ] Save Materials Property `SceneMaterial`
 - [ ] Fix bug with SpriteKit Noise
+- [ ] Improve MetalGenView
 
 - [ ] Export UVMap
 - [ ] Edit UVMap

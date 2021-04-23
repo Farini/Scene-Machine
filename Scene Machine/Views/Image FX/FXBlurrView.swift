@@ -22,6 +22,8 @@ struct FXBlurrView: View {
     
     @State var blurrType:BlurrType = .Box
     
+    @State private var undoImages:[NSImage] = []
+    
     var body: some View {
         VStack {
             
@@ -35,6 +37,7 @@ struct FXBlurrView: View {
                 }
                 Divider()
             }
+            .padding(.horizontal, 6)
             
             
             switch blurrType {
@@ -132,11 +135,17 @@ struct FXBlurrView: View {
                         self.apply()
                     }
                     Spacer()
-                    Button("Update Preview") {
+                    Button("↩️ Undo") {
+                        if let lastImage = undoImages.dropLast().first {
+                            self.image = lastImage
+                        }
+                    }
+                    Button("🔄 Update") {
                         print("Update Preview")
+                        self.undoImages.append(self.image!)
                         self.updatePreview()
                     }
-                    Toggle("Preview", isOn: $isPreviewing)
+                    
                 }
             }
         }
@@ -149,10 +158,13 @@ struct FXBlurrView: View {
     @State var isPreviewing:Bool = true
     var imgPreview: some View {
         VStack {
+            Toggle("Preview", isOn: $isPreviewing)
             if isPreviewing {
                 if let img = image {
-                    Text("Preview")
                     Image(nsImage: img)
+                        .resizable()
+                        .aspectRatio(1, contentMode: .fit)
+                        .frame(minWidth: 200, maxWidth: 250, minHeight: 200, maxHeight: 250, alignment: .center)
                 } else {
                     Text("No preview Image").foregroundColor(.gray).padding(12)
                 }
@@ -521,6 +533,7 @@ struct SliderInputView: View {
 struct FXBlurrView_Previews: PreviewProvider {
     static var previews: some View {
         FXBlurrView()
+            .frame(minWidth: 249, maxWidth: 250, minHeight: 350, maxHeight: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .top)
     }
 }
 

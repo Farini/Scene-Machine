@@ -24,6 +24,8 @@ struct FXColorView: View {
     
     @State var inputColor:Color = .white
     
+    @State private var undoImages:[NSImage] = []
+    
     var body: some View {
         VStack {
             Text("Color Effect").font(.title2).foregroundColor(.accentColor)
@@ -192,13 +194,17 @@ struct FXColorView: View {
                     self.apply()
                 }
                 Spacer()
-                Button("Update Preview") {
+                Button("↩️ Undo") {
+                    if let lastImage = undoImages.dropLast().first {
+                        self.image = lastImage
+                    }
+                }
+                Button("🔄 Update") {
                     print("Update Preview")
+                    self.undoImages.append(self.image!)
                     self.updatePreview()
                 }
-                Toggle("Preview", isOn: $isPreviewing)
             }
-            
         }
         .frame(width:250)
         .padding(8)
@@ -207,11 +213,13 @@ struct FXColorView: View {
     /// The preview Image
     var imgPreview: some View {
         VStack {
+            Toggle("Preview", isOn: $isPreviewing)
             if isPreviewing {
                 if let img = image {
-                    Text("Preview")
                     Image(nsImage: img)
                         .resizable()
+                        .aspectRatio(1, contentMode: .fit)
+                        .frame(minWidth: 200, maxWidth: 250, minHeight: 200, maxHeight: 250, alignment: .center)
                         
                 } else {
                     Text("No preview Image").foregroundColor(.gray).padding(12)

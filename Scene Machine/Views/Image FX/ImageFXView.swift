@@ -27,7 +27,7 @@ struct ImageFXView: View {
             VStack {
                 switch state {
                     case .empty:
-                        Text("Left View")
+                        Text("Select filter type").foregroundColor(.gray)
                     case .Blurr:
                         FXBlurrView(applied: { img in
                                         apply(image: img) },
@@ -44,6 +44,7 @@ struct ImageFXView: View {
                         Text("Left View")
                         Text("Needs implementation")
                 }
+                Spacer()
             }
             
             VStack {
