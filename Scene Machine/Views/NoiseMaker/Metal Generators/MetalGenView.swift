@@ -51,13 +51,26 @@ struct MetalGenView: View {
     }
     
     func caustic() {
-        let caustic = CausticNoiseMetal() //CausticNoise()
-        caustic.tileSize = Float(image.size.width)
         
         let context = CIContext()
         
+        let caustic = CausticNoiseMetal() //CausticNoise()
+        
+        let baseImage = NSImage(size: NSSize(width: CGFloat(1024), height: CGFloat(1024)))
+        guard let inputData = baseImage.tiffRepresentation,
+              let bitmap = NSBitmapImageRep(data: inputData),
+              let inputCIImage = CIImage(bitmapImageRep: bitmap) else {
+            print("Missing something")
+            return
+        }
+        
+        caustic.inputImage = inputCIImage
+        caustic.tileSize = Float(image.size.width)
+        
+        
+        
         // get a CIImage from our filter or exit if that fails
-        guard let outputImage = caustic.outputImage else { return }
+        guard let outputImage = caustic.outputImage() else { return }
         
         // attempt to get a CGImage from our CIImage
         if let cgimg = context.createCGImage(outputImage, from: outputImage.extent) {

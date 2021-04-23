@@ -12,12 +12,6 @@ import SwiftUI
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     var window: NSWindow!
-    var spriteNoiseWindow: NSWindow!
-    var metalGenWindow: NSWindow?
-    
-    // noiseMakerWindow
-    // sceneViewWindow
-    // ImageFXView
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         
@@ -164,10 +158,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }else{
             print("Where is finder ??")
         }
-        
-        //        if let folder = DataManager.shared.databaseURL(){
-        //            NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: folder.absoluteString)
-        //        }
     }
     
     @IBAction func openNewImagePlaceholder(_ sender: NSMenuItem) {
@@ -182,19 +172,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.makeKeyAndOrderFront(nil)
     }
     
-    @IBAction func displayMonkeyTest(_ sender: NSMenuItem) {
-        let newWindow = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
-            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-            backing: .buffered, defer: false)
-        newWindow.center()
-        newWindow.setFrameAutosaveName("Drag and Drop Image Window")
-        //        window.toolbarStyle = .unified
-        window = newWindow
-        window.contentView = NSHostingView(rootView: MaterialEditView()) //SuzanneSceneView())
-        window.makeKeyAndOrderFront(nil)
-    }
     
+    
+    /// Quick Noise
     @IBAction func openNoiseMaker(_ sender: NSMenuItem) {
         
         let newWindow = NSWindow(
@@ -204,9 +184,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         newWindow.center()
         newWindow.setFrameAutosaveName("Drag and Drop Image Window")
         //        window.toolbarStyle = .unified
-        window = newWindow
-        window.contentView = NSHostingView(rootView: NoiseMakerView())
-        window.makeKeyAndOrderFront(nil)
+//        window = newWindow
+        newWindow.contentView = NSHostingView(rootView: NoiseMakerView())
+        newWindow.makeKeyAndOrderFront(nil)
     }
     
     @IBAction func openSpriteKitNoise(_ sender: NSMenuItem) {
@@ -251,14 +231,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         print("Deprecated")
     }
     
+    // MARK: - App Windows
     
-    
+    /// Sprite Noise
+    var spriteNoiseWindow: NSWindow!
     @objc func openSpriteNoiseWindow() {
         if nil == spriteNoiseWindow {
             let spriteNoiseView = SpriteNoiseMaker()
             // Create the preferences window and set content
             spriteNoiseWindow = NSWindow(
-                contentRect: NSRect(x: 20, y: 20, width: 480, height: 300),
+                contentRect: NSRect(x: 20, y: 20, width: 900, height: 500),
                 styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
                 backing: .buffered,
                 defer: false)
@@ -271,84 +253,98 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         spriteNoiseWindow.makeKeyAndOrderFront(nil)
     }
     
+    /// Metal Generator
+    var metalGenWindow: NSWindow!
     @objc func openMetalGenerators() {
-        
-        if let mWindow = metalGenWindow {
-            mWindow.contentView = NSHostingView(rootView: MetalGenView())
-            mWindow.makeKeyAndOrderFront(self)
-        } else {
-            let newWindow = NSWindow(
+        if nil == metalGenWindow {
+            let metalView = MetalGenView()
+            // Create the preferences window and set content
+            metalGenWindow = NSWindow(
                 contentRect: NSRect(x: 0, y: 0, width: 1200, height: 800),
                 styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
                 backing: .buffered, defer: false)
-            newWindow.center()
-            newWindow.setFrameAutosaveName("MetalGenerators")
-            //        window.toolbarStyle = .unified
-            newWindow.contentView = NSHostingView(rootView: MetalGenView())
-            newWindow.makeKeyAndOrderFront(nil)
-            
-            self.metalGenWindow = newWindow
+            metalGenWindow.center()
+            metalGenWindow.setFrameAutosaveName("MetalGenWindow")
+            metalGenWindow.title = "Metal"
+            metalGenWindow.isReleasedWhenClosed = false
+            metalGenWindow.contentView = NSHostingView(rootView: metalView)
         }
-        
+        metalGenWindow.makeKeyAndOrderFront(nil)
     }
     
+    
+    /// Composition
+    var compositionWindow:NSWindow!
+    @objc func openCompositionView() {
+        if nil == compositionWindow {
+            let view = CompositionView()
+            compositionWindow = NSWindow(
+                contentRect: NSRect(x: 0, y: 0, width: 1200, height: 800),
+                styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+                backing: .buffered, defer: false)
+            compositionWindow.center()
+            compositionWindow.setFrameAutosaveName("CompositionWindow")
+            compositionWindow.title = "Composition"
+            compositionWindow.isReleasedWhenClosed = false
+            compositionWindow.contentView = NSHostingView(rootView: view)
+        }
+        compositionWindow.makeKeyAndOrderFront(nil)
+    }
+    
+    /// Image FX
+    var imageFXWindow:NSWindow!
+    @objc func openImageFXView() {
+        if nil == imageFXWindow {
+            let fxView = ImageFXView()
+            imageFXWindow = NSWindow(
+                contentRect: NSRect(x: 0, y: 0, width: 1200, height: 800),
+                styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+                backing: .buffered, defer: false)
+            imageFXWindow.center()
+            imageFXWindow.setFrameAutosaveName("ImageFX")
+            imageFXWindow.title = "Image FX"
+            imageFXWindow.isReleasedWhenClosed = false
+            imageFXWindow.contentView = NSHostingView(rootView: fxView)
+        }
+        imageFXWindow.makeKeyAndOrderFront(nil)
+    }
+    
+    // MARK: - Scenes
+    
+    var terrainWindow: NSWindow!
     @objc func openTerrainWindow() {
-        if nil == spriteNoiseWindow {
+        if nil == terrainWindow {
             let terrainView = TerrainView()
             // Create the preferences window and set content
-            spriteNoiseWindow = NSWindow(
-                contentRect: NSRect(x: 20, y: 20, width: 480, height: 300),
+            terrainWindow = NSWindow(
+                contentRect: NSRect(x: 20, y: 20, width: 900, height: 500),
                 styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
                 backing: .buffered,
                 defer: false)
-            spriteNoiseWindow.center()
-            spriteNoiseWindow.setFrameAutosaveName("SpriteNoiseWindow")
-            spriteNoiseWindow.title = "Terrain Machine"
-            spriteNoiseWindow.isReleasedWhenClosed = false
-            spriteNoiseWindow.contentView = NSHostingView(rootView: terrainView)
+            terrainWindow.center()
+            terrainWindow.setFrameAutosaveName("TerrainWindow")
+            terrainWindow.title = "Terrain Machine"
+            terrainWindow.isReleasedWhenClosed = false
+            terrainWindow.contentView = NSHostingView(rootView: terrainView)
         }
-        spriteNoiseWindow.makeKeyAndOrderFront(nil)
+        terrainWindow.makeKeyAndOrderFront(nil)
     }
     
-    @objc func openCompositionView() {
-//        if nil == spriteNoiseWindow {
-//            let terrainView = TerrainView()
-//            // Create the preferences window and set content
-//            spriteNoiseWindow = NSWindow(
-//                contentRect: NSRect(x: 20, y: 20, width: 480, height: 300),
-//                styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-//                backing: .buffered,
-//                defer: false)
-//            spriteNoiseWindow.center()
-//            spriteNoiseWindow.setFrameAutosaveName("SpriteNoiseWindow")
-//            spriteNoiseWindow.title = "Terrain Machine"
-//            spriteNoiseWindow.isReleasedWhenClosed = false
-//            spriteNoiseWindow.contentView = NSHostingView(rootView: terrainView)
-//        }
-//        spriteNoiseWindow.makeKeyAndOrderFront(nil)
-        
-        let newWindow = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 1200, height: 800),
-            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-            backing: .buffered, defer: false)
-        newWindow.center()
-        newWindow.setFrameAutosaveName("CompositionView")
-        //        window.toolbarStyle = .unified
-//        window = newWindow
-        newWindow.contentView = NSHostingView(rootView: CompositionView())
-        newWindow.makeKeyAndOrderFront(nil)
+    var monkeyWindow: NSWindow!
+    @IBAction func displayMonkeyTest(_ sender: NSMenuItem) {
+        if nil == monkeyWindow {
+            let view = MaterialEditView()
+            monkeyWindow = NSWindow(
+                contentRect: NSRect(x: 0, y: 0, width: 900, height: 500),
+                styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+                backing: .buffered, defer: false)
+            monkeyWindow.center()
+            monkeyWindow.setFrameAutosaveName("MonkeyWindow")
+            monkeyWindow.title = "Material Editor"
+            monkeyWindow.isReleasedWhenClosed = false
+            monkeyWindow.contentView = NSHostingView(rootView: view)
+        }
+        monkeyWindow.makeKeyAndOrderFront(nil)
     }
-    
-    @objc func openImageFXView() {
-        let newWindow = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 1200, height: 800),
-            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-            backing: .buffered, defer: false)
-        newWindow.center()
-        newWindow.setFrameAutosaveName("ImageFX")
-        newWindow.contentView = NSHostingView(rootView: ImageFXView())
-        newWindow.makeKeyAndOrderFront(self)
-    }
-    
 }
 

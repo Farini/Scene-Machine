@@ -98,19 +98,4 @@ struct GradientMakerView_Previews: PreviewProvider {
     }
 }
 
-class GradientStop:Identifiable {
-    var id:UUID = UUID()
-    var color:Color
-    var location:CGFloat
-    
-    init(color:Color, location:CGFloat) {
-        self.color = color
-        self.location = location
-    }
-    
-    static func basicExample() -> [GradientStop] {
-        let g1 = GradientStop(color: .white, location: 0)
-        let g2 = GradientStop(color: .black, location: 1)
-        return [g1, g2]
-    }
-}
+

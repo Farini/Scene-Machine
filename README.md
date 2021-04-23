@@ -12,29 +12,36 @@ The objective of this app is to create a more user friendly way to build a `.scn
 
 ## Expected Features
 
+### SpriteKit Noise Maker
+
+- [X] Generate any noise in SpriteKit: Perlin, Voronoi, Ridged, Billow, Checker, Cylinder
+- [X] Save Image
+- [X] Choose Image Size: 256x256, 512x512, 1024x1024, 2048x2048, 4096x4096
+- [X] Color Gradients
+
 ### Image Composition + Noise
 
-- [X] SpriteKit noise generation
 - [X] CIFilter with Kernels
 - [X] Save CIImage
-- [X] Save SKNoise image
 - [X] Test new Metal shader: makeBlackTransparent >> Substitute black pixels for transparent ones
+- [X] Choose Texture size: 256, 512, 1024, 2048, 4096 Pixels
 
 - [ ] Mix Images
-
 
 ### Scene Materials
 
 - [X] Material Model for Persistency
-- [ ] Enable the use of  `TrimSheets`
-- [ ] Basic Materials library (Wood, bricks, asphalt, plastic, metals, dirt, etc.)
+- [X] SceneMaterial, and SubMaterialData: Codable -> Persist `SCNMaterial`
+- [X] Material Editor (may need improvements)
+- [X] UVMap
+
 - [ ] Save Materials
-- [ ] Material Editor
-- [ ] UVMap
+- [ ] Basic Materials library (Wood, bricks, asphalt, plastic, metals, dirt, etc.)
 
 ### SceneKit
 
 - [X] Show a Geometry's `UVMap`
+
 - [ ] Have more sample geometries than the ones provided by SceneKit
 - [ ] Save and export scene `.scn` files >> https://developer.apple.com/documentation/scenekit/scnscene/1523577-write
 - [ ] Automatically "beautify" `.dae` files made in blender - Adjust lighting, colors, etc.
@@ -47,6 +54,7 @@ The objective of this app is to create a more user friendly way to build a `.scn
 - [X] GRBA -> Green to Red (and back) pixels 
 - [X] Caustic Noise improved
 - [X] Black to Transparent
+
 - [ ] Hexagons pattern
 - [ ] Truchet tiling
 - [ ] KIFS Fractals: https://www.youtube.com/watch?v=il_Qg9AqQkE&list=RDCMUCcAlTqd9zID6aNX3TzwxJXg&index=6

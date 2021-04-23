@@ -103,28 +103,6 @@ class ImageCompositionController:ObservableObject {
         return croppedImage
     }
     
-//    func mixImages() {
-//
-//        // Image Left
-//        let texture = SKTexture.init(noiseWithSmoothness: 0.5, size: CGSize(width: 512, height: 512), grayscale: true)
-//        let img = leftImage.cgImage(forProposedRect: nil, context: nil, hints: nil) ?? texture.cgImage()
-//        let ciimg = CIImage(cgImage: img)
-//
-//        // Image Right
-//        let newTexture = SKTexture.init(noiseWithSmoothness: 0.85, size: CGSize(width: 512, height: 512), grayscale: true)
-//        let newRightImage = NSImage(cgImage: newTexture.cgImage(), size: newTexture.size())
-//        self.rightImage = newRightImage
-//
-//        // Result
-//        let newImage = ciimg.composited(over: CIImage(cgImage:newTexture.cgImage()))
-//
-//        let rep = NSCIImageRep(ciImage: newImage)
-//        let nsImage = NSImage(size: rep.size)
-//        nsImage.addRepresentation(rep)
-//
-//        self.resultImage = nsImage
-//    }
-    
     /// Mixes 2 images
     func compositeImages() {
         

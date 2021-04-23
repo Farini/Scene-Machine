@@ -62,6 +62,7 @@ class CausticNoiseMetal: CIFilter {
             guard let inputData = baseImage.tiffRepresentation,
                   let bitmap = NSBitmapImageRep(data: inputData),
                   let inputCIImage = CIImage(bitmapImageRep: bitmap) else {
+                print("Missing something")
                 return nil
             }
             self.inputImage = inputCIImage
