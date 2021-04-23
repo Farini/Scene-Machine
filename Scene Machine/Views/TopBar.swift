@@ -10,12 +10,15 @@ import SwiftUI
 struct TopBar: View {
     var body: some View {
         HStack {
-            Button("try me!"){
-                print("trying...")
-            }
-            Button("Other"){
-                print("cheating...")
-            }
+//            Button("try me!"){
+//                print("trying...")
+//            }
+//            Button("Other"){
+//                print("cheating...")
+//            }
+            Spacer()
+            Text("Experiements with Noise, Image Effects, Shaders and SceneKit")
+                .foregroundColor(.orange)
             Spacer()
         }
     }
