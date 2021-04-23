@@ -1,13 +1,14 @@
 # 🎬 Scene Machine
-Scene Machine is a tool for SceneKit, with a few additional features for SpriteKit. The objective is to provide an easy way to generate textures and 3D geometries to facilitate the creation of SceneKit scenes, allowing creators to speed up their process, and achieve better results.
+Scene Machine is a tool for `SceneKit`, with a few additional features for `SpriteKit`. 
+The objective is to provide an easy way to generate textures and 3D geometries to facilitate the creation of `SceneKit` scenes, allowing creators to speed up their process, and achieve better results.
 
-Although SpriteKit offers ways to generate noise textures, the options are limited. In Blender, for example, there are many more options, and graphics operations that can be performed to generate a texture. Plus, those patterns can be generated and placed in an UV map.
+Although SpriteKit offers ways to generate noise textures, the options are limited. In Blender, for example, there are many more options, and graphics operations that can be performed to generate a texture. 
+Plus, those patterns can be generated and placed in an UV map.
 
-![Alt text](/Scene%20Machine/Utilities/Screenshots/Screenshot1?raw=true "Screenshot 1")
-![Alt text](/Scene%20Machine/Utilities/Screenshots/Screenshot2?raw=true "Screenshot 2")
-![Alt text](/Scene%20Machine/Utilities/Screenshots/Screenshot3?raw=true "Screenshot 3")
-    
-https://drive.google.com/uc?export=view&id=1wEuXcVkOmv2KEQ-dtnwprrbh7oqcBdLU
+The objective of this app is to create a moe user friendly way to build a `.scn` file, or to facilitate the conversion of `.dae` files into `.scn` while maintaining good quality meshes.
+
+![Alt text](https://user-images.githubusercontent.com/5069713/115817657-40738a80-a3c9-11eb-8f5c-9c586c1ff0af.png)
+![Alt text](https://user-images.githubusercontent.com/5069713/115817718-6731c100-a3c9-11eb-8f38-03e8f4298bc7.png)
 
 ## Expected Features
 
@@ -17,11 +18,13 @@ https://drive.google.com/uc?export=view&id=1wEuXcVkOmv2KEQ-dtnwprrbh7oqcBdLU
 - [X] CIFilter with Kernels
 - [X] Save CIImage
 - [X] Save SKNoise image
+- [X] Test new Metal shader: makeBlackTransparent >> Substitute black pixels for transparent ones
 
 - [ ] Mix Images
-- [ ] Test new Metal shader: makeBlackTransparent >> With that ugly SpriteKit image (black background)
+
 
 ### Scene Materials
+
 - [X] Material Model for Persistency
 - [ ] Enable the use of  `TrimSheets`
 - [ ] Basic Materials library (Wood, bricks, asphalt, plastic, metals, dirt, etc.)
@@ -38,6 +41,31 @@ https://drive.google.com/uc?export=view&id=1wEuXcVkOmv2KEQ-dtnwprrbh7oqcBdLU
 - [ ] Have some sample code + shaders written in `Metal`  - `SCNProgram`
 - [ ] Test animated characters - Bones(in blender) vs SCNSkinner(Swift)
 - [ ] Background `HDRI` Images
+
+### Metal Shaders
+
+- [X] GRBA -> Green to Red (and back) pixels 
+- [X] Caustic Noise improved
+- [X] Black to Transparent
+- [ ] Hexagons pattern
+- [ ] Truchet tiling
+- [ ] KIFS Fractals: https://www.youtube.com/watch?v=il_Qg9AqQkE&list=RDCMUCcAlTqd9zID6aNX3TzwxJXg&index=6
+- [ ] Voronoi Noise improved
+- [ ] More patterns and noises
+
+### Scene Ideas
+
+1. Forest
+2. Terrain
+3. Beach
+4. Maze
+5. House in the forest
+
+### Animatable Ideas
+
+1. Car, or Rover
+2. Monkey
+3. Person
 
 ## To-Do list
 
@@ -68,9 +96,10 @@ https://drive.google.com/uc?export=view&id=1wEuXcVkOmv2KEQ-dtnwprrbh7oqcBdLU
     - [X] Terrain
     - [ ] Woman
     - [ ] StreetView
+    
 
 
-### Important Notes - Modulo Funtion Metal vs GLSL
+### Important Notes - Modulo Function Metal vs GLSL
 
 GLSL mod() can be expanded to:
 
@@ -93,21 +122,6 @@ float fmod(float x, float y) {
     return x - y * trunc(x / y);
 }
 ```
-
-
-### Scene Ideas
-
-1. Forest
-2. Terrain
-3. Beach
-4. Maze
-5. House in the forest
-
-### Animatable Ideas
-
-1. Car, or Rover
-2. Monkey
-3. Person
 
 # 🍎 SceneKit
 
@@ -175,10 +189,11 @@ _geometry.position.z = intensity;
 Create a custom geometry from vertex data
 >init(sources:elements:)
 
-> sources
->>  An array of SCNGeometrySource objects describing vertices in the geometry and their attributes.
-> elements
->>  An array of SCNGeometryElement objects describing how to connect the geometry’s vertices.
+> Sources
+>  An array of SCNGeometrySource objects describing vertices in the geometry and their attributes.
+
+>  Elements
+>  An array of SCNGeometryElement objects describing how to connect the geometry’s vertices.
 
 **Different Materials in one geometry**
 > Sources for the vertex, normal, and color semantics must be unique—if multiple objects in the sources array have the same semantic, SceneKit uses only the first. 
