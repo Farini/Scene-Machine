@@ -28,6 +28,7 @@ struct ImageFXView: View {
                 switch state {
                     case .empty:
                         Text("Select filter type").foregroundColor(.gray)
+                            .padding()
                     case .Blurr:
                         FXBlurrView(applied: { img in
                                         apply(image: img) },

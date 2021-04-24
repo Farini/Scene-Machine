@@ -36,6 +36,8 @@
 		85649234257976AB00D1FE00 /* SceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85649233257976AB00D1FE00 /* SceneView.swift */; };
 		85649239257976C700D1FE00 /* Scenes.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 85649238257976C700D1FE00 /* Scenes.scnassets */; };
 		8564923E2579828100D1FE00 /* dissolve.fragment.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8564923D2579828100D1FE00 /* dissolve.fragment.txt */; };
+		85771BCD2633D08F001A2B88 /* InputViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85771BCC2633D08F001A2B88 /* InputViews.swift */; };
+		85771BD12633D3B7001A2B88 /* CIGenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85771BD02633D3B7001A2B88 /* CIGenView.swift */; };
 		857A93CD26124F3F004FFEBB /* NoiseMakerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857A93CC26124F3F004FFEBB /* NoiseMakerView.swift */; };
 		857A93D226124FE7004FFEBB /* NoiseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857A93D126124FE7004FFEBB /* NoiseController.swift */; };
 		857A93E526126613004FFEBB /* SpriteNoiseMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857A93E426126613004FFEBB /* SpriteNoiseMaker.swift */; };
@@ -111,6 +113,8 @@
 		85649233257976AB00D1FE00 /* SceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneView.swift; sourceTree = "<group>"; };
 		85649238257976C700D1FE00 /* Scenes.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Scenes.scnassets; sourceTree = "<group>"; };
 		8564923D2579828100D1FE00 /* dissolve.fragment.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dissolve.fragment.txt; sourceTree = "<group>"; };
+		85771BCC2633D08F001A2B88 /* InputViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputViews.swift; sourceTree = "<group>"; };
+		85771BD02633D3B7001A2B88 /* CIGenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CIGenView.swift; sourceTree = "<group>"; };
 		857A93CC26124F3F004FFEBB /* NoiseMakerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseMakerView.swift; sourceTree = "<group>"; };
 		857A93D126124FE7004FFEBB /* NoiseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseController.swift; sourceTree = "<group>"; };
 		857A93E426126613004FFEBB /* SpriteNoiseMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteNoiseMaker.swift; sourceTree = "<group>"; };
@@ -278,10 +282,19 @@
 				8515B3DA2628B12A00A886BD /* Composition */,
 				8515B34E26262EB200A886BD /* Scenes */,
 				8515B36526263C6A00A886BD /* Materials */,
+				85771BCB2633D019001A2B88 /* UI Components */,
 				8515B3792627F3CE00A886BD /* SceneProgramView.swift */,
 				8515B46C262D3B3B00A886BD /* TopBar.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		85771BCB2633D019001A2B88 /* UI Components */ = {
+			isa = PBXGroup;
+			children = (
+				85771BCC2633D08F001A2B88 /* InputViews.swift */,
+			);
+			path = "UI Components";
 			sourceTree = "<group>";
 		};
 		857A93C726124CE7004FFEBB /* Preview Content */ = {
@@ -360,6 +373,7 @@
 			isa = PBXGroup;
 			children = (
 				85B9138126329DED0065D6D2 /* MetalGenView.swift */,
+				85771BD02633D3B7001A2B88 /* CIGenView.swift */,
 			);
 			path = "Metal Generators";
 			sourceTree = "<group>";
@@ -492,10 +506,12 @@
 				8515B3532626305F00A886BD /* SuzanneSceneView.swift in Sources */,
 				8515B3D52628A58B00A886BD /* LocalDatabase.swift in Sources */,
 				8515B372262743D000A886BD /* TerrainView.swift in Sources */,
+				85771BCD2633D08F001A2B88 /* InputViews.swift in Sources */,
 				8515B3302624E6EE00A886BD /* ImageBasics.swift in Sources */,
 				85B913682632998D0065D6D2 /* SwapGreenRed.swift in Sources */,
 				8515B47C262E4B5F00A886BD /* FXBlurrView.swift in Sources */,
 				85B9137926329A3A0065D6D2 /* CoreImage+Extensions.swift in Sources */,
+				85771BD12633D3B7001A2B88 /* CIGenView.swift in Sources */,
 				8515B37A2627F3CE00A886BD /* SceneProgramView.swift in Sources */,
 				8515B35E26263C6100A886BD /* MaterialEditView.swift in Sources */,
 				8515B38226287DAD00A886BD /* Kernel1.metal in Sources */,

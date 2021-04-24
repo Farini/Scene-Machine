@@ -110,6 +110,118 @@ extern "C" { namespace coreimage {
         return float4(col, 1);
     }
     
+    // Truchet
+    
+    
+    float Noise21(float2 p) {
+        // randomzie
+        p = fract(p * float2(234.34, 435.345));
+        p += dot(p, p + 34.23);
+        return fract(p.x * p.y);
+    }
+    
+    float4 truchet(sample_t sample, float2 size, destination dest) {
+        float2 uv = (dest.coord() - .5 * size.xy) / size.y;
+        
+        float3 col = float3(0);
+        
+        // size
+        uv *= 8;
+        
+        float2 gv = fract(uv) - 0.5;
+        float2 id = floor(uv); // id of the tile
+        float width = 0.12; // width of truchet
+        
+        float n = Noise21(id); // Returns a random number between 0 and 1
+        
+        //gv.x *= -1; // flip diagonals
+        
+        if (n < 0.5) gv.x *= -1; // 50% chance to flip diagonals
+        float d = abs(abs(gv.x + gv.y) - 0.5); // distance
+        d = length(gv-sign(gv.x+gv.y+0.001) * 0.5) - 0.5;
+        
+        float mask = smoothstep(0.01, -0.01, abs(d) - width);
+        
+        col += mask;
+        // col += n;
+        
+        // Make the red grid
+//        if (gv.x>.48 || gv.y>.48) {
+//            col = float3(1, 0, 0);
+//        }
+        
+        // col.rg = gv;
+        
+        return float4(col, 1);
+        
+    }
+    
+    // Draws a maze. Like a trouchet, but with straight lines
+    float4 maze(sample_t sample, float2 size, destination dest) {
+        float2 uv = (dest.coord() - .5 * size.xy) / size.y;
+        
+        float3 col = float3(0);
+        
+        // size
+        uv *= 8;
+        
+        float2 gv = fract(uv) - 0.5;
+        float2 id = floor(uv); // id of the tile
+        float width = 0.12; // width of truchet
+        
+        float n = Noise21(id); // Returns a random number between 0 and 1
+        
+        //gv.x *= -1; // flip diagonals
+        
+        if (n < 0.5) gv.x *= -1; // 50% chance to flip diagonals
+        float d = abs(abs(gv.x + gv.y) - 0.5); // distance
+        float mask = smoothstep(0.01, -0.01, d - width);
+        
+        col += mask;
+        // col += n;
+        
+        // Make the red grid
+        //        if (gv.x>.48 || gv.y>.48) {
+        //            col = float3(1, 0, 0);
+        //        }
+        
+        // col.rg = gv;
+        
+        return float4(col, 1);
+        
+    }
+    
+    // Checkerboard, with tiles varying from black to white
+    float4 randomBlackToWhiteTiles(sample_t sample, float2 size, destination dest) {
+        float2 uv = (dest.coord() - .5 * size.xy) / size.y;
+        
+        float3 col = float3(0);
+        
+        uv *= 5;
+        
+        float2 gv = fract(uv) - 0.5;
+        float2 id = floor(uv); // id of the tile
+        
+        float n = Noise21(id);
+        
+//        float width = 0.1; // width of truchet
+        
+        gv.x *= -1; // flip diagonals
+        
+//        float mask = smoothstep(0.01, -0.01, abs(gv.x + gv.y) - width);
+        
+        // col += mask;
+        col += n;
+        
+        if (gv.x>.48 || gv.y>.48) {
+            col = float3(1, 0, 0);
+        }
+        
+        // col.rg = gv;
+        
+        return float4(col, 1);
+    }
+    
     // MARK: - Black & White
     
     float lumin601(float3 p)
