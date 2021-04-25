@@ -64,16 +64,16 @@ extern "C" { namespace coreimage {
         return float4(colour, 1.0);
     }
     
-    float4 hexagons(sample_t sample, destination dest) {
-        
-        float2 iResolution = float2(1,1); //scn_frame.inverseResolution;
-//        float2 iResolution = float2(1,1);
-        
-        float2 uv = (dest.coord() - 0.5 * iResolution.xy/iResolution.y); // * iResolution.xy) / iResolution.y; //_surface.position.xy; //(_surface.diffuseTexcoord-0.5*iResolution.xy)/iResolution.y;
-        float3 col = float3(0);
-        
-        uv *= 2;
-        
+    // Hexagons
+    
+    float HexDist(float2 p) {
+        p = abs(p);
+        float c = dot(p, normalize(float2(1, 1.73)));
+        c = max(c, p.x);
+        return c;
+    }
+    
+    float4 HexCoords(float2 uv) {
         float2 r = float2(1, 1.73);
         float2 h = r * 0.5;
         float2 a = (uv - r * floor(uv/r)) - h; //fract(uv)-0.5; // (uv - r * floor(uv / r)) - h; //fract(uv)-0.5; //fmod(uv, r)-h; //fract(uv)-0.5;
@@ -86,33 +86,38 @@ extern "C" { namespace coreimage {
         } else {
             gv = b;
         }
-        // end func
         
-        // func HexDist
-        uv = abs(gv);
-        float c = dot(uv, normalize(float2(1,1.73)));
-        c = max(c, uv.x);
-        // col += step(c, .2);
+        float x = atan(gv.x / gv.y);
         
-        float2 hid = uv-gv;
-        // float x = atan(gv.x / gv.y);
-        float y = 0.5 - c;
-        float4 hexCoords = float4(gv.x, y, hid.x, hid.y);
-        float blackThick = 0.01;
+        float y = 0.5 - HexDist(gv);
+        
+        float2 id = uv-gv;
+        
+        return float4 (x, y, id.x, id.y);
+    }
+    
+    float4 hexagons(sample_t sample, float2 size, destination dest) {
+        
+        float2 uv = (dest.coord() - .5 * size.xy) / size.y;
+        
+        float3 col = float3(0);
+        
+        uv *= 5;
+        
+        float4 hc = HexCoords(uv);
+        float blackThick = 1;
         
         // Draw
-        float d = smoothstep(0.02, blackThick, hexCoords.y); //hexCoords.y;
-        // float d = smoothstep(0.02, blackThick, hexCoords.y*sin(hexCoords.z*hexCoords.w+scn_frame.time));
+        float c = smoothstep(0.01, 0.05, hc.y * 1/blackThick);
         
-        col.rg = hexCoords.xy;
-        col += d;
+        col += c;
         
         return float4(col, 1);
     }
     
     // Truchet
     
-    
+    // random number
     float Noise21(float2 p) {
         // randomzie
         p = fract(p * float2(234.34, 435.345));
@@ -220,6 +225,52 @@ extern "C" { namespace coreimage {
         // col.rg = gv;
         
         return float4(col, 1);
+    }
+    
+    // Random position
+    float2 Noise22(float2 p) {
+        float3 a = fract(p.xyx * float3(123.34, 234.34, 345.65));
+        a += dot(a, a + 34.45);
+        return fract(float2(a.x*a.y, a.y*a.z));
+    }
+    
+    float4 voronoi(sample_t sample, float2 size, float time, destination dest) {
+        float2 uv = (dest.coord() - .5 * size.xy) / size.y;
+        
+//        float m = 0;
+        float t = time;
+        
+        uv *= 18;
+        float2 gv = fract(uv) - 0.5;
+        float2 id = floor(uv);
+        
+        float minDist = 100;
+        
+        for (float y=-1; y<=1; y++) {
+            for (float x=-1; x<1; x++) {
+                float2 offset = float2(x, y);
+                
+                float2 n = Noise22(id+offset);
+                float2 p = offset+sin(n*t)*0.5;
+                
+                p -= gv; // use for manhattan distance
+                
+                // Euclidean distance
+                float d = length(gv-p);
+                
+                // Manhattan Distance
+                d = abs(p.x) + abs(p.y);
+                
+                if(d<minDist) {
+                    minDist = d;
+                }
+            }
+        }
+        
+        // 1- to invert colors, minDist to keep
+        float3 col = float3(minDist);
+        
+        return float4(col, 1.0);
     }
     
     // MARK: - Black & White

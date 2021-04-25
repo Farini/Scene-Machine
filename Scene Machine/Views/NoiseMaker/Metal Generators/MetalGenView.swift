@@ -49,7 +49,8 @@ struct MetalGenView: View {
                     
                     Button("Hexagon") {
                         print("foobar")
-                        checkerboard()
+//                        checkerboard()
+                        hexagon()
                     }
                     Button("Truchet") {
                         print("foobar")
@@ -84,6 +85,28 @@ struct MetalGenView: View {
 
         // get a CIImage from our filter or exit if that fails
         guard let outputImage = caustic.outputImage() else { return }
+        
+        // attempt to get a CGImage from our CIImage
+        if let cgimg = context.createCGImage(outputImage, from: CGRect(origin: .zero, size: CGSize(width: 1024, height: 1024))) {
+            // convert that to a UIImage
+            let nsImage = NSImage(cgImage: cgimg, size:image.size)
+            self.image = nsImage
+        }
+    }
+    
+    func hexagon() {
+        let context = CIContext()
+        
+        let hexagon = HexagonFilter() //CausticNoise()
+        
+        let noise = CIFilter.randomGenerator()
+        let noiseImage = noise.outputImage!
+        
+        hexagon.inputImage = noiseImage
+        hexagon.tileSize = Float(image.size.width)
+        
+        // get a CIImage from our filter or exit if that fails
+        guard let outputImage = hexagon.outputImage() else { return }
         
         // attempt to get a CGImage from our CIImage
         if let cgimg = context.createCGImage(outputImage, from: CGRect(origin: .zero, size: CGSize(width: 1024, height: 1024))) {
