@@ -41,6 +41,8 @@
 		857A93CD26124F3F004FFEBB /* NoiseMakerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857A93CC26124F3F004FFEBB /* NoiseMakerView.swift */; };
 		857A93D226124FE7004FFEBB /* NoiseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857A93D126124FE7004FFEBB /* NoiseController.swift */; };
 		857A93E526126613004FFEBB /* SpriteNoiseMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857A93E426126613004FFEBB /* SpriteNoiseMaker.swift */; };
+		857C473426371D06006C6A32 /* MetalNoiseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857C473326371D06006C6A32 /* MetalNoiseView.swift */; };
+		857C47382637370F006C6A32 /* MetalTilesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857C47372637370F006C6A32 /* MetalTilesView.swift */; };
 		85954043261C3144001D9040 /* SpriteKitNoiseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85954042261C3144001D9040 /* SpriteKitNoiseController.swift */; };
 		8597BB7E25BCA8B200C705A0 /* ImageFXController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8597BB7D25BCA8B200C705A0 /* ImageFXController.swift */; };
 		8597BB7F25BCA8B200C705A0 /* ImageFXController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8597BB7D25BCA8B200C705A0 /* ImageFXController.swift */; };
@@ -118,6 +120,8 @@
 		857A93CC26124F3F004FFEBB /* NoiseMakerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseMakerView.swift; sourceTree = "<group>"; };
 		857A93D126124FE7004FFEBB /* NoiseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseController.swift; sourceTree = "<group>"; };
 		857A93E426126613004FFEBB /* SpriteNoiseMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteNoiseMaker.swift; sourceTree = "<group>"; };
+		857C473326371D06006C6A32 /* MetalNoiseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalNoiseView.swift; sourceTree = "<group>"; };
+		857C47372637370F006C6A32 /* MetalTilesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalTilesView.swift; sourceTree = "<group>"; };
 		85954042261C3144001D9040 /* SpriteKitNoiseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteKitNoiseController.swift; sourceTree = "<group>"; };
 		8597BB7D25BCA8B200C705A0 /* ImageFXController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFXController.swift; sourceTree = "<group>"; };
 		8597BB8325BCAEF600C705A0 /* Metal.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Metal.metal; sourceTree = "<group>"; };
@@ -374,6 +378,8 @@
 			children = (
 				85B9138126329DED0065D6D2 /* MetalGenView.swift */,
 				85771BD02633D3B7001A2B88 /* CIGenView.swift */,
+				857C473326371D06006C6A32 /* MetalNoiseView.swift */,
+				857C47372637370F006C6A32 /* MetalTilesView.swift */,
 			);
 			path = "Metal Generators";
 			sourceTree = "<group>";
@@ -510,9 +516,11 @@
 				8515B3302624E6EE00A886BD /* ImageBasics.swift in Sources */,
 				85B913682632998D0065D6D2 /* SwapGreenRed.swift in Sources */,
 				8515B47C262E4B5F00A886BD /* FXBlurrView.swift in Sources */,
+				857C473426371D06006C6A32 /* MetalNoiseView.swift in Sources */,
 				85B9137926329A3A0065D6D2 /* CoreImage+Extensions.swift in Sources */,
 				85771BD12633D3B7001A2B88 /* CIGenView.swift in Sources */,
 				8515B37A2627F3CE00A886BD /* SceneProgramView.swift in Sources */,
+				857C47382637370F006C6A32 /* MetalTilesView.swift in Sources */,
 				8515B35E26263C6100A886BD /* MaterialEditView.swift in Sources */,
 				8515B38226287DAD00A886BD /* Kernel1.metal in Sources */,
 				85B9135B263298790065D6D2 /* CausticNoise.swift in Sources */,

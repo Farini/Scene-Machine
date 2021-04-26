@@ -45,6 +45,7 @@ class CausticNoiseMetal: CIFilter {
     private var kernel:CIColorKernel
     var inputImage:CIImage?
     var tileSize:Float = 512.0
+    var time:Int = 1
     
     override init() {
         let url = Bundle.main.url(forResource: "default", withExtension: "metallib")!
@@ -79,15 +80,19 @@ class CausticNoiseMetal: CIFilter {
         //            return rect.insetBy(dx: 0, dy: 0)
         //        }
         //        caustic(sample_t sample, float time, float tileSize, destination dest)
+        let nTime:Float = Float(time)
         
-        return kernel.apply(extent: inputImage.extent, arguments: [src, 1.0, tileSize])
+        return kernel.apply(extent: inputImage.extent, arguments: [src, nTime, tileSize])
     }
 }
 
 class VoronoiFilter: CIFilter {
+    
     private var kernel:CIColorKernel
     var inputImage:CIImage?
     var tileSize:Float = 512.0
+    var tileCount:Int = 10
+    var time:Int = 1
     
     override init() {
         let url = Bundle.main.url(forResource: "default", withExtension: "metallib")!
@@ -119,9 +124,11 @@ class VoronoiFilter: CIFilter {
         
         let src = CISampler(image: inputImage)
         let vec = CIVector(cgPoint: CGPoint(x: CGFloat(tileSize), y: CGFloat(tileSize)))
+        let tileCT = Float(tileCount)
+        let timeN = Float(time)
         
         // float4 truchet(sample_t sample, float2 size, destination dest) {
-        return kernel.apply(extent: inputImage.extent, arguments: [src, vec, 2.2])
+        return kernel.apply(extent: inputImage.extent, arguments: [src, vec, tileCT, timeN])
     }
 }
 

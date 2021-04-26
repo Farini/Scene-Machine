@@ -38,6 +38,7 @@ struct CIGenView: View {
     @State var generatorType:CIGenType = .Checkerboard
     
     var body: some View {
+        
         VStack {
             // Header and Picker
             Group {

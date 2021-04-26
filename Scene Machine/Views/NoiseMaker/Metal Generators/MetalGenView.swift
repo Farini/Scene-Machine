@@ -10,6 +10,13 @@ import SwiftUI
 enum MetalGenType {
     case CIGenerators
     case Patterns
+    
+    case Noise
+    
+    // Tiles
+    case Tiles
+    // Overlays
+    // Others
 }
 
 struct MetalGenView: View {
@@ -17,6 +24,8 @@ struct MetalGenView: View {
     @State var textureSize:TextureSize = .medium
     @State var image:NSImage = NSImage(size: NSSize(width: 1024, height: 1024))
     @State var selection:MetalGenType = .CIGenerators
+    
+    @State private var zoomLevel:Double = 1.0
     
     var body: some View {
         NavigationView {
@@ -26,11 +35,20 @@ struct MetalGenView: View {
                         CIGenView(applied: { (newImage) in
                             self.image = newImage
                         }, generatorType: .Checkerboard, image: image)
+                    case .Noise:
+                        MetalNoiseView(applied: { (newImage) in
+                            self.image = newImage
+                        })
+                    case .Tiles:
+                        MetalTilesView(applied: { (newImage) in
+                            self.image = newImage
+                        }, image: self.image)
                     default: Text("Not Implemented").foregroundColor(.gray)
                 }
             }
             
             VStack {
+                
                 HStack {
                     Picker("Size", selection: $textureSize) {
                         ForEach(TextureSize.allCases, id:\.self) { tSize in
@@ -60,11 +78,41 @@ struct MetalGenView: View {
                         print("CI Gen")
                         self.selection = .CIGenerators
                     }
+                    Button("Noise") {
+                        self.selection = .Noise
+                    }
+                    Button("Save") {
+                        self.saveImage()
+                    }
+                    // Zoom -
+                    Button(action: {
+                        if zoomLevel > 0.25 {
+                            zoomLevel -= 0.2
+                        }
+                    }, label: {
+                        Image(systemName:"minus.magnifyingglass")
+                    }).font(.title2)
+                    
+                    // Zoom Label
+                    let zoomString = String(format: "Zoom: %.2f", zoomLevel)
+                    Text(zoomString)
+                    
+                    // Zoom +
+                    Button(action: {
+                        if zoomLevel <= 8 {
+                            zoomLevel += 0.2
+                        }
+                    }, label: {
+                        Image(systemName:"plus.magnifyingglass")
+                    }).font(.title2)
                 }
                 .padding(6)
+                .background(Color.black.opacity(0.2))
                 
                 ScrollView {
                     Image(nsImage: image)
+                        .resizable()
+                        .frame(width: textureSize.size.width * CGFloat(zoomLevel), height: textureSize.size.height * CGFloat(zoomLevel), alignment: .center)
                         .padding(20)
                 }
             }
@@ -166,10 +214,65 @@ struct MetalGenView: View {
         }
         print("Check end")
     }
+    
+    func saveImage() {
+        let data = image.tiffRepresentation
+        
+        let dialog = NSSavePanel() //NSOpenPanel();
+        
+        dialog.title                   = "Choose a directory";
+        dialog.showsResizeIndicator    = true;
+        dialog.showsHiddenFiles        = false;
+        
+        if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
+            let result = dialog.url // Pathname of the file
+            
+            if let result = result {
+                
+                var finalURL = result
+                
+                // Make sure there is an extension...
+                
+                let path: String = result.path
+                print("Picked Path: \(path)")
+                
+                var filename = result.lastPathComponent
+                print("Filename: \(filename)")
+                if filename.isEmpty {
+                    filename = "Untitled"
+                }
+                
+                let xtend = result.pathExtension.lowercased()
+                print("Extension: \(xtend)")
+                
+                let knownImageExtensions = ["jpg", "jpeg", "png", "bmp", "tiff"]
+                
+                if !knownImageExtensions.contains(xtend) {
+                    filename = "\(filename).png"
+                    
+                    let prev = finalURL.deletingLastPathComponent()
+                    let next = prev.appendingPathComponent(filename, isDirectory: false)
+                    finalURL = next
+                }
+                
+                do {
+                    try data?.write(to: finalURL)
+                    print("File saved")
+                } catch {
+                    print("ERROR: \(error.localizedDescription)")
+                }
+                
+            }
+        } else {
+            // User clicked on "Cancel"
+            return
+        }
+    }
 }
 
 struct MetalGenView_Previews: PreviewProvider {
     static var previews: some View {
         MetalGenView()
+            .frame(minWidth: 800, maxWidth: .infinity, minHeight: 350, maxHeight: .infinity, alignment: .center)
     }
 }

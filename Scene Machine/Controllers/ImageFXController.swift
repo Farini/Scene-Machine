@@ -24,7 +24,7 @@ class ImageFXController:ObservableObject {
         if let image = image {
             self.openingImage = image
         } else {
-            self.openingImage = NSImage(named:"Example")!
+            self.openingImage = NSImage(named:"Checkerboard")!
         }
     }
     

@@ -123,6 +123,56 @@ struct SliderInputView: View {
     }
 }
 
+struct CounterInput: View {
+    
+    @Binding var value:Int
+    
+    var range:ClosedRange<Int> = 1...10
+    var title:String
+    
+    @State private var minusEnabled:Bool = true
+    @State private var plusEnabled:Bool = true
+    
+    var body: some View {
+        VStack {
+            Text(title).font(.title3)
+                .padding(.vertical, 6)
+            HStack {
+                
+                Image(systemName: minusEnabled ? "minus.circle.fill" : "minus.circle")
+                    .onTapGesture {
+                        if value > range.lowerBound {
+                            value -= 1
+                            plusEnabled = true
+                        }
+                        if value == range.lowerBound {
+                            minusEnabled = false
+                            plusEnabled = true
+                        }
+                    }
+                Spacer()
+                Text("\(value)")
+                Spacer()
+                Image(systemName: plusEnabled ? "plus.circle.fill" : "plus.circle")
+                    .onTapGesture {
+                        if value < range.upperBound {
+                            value += 1
+                            minusEnabled = true
+                        }
+                        if value == range.upperBound {
+                            plusEnabled = false
+                            minusEnabled = true
+                        }
+                    }
+            }
+            .font(.title3)
+            .frame(width:200)
+        }
+        .padding(.horizontal, 8)
+        .padding(.vertical, 6)
+    }
+}
+
 struct PointInput_Previews: PreviewProvider {
     static var previews: some View {
         PointInput()
@@ -138,5 +188,11 @@ struct SliderInput_Previews: PreviewProvider {
 struct PointInput3_Previews: PreviewProvider {
     static var previews: some View {
         DirectionVectorInput()
+    }
+}
+
+struct CounterInput_Previews: PreviewProvider {
+    static var previews: some View {
+        CounterInput(value: .constant(2), title: "Test")
     }
 }

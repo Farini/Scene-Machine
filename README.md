@@ -13,13 +13,15 @@ The objective of this app is to create a more user friendly way to build a `.scn
 ## Expected Features
 
 ### SpriteKit Noise Maker
+Create 6 common types of noises using `SpriteKit`.
 
 - [X] Generate any noise in SpriteKit: Perlin, Voronoi, Ridged, Billow, Checker, Cylinder
 - [X] Save Image
 - [X] Choose Image Size: 256x256, 512x512, 1024x1024, 2048x2048, 4096x4096
 - [X] Color Gradients
 
-### Image Composition + Noise
+### Image Composition
+Mix 2 images, using multiple `CoreImage` techniques
 
 - [X] CIFilter with Kernels
 - [X] Save CIImage
@@ -28,21 +30,32 @@ The objective of this app is to create a more user friendly way to build a `.scn
 - [X] Undo Changes in Image
 - [X] Zoom in and out of images
 
+### Pedal2Metal
+Procedural Image generators with `Metal`
+
+- [ ] Tiles { Checkerboard, Hexagons, Truchet, Diagonal Lines }
+- [ ] Noise { Voronoi, Caustic, Waves }
+- [ ] Overlay { Lens flare, Halo, Sunbeams, Caustic Refraction }
+- [ ] Others { Barcode, QRcode, Aztec }
+- [ ] Organize in Sections
+
 
 ### Scene Materials
+Create SceneKit Materials - `SCNMaterial`
 
 - [X] Material Model for Persistency
 - [X] SceneMaterial, and SubMaterialData: Codable -> Persist `SCNMaterial`
 - [X] Material Editor (may need improvements)
 - [X] UVMap
-
+- [ ] Ambient Occlusion
+- [ ] Save UVMap Image
 - [ ] Save Materials
 - [ ] Basic Materials library (Wood, bricks, asphalt, plastic, metals, dirt, etc.)
 
 ### SceneKit
+Test and export `SceneKit` scenes.
 
 - [X] Show a Geometry's `UVMap`
-
 - [ ] Have more sample geometries than the ones provided by SceneKit
 - [ ] Save and export scene `.scn` files >> https://developer.apple.com/documentation/scenekit/scnscene/1523577-write
 - [ ] Automatically "beautify" `.dae` files made in blender - Adjust lighting, colors, etc.

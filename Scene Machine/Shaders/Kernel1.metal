@@ -236,13 +236,13 @@ extern "C" { namespace coreimage {
         return fract(float2(a.x*a.y, a.y*a.z));
     }
     
-    float4 voronoi(sample_t sample, float2 size, float time, destination dest) {
+    float4 voronoi(sample_t sample, float2 size, float tilecount, float time, destination dest) {
         float2 uv = (dest.coord() - .5 * size.xy) / size.y;
         
 //        float m = 0;
         float t = time;
         
-        uv *= 18;
+        uv *= tilecount;
         float2 gv = fract(uv) - 0.5;
         float2 id = floor(uv);
         
