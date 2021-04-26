@@ -60,9 +60,10 @@ struct MaterialEditView: View {
                 VStack {
                     HStack {
                         Text("UV MAP").font(.title).foregroundColor(.accentColor)
-                        Button("SSave") {
-                            let image = uvView.snapShot()
+                        Button("Save") {
+                            let image = uvView.snapShot(uvSize: CGSize(width: 1024, height: 1024))
                             self.openSavePanel(for: image!)
+                            
                         }
                         Spacer()
                         Text("Sources:\(geo.sources.count), Vertices:\(geo.sources.last!.vectorCount)")
@@ -123,14 +124,12 @@ struct MaterialEditView: View {
     
     var uvView: some View {
         
-        VStack {
             let uv = self.describeUV(source:geometry!.sources.last, geo: geometry!)
-            UVShape(uv: uv)
+            return UVShape(uv: uv)
                 .stroke(lineWidth: 0.5)
                 .fill(Color.orange, style: FillStyle(eoFill: false, antialiased: true))
-                .background(Color.gray.opacity(0.1))
-                .frame(width:1000, height:1000, alignment: .center)
-        }
+                .background(Color.clear)
+                .frame(width:1024, height:1024, alignment: .center)
         
     }
     

@@ -30,7 +30,7 @@ class ImageFXController:ObservableObject {
     
     // MARK: - Saving
     
-    // This opens the Finder, but not to save...
+    //
     func openSavePanel(for image:NSImage) {
         
         let data = image.tiffRepresentation
@@ -45,22 +45,40 @@ class ImageFXController:ObservableObject {
             let result = dialog.url // Pathname of the file
             
             if let result = result {
-                if result.isFileURL {
-                    print("Picked a file")
-                } else {
-                    // this doesn't happen
-                    print("Picked what?")
-                }
+                
+                var finalURL = result
+                
+                // Make sure there is an extension...
+                
                 let path: String = result.path
                 print("Picked Path: \(path)")
                 
+                var filename = result.lastPathComponent
+                print("Filename: \(filename)")
+                if filename.isEmpty {
+                    filename = "Untitled"
+                }
+                
+                let xtend = result.pathExtension.lowercased()
+                print("Extension: \(xtend)")
+                
+                let knownImageExtensions = ["jpg", "jpeg", "png", "bmp", "tiff"]
+                
+                if !knownImageExtensions.contains(xtend) {
+                    filename = "\(filename).png"
+                    
+                    let prev = finalURL.deletingLastPathComponent()
+                    let next = prev.appendingPathComponent(filename, isDirectory: false)
+                    finalURL = next
+                }
                 
                 do {
-                    try data?.write(to: URL(fileURLWithPath: path))
+                    try data?.write(to: finalURL)
                     print("File saved")
                 } catch {
                     print("ERROR: \(error.localizedDescription)")
                 }
+            
             }
         } else {
             // User clicked on "Cancel"

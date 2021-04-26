@@ -40,6 +40,8 @@ extern "C" { namespace coreimage {
         return filtered;
     }
     
+    // MARK: - Noises
+    
     float4 caustic(sample_t sample, float time, float tileSize, destination dest) {
         
         float2 uv = dest.coord() / tileSize;

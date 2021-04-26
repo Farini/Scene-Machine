@@ -8,7 +8,14 @@
 import SwiftUI
 
 struct FXBlurrView: View {
+    
+    @ObservedObject var controller:ImageFXController
 
+    /// Completion function. Returns an image
+    var applied: (_ image:NSImage) -> Void = {_ in }
+    
+    @State var blurrType:BlurrType = .Box
+    
     // Slider values
     @State private var slider1:Float = 0
     @State private var slider2:Float = 0
@@ -16,12 +23,7 @@ struct FXBlurrView: View {
     
     // CGPoint, or Vector
     @State private var vecPoint:CGPoint = .zero
-    
-    /// Completion function. Returns an image
-    var applied: (_ image:NSImage) -> Void = {_ in }
-    
-    @State var blurrType:BlurrType = .Box
-    
+  
     @State private var undoImages:[NSImage] = []
     
     var body: some View {
@@ -139,7 +141,7 @@ struct FXBlurrView: View {
                         if let lastImage = undoImages.dropLast().first {
                             self.image = lastImage
                         }
-                    }
+                    }.disabled(undoImages.isEmpty)
                     Button("🔄 Update") {
                         print("Update Preview")
                         self.undoImages.append(self.image!)
@@ -151,11 +153,16 @@ struct FXBlurrView: View {
         }
         .frame(width:250)
         .padding(8)
+        .onAppear() {
+            if let img = image {
+                self.undoImages.append(img)
+            }
+        }
     }
     
     // Image used to Preview effect
     @State var image:NSImage? = NSImage(named:"Example")
-    @State var isPreviewing:Bool = true
+    @State private var isPreviewing:Bool = true
     var imgPreview: some View {
         VStack {
             Toggle("Preview", isOn: $isPreviewing)
@@ -204,185 +211,160 @@ struct FXBlurrView: View {
     /// Updates the image preview
     func updatePreview() {
         print("Updating Preview")
+        let mainImage = controller.openingImage
+        guard let imageData = mainImage.tiffRepresentation,
+              let imageBitmap = NSBitmapImageRep(data:imageData),
+              let coreImage = CIImage(bitmapImageRep: imageBitmap) else {
+            return
+        }
+        
+        let context = CIContext()
+        
         switch blurrType {
             case .Box:
-                if let inputImage = image {
-                    let inputData = inputImage.tiffRepresentation!
-                    let bitmap = NSBitmapImageRep(data: inputData)!
-                    let inputCIImage = CIImage(bitmapImageRep: bitmap)
-                    
-                    let context = CIContext()
-                    let currentFilter = CIFilter.boxBlur()
-                    currentFilter.inputImage = inputCIImage
-                    currentFilter.radius = self.slider1
-                    
-                    // get a CIImage from our filter or exit if that fails
-                    guard let outputImage = currentFilter.outputImage else { return }
-                    
-                    // attempt to get a CGImage from our CIImage
-                    if let cgimg = context.createCGImage(outputImage, from: outputImage.extent) {
-                        // convert that to a UIImage
-                        let nsImage = NSImage(cgImage: cgimg, size:inputImage.size)
-                        self.image = nsImage
-                    }
-                }
-            case .Disc:
-                if let inputImage = image {
-                    let inputData = inputImage.tiffRepresentation!
-                    let bitmap = NSBitmapImageRep(data: inputData)!
-                    let inputCIImage = CIImage(bitmapImageRep: bitmap)
-                    
-                    let context = CIContext()
-                    let currentFilter = CIFilter.discBlur()
-                    currentFilter.inputImage = inputCIImage
-                    currentFilter.radius = self.slider1
-                    
-                    // get a CIImage from our filter or exit if that fails
-                    guard let outputImage = currentFilter.outputImage else { return }
-                    
-                    // attempt to get a CGImage from our CIImage
-                    if let cgimg = context.createCGImage(outputImage, from: outputImage.extent) {
-                        // convert that to a UIImage
-                        let nsImage = NSImage(cgImage: cgimg, size:inputImage.size)
-                        self.image = nsImage
-                    }
-                }
-            case .Gaussian:
-                if let inputImage = image {
-                    let inputData = inputImage.tiffRepresentation!
-                    let bitmap = NSBitmapImageRep(data: inputData)!
-                    let inputCIImage = CIImage(bitmapImageRep: bitmap)
-                    
-                    let context = CIContext()
-                    let currentFilter = CIFilter.gaussianBlur()
-                    currentFilter.inputImage = inputCIImage
-                    currentFilter.radius = self.slider1
-                    
-                    // get a CIImage from our filter or exit if that fails
-                    guard let outputImage = currentFilter.outputImage else { return }
-                    
-                    // attempt to get a CGImage from our CIImage
-                    if let cgimg = context.createCGImage(outputImage, from: outputImage.extent) {
-                        // convert that to a UIImage
-                        let nsImage = NSImage(cgImage: cgimg, size:inputImage.size)
-                        self.image = nsImage
-                    }
-                }
-            case .MaskedVariable:
-                if let inputImage = image, let maskImage = droppedImage {
-                    let inputData = inputImage.tiffRepresentation!
-                    let bitmap = NSBitmapImageRep(data: inputData)!
-                    let inputCIImage = CIImage(bitmapImageRep: bitmap)
-                    
-                    let maskData = maskImage.tiffRepresentation!
-                    let maskBitmap = NSBitmapImageRep(data: maskData)!
-                    let maskCIImage = CIImage(bitmapImageRep: maskBitmap)
-                    
-                    let context = CIContext()
-                    let currentFilter = CIFilter.maskedVariableBlur()
-                    currentFilter.inputImage = inputCIImage
-                    currentFilter.mask = maskCIImage
-                    
-                    currentFilter.radius = self.slider1
-                    
-                    // get a CIImage from our filter or exit if that fails
-                    guard let outputImage = currentFilter.outputImage else { return }
-                    
-                    // attempt to get a CGImage from our CIImage
-                    if let cgimg = context.createCGImage(outputImage, from: outputImage.extent) {
-                        // convert that to a UIImage
-                        let nsImage = NSImage(cgImage: cgimg, size:inputImage.size)
-                        self.image = nsImage
-                    }
-                }
-            case .MedianFilter:
-                if let inputImage = image {
-                    let inputData = inputImage.tiffRepresentation!
-                    let bitmap = NSBitmapImageRep(data: inputData)!
-                    let inputCIImage = CIImage(bitmapImageRep: bitmap)
+                let filter = CIFilter.boxBlur()
+                filter.inputImage = coreImage
+                filter.radius = self.slider1
                 
-                    
-                    let context = CIContext()
-                    let currentFilter = CIFilter.median()
-                    currentFilter.inputImage = inputCIImage
-                    
-                    // get a CIImage from our filter or exit if that fails
-                    guard let outputImage = currentFilter.outputImage else { return }
-                    
-                    // attempt to get a CGImage from our CIImage
-                    if let cgimg = context.createCGImage(outputImage, from: outputImage.extent) {
-                        // convert that to a UIImage
-                        let nsImage = NSImage(cgImage: cgimg, size:inputImage.size)
-                        self.image = nsImage
-                    }
+                guard let output = filter.outputImage,
+                      let cgOutput = context.createCGImage(output, from: output.extent)
+                       else {
+                    print("⚠️ No output image")
+                    return
                 }
+                
+                let filteredImage = NSImage(cgImage: cgOutput, size: mainImage.size)
+                
+                self.image = filteredImage
+
+            case .Disc:
+                
+                let filter = CIFilter.discBlur()
+                filter.inputImage = coreImage
+                filter.radius = self.slider1
+                
+                guard let output = filter.outputImage,
+                      let cgOutput = context.createCGImage(output, from: output.extent)
+                else {
+                    print("⚠️ No output image")
+                    return
+                }
+                
+                let filteredImage = NSImage(cgImage: cgOutput, size: mainImage.size)
+                
+                self.image = filteredImage
+                
+            case .Gaussian:
+                
+                let filter = CIFilter.gaussianBlur()
+                filter.inputImage = coreImage
+                filter.radius = self.slider1
+                
+                guard let output = filter.outputImage,
+                      let cgOutput = context.createCGImage(output, from: output.extent)
+                else {
+                    print("⚠️ No output image")
+                    return
+                }
+                
+                let filteredImage = NSImage(cgImage: cgOutput, size: mainImage.size)
+                
+                self.image = filteredImage
+                
+            case .MaskedVariable:
+                
+                let filter = CIFilter.maskedVariableBlur()
+                filter.inputImage = coreImage
+                if let mask = droppedImage,
+                   let maskData = mask.tiffRepresentation,
+                   let maskBitmap = NSBitmapImageRep(data: maskData),
+                   let maskCIImage = CIImage(bitmapImageRep: maskBitmap) {
+                    filter.mask = maskCIImage
+                }
+                filter.radius = self.slider1
+                
+                guard let output = filter.outputImage,
+                      let cgOutput = context.createCGImage(output, from: output.extent)
+                else {
+                    print("⚠️ No output image")
+                    return
+                }
+                
+                let filteredImage = NSImage(cgImage: cgOutput, size: mainImage.size)
+                
+                self.image = filteredImage
+                
+            case .MedianFilter:
+                
+                let filter = CIFilter.median()
+                filter.inputImage = coreImage
+                
+                guard let output = filter.outputImage,
+                      let cgOutput = context.createCGImage(output, from: output.extent)
+                else {
+                    print("⚠️ No output image")
+                    return
+                }
+                
+                let filteredImage = NSImage(cgImage: cgOutput, size: mainImage.size)
+                
+                self.image = filteredImage
+                
+                
             case .NoiseReduction:
-                if let inputImage = image {
-                    let inputData = inputImage.tiffRepresentation!
-                    let bitmap = NSBitmapImageRep(data: inputData)!
-                    let inputCIImage = CIImage(bitmapImageRep: bitmap)
-                    
-                    let context = CIContext()
-                    let currentFilter = CIFilter.noiseReduction()
-                    currentFilter.inputImage = inputCIImage
-                    currentFilter.noiseLevel = slider1
-                    currentFilter.sharpness = slider2
-                    
-                    // get a CIImage from our filter or exit if that fails
-                    guard let outputImage = currentFilter.outputImage else { return }
-                    
-                    // attempt to get a CGImage from our CIImage
-                    if let cgimg = context.createCGImage(outputImage, from: outputImage.extent) {
-                        // convert that to a UIImage
-                        let nsImage = NSImage(cgImage: cgimg, size:inputImage.size)
-                        self.image = nsImage
-                    }
+                
+                let filter = CIFilter.noiseReduction()
+                filter.inputImage = coreImage
+                filter.noiseLevel = slider1
+                filter.sharpness = slider2
+                
+                guard let output = filter.outputImage,
+                      let cgOutput = context.createCGImage(output, from: output.extent)
+                else {
+                    print("⚠️ No output image")
+                    return
                 }
+                
+                let filteredImage = NSImage(cgImage: cgOutput, size: mainImage.size)
+                
+                self.image = filteredImage
+                
             case .Motion:
-                if let inputImage = image {
-                    let inputData = inputImage.tiffRepresentation!
-                    let bitmap = NSBitmapImageRep(data: inputData)!
-                    let inputCIImage = CIImage(bitmapImageRep: bitmap)
-                    
-                    let context = CIContext()
-                    let currentFilter = CIFilter.motionBlur()
-                    currentFilter.inputImage = inputCIImage
-                    currentFilter.radius = slider1
-                    currentFilter.angle = slider2
-                    
-                    // get a CIImage from our filter or exit if that fails
-                    guard let outputImage = currentFilter.outputImage else { return }
-                    
-                    // attempt to get a CGImage from our CIImage
-                    if let cgimg = context.createCGImage(outputImage, from: outputImage.extent) {
-                        // convert that to a UIImage
-                        let nsImage = NSImage(cgImage: cgimg, size:inputImage.size)
-                        self.image = nsImage
-                    }
+                
+                let filter = CIFilter.motionBlur()
+                filter.inputImage = coreImage
+                filter.radius = slider1
+                filter.angle = slider2
+                
+                guard let output = filter.outputImage,
+                      let cgOutput = context.createCGImage(output, from: output.extent)
+                else {
+                    print("⚠️ No output image")
+                    return
                 }
+                
+                let filteredImage = NSImage(cgImage: cgOutput, size: mainImage.size)
+                
+                self.image = filteredImage
+                
             case .Zoom:
-                if let inputImage = image {
-                    let inputData = inputImage.tiffRepresentation!
-                    let bitmap = NSBitmapImageRep(data: inputData)!
-                    let inputCIImage = CIImage(bitmapImageRep: bitmap)
-                    
-                    // Center, Amount
-                    let context = CIContext()
-                    let currentFilter = CIFilter.zoomBlur()
-                    currentFilter.inputImage = inputCIImage
-                    currentFilter.center = vecPoint
-                    currentFilter.amount = slider1
-                    
-                    // get a CIImage from our filter or exit if that fails
-                    guard let outputImage = currentFilter.outputImage else { return }
-                    
-                    // attempt to get a CGImage from our CIImage
-                    if let cgimg = context.createCGImage(outputImage, from: outputImage.extent) {
-                        // convert that to a UIImage
-                        let nsImage = NSImage(cgImage: cgimg, size:inputImage.size)
-                        self.image = nsImage
-                    }
+                
+                let filter = CIFilter.zoomBlur()
+                filter.inputImage = coreImage
+                filter.center = vecPoint
+                filter.amount = slider1
+                
+                guard let output = filter.outputImage,
+                      let cgOutput = context.createCGImage(output, from: output.extent)
+                else {
+                    print("⚠️ No output image")
+                    return
                 }
+                
+                let filteredImage = NSImage(cgImage: cgOutput, size: mainImage.size)
+                
+                self.image = filteredImage
+                
             
 //            default:
 //                print("Needs Implementation")
@@ -420,7 +402,7 @@ struct FXBlurrView: View {
 
 struct FXBlurrView_Previews: PreviewProvider {
     static var previews: some View {
-        FXBlurrView()
+        FXBlurrView(controller: ImageFXController(image: nil))
             .frame(minWidth: 249, maxWidth: 250, minHeight: 350, maxHeight: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .top)
     }
 }

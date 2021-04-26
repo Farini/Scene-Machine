@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+// DEPRECATE
+
+/// DEPRECATE
 struct ImageCompositionView: View {
     
     @ObservedObject var controller:ImageCompositionController = ImageCompositionController()
@@ -28,7 +31,7 @@ struct ImageCompositionView: View {
 //                    controller.mixImages()
                 }
                 Button("Filter dic") {
-                    controller.buildFilterDictionary()
+//                    controller.buildFilterDictionary()
                 }
                 Slider(value: $sliderVal, in: 0...1) { changed in
                     print("Slider Changed")
@@ -44,7 +47,7 @@ struct ImageCompositionView: View {
                         VStack(alignment: .center) {
                             Text("Left Image")
                             // Left
-                            Image(nsImage: controller.leftImage)
+                            Image(nsImage: controller.backgroundImage)
                                 .resizable()
                                 .frame(width: 128, height: 128, alignment: .center)
                         }
@@ -52,7 +55,7 @@ struct ImageCompositionView: View {
                         VStack {
                             Text("Right Image")
                             // Right
-                            if let right = controller.rightImage {
+                            if let right = controller.foregroundImage {
                                 Image(nsImage: right)
                                     .resizable()
                                     .frame(width: 128, height: 128, alignment: .center)

@@ -19,6 +19,7 @@ struct ImageFXView: View {
     
     @State private var popover:Bool = false
     @State private var state:FXState = .empty
+    @State private var zoomLevel:Double = 1.0
     
     @State var sliderValue:Double = 0
     
@@ -30,10 +31,9 @@ struct ImageFXView: View {
                         Text("Select filter type").foregroundColor(.gray)
                             .padding()
                     case .Blurr:
-                        FXBlurrView(applied: { img in
+                        FXBlurrView(controller: controller, applied: { img in
                                         apply(image: img) },
-                                    image: controller.openingImage,
-                                    isPreviewing: true)
+                                    image: controller.openingImage)
                     case .Color:
                         FXColorView(value: 1,
                                     applied: { (image) in
@@ -74,9 +74,7 @@ struct ImageFXView: View {
                         self.state = .Color
                     }
                     
-                    Spacer()
-                    
-                    Button("More") {
+                    Button("Other") {
                         popover.toggle()
                     }
                     .popover(isPresented: $popover) {
@@ -128,18 +126,52 @@ struct ImageFXView: View {
                         }
                         .padding()
                     }
+                    
+                    
+                    Spacer()
+                    
+                    
+                    // Zoom -
+                    Button(action: {
+                        if zoomLevel > 0.25 {
+                            zoomLevel -= 0.2
+                        }
+                    }, label: {
+                        Image(systemName:"minus.magnifyingglass")
+                    }).font(.title2)
+                    
+                    // Zoom Label
+                    let zoomString = String(format: "Zoom: %.2f", zoomLevel)
+                    Text(zoomString)
+                    
+                    // Zoom +
+                    Button(action: {
+                        if zoomLevel <= 8 {
+                            zoomLevel += 0.2
+                        }
+                    }, label: {
+                        Image(systemName:"plus.magnifyingglass")
+                    }).font(.title2)
                 }
                 .padding(.horizontal, 8)
                 
-                Divider()
-                
                 // Current Image
-                ScrollView {
+//                ScrollView {
+//                    Image(nsImage: controller.openingImage)
+//                        .resizable()
+//                        .scaledToFit()
+//                        .padding(20)
+//                }
+                
+                // Image View
+                ScrollView([.vertical, .horizontal], showsIndicators: true) {
+                    
                     Image(nsImage: controller.openingImage)
                         .resizable()
-                        .scaledToFit()
-                        .padding(20)
+                        .frame(width: controller.openingImage.size.width * CGFloat(zoomLevel), height: controller.openingImage.size.height * CGFloat(zoomLevel), alignment: .center)
+                        .padding()
                 }
+                .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
             }
         }
     }
@@ -195,6 +227,7 @@ struct InputSlider: View {
 struct ImageFXView_Previews: PreviewProvider {
     static var previews: some View {
         ImageFXView()
+            .frame(width: 800, height: 600, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
     }
 }
 

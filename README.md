@@ -25,8 +25,9 @@ The objective of this app is to create a more user friendly way to build a `.scn
 - [X] Save CIImage
 - [X] Test new Metal shader: makeBlackTransparent >> Substitute black pixels for transparent ones
 - [X] Choose Texture size: 256, 512, 1024, 2048, 4096 Pixels
+- [X] Undo Changes in Image
+- [X] Zoom in and out of images
 
-- [ ] Mix Images
 
 ### Scene Materials
 

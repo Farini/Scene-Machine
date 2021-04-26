@@ -11,116 +11,187 @@ struct CompositionView: View {
     
     @ObservedObject var controller = ImageCompositionController()
     
-//    @State var image:NSImage? = NSImage(named:"Example")
-    
-//    @State var secondImage:NSImage?
     @State var isDisplayingSecondImage:Bool = false
-    
-    /*
-     COMPOSITION TYPES
-     
-     CIAdditionCompositing
-     CIColorBlendMode
-     CIColorBurnBlendMode
-     CIColorDodgeBlendMode
-     CIDarkenBlendMode
-     CIDifferenceBlendMode
-     CIDivideBlendMode
-     CIExclusionBlendMode
-     CIHardLightBlendMode
-     CIHueBlendMode
-     CILightenBlendMode
-     CILinearBurnBlendMode
-     CILinearDodgeBlendMode
-     CILuminosityBlendMode
-     CIMaximumCompositing
-     CIMinimumCompositing
-     CIMultiplyBlendMode
-     CIMultiplyCompositing
-     CIOverlayBlendMode
-     CIPinLightBlendMode
-     CISaturationBlendMode
-     CIScreenBlendMode
-     */
+    @State private var dragOver:Bool = false
+    @State private var zoomLevel:Double = 1.0
     
     var body: some View {
         
-        HStack(alignment:.top) {
+        NavigationView {
             
-            VStack(alignment:.leading) {
-                Text("Tools").font(.title3).foregroundColor(.orange)
-                Button("Mix Color") {
-                    print("Printing....")
-                }
-                Button("Mix Image") {
-                    print("Insert Image to mix")
-                    controller.compositeImages()
-                }
-                Button("Sepia") {
-                    print("Insert Image to mix")
-                }
-                Divider()
-                Text("FX Properties").font(.title3).foregroundColor(.orange)
-                Text("Select a tool").foregroundColor(.gray)
-                /*
-                 A method usually has a limited amount of UI to be implemented
-                 i.e. Needs another image, or a slider input, etc.
-                 */
-                Divider()
-                HStack {
-                    Button("Save") {
-                        print("Insert Image to mix")
+            // Left
+            ScrollView {
+                
+                VStack(alignment:.leading) {
+                    
+                    Group {
+                        Text("Tools").font(.title3).foregroundColor(.orange)
+                        
+                        HStack {
+                            
+                            
+                        }
+                        
+                        Picker(selection: $controller.compositionType, label: Text("Type"), content: {
+                            ForEach(CompositionType.allCases, id:\.self) { cType in
+                                Text("\(cType.rawValue)")
+                            }
+                        })
+                        .frame(width:180)
+                        
+                        Text("\(controller.compositionType.rawValue)")
+                        
+                        Divider()
                     }
-                    Button("Save as...") {
-                        print("Insert Image to mix")
+                    
+                    HStack {
+                        Text("Background")
+                        Text("\(Int(controller.backgroundImage.size.width)) x \(Int(controller.backgroundImage.size.height))")
+                        
                     }
+                    
+                    Image(nsImage: controller.backgroundImage)
+                        .resizable()
+                        .frame(width:200, height:200)
+                        .padding(8)
+                        .onDrop(of: ["public.file-url"], isTargeted: $dragOver) { providers -> Bool in
+                            providers.first?.loadDataRepresentation(forTypeIdentifier: "public.file-url", completionHandler: { (data, error) in
+                                if let data = data, let uu = URL(dataRepresentation: data, relativeTo: nil) {
+                                    if let dropImage = NSImage(contentsOf: uu) {
+//                                        self.droppedImage = dropImage
+                                        controller.backgroundImage = dropImage
+                                    }
+                                }
+                            })
+                            return true
+                        }
+                    
+                    HStack {
+                        Text("Foreground")
+                        Text("\(Int(controller.foregroundImage.size.width)) x \(Int(controller.foregroundImage.size.height))")
+                    }
+                    
+                    Image(nsImage: controller.foregroundImage)
+                            .resizable()
+                            .frame(width:200, height:200)
+                            .padding(8)
+                            .onDrop(of: ["public.file-url"], isTargeted: $dragOver) { providers -> Bool in
+                                providers.first?.loadDataRepresentation(forTypeIdentifier: "public.file-url", completionHandler: { (data, error) in
+                                    if let data = data, let uu = URL(dataRepresentation: data, relativeTo: nil) {
+                                        if let dropImage = NSImage(contentsOf: uu) {
+                                            
+                                            DispatchQueue.main.async {
+                                                controller.foregroundImage = dropImage
+                                            }
+                                            
+                                        }
+                                    }
+                                })
+                                return true
+                            }
+                    
+                    /*
+                     A method usually has a limited amount of UI to be implemented
+                     i.e. Needs another image, or a slider input, etc.
+                     */
+                    Divider()
+                    HStack {
+
+                        Button("Flip Order") {
+                            let oldBack = controller.backgroundImage
+                            let oldFront = controller.foregroundImage
+                            controller.foregroundImage = oldBack
+                            controller.backgroundImage = oldFront
+                        }
+                        .help("Flips foreground and background images.")
+                        
+                        Button("Mix Image") {
+                            print("Insert Image to mix")
+                            controller.compositeImages()
+                        }
+                        .help("Runs the composite filter and updates the result image")
+                    }
+                    Spacer()
                 }
                 
             }
-            .frame(width:150)
-            .padding(4)
+            .frame(minWidth:220, maxWidth:300)
+            .padding(8)
             
-            
-            //            .background(Color.pink)
-            
-            Divider()
-            
-            ScrollView {
-                VStack {
-                    HStack {
-                        // Left
-                        Image(nsImage: controller.leftImage)
-                            .resizable()
-                            .frame(width:128, height:128)
-                            .padding(8)
-                        
-                        Spacer()
-                        VStack {
-                            Picker(selection: $controller.compositionType, label: Text("Type"), content: {
-                                ForEach(CompositionType.allCases, id:\.self) { cType in
-                                    Text("\(cType.rawValue)")
-                                }
-                            })
-                            Text("\(controller.compositionType.rawValue)")
+            // Right
+            VStack {
+                
+                // Toolbar
+                HStack {
+                    
+                    Button(action: {
+                        controller.loadImage(foreground: false)
+                    }, label: {
+                        Image(systemName:"square.and.arrow.up")
+                        Text("Background")
+                    })
+                    
+                    Button(action: {
+                        controller.loadImage(foreground: true)
+                    }, label: {
+                        Image(systemName:"square.and.arrow.up")
+                        Text("Foreground")
+                    })
+                    
+                    Spacer()
+                    
+                    // Save
+                    Button(action: {
+                        controller.saveImage()
+                    }, label: {
+                        Image(systemName:"square.and.arrow.down")
+                        Text("Save")
+                    })
+                    
+                    Spacer()
+                    
+                    // Zoom -
+                    Button(action: {
+                        if zoomLevel > 0.25 {
+                            zoomLevel -= 0.2
                         }
-                        
-                        Spacer()
-                        // Right
-                        if let second = controller.rightImage {
-                            Image(nsImage: second)
-                                .resizable()
-                                .frame(width:128, height:128)
-                                .padding(8)
+                    }, label: {
+                        Image(systemName:"minus.magnifyingglass")
+                    }).font(.title2)
+                    
+                    // Zoom Label
+                    let zoomString = String(format: "Zoom: %.2f", zoomLevel)
+                    Text(zoomString)
+                    
+                    // Zoom +
+                    Button(action: {
+                        if zoomLevel <= 8 {
+                            zoomLevel += 0.2
                         }
-                    }
+                    }, label: {
+                        Image(systemName:"plus.magnifyingglass")
+                    }).font(.title2)
+                    
+                }
+                .padding(6)
+                .background(Color.black.opacity(0.2))
+                
+                
+                // Image View
+                ScrollView([.vertical, .horizontal], showsIndicators: true) {
+                
                     Image(nsImage: controller.resultImage)
+                        .resizable()
+                        .frame(width: controller.resultImage.size.width * CGFloat(zoomLevel), height: controller.resultImage.size.height * CGFloat(zoomLevel), alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                         .padding()
                 }
-                .frame(width: .infinity, height: .infinity, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                
             }
             
+            
         }
-        .frame(minWidth: 500, maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, minHeight: 350, maxHeight: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .center)
+        .frame(minWidth: 800, maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, minHeight: 350, maxHeight: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .center)
         
     }
 }
@@ -128,5 +199,33 @@ struct CompositionView: View {
 struct CompositionView_Previews: PreviewProvider {
     static var previews: some View {
         CompositionView()
+            .frame(minWidth: 800, maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, minHeight: 350, maxHeight: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .center)
     }
 }
+
+/*
+ COMPOSITION TYPES
+ 
+ CIAdditionCompositing
+ CIColorBlendMode
+ CIColorBurnBlendMode
+ CIColorDodgeBlendMode
+ CIDarkenBlendMode
+ CIDifferenceBlendMode
+ CIDivideBlendMode
+ CIExclusionBlendMode
+ CIHardLightBlendMode
+ CIHueBlendMode
+ CILightenBlendMode
+ CILinearBurnBlendMode
+ CILinearDodgeBlendMode
+ CILuminosityBlendMode
+ CIMaximumCompositing
+ CIMinimumCompositing
+ CIMultiplyBlendMode
+ CIMultiplyCompositing
+ CIOverlayBlendMode
+ CIPinLightBlendMode
+ CISaturationBlendMode
+ CIScreenBlendMode
+ */
