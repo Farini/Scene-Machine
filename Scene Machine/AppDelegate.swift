@@ -143,6 +143,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return .terminateNow
     }
     
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        return true
+    }
+    
     // MARK: - Menu
     
     @IBAction func openFinder(_ sender: NSMenuItem) {

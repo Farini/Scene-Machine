@@ -12,9 +12,8 @@ enum MetalGenType {
     case Patterns
     
     case Noise
-    
-    // Tiles
     case Tiles
+    
     // Overlays
     // Others
 }
@@ -29,23 +28,26 @@ struct MetalGenView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
-                switch selection {
-                    case .CIGenerators:
-                        CIGenView(applied: { (newImage) in
-                            self.image = newImage
-                        }, generatorType: .Checkerboard, image: image)
-                    case .Noise:
-                        MetalNoiseView(applied: { (newImage) in
-                            self.image = newImage
-                        })
-                    case .Tiles:
-                        MetalTilesView(applied: { (newImage) in
-                            self.image = newImage
-                        }, image: self.image)
-                    default: Text("Not Implemented").foregroundColor(.gray)
+            ScrollView {
+                VStack {
+                    switch selection {
+                        case .CIGenerators:
+                            CIGenView(applied: { (newImage) in
+                                self.image = newImage
+                            }, generatorType: .Checkerboard, image: image)
+                        case .Noise:
+                            MetalNoiseView(applied: { (newImage) in
+                                self.image = newImage
+                            })
+                        case .Tiles:
+                            MetalTilesView(applied: { (newImage) in
+                                self.image = newImage
+                            }, image: self.image)
+                        default: Text("Not Implemented").foregroundColor(.gray)
+                    }
                 }
             }
+            .frame(width: 250)
             
             VStack {
                 
@@ -60,63 +62,96 @@ struct MetalGenView: View {
                     }
                     .frame(width: 150, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                     
-                    Button("Caustic") {
-                        print("foobar")
-                        caustic()
-                    }
+//                    Group {
+//                        Button("Caustic") {
+//                            print("foobar")
+//                            caustic()
+//                        }
+//
+//                        Button("Hexagon") {
+//                            print("foobar")
+//                            //                        checkerboard()
+//                            hexagon()
+//                        }
+//                        Button("Truchet") {
+//                            print("foobar")
+//                            truchet()
+//                        }
+//                    }
                     
-                    Button("Hexagon") {
-                        print("foobar")
-//                        checkerboard()
-                        hexagon()
-                    }
-                    Button("Truchet") {
-                        print("foobar")
-                        truchet()
-                    }
-                    Button("CI Gen") {
-                        print("CI Gen")
-                        self.selection = .CIGenerators
-                    }
-                    Button("Noise") {
-                        self.selection = .Noise
-                    }
-                    Button("Save") {
-                        self.saveImage()
-                    }
-                    // Zoom -
-                    Button(action: {
-                        if zoomLevel > 0.25 {
-                            zoomLevel -= 0.2
+                    Group {
+                        Button("CI Gen") {
+                            print("CI Gen")
+                            self.selection = .CIGenerators
                         }
-                    }, label: {
-                        Image(systemName:"minus.magnifyingglass")
-                    }).font(.title2)
-                    
-                    // Zoom Label
-                    let zoomString = String(format: "Zoom: %.2f", zoomLevel)
-                    Text(zoomString)
-                    
-                    // Zoom +
-                    Button(action: {
-                        if zoomLevel <= 8 {
-                            zoomLevel += 0.2
+                        Button("Noise") {
+                            self.selection = .Noise
                         }
-                    }, label: {
-                        Image(systemName:"plus.magnifyingglass")
-                    }).font(.title2)
+                        Button("Tiles") {
+                            self.selection = .Tiles
+                        }
+                        Button("Save") {
+                            self.saveImage()
+                        }
+                    }
+                    
+                    Group {
+                        // Zoom -
+                        Button(action: {
+                            if zoomLevel > 0.25 {
+                                zoomLevel -= 0.2
+                            }
+                        }, label: {
+                            Image(systemName:"minus.magnifyingglass")
+                        }).font(.title2)
+                        
+                        // Zoom Label
+                        let zoomString = String(format: "Zoom: %.2f", zoomLevel)
+                        Text(zoomString)
+                        
+                        // Zoom +
+                        Button(action: {
+                            if zoomLevel <= 8 {
+                                zoomLevel += 0.2
+                            }
+                        }, label: {
+                            Image(systemName:"plus.magnifyingglass")
+                        }).font(.title2)
+                    }
+                    
                 }
                 .padding(6)
                 .background(Color.black.opacity(0.2))
                 
-                ScrollView {
-                    Image(nsImage: image)
-                        .resizable()
-                        .frame(width: textureSize.size.width * CGFloat(zoomLevel), height: textureSize.size.height * CGFloat(zoomLevel), alignment: .center)
-                        .padding(20)
+                ScrollView([.vertical, .horizontal], showsIndicators: true) {
+                    HStack(alignment:.top) {
+                        Spacer()
+                        Image(nsImage: image)
+                            .resizable()
+                            .frame(width: textureSize.size.width * CGFloat(zoomLevel), height: textureSize.size.height * CGFloat(zoomLevel), alignment: .center)
+                            .padding(20)
+                        Spacer()
+                    }
+                    
                 }
+                .frame(minWidth: 400, maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
             }
             
+        }
+        .onAppear() {
+            self.loadBaseImage()
+        }
+    }
+    
+    func loadBaseImage() {
+        let noise = CIFilter.randomGenerator()
+        let noiseImage = noise.outputImage!
+        let context = CIContext()
+        
+        if let cgimg = context.createCGImage(noiseImage, from: CGRect(origin: .zero, size: self.textureSize.size)) {
+            // convert that to a UIImage
+            let nsImage = NSImage(cgImage: cgimg, size:image.size)
+            self.image = nsImage
         }
     }
     
@@ -273,6 +308,6 @@ struct MetalGenView: View {
 struct MetalGenView_Previews: PreviewProvider {
     static var previews: some View {
         MetalGenView()
-            .frame(minWidth: 800, maxWidth: .infinity, minHeight: 350, maxHeight: .infinity, alignment: .center)
+            .frame(minWidth: 800, maxWidth: .infinity, minHeight: 500, maxHeight: .infinity, alignment: .center)
     }
 }

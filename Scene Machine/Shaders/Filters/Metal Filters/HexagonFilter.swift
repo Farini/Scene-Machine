@@ -92,7 +92,7 @@ class VoronoiFilter: CIFilter {
     var inputImage:CIImage?
     var tileSize:Float = 512.0
     var tileCount:Int = 10
-    var time:Int = 1
+    var time:Int = 3
     
     override init() {
         let url = Bundle.main.url(forResource: "default", withExtension: "metallib")!
@@ -136,6 +136,7 @@ class TruchetFilter: CIFilter {
     private var kernel:CIColorKernel
     var inputImage:CIImage?
     var tileSize:Float = 512.0
+    var tileCount:Int = 8
     
     override init() {
         let url = Bundle.main.url(forResource: "default", withExtension: "metallib")!
@@ -167,8 +168,104 @@ class TruchetFilter: CIFilter {
         
         let src = CISampler(image: inputImage)
         let vec = CIVector(cgPoint: CGPoint(x: CGFloat(tileSize), y: CGFloat(tileSize)))
+        let count = Float(tileCount)
+        // float4 truchet(sample_t sample, float2 size, destination dest) {
+        return kernel.apply(extent: inputImage.extent, arguments: [src, count, vec])
+    }
+}
+
+/// A Filter that generates a Checkerboard
+class CheckerMetal:CIFilter {
+    private var kernel:CIColorKernel
+    
+    var inputImage:CIImage?
+    var tileSize:Float = 512.0
+    var tileCount:Int = 5
+    
+    enum Method:Float, CaseIterable {
+        case Gradient = 0.2
+        case White = 0.6
+        case Random = 1.1
+    }
+    var method:Method = .Gradient
+    
+    override init() {
+        let url = Bundle.main.url(forResource: "default", withExtension: "metallib")!
+        guard let data = try? Data(contentsOf: url) else { fatalError() }
+        guard let kkk = try? CIColorKernel(functionName: "checkerboard", fromMetalLibraryData: data) else { fatalError() }
+        self.kernel = kkk
+        super.init()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func outputImage() -> CIImage? {
+        
+        if inputImage == nil {
+            let baseImage = NSImage(size: NSSize(width: CGFloat(tileSize), height: CGFloat(tileSize)))
+            guard let inputData = baseImage.tiffRepresentation,
+                  let bitmap = NSBitmapImageRep(data: inputData),
+                  let inputCIImage = CIImage(bitmapImageRep: bitmap) else {
+                print("Missing something")
+                return nil
+            }
+            self.inputImage = inputCIImage
+        }
+        
+        guard let inputImage = inputImage else {return nil}
+        
+        let src = CISampler(image: inputImage)
+        let vec = CIVector(cgPoint: CGPoint(x: CGFloat(tileSize), y: CGFloat(tileSize)))
+        let rnd = method.rawValue
+        let count = Float(tileCount)
+        
+        // Checkerboard. pass size, tilecount(num of tiles), randomize: 0..<.5 = Gradient, .5..<1 = White, 1...10 = Random black
+        return kernel.apply(extent: inputImage.extent, arguments: [src, vec, count, rnd])
+    }
+}
+
+class RandomMaze:CIFilter {
+    
+    private var kernel:CIColorKernel
+    var inputImage:CIImage?
+    var tileSize:Float = 512.0
+    var tileCount:Int = 8
+    
+    override init() {
+        let url = Bundle.main.url(forResource: "default", withExtension: "metallib")!
+        guard let data = try? Data(contentsOf: url) else { fatalError() }
+        guard let kkk = try? CIColorKernel(functionName: "maze", fromMetalLibraryData: data) else { fatalError() } // myColor // hexagons // truchet
+        // float4 truchet(sample_t sample, float2 size, destination dest) {
+        self.kernel = kkk
+        super.init()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func outputImage() -> CIImage? {
+        
+        if inputImage == nil {
+            let baseImage = NSImage(size: NSSize(width: CGFloat(tileSize), height: CGFloat(tileSize)))
+            guard let inputData = baseImage.tiffRepresentation,
+                  let bitmap = NSBitmapImageRep(data: inputData),
+                  let inputCIImage = CIImage(bitmapImageRep: bitmap) else {
+                print("Missing something")
+                return nil
+            }
+            self.inputImage = inputCIImage
+        }
+        
+        guard let inputImage = inputImage else {return nil}
+        
+        let src = CISampler(image: inputImage)
+        let vec = CIVector(cgPoint: CGPoint(x: CGFloat(tileSize), y: CGFloat(tileSize)))
+        let fTile = Float(tileCount)
         
         // float4 truchet(sample_t sample, float2 size, destination dest) {
-        return kernel.apply(extent: inputImage.extent, arguments: [src, vec])
+        return kernel.apply(extent: inputImage.extent, arguments: [src, fTile, vec])
     }
 }

@@ -31,6 +31,10 @@ struct MetalTilesView: View {
     enum MetalTileType:String, CaseIterable {
         case Hexagons
         case Checkerboard
+        // case Voronoi
+        case RandomMaze
+        case Truchet
+        
     }
     
     @State var tileType:MetalTileType = .Hexagons
@@ -53,6 +57,14 @@ struct MetalTilesView: View {
                     // Number of tiles, Color inside?, Color outside?
                     CounterInput(value: $stepCount1, range: 1...20, title: "Time")
                     CounterInput(value: $stepCount2, range: 5...20, title: "Tile Count")
+                case .Checkerboard:
+                    CounterInput(value: $stepCount1, range: 5...20, title: "Tile Count")
+                    CounterInput(value: $stepCount2, range: 1...3, title: "Method")
+                    Text("Method 1: Gradient, 2 = Random, 3 = white")
+                case .RandomMaze:
+                    CounterInput(value: $stepCount1, range: 1...20, title: "Tile Count")
+                case .Truchet:
+                    CounterInput(value: $stepCount1, range: 1...20, title: "Tile Count")
                 default:
                     Text("Not Implemented").foregroundColor(.gray)
             }
@@ -124,7 +136,7 @@ struct MetalTilesView: View {
         
         switch tileType {
             case .Hexagons:
-                print("Voronoi")
+                print("Hexagons")
                 
                 let filter = HexagonFilter()
                 filter.inputImage = coreImage
@@ -141,7 +153,70 @@ struct MetalTilesView: View {
                 let filteredImage = NSImage(cgImage: cgOutput, size: mainImage.size)
                 
                 self.image = filteredImage
+            case .Checkerboard:
+                print("Checkerboard")
                 
+                let filter = CheckerMetal()
+                filter.inputImage = coreImage
+                filter.tileSize = 1024
+                filter.tileCount = stepCount1
+                if stepCount2 == 1 { filter.method = .Gradient }
+                else if stepCount2 == 2 { filter.method = .Random }
+                else if stepCount2 == 3 { filter.method = .White }
+                
+                guard let output = filter.outputImage(),
+                      let cgOutput = context.createCGImage(output, from: output.extent)
+                else {
+                    print("⚠️ No output image")
+                    return
+                }
+                
+                let filteredImage = NSImage(cgImage: cgOutput, size: mainImage.size)
+                
+                self.image = filteredImage
+                
+            case .RandomMaze:
+                print("Maze")
+                
+                let filter = RandomMaze()
+                filter.inputImage = coreImage
+                filter.tileSize = 1024
+                filter.tileCount = stepCount1
+                
+                
+                guard let output = filter.outputImage(),
+                      let cgOutput = context.createCGImage(output, from: output.extent)
+                else {
+                    print("⚠️ No output image")
+                    return
+                }
+                
+                let filteredImage = NSImage(cgImage: cgOutput, size: mainImage.size)
+                
+                self.image = filteredImage
+                
+            case .Truchet:
+                
+                let context = CIContext()
+                
+                let truchet = TruchetFilter() //CausticNoise()
+                
+                let noise = CIFilter.randomGenerator()
+                let noiseImage = noise.outputImage!
+                
+                truchet.inputImage = noiseImage
+                truchet.tileSize = 1024
+                truchet.tileCount = stepCount1
+                
+                // get a CIImage from our filter or exit if that fails
+                guard let outputImage = truchet.outputImage() else { return }
+                
+                // attempt to get a CGImage from our CIImage
+                if let cgimg = context.createCGImage(outputImage, from: CGRect(origin: .zero, size: CGSize(width: 1024, height: 1024))) {
+                    // convert that to a UIImage
+                    let nsImage = NSImage(cgImage: cgimg, size:CGSize(width: 1024, height: 1024))
+                    self.image = nsImage
+                }
             
             default:print("Not implemented")
         }

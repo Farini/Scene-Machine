@@ -127,13 +127,13 @@ extern "C" { namespace coreimage {
         return fract(p.x * p.y);
     }
     
-    float4 truchet(sample_t sample, float2 size, destination dest) {
+    float4 truchet(sample_t sample, float tileCount, float2 size, destination dest) {
         float2 uv = (dest.coord() - .5 * size.xy) / size.y;
         
         float3 col = float3(0);
         
         // size
-        uv *= 8;
+        uv *= tileCount;
         
         float2 gv = fract(uv) - 0.5;
         float2 id = floor(uv); // id of the tile
@@ -164,13 +164,13 @@ extern "C" { namespace coreimage {
     }
     
     // Draws a maze. Like a trouchet, but with straight lines
-    float4 maze(sample_t sample, float2 size, destination dest) {
+    float4 maze(sample_t sample, float tileCount, float2 size, destination dest) {
         float2 uv = (dest.coord() - .5 * size.xy) / size.y;
         
         float3 col = float3(0);
         
         // size
-        uv *= 8;
+        uv *= tileCount;
         
         float2 gv = fract(uv) - 0.5;
         float2 id = floor(uv); // id of the tile
@@ -198,6 +198,40 @@ extern "C" { namespace coreimage {
         
     }
     
+    // Checkerboard. pass size, tilecount(num of tiles), randomize: 0..<.5 = Gradient, .5..<1 = White, 1...10 = Random black
+    float4 checkerboard(sample_t sample, float2 size, float tilecount, float randomize, destination dest) {
+        
+        float2 uv = (dest.coord() - .5 * size.xy) / size.y;
+        
+        float3 col = float3(0);
+        
+        uv *= tilecount;
+        
+        float2 gv = fract(uv) - 0.5;
+        float2 id = floor(uv); // id of the tile
+        
+        if (randomize >= 1.0) {
+            // Noise (randomized tiles)
+            float n = Noise21(id);
+            col += n;
+        } else if (randomize < 0.5) {
+            // red contour
+            if (gv.x>.48 || gv.y>.48) {
+                col = float3(1, 0, 0);
+            } else {
+                // Gradient
+                col.gb = gv;
+            }
+        } else if (randomize >= 0.5) {
+            // white
+            float width = 0.1;
+            float mask = smoothstep(0.01, -0.01, abs(gv.x + gv.y) - width);
+            col += mask;
+        }
+        
+        return float4(col, 1);
+    }
+    
     // Checkerboard, with tiles varying from black to white
     float4 randomBlackToWhiteTiles(sample_t sample, float2 size, destination dest) {
         float2 uv = (dest.coord() - .5 * size.xy) / size.y;
@@ -220,6 +254,7 @@ extern "C" { namespace coreimage {
         // col += mask;
         col += n;
         
+        // red contour
         if (gv.x>.48 || gv.y>.48) {
             col = float3(1, 0, 0);
         }
@@ -255,13 +290,18 @@ extern "C" { namespace coreimage {
                 float2 n = Noise22(id+offset);
                 float2 p = offset+sin(n*t)*0.5;
                 
-                p -= gv; // use for manhattan distance
+                if (time < 3) {
+                    p -= gv; // use for manhattan distance
+                }
+                
                 
                 // Euclidean distance
                 float d = length(gv-p);
                 
-                // Manhattan Distance
-                d = abs(p.x) + abs(p.y);
+                if (time < 3) {
+                    // Manhattan Distance
+                    d = abs(p.x) + abs(p.y);
+                }
                 
                 if(d<minDist) {
                     minDist = d;

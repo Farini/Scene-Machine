@@ -225,6 +225,10 @@ struct MaterialView: View {
     @State var roughnessColor:Color = .white
     @State var roughnessImage:NSImage = NSImage()
     
+    @State var occlusionURL:URL?
+    @State var occlusionColor:Color = .white
+    @State var occlusionImage:NSImage = NSImage()
+    
     @State var emissionURL:URL?
     @State var emissionColor:Color = .white
     @State var emissionImage:NSImage = NSImage()
@@ -322,6 +326,35 @@ struct MaterialView: View {
                                     if let dropImage = NSImage(contentsOf: uu) {
                                         self.material.roughness.contents = dropImage
                                         self.roughnessURL = uu
+                                    }
+                                }
+                            })
+                            return true
+                        }
+                }
+            }
+            
+            // Occlusion
+            if let occlusion = material.ambientOcclusion.contents {
+                HStack {
+                    Text("Occlusion:")
+                    Spacer()
+                    if let number = occlusion as? CGFloat {
+                        Text("\(number)")
+                    } else {
+                        
+                        ColorPicker("", selection:$occlusionColor)
+                            .onChange(of: occlusionColor, perform: { value in
+                                self.material.ambientOcclusion.contents = NSColor(occlusionColor)
+                            })
+                    }
+                    Image(systemName: "rectangle.dashed.and.paperclip").font(.title2).foregroundColor(.gray)
+                        .onDrop(of: ["public.file-url"], isTargeted: $active) { providers -> Bool in
+                            providers.first?.loadDataRepresentation(forTypeIdentifier: "public.file-url", completionHandler: { (data, error) in
+                                if let data = data, let uu = URL(dataRepresentation: data, relativeTo: nil) {
+                                    if let dropImage = NSImage(contentsOf: uu) {
+                                        self.material.ambientOcclusion.contents = dropImage
+                                        self.occlusionURL = uu
                                     }
                                 }
                             })

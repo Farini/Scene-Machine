@@ -10,12 +10,21 @@ import SceneKit
 
 struct TerrainView: View {
     
-    @State var scene = SCNScene(named: "Scenes.scnassets/Terrain.scn")!
-    @State var imagePath:String = ""
+    @ObservedObject var exporter:SceneExporter
+    @State var scene:SCNScene = SCNScene(named: "Scenes.scnassets/Terrain.scn")!
+    
     @State private var dragOver = false
     
+    @State var diffuseImagePath:String = ""
+    @State var displaceImagePath:String = ""
+    
+    // Displacement url
+    // Diffuse url
+    // Ambient Occlusion?
+    
     init() {
-        
+        let theScene = SCNScene(named: "Scenes.scnassets/Terrain.scn")!
+        self.exporter = SceneExporter(scene: theScene)
     }
     
     var body: some View {
@@ -26,31 +35,30 @@ struct TerrainView: View {
                     .foregroundColor(.gray)
                     .frame(maxWidth:180)
                 
-//                TextField("UV", text: $imagePath)
-//                    .frame(width:150)
-//                    .onDrop(of: ["public.file-url"], isTargeted: $dragOver) { providers -> Bool in
-//                        providers.first?.loadDataRepresentation(forTypeIdentifier: "public.file-url", completionHandler: { (data, error) in
-//                            if let data = data, let uu = URL(dataRepresentation: data, relativeTo: nil) {
-//                                self.imagePath = uu.path
-//                                self.textDropped()
-//                            }
-//                        })
-//                        return true
-//                    }
-                
-//                DroppableArea()
-//                    .frame(maxWidth:120, maxHeight:70)
-//                    .offset(x: 0, y: 0)
-                
+                Text("Diffuse")
                 SubMatImageArea(url: nil, active: true, image: nil) { droppedImage, droppedURL in
                     print("Image dropped. Size: \(droppedImage.size)")
-                    self.imagePath = droppedURL.path
+                    self.diffuseImagePath = droppedURL.path
+                    self.textDropped()
+                }
+                
+                Text("Displacement")
+                SubMatImageArea(url: nil, active: true, image: nil) { droppedImage, droppedURL in
+                    print("Image dropped. Size: \(droppedImage.size)")
+                    self.displaceImagePath = droppedURL.path
                     self.textDropped()
                 }
                 
                 
                 Button("Geometry") {
                     self.describeTerrain()
+                }
+                
+                Button("Export") {
+//                    let doc = FileManager.default.urls(for: .desktopDirectory, in: .userDomainMask).first!
+//                    let url = doc.appendingPathComponent("SceneName.scn", isDirectory: false)
+//                    self.exporter.exportScene(to: url)
+                    exportScene()
                 }
             }
             
@@ -59,12 +67,65 @@ struct TerrainView: View {
         }
     }
     
+    func exportScene() {
+        
+        
+        let dialog = NSSavePanel() //NSOpenPanel();
+        
+        dialog.title                   = "Choose a directory";
+        dialog.showsResizeIndicator    = true;
+        dialog.showsHiddenFiles        = false;
+        
+        if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
+            let result = dialog.url // Pathname of the file
+            
+            if let result = result {
+                
+                var finalURL = result
+                
+                // Make sure there is an extension...
+                
+                let path: String = result.path
+                print("Picked Path: \(path)")
+                
+                var filename = result.lastPathComponent
+                print("Filename: \(filename)")
+                if filename.isEmpty {
+                    filename = "Untitled"
+                }
+                
+                let xtend = result.pathExtension.lowercased()
+                print("Extension: \(xtend)")
+                
+                let knownImageExtensions = ["scn"]
+                
+                if !knownImageExtensions.contains(xtend) {
+                    filename = "\(filename).scn"
+                    
+                    let prev = finalURL.deletingLastPathComponent()
+                    let next = prev.appendingPathComponent(filename, isDirectory: false)
+                    finalURL = next
+                }
+                
+                self.exporter.exportScene(to: finalURL)
+                
+            }
+        } else {
+            // User clicked on "Cancel"
+            return
+        }
+    }
+    
     func textDropped() {
         if let plane = scene.rootNode.childNode(withName: "plane", recursively: false) {
             print("plane")
             if let material = plane.geometry?.materials.first {
-                if let image = NSImage(contentsOf:URL(fileURLWithPath: self.imagePath)) {
-                    material.diffuse.contents = image
+                if let diffuseImage = NSImage(contentsOf:URL(fileURLWithPath: self.diffuseImagePath)) {
+                    material.diffuse.contents = diffuseImage
+                    material.diffuse.intensity = 1
+                }
+                if let displacementImage = NSImage(contentsOf:URL(fileURLWithPath: self.displaceImagePath)) {
+                    material.displacement.contents = displacementImage
                     material.diffuse.intensity = 1
                 }
             }
@@ -235,45 +296,36 @@ struct MyDropDelegate: DropDelegate {
     }
 }
 
-/*
-struct BookmarksList: View {
-    @State private var links: [URL] = []
+class SceneExporter:NSObject, SCNSceneExportDelegate, ObservableObject {
+  
+    var scene:SCNScene
+    @Published var progress:Float = 0
+    @Published var error:Error?
     
-    var body: some View {
-        List {
-            ForEach(links, id: \.self) { url in
-                Text(url.absoluteString)
-                    .onDrag { NSItemProvider(object: url as NSURL) }
-            }
-            .onDrop(
-                of: ["public.url"],
-                delegate: BookmarksDropDelegate(bookmarks: $links)
-            )
+    init(scene:SCNScene) {
+        self.scene = scene
+    }
+    
+    func exportScene(to url:URL) {
+        scene.write(to: url, options: ["checkConsistency":NSNumber.init(booleanLiteral: true)], delegate: self) { (progress, error, boolean) in
+            print("Write progress: \(progress)")
+            print("Error: \(error?.localizedDescription ?? "nodesc")")
         }
     }
-}
     
-struct BookmarksDropDelegate: DropDelegate {
-    @Binding var bookmarks: [URL]
-    
-    func performDrop(info: DropInfo) -> Bool {
-        guard info.hasItemsConforming(to: ["public.url"]) else {
-            return false
+    func write(_ image: NSImage, withSceneDocumentURL documentURL: URL, originalImageURL: URL?) -> URL? {
+        print("Writing images: \(image.size) \(originalImageURL?.absoluteString ?? "n/a")")
+        if let original = originalImageURL {
+            return original
+        } else {
+            // Make URL
+            // To do that, there should be a convention to name it.
+            // One option: [MaterialName]+<Diffuse>.png
+            // Option 2: UUID().string.png
+            let folder = documentURL.deletingLastPathComponent()
+            let file = folder.appendingPathComponent("\(UUID().uuidString).png", isDirectory: false)
+            return file
         }
-        
-        let items = info.itemProviders(for: ["public.url"])
-        for item in items {
-            _ = item.loadObject(ofClass: URL.self) { url, _ in
-                if let url = url {
-                    DispatchQueue.main.async {
-                        self.bookmarks.insert(url, at: 0)
-                    }
-                }
-            }
-        }
-        
-        return true
     }
+    
 }
-*/
-

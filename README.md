@@ -30,14 +30,15 @@ Mix 2 images, using multiple `CoreImage` techniques
 - [X] Undo Changes in Image
 - [X] Zoom in and out of images
 
-### Pedal2Metal
+### Pedal2DMetal
 Procedural Image generators with `Metal`
 
+- [X] Organize in Sections
 - [ ] Tiles { Checkerboard, Hexagons, Truchet, Diagonal Lines }
 - [ ] Noise { Voronoi, Caustic, Waves }
 - [ ] Overlay { Lens flare, Halo, Sunbeams, Caustic Refraction }
 - [ ] Others { Barcode, QRcode, Aztec }
-- [ ] Organize in Sections
+
 
 
 ### Scene Materials
@@ -57,20 +58,20 @@ Test and export `SceneKit` scenes.
 
 - [X] Show a Geometry's `UVMap`
 - [ ] Have more sample geometries than the ones provided by SceneKit
-- [ ] Save and export scene `.scn` files >> https://developer.apple.com/documentation/scenekit/scnscene/1523577-write
 - [ ] Automatically "beautify" `.dae` files made in blender - Adjust lighting, colors, etc.
 - [ ] Have some sample code + shaders written in `Metal`  - `SCNProgram`
 - [ ] Test animated characters - Bones(in blender) vs SCNSkinner(Swift)
 - [ ] Background `HDRI` Images
+- [ ] Save and export scene `.scn` files >> Needs Permission
 
 ### Metal Shaders
 
 - [X] GRBA -> Green to Red (and back) pixels 
 - [X] Caustic Noise improved
 - [X] Black to Transparent
+- [X] Hexagons pattern
+- [X] Truchet tiling
 
-- [ ] Hexagons pattern
-- [ ] Truchet tiling
 - [ ] KIFS Fractals: https://www.youtube.com/watch?v=il_Qg9AqQkE&list=RDCMUCcAlTqd9zID6aNX3TzwxJXg&index=6
 - [ ] Voronoi Noise improved
 - [ ] More patterns and noises
