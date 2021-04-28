@@ -92,7 +92,7 @@ struct NoiseMenuView: View {
                         .resizable()
                         .frame(width: 64, height: 64, alignment: .center)
                     // Core_Image_icon
-                    Text("Pedal 2 Metal")
+                    Text("Pedal 2D Metal")
                 }
                 .onTapGesture {
                     NSApp.sendAction(#selector(AppDelegate.openMetalGenerators), to: nil, from: nil)

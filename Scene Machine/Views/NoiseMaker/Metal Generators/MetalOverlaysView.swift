@@ -63,7 +63,7 @@ struct MetalOverlaysView: View {
                     
                     PointInput(tapLocation: CGPoint.zero, dragLocation: CGPoint.zero, multiplier: 1) { point in
                         // Convert Point to Image
-                        center = point
+                        center = CGPoint(x: point.x * controller.textureSize.size.width, y: controller.textureSize.size.height - (point.y * controller.textureSize.size.height))
                         updatePreview()
                     }
                     .padding(.vertical, 8)
@@ -72,18 +72,65 @@ struct MetalOverlaysView: View {
                     Text("Halo")
                     PointInput(tapLocation: CGPoint.zero, dragLocation: CGPoint.zero, multiplier: 1) { point in
                         // Convert Point to Image
-                        center = point
+                        center = CGPoint(x: point.x * controller.textureSize.size.width, y: controller.textureSize.size.height - (point.y * controller.textureSize.size.height))
                         updatePreview()
                     }
                     .padding(.vertical, 8)
+//                    filter.color = CIColor(color: NSColor(color1))!
+//                    filter.haloRadius = max(5, slider1)
+//                    filter.haloWidth = max(12, slider2)
+//                    filter.striationStrength = max(1, slider3)
+//                    filter.striationContrast = 0.5
+//                    filter.haloOverlap = 0.77
+                    // Width
+                    Text("Width")
+                    InputSlider(sliderRange: 10...200, value: 30) { slideInput in
+                        self.slider1 = Float(slideInput)
+                        self.updatePreview()
+                    }
+                    // Striation strength
+                    Text("Striation strength")
+                    InputSlider(sliderRange: 0...1, value: 0.5) { slideInput in
+                        self.slider2 = Float(slideInput)
+                        self.updatePreview()
+                    }
+                    // radius
+                    Text("Center Radius")
+                    InputSlider(sliderRange: 5...100, value: 10) { slideInput in
+                        self.slider3 = Float(slideInput)
+                        self.updatePreview()
+                    }
+                    
                     
                 case .Sunbeam:
                     Text("Sunbeam")
                     PointInput(tapLocation: CGPoint.zero, dragLocation: CGPoint.zero, multiplier: 1) { point in
                         // Convert Point to Image
-                        center = point
+                        center = CGPoint(x: point.x * controller.textureSize.size.width, y: controller.textureSize.size.height - (point.y * controller.textureSize.size.height)) //point
                         updatePreview()
                     }
+                    Text("Radius")
+                    InputSlider(sliderRange: 20...200, value: 50, finish: { slide in
+                        self.slider1 = Float(slide)
+                        self.updatePreview()
+                    })
+                    Text("Contrast")
+                    InputSlider(sliderRange: 0...2, value: 1, finish: { slide in
+                        self.slider2 = Float(slide)
+                        self.updatePreview()
+                    })
+                    Text("Strength")
+                    InputSlider(sliderRange: 0...1, value: 1, finish: { slide in
+                        self.slider3 = Float(slide)
+                        self.updatePreview()
+                    })
+                    
+                    
+                    /*
+                     //                filter.maxStriationRadius // Float
+                     //                filter.striationContrast
+                     //                filter.striationStrength
+                     */
                     .padding(.vertical, 8)
                     
                 case .Caustic: // Refraction
@@ -173,12 +220,15 @@ struct MetalOverlaysView: View {
             case .LensFlare:
                 
                 let filter = LensFlare()
-                filter.inputSize = CIVector(cgRect: CGRect(origin: .zero, size: controller.textureSize.size))
+                filter.inputSize = CIVector(cgPoint: CGPoint(x: controller.textureSize.size.width, y: controller.textureSize.size.height))//CIVector(cgRect: CGRect(origin: .zero, size: controller.textureSize.size))
                 
                 filter.inputOrigin = CIVector(cgPoint: center)
                 
+                // get a CIImage from our filter or exit if that fails
+//                guard let outputImage = filter.outputImage else { return }
+                
                 guard let output = filter.outputImage,
-                      let cgOutput = context.createCGImage(output, from: output.extent)
+                      let cgOutput = context.createCGImage(output, from: CGRect(origin: CGPoint.zero, size: controller.textureSize.size))
                 else {
                     print("⚠️ No output image")
                     return
@@ -194,10 +244,10 @@ struct MetalOverlaysView: View {
                 let filter = CIFilter.lenticularHaloGenerator()
                 
                 filter.center = center
-                filter.color = CIColor(color: NSColor(color0))!
-                filter.haloRadius = slider1
-                filter.haloWidth = slider2
-                filter.striationStrength = slider3
+                filter.color = CIColor(color: NSColor(color1))!
+                filter.haloRadius = max(5, slider3)
+                filter.haloWidth = max(10, slider1)
+                filter.striationStrength = max(0.1, slider2)
                 filter.striationContrast = 0.5
                 filter.haloOverlap = 0.77
                 
@@ -210,16 +260,21 @@ struct MetalOverlaysView: View {
                     // convert that to a UIImage
                     let nsImage = NSImage(cgImage: cgimg, size:controller.textureSize.size)
                     controller.updatePreview(image: nsImage)
+                } else {
+                    print("⚠️ No output image")
+                    return
                 }
                 
             case .Sunbeam:
                 
                 let filter = CIFilter.sunbeamsGenerator()
                 filter.center = center
-//                filter.color
-//                filter.maxStriationRadius // Float
-//                filter.striationContrast
-//                filter.striationStrength
+                filter.color = .white
+                filter.sunRadius = slider1 * 0.8
+                filter.time = 1
+                filter.maxStriationRadius = max(10, slider1)
+                filter.striationContrast = slider2
+                filter.striationStrength = slider3
             
                 // get a CIImage from our filter or exit if that fails
                 guard let outputImage = filter.outputImage else { return }
@@ -230,12 +285,18 @@ struct MetalOverlaysView: View {
                     // convert that to a UIImage
                     let nsImage = NSImage(cgImage: cgimg, size:controller.textureSize.size)
                     controller.updatePreview(image: nsImage)
+                } else {
+                    print("⚠️ No output image")
+                    return
                 }
                 
             case .Caustic:
                 
                 let filter = CausticRefraction()
+                filter.inputTileSize = controller.textureSize.size.width
                 filter.inputImage = coreImage
+                
+                
 //                filter.inputLensScale
 //                filter.inputLightingAmount
 //                filter.inputRefractiveIndex
@@ -250,6 +311,9 @@ struct MetalOverlaysView: View {
                     // convert that to a UIImage
                     let nsImage = NSImage(cgImage: cgimg, size:controller.textureSize.size)
                     controller.updatePreview(image: nsImage)
+                } else {
+                    print("⚠️ No output image")
+                    return
                 }
                 
             default:print("Not implemented")

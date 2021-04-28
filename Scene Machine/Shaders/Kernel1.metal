@@ -315,6 +315,29 @@ extern "C" { namespace coreimage {
         return float4(col, 1.0);
     }
     
+    float4 waves(sample_t sample, float2 size, float tilecount, float time, destination dest) {
+        
+        float2 uv = (dest.coord()) / size.y;
+//        float2 uv = (dest.coord() - .2 * size.xy) / size.y;
+        
+        float color = 0.0;
+        
+        // test amp
+        float amplitude = cos(uv.x * 30.0 + time * 2.0) * 2.0; // Height
+        float multex = uv.x * 6.0; // Bigger >> black, Smaller >. White
+        
+//        if (dest.coord().x > (size.x / 2)) {
+            color += sin(multex + sin(time + uv.y * 90 + amplitude)) * 0.5;
+//        } else {
+//            color -= sin(multex + sin(time + uv.y * 90 + amplitude)) * 0.5;
+//        }
+        
+        
+        float3 finalColor = float3(color, color, color);
+        
+        return float4(finalColor, 1.0);
+    }
+    
     // MARK: - Black & White
     
     float lumin601(float3 p)

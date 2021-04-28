@@ -7,18 +7,11 @@
 
 import SwiftUI
 
-enum MetalGenType {
-    
+enum MetalGenType:String, CaseIterable {
     case CIGenerators
-    case Patterns
-    
     case Noise
     case Tiles
-    
-    // Overlays
     case Overlay
-    
-    // Others
     case Other
 }
 
@@ -28,12 +21,13 @@ struct MetalGenView: View {
     
     @State var textureSize:TextureSize = .medium
     @State var image:NSImage = NSImage(size: NSSize(width: 1024, height: 1024))
-    @State var selection:MetalGenType = .CIGenerators
+    @State var selection:MetalGenType = .Noise
     
     @State private var zoomLevel:Double = 1.0
     
     var topBar: some View {
         HStack {
+            
             Picker("Size", selection: $controller.textureSize) {
                 ForEach(TextureSize.allCases, id:\.self) { tSize in
                     Text(tSize.fullLabel)
@@ -48,16 +42,14 @@ struct MetalGenView: View {
             .frame(width: 150)
             
             Group {
-                Button("CI Gen") {
-                    print("CI Gen")
-                    controller.selection = .CIGenerators
+                
+                Picker("Gen", selection: $controller.selection) {
+                    ForEach(MetalGenType.allCases, id:\.self) { genn in
+                        Text("\(genn.rawValue)")
+                    }
                 }
-                Button("Noise") {
-                    controller.selection = .Noise
-                }
-                Button("Tiles") {
-                    controller.selection = .Tiles
-                }
+                .frame(width: 150)
+                
                 Button(action: {
                     controller.saveImage()
                 }, label: {
@@ -66,6 +58,7 @@ struct MetalGenView: View {
                 })
             }
             
+            // Zoom
             Group {
                 // Zoom -
                 Button(action: {
@@ -77,7 +70,7 @@ struct MetalGenView: View {
                 }).font(.title2)
                 
                 // Zoom Label
-                let zoomString = String(format: "Zoom: %.2f", zoomLevel)
+                let zoomString = String(format: "x %.2f", zoomLevel)
                 Text(zoomString)
                 
                 // Zoom +
@@ -120,7 +113,7 @@ struct MetalGenView: View {
                             MetalOthersView(controller: controller, applied: { newImage in
                                 controller.image = newImage
                             })
-                        default: Text("Not Implemented").foregroundColor(.gray)
+//                        default: Text("Not Implemented").foregroundColor(.gray)
                     }
                 }
             }
@@ -134,7 +127,7 @@ struct MetalGenView: View {
                 ScrollView([.vertical, .horizontal], showsIndicators: true) {
                     HStack(alignment:.top) {
                         Spacer()
-                        Image(nsImage: image)
+                        Image(nsImage: controller.image)
                             .resizable()
                             .frame(width: textureSize.size.width * CGFloat(zoomLevel), height: textureSize.size.height * CGFloat(zoomLevel), alignment: .center)
                             .padding(20)
@@ -146,171 +139,7 @@ struct MetalGenView: View {
             }
             
         }
-//        .onAppear() {
-//            self.loadBaseImage()
-//        }
     }
-    
-//    func loadBaseImage() {
-//        let noise = CIFilter.randomGenerator()
-//        let noiseImage = noise.outputImage!
-//        let context = CIContext()
-//
-//        if let cgimg = context.createCGImage(noiseImage, from: CGRect(origin: .zero, size: self.textureSize.size)) {
-//            // convert that to a UIImage
-//            let nsImage = NSImage(cgImage: cgimg, size:image.size)
-//            self.image = nsImage
-//        }
-//    }
-    
-//    func truchet() {
-//        let context = CIContext()
-//
-//        let caustic = TruchetFilter() //CausticNoise()
-//
-//        let noise = CIFilter.randomGenerator()
-//        let noiseImage = noise.outputImage!
-//
-//        caustic.inputImage = noiseImage
-//        caustic.tileSize = Float(image.size.width)
-//
-//        // get a CIImage from our filter or exit if that fails
-//        guard let outputImage = caustic.outputImage() else { return }
-//
-//        // attempt to get a CGImage from our CIImage
-//        if let cgimg = context.createCGImage(outputImage, from: CGRect(origin: .zero, size: CGSize(width: 1024, height: 1024))) {
-//            // convert that to a UIImage
-//            let nsImage = NSImage(cgImage: cgimg, size:image.size)
-//            self.image = nsImage
-//        }
-//    }
-//
-//    func hexagon() {
-//        let context = CIContext()
-//
-//        let hexagon = HexagonFilter() //CausticNoise()
-//
-//        let noise = CIFilter.randomGenerator()
-//        let noiseImage = noise.outputImage!
-//
-//        hexagon.inputImage = noiseImage
-//        hexagon.tileSize = Float(image.size.width)
-//
-//        // get a CIImage from our filter or exit if that fails
-//        guard let outputImage = hexagon.outputImage() else { return }
-//
-//        // attempt to get a CGImage from our CIImage
-//        if let cgimg = context.createCGImage(outputImage, from: CGRect(origin: .zero, size: CGSize(width: 1024, height: 1024))) {
-//            // convert that to a UIImage
-//            let nsImage = NSImage(cgImage: cgimg, size:image.size)
-//            self.image = nsImage
-//        }
-//    }
-//
-//    func caustic() {
-//
-//        let context = CIContext()
-//        let caustic = CausticNoiseMetal() //CausticNoise()
-//
-//        let noise = CIFilter.randomGenerator()
-//        let noiseImage = noise.outputImage!
-//
-//        caustic.inputImage = noiseImage //inputCIImage
-//        caustic.tileSize = Float(image.size.width)
-//
-//        // get a CIImage from our filter or exit if that fails
-//        guard let outputImage = caustic.outputImage() else { return }
-//
-//        // attempt to get a CGImage from our CIImage
-//        if let cgimg = context.createCGImage(outputImage, from: CGRect(origin: .zero, size: CGSize(width: 1024, height: 1024))) { // outputImage.extent
-//            // convert that to a UIImage
-//            let nsImage = NSImage(cgImage: cgimg, size:image.size)
-//            self.image = nsImage
-//        }
-//    }
-//
-//    func checkerboard() {
-//
-//        print("Checkerboard")
-//        let context = CIContext()
-//        // Center, Amount
-//        let currentFilter = CIFilter.checkerboardGenerator()
-//        currentFilter.width = 128
-//        currentFilter.color0 = CIColor(red: 1, green: 0.5, blue: 0.5)
-//        currentFilter.color1 = CIColor(red: 0.5, green: 0.5, blue: 1.0)
-//        currentFilter.center = CGPoint(x: 512, y: 512)
-//
-//        print("Checkerboard")
-//        // get a CIImage from our filter or exit if that fails
-//        guard let outputImage = currentFilter.outputImage else { return }
-//        print("Output")
-//
-//
-//
-//        // attempt to get a CGImage from our CIImage
-//        if let cgimg = context.createCGImage(outputImage, from: CGRect(origin: CGPoint.zero, size: CGSize(width: 1024, height: 1024))) {
-//
-//            print("CGImage")
-//            // convert that to a UIImage
-//            let nsImage = NSImage(cgImage: cgimg, size:CGSize(width: 1024, height: 1024))
-//            self.image = nsImage
-//        }
-//        print("Check end")
-//    }
-    
-//    func saveImage() {
-//        let data = image.tiffRepresentation
-//
-//        let dialog = NSSavePanel() //NSOpenPanel();
-//
-//        dialog.title                   = "Choose a directory";
-//        dialog.showsResizeIndicator    = true;
-//        dialog.showsHiddenFiles        = false;
-//
-//        if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
-//            let result = dialog.url // Pathname of the file
-//
-//            if let result = result {
-//
-//                var finalURL = result
-//
-//                // Make sure there is an extension...
-//
-//                let path: String = result.path
-//                print("Picked Path: \(path)")
-//
-//                var filename = result.lastPathComponent
-//                print("Filename: \(filename)")
-//                if filename.isEmpty {
-//                    filename = "Untitled"
-//                }
-//
-//                let xtend = result.pathExtension.lowercased()
-//                print("Extension: \(xtend)")
-//
-//                let knownImageExtensions = ["jpg", "jpeg", "png", "bmp", "tiff"]
-//
-//                if !knownImageExtensions.contains(xtend) {
-//                    filename = "\(filename).png"
-//
-//                    let prev = finalURL.deletingLastPathComponent()
-//                    let next = prev.appendingPathComponent(filename, isDirectory: false)
-//                    finalURL = next
-//                }
-//
-//                do {
-//                    try data?.write(to: finalURL)
-//                    print("File saved")
-//                } catch {
-//                    print("ERROR: \(error.localizedDescription)")
-//                }
-//
-//            }
-//        } else {
-//            // User clicked on "Cancel"
-//            return
-//        }
-//    }
 }
 
 struct MetalGenView_Previews: PreviewProvider {

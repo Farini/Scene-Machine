@@ -29,7 +29,7 @@ struct PointInput:View {
             let tap = TapGesture().onEnded { tapLocation = dragLocation }
             let drag = DragGesture(minimumDistance: 0).onChanged { value in
                 dragLocation = value.location
-                let rPoint = CGPoint(x: CGFloat(multiplier) * value.location.x, y: CGFloat(multiplier) * value.location.y)
+                let rPoint = CGPoint(x: (CGFloat(multiplier) * value.location.x) / 200, y: (CGFloat(multiplier) * value.location.y) / 200)
                 finished(rPoint)
             }.sequenced(before: tap)
             ZStack {

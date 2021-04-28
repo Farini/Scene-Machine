@@ -70,7 +70,9 @@ struct MetalNoiseView: View {
                     }
                 case .Waves:
                     Text("Waves")
-                    Text("Not yet implemented").foregroundColor(.gray)
+                    
+                    CounterInput(value: $stepCount1, range: 1...20, title: "Time")
+                    
             }
             
             Divider()
@@ -179,6 +181,28 @@ struct MetalNoiseView: View {
 //                filter.tileSize = (slider1 * Float(image!.size.width)).rounded()
                 filter.tileSize = Float(controller.textureSize.size.width)
                 filter.time = stepCount1
+                
+                guard let output = filter.outputImage(),
+                      let cgOutput = context.createCGImage(output, from: output.extent)
+                else {
+                    print("⚠️ No output image")
+                    return
+                }
+                
+                let filteredImage = NSImage(cgImage: cgOutput, size: mainImage.size)
+                
+                if isPreviewing {
+                    controller.previewImage = filteredImage
+                } else {
+                    controller.image = filteredImage
+                }
+                
+            case .Waves:
+                
+                let filter = WavesFilter()
+                filter.inputImage = coreImage
+                filter.tileSize = Float(controller.textureSize.size.width)
+                filter.time = Double(stepCount1)
                 
                 guard let output = filter.outputImage(),
                       let cgOutput = context.createCGImage(output, from: output.extent)

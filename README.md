@@ -34,9 +34,9 @@ Mix 2 images, using multiple `CoreImage` techniques
 Procedural Image generators with `Metal`
 
 - [X] Organize in Sections
+- [X] Noise { Voronoi, Caustic, Waves }
+- [X] Overlay { Lens flare, Halo, Sunbeams, Caustic Refraction }
 - [ ] Tiles { Checkerboard, Hexagons, Truchet, Diagonal Lines }
-- [ ] Noise { Voronoi, Caustic, Waves }
-- [ ] Overlay { Lens flare, Halo, Sunbeams, Caustic Refraction }
 - [ ] Others { Barcode, QRcode, Aztec }
 
 
@@ -47,8 +47,8 @@ Create SceneKit Materials - `SCNMaterial`
 - [X] SceneMaterial, and SubMaterialData: Codable -> Persist `SCNMaterial`
 - [X] Material Editor (may need improvements)
 - [X] UVMap
-- [ ] Ambient Occlusion
-- [ ] Save UVMap Image
+- [X] Ambient Occlusion
+- [X] Save UVMap Image
 - [ ] Save Materials
 - [ ] Basic Materials library (Wood, bricks, asphalt, plastic, metals, dirt, etc.)
 

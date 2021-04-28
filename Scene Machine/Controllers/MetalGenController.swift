@@ -12,6 +12,8 @@ import CoreImage
 class MetalGenController:ObservableObject {
     
     @Published var textureSize:TextureSize
+//    @Published var generatorType:MetalGenType = .CIGenerators
+    
     @Published var image:NSImage {
         didSet {
             undoImages.append(image)
