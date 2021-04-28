@@ -76,7 +76,6 @@ struct MaterialEditView: View {
                         .fill(Color.orange, style: FillStyle(eoFill: false, antialiased: true))
                         .background(Color.gray.opacity(0.1))
                 }
-                
             }
         }
         .onAppear {

@@ -350,5 +350,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         monkeyWindow.makeKeyAndOrderFront(nil)
     }
+    
+    var sceneMachineWindow: NSWindow!
+    @objc func openSceneMachine() {
+        if nil == sceneMachineWindow {
+            let view = SceneMachineView()
+            sceneMachineWindow = NSWindow(
+                contentRect: NSRect(x: 0, y: 0, width: 900, height: 500),
+                styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+                backing: .buffered, defer: false)
+            sceneMachineWindow.center()
+            sceneMachineWindow.setFrameAutosaveName("SceneMachine")
+            sceneMachineWindow.title = "Scene Machine"
+            sceneMachineWindow.isReleasedWhenClosed = false
+            sceneMachineWindow.contentView = NSHostingView(rootView: view)
+        }
+        sceneMachineWindow.makeKeyAndOrderFront(nil)
+    }
 }
 

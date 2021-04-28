@@ -265,6 +265,14 @@ struct OpenSceneView: View {
                 Divider()
             }
             
+            Group {
+                Text("⚙️ Scene Machine")
+                Button("Open") {
+                    NSApp.sendAction(#selector(AppDelegate.openSceneMachine), to: nil, from: nil)
+                }
+                Divider()
+            }
+            
             
             Text("Others").font(.title3).foregroundColor(.orange)
             Text("(Needs Implementation)").foregroundColor(.gray)

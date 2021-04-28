@@ -9,6 +9,8 @@ import SwiftUI
 
 struct MetalNoiseView: View {
     
+    @ObservedObject var controller:MetalGenController
+    
     // Slider values
     @State private var slider1:Float = 1
     @State private var slider2:Float = 0
@@ -84,13 +86,14 @@ struct MetalNoiseView: View {
                     }
                     Spacer()
                     Button("↩️ Undo") {
-                        if let lastImage = undoImages.dropLast().first {
-                            self.image = lastImage
-                        }
+//                        if let lastImage = undoImages.dropLast().first {
+//                            self.image = lastImage
+//                        }
+                        controller.previewUndo()
                     }
                     Button("🔄 Update") {
                         print("Update Preview")
-                        self.undoImages.append(self.image!)
+//                        self.undoImages.append(self.image!)
                         self.updatePreview()
                     }
                     
@@ -101,34 +104,39 @@ struct MetalNoiseView: View {
         }
         .frame(width:250)
         .padding(6)
+        .onAppear() {
+            updatePreview()
+        }
     }
     
     // Image used to Preview effect
-    @State var image:NSImage? = NSImage(named:"Checkerboard")
+//    @State var image:NSImage? = NSImage(named:"Checkerboard")
     @State private var isPreviewing:Bool = true
     var imgPreview: some View {
         VStack {
             Toggle("Preview", isOn: $isPreviewing)
             if isPreviewing {
-                if let img = image {
-                    Image(nsImage: img)
+//                if let img = image {
+                Image(nsImage: controller.previewImage ?? controller.image)
                         .resizable()
                         .aspectRatio(1, contentMode: .fit)
                         .frame(minWidth: 200, maxWidth: 250, minHeight: 200, maxHeight: 250, alignment: .center)
-                } else {
-                    Text("No preview Image").foregroundColor(.gray).padding(12)
-                }
+//                } else {
+//                    Text("No preview Image").foregroundColor(.gray).padding(12)
+//                }
             } else {
                 Text("Preview is off").foregroundColor(.gray).padding(12)
             }
         }
     }
     
+    // MARK: - Update & Apply
     
     /// Updates the image preview
     func updatePreview() {
+        
         print("Updating Preview")
-        let mainImage = image ?? NSImage(named:"Checkerboard")!
+        let mainImage = controller.image
         guard let imageData = mainImage.tiffRepresentation,
               let imageBitmap = NSBitmapImageRep(data:imageData),
               let coreImage = CIImage(bitmapImageRep: imageBitmap) else {
@@ -143,7 +151,7 @@ struct MetalNoiseView: View {
                 
                 let filter = VoronoiFilter()
                 filter.inputImage = coreImage
-                filter.tileSize = 512
+                filter.tileSize = Float(controller.textureSize.size.width)
                 filter.tileCount = stepCount2
                 filter.time = stepCount1
                 
@@ -156,14 +164,20 @@ struct MetalNoiseView: View {
                 
                 let filteredImage = NSImage(cgImage: cgOutput, size: mainImage.size)
                 
-                self.image = filteredImage
+                if isPreviewing {
+                    controller.previewImage = filteredImage
+                } else {
+                    controller.image = filteredImage
+                }
+                
                 
             case .Caustic:
                 print("Caustic")
                 
                 let filter = CausticNoiseMetal()
                 filter.inputImage = coreImage
-                filter.tileSize = (slider1 * Float(image!.size.width)).rounded()
+//                filter.tileSize = (slider1 * Float(image!.size.width)).rounded()
+                filter.tileSize = Float(controller.textureSize.size.width)
                 filter.time = stepCount1
                 
                 guard let output = filter.outputImage(),
@@ -175,7 +189,11 @@ struct MetalNoiseView: View {
                 
                 let filteredImage = NSImage(cgImage: cgOutput, size: mainImage.size)
                 
-                self.image = filteredImage
+                if isPreviewing {
+                    controller.previewImage = filteredImage
+                } else {
+                    controller.image = filteredImage
+                }
                 
             default:print("Not implemented")
         }
@@ -185,16 +203,13 @@ struct MetalNoiseView: View {
     func apply() {
         // To apply, pass a function from the parent view
         // and return a NSImage when the effects are ready
-        guard let image = image else {
-            print("No image")
-            return
-        }
+        let image = controller.previewImage ?? controller.image
         applied(image)
     }
 }
 
 struct MetalNoiseView_Previews: PreviewProvider {
     static var previews: some View {
-        MetalNoiseView()
+        MetalNoiseView(controller: MetalGenController(select: .Noise))
     }
 }

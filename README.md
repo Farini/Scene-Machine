@@ -40,7 +40,6 @@ Procedural Image generators with `Metal`
 - [ ] Others { Barcode, QRcode, Aztec }
 
 
-
 ### Scene Materials
 Create SceneKit Materials - `SCNMaterial`
 

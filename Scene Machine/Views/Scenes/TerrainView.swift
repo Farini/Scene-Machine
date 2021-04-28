@@ -58,6 +58,7 @@ struct TerrainView: View {
 //                    let doc = FileManager.default.urls(for: .desktopDirectory, in: .userDomainMask).first!
 //                    let url = doc.appendingPathComponent("SceneName.scn", isDirectory: false)
 //                    self.exporter.exportScene(to: url)
+                    
                     exportScene()
                 }
             }
