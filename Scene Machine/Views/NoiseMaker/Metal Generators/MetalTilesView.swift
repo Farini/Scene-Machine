@@ -44,7 +44,9 @@ struct MetalTilesView: View {
     
     var body: some View {
         VStack {
+            
             Text("Tiles").foregroundColor(.orange).font(.title2)
+            
             Picker("Type", selection: $tileType) {
                 ForEach(MetalTileType.allCases, id:\.self) { tile in
                     Text(tile.rawValue)
@@ -60,6 +62,7 @@ struct MetalTilesView: View {
                     // Number of tiles, Color inside?, Color outside?
                     CounterInput(value: $stepCount1, range: 1...20, title: "Time")
                     CounterInput(value: $stepCount2, range: 5...20, title: "Tile Count")
+                    
                 case .Checkerboard:
                     CounterInput(value: $stepCount1, range: 5...20, title: "Tile Count")
                     CounterInput(value: $stepCount2, range: 1...3, title: "Method")
@@ -74,8 +77,7 @@ struct MetalTilesView: View {
                         self.slider1 = Float(value)
                     }
                     
-                default:
-                    Text("Not Implemented").foregroundColor(.gray)
+//                default: Text("Not Implemented").foregroundColor(.gray)
             }
             
             Divider()
@@ -91,16 +93,17 @@ struct MetalTilesView: View {
                     }
                     Spacer()
                     Button("↩️ Undo") {
-                        if let lastImage = undoImages.dropLast().first {
-                            self.image = lastImage
-                        }
+//                        if let lastImage = undoImages.dropLast().first {
+//                            self.image = lastImage
+//                        }
+                        controller.previewUndo()
+                        
                     }
                     Button("🔄 Update") {
                         print("Update Preview")
                         self.undoImages.append(self.image!)
                         self.updatePreview()
                     }
-                    
                 }
             }
             
@@ -108,6 +111,9 @@ struct MetalTilesView: View {
         }
         .frame(width:250)
         .padding(6)
+        .onAppear() {
+            self.updatePreview()
+        }
     }
     
     // Image used to Preview effect
@@ -118,15 +124,10 @@ struct MetalTilesView: View {
             Toggle("Preview", isOn: $isPreviewing)
             if isPreviewing {
                 let img = controller.previewImage ?? controller.image
-                
-//                if let img = image {
                     Image(nsImage: img)
                         .resizable()
                         .aspectRatio(1, contentMode: .fit)
                         .frame(minWidth: 200, maxWidth: 250, minHeight: 200, maxHeight: 250, alignment: .center)
-//                } else {
-//                    Text("No preview Image").foregroundColor(.gray).padding(12)
-//                }
             } else {
                 Text("Preview is off").foregroundColor(.gray).padding(12)
             }
@@ -135,10 +136,20 @@ struct MetalTilesView: View {
     
     // MARK: - Update & Apply
     
+    
+//    func updateDefaultValues() {
+//        switch tileType {
+//            case .Checkerboard, .Bricks, .Hexagons, .RandomMaze, .Truchet:
+//                self.stepCount1 = 4
+//        }
+//    }
+    
     /// Updates the image preview
     func updatePreview() {
+        
         print("Updating Preview")
-        let mainImage = controller.previewImage ?? controller.image
+        
+        let mainImage = controller.image
         guard let imageData = mainImage.tiffRepresentation,
               let imageBitmap = NSBitmapImageRep(data:imageData),
               let coreImage = CIImage(bitmapImageRep: imageBitmap) else {
@@ -154,7 +165,7 @@ struct MetalTilesView: View {
                 let filter = HexagonFilter()
                 filter.inputImage = coreImage
                 filter.tileSize = Float(controller.textureSize.size.width)
-                
+                filter.tilecount = stepCount2
                 
                 guard let output = filter.outputImage(),
                       let cgOutput = context.createCGImage(output, from: output.extent)
@@ -165,8 +176,14 @@ struct MetalTilesView: View {
                 
                 let filteredImage = NSImage(cgImage: cgOutput, size: controller.textureSize.size)
                 
-//                self.image = filteredImage
-                controller.updatePreview(image: filteredImage)
+                self.image = filteredImage
+                
+//                if isPreviewing {
+//                    controller.previewImage = filteredImage
+//                } else {
+//                    controller.image = filteredImage
+//                }
+                controller.updateImage(new: filteredImage, isPreview: isPreviewing)
                 
             case .Checkerboard:
                 print("Checkerboard")
@@ -189,8 +206,12 @@ struct MetalTilesView: View {
                 
                 let filteredImage = NSImage(cgImage: cgOutput, size: controller.textureSize.size)
                 
-//                self.image = filteredImage
-                controller.updatePreview(image: filteredImage)
+//                if isPreviewing {
+//                    controller.previewImage = filteredImage
+//                } else {
+//                    controller.image = filteredImage
+//                }
+                controller.updateImage(new: filteredImage, isPreview: isPreviewing)
                 
             case .RandomMaze:
                 print("Maze")
@@ -199,7 +220,6 @@ struct MetalTilesView: View {
                 filter.inputImage = coreImage
                 filter.tileSize = Float(controller.textureSize.size.width)
                 filter.tileCount = stepCount1
-                
                 
                 guard let output = filter.outputImage(),
                       let cgOutput = context.createCGImage(output, from: output.extent)
@@ -210,8 +230,12 @@ struct MetalTilesView: View {
                 
                 let filteredImage = NSImage(cgImage: cgOutput, size: controller.textureSize.size)
                 
-//                self.image = filteredImage
-                controller.updatePreview(image: filteredImage)
+//                if isPreviewing {
+//                    controller.previewImage = filteredImage
+//                } else {
+//                    controller.image = filteredImage
+//                }
+                controller.updateImage(new: filteredImage, isPreview: isPreviewing)
                 
             case .Truchet:
                 
@@ -230,14 +254,13 @@ struct MetalTilesView: View {
                 guard let outputImage = truchet.outputImage(),
                       let cgOutput = context.createCGImage(outputImage, from: CGRect(origin: .zero, size: controller.textureSize.size)) else { return }
                 
-                // attempt to get a CGImage from our CIImage
-//                if let cgimg = context.createCGImage(outputImage, from: CGRect(origin: .zero, size: CGSize(width: 1024, height: 1024))) {
-//                    // convert that to a UIImage
-//                    let nsImage = NSImage(cgImage: cgimg, size:CGSize(width: 1024, height: 1024))
-//                    self.image = nsImage
-//                }
                 let filteredImage = NSImage(cgImage: cgOutput, size: controller.textureSize.size)
-                controller.updatePreview(image: filteredImage)
+
+                if isPreviewing {
+                    controller.previewImage = filteredImage
+                } else {
+                    controller.image = filteredImage
+                }
                 
             case .Bricks:
                 
@@ -257,15 +280,15 @@ struct MetalTilesView: View {
                 guard let outputImage = bricks.outputImage(),
                       let cgOutput = context.createCGImage(outputImage, from: CGRect(origin: .zero, size: controller.textureSize.size)) else { return }
                 
-                // attempt to get a CGImage from our CIImage
-                //                if let cgimg = context.createCGImage(outputImage, from: CGRect(origin: .zero, size: CGSize(width: 1024, height: 1024))) {
-                //                    // convert that to a UIImage
-                //                    let nsImage = NSImage(cgImage: cgimg, size:CGSize(width: 1024, height: 1024))
-                //                    self.image = nsImage
-                //                }
                 let filteredImage = NSImage(cgImage: cgOutput, size: controller.textureSize.size)
-                controller.updatePreview(image: filteredImage)
-            
+//                controller.updatePreview(image: filteredImage)
+                if isPreviewing {
+                    controller.previewImage = filteredImage
+                } else {
+//                    controller.previewImage = nil
+                    controller.image = filteredImage
+                }
+                
             default:print("Not implemented")
         }
     }
@@ -274,11 +297,15 @@ struct MetalTilesView: View {
     func apply() {
         // To apply, pass a function from the parent view
         // and return a NSImage when the effects are ready
-        guard let image = image else {
-            print("No image")
-            return
-        }
-        controller.image = image
+        
+//        guard let image = image else {
+//            print("No image")
+//            return
+//        }
+//        self.applied(image)
+        
+        let image = controller.previewImage ?? controller.image
+        applied(image)
     }
 }
 

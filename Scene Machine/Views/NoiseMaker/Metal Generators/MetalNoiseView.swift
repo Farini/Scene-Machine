@@ -166,11 +166,12 @@ struct MetalNoiseView: View {
                 
                 let filteredImage = NSImage(cgImage: cgOutput, size: mainImage.size)
                 
-                if isPreviewing {
-                    controller.previewImage = filteredImage
-                } else {
-                    controller.image = filteredImage
-                }
+//                if isPreviewing {
+//                    controller.previewImage = filteredImage
+//                } else {
+//                    controller.image = filteredImage
+//                }
+                controller.updateImage(new: filteredImage, isPreview: isPreviewing)
                 
                 
             case .Caustic:
@@ -191,11 +192,12 @@ struct MetalNoiseView: View {
                 
                 let filteredImage = NSImage(cgImage: cgOutput, size: mainImage.size)
                 
-                if isPreviewing {
-                    controller.previewImage = filteredImage
-                } else {
-                    controller.image = filteredImage
-                }
+//                if isPreviewing {
+//                    controller.previewImage = filteredImage
+//                } else {
+//                    controller.image = filteredImage
+//                }
+                controller.updateImage(new: filteredImage, isPreview: isPreviewing)
                 
             case .Waves:
                 
@@ -213,13 +215,15 @@ struct MetalNoiseView: View {
                 
                 let filteredImage = NSImage(cgImage: cgOutput, size: mainImage.size)
                 
-                if isPreviewing {
-                    controller.previewImage = filteredImage
-                } else {
-                    controller.image = filteredImage
-                }
+//                if isPreviewing {
+//                    controller.previewImage = filteredImage
+//                } else {
+//                    controller.image = filteredImage
+//                }
+                controller.updateImage(new: filteredImage, isPreview: isPreviewing)
                 
             default:print("Not implemented")
+                
         }
     }
     

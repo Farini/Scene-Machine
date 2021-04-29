@@ -37,13 +37,64 @@ class SceneMachineController:ObservableObject {
     }
     
     // uv
-    
-    func getUVPoints(from source:SCNGeometrySource) -> [CGPoint] {
-        let uv:[CGPoint] = source.uv
-        return uv
+    func inspectUVMap(geometry:SCNGeometry) -> [CGPoint]? {
+        let sources = geometry.sources
+        for src in sources {
+            if src.semantic == .texcoord {
+                let uvMap = src.uv
+                if !uvMap.isEmpty {
+                    return uvMap
+                }
+            } else if src.semantic == .boneIndices {
+                let vv = src.componentsPerVector
+                print("Bone indices Components per vector: \(vv)")
+            } else if src.semantic == .boneWeights {
+                let vv = src.componentsPerVector
+                print("Bone indices Components per vector: \(vv)")
+            } else if src.semantic == .vertex {
+                let vertices = src.vertices
+                print("All Vertices! Count: \(vertices.count)")
+            } else if src.semantic == .normal {
+                // Can be used for baking, or display info
+                let vertices = src.vertices // will get for normal, as for vertices
+                print("Normal Vertices: \(vertices.count)")
+            } else {
+                print("Other source")
+            }
+            
+            // OTHER SEMANTICS
+            // + Edge Create
+            // + vertex crease
+            // + color (vertex color)
+            // + tangent
+        }
+        print("Could not find a UV Map")
+        return nil
     }
     
-    // MARK: - Loadind
+    
+    func saveScene() {
+        
+        let dialog = NSSavePanel() //NSOpenPanel();
+        
+        dialog.title                   = "Choose destination";
+        dialog.showsResizeIndicator    = true;
+        dialog.showsHiddenFiles        = false;
+        dialog.allowedFileTypes = ["scn"]
+        dialog.message = "save scene"
+        
+        if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
+            // Pathname of the file
+            if let result = dialog.url {
+                scene.write(to: result, options: ["checkConsistency":NSNumber.init(booleanLiteral: true)], delegate: nil) { (progress, error, boolean) in
+                    print("Write progress: \(progress)")
+                    print("Error: \(error?.localizedDescription ?? "no_error")")
+                }
+            }
+        }
+    }
+    
+    // MARK: - Loading
     
     func loadPanel() {
         let dialog = NSOpenPanel()
@@ -65,7 +116,7 @@ class SceneMachineController:ObservableObject {
     }
     
     func loadScene(url:URL) {
-        if let scene = try? SCNScene(url: url, options: [SCNSceneSource.LoadingOption.convertToYUp:NSNumber(booleanLiteral: true)]) {
+        if let scene = try? SCNScene(url: url, options: [SCNSceneSource.LoadingOption.convertToYUp:NSNumber(value:1)]) {
             print("Scene in")
             // Recursively get Materials
             let root = scene.rootNode

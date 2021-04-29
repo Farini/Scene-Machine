@@ -12,7 +12,7 @@ import CoreImage
 class MetalGenController:ObservableObject {
     
     @Published var textureSize:TextureSize
-//    @Published var generatorType:MetalGenType = .CIGenerators
+    @Published var selection:MetalGenType = .CIGenerators
     
     @Published var image:NSImage {
         didSet {
@@ -22,23 +22,42 @@ class MetalGenController:ObservableObject {
     @Published var previewImage:NSImage?
     @Published var undoImages:[NSImage] = []
     
-    @Published var selection:MetalGenType = .CIGenerators
     @Published var zoomLevel:Double = 1.0
     
     func previewUndo() {
+        
         print("Previous Images: \(undoImages.count)")
-        if let lastImage:NSImage = undoImages.dropLast().first {
-            // main image
-//            self.image = lastImage
+        
+        
+        if let lastImage:NSImage = undoImages.last {
             // preview
             self.previewImage = lastImage
+            undoImages.removeLast()
         }
     }
     
-    func updatePreview(image:NSImage) {
-        let oldImage = previewImage ?? image
-        undoImages.append(oldImage)
-        self.previewImage = image
+//    func updatePreview(image:NSImage) {
+//
+//        let oldImage = previewImage ?? image
+//        undoImages.append(oldImage)
+//        self.previewImage = image
+//    }
+    
+    func updateImage(new:NSImage, isPreview:Bool) {
+        
+        print("Context preview: \(previewImage == nil ? "No Preview":"Preview Image")")
+        print("Undo Count: \(undoImages.count)")
+        
+        if let oldImage = previewImage {
+            undoImages.append(oldImage)
+        }
+        
+        if isPreview {
+            self.previewImage = new
+        } else {
+            self.image = new
+        }
+        
     }
     
     func saveImage() {
@@ -50,40 +69,15 @@ class MetalGenController:ObservableObject {
         dialog.title                   = "Choose a directory";
         dialog.showsResizeIndicator    = true;
         dialog.showsHiddenFiles        = false;
+        dialog.allowedFileTypes = ["jpg", "jpeg", "png", "bmp", "tiff"]
         
         if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
             let result = dialog.url // Pathname of the file
             
             if let result = result {
                 
-                var finalURL = result
-                
-                // Make sure there is an extension...
-                
-                let path: String = result.path
-                print("Picked Path: \(path)")
-                
-                var filename = result.lastPathComponent
-                print("Filename: \(filename)")
-                if filename.isEmpty {
-                    filename = "Untitled"
-                }
-                
-                let xtend = result.pathExtension.lowercased()
-                print("Extension: \(xtend)")
-                
-                let knownImageExtensions = ["jpg", "jpeg", "png", "bmp", "tiff"]
-                
-                if !knownImageExtensions.contains(xtend) {
-                    filename = "\(filename).png"
-                    
-                    let prev = finalURL.deletingLastPathComponent()
-                    let next = prev.appendingPathComponent(filename, isDirectory: false)
-                    finalURL = next
-                }
-                
                 do {
-                    try data?.write(to: finalURL)
+                    try data?.write(to: result)
                     print("File saved")
                 } catch {
                     print("ERROR: \(error.localizedDescription)")

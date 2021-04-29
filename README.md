@@ -56,12 +56,13 @@ Create SceneKit Materials - `SCNMaterial`
 Test and export `SceneKit` scenes.
 
 - [X] Show a Geometry's `UVMap`
+- [X] Save and export scene `.scn` files
 - [ ] Have more sample geometries than the ones provided by SceneKit
 - [ ] Automatically "beautify" `.dae` files made in blender - Adjust lighting, colors, etc.
 - [ ] Have some sample code + shaders written in `Metal`  - `SCNProgram`
 - [ ] Test animated characters - Bones(in blender) vs SCNSkinner(Swift)
 - [ ] Background `HDRI` Images
-- [ ] Save and export scene `.scn` files >> Needs Permission
+
 
 ### Metal Shaders
 
@@ -100,6 +101,7 @@ Test and export `SceneKit` scenes.
 - [X] Main menu routing to main interfaces
 - [X] SpriteKit noise textures (all)
 - [X] ImageFX -> Undo
+- [X] Save and export Scenes `.scn` for your project
 
 - [ ] Save Materials Property `SceneMaterial`
 - [ ] Fix bug with SpriteKit Noise
@@ -112,15 +114,8 @@ Test and export `SceneKit` scenes.
 
 - [ ] AppDelegate, or SwiftUI? See `Fruta` app for latter.
 - [ ] Blender made textures
-- [ ] Save and export Scenes `.scn` for your project
-- [ ] SpriteKit shaders
 
-- [ ] 2/4 Basic Scenes
-    - [X] Monkey
-    - [X] Terrain
-    - [ ] Woman
-    - [ ] StreetView
-    
+- [ ] SpriteKit shaders
 
 
 ### Important Notes - Modulo Function Metal vs GLSL

@@ -13,6 +13,7 @@ class HexagonFilter: CIFilter {
     private var kernel:CIColorKernel
     var inputImage:CIImage?
     var tileSize:Float = 512.0
+    var tilecount:Int = 5
     
     override init() {
         let url = Bundle.main.url(forResource: "default", withExtension: "metallib")!
@@ -35,8 +36,9 @@ class HexagonFilter: CIFilter {
         //        }
         //        caustic(sample_t sample, float time, float tileSize, destination dest)
         let vec = CIVector(cgPoint: CGPoint(x: CGFloat(tileSize), y: CGFloat(tileSize)))
+        let fTile = Float(tilecount)
         
-        return kernel.apply(extent: inputImage.extent, arguments: [src, vec])
+        return kernel.apply(extent: inputImage.extent, arguments: [src, fTile, vec])
     }
 }
 

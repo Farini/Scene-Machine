@@ -160,16 +160,13 @@ struct MetalOverlaysView: View {
                     }
                     Spacer()
                     Button("↩️ Undo") {
-                        if let lastImage = undoImages.dropLast().first {
-                            self.image = lastImage
-                        }
+                        controller.previewUndo()
                     }
                     Button("🔄 Update") {
                         print("Update Preview")
                         self.undoImages.append(self.image!)
                         self.updatePreview()
                     }
-                    
                 }
             }
             
@@ -237,7 +234,8 @@ struct MetalOverlaysView: View {
                 let filteredImage = NSImage(cgImage: cgOutput, size: controller.textureSize.size)
                 
                 //                self.image = filteredImage
-                controller.updatePreview(image: filteredImage)
+//                controller.updatePreview(image: filteredImage)
+                controller.updateImage(new: filteredImage, isPreview: isPreviewing)
                 
             case .Halo:
                 
@@ -259,7 +257,8 @@ struct MetalOverlaysView: View {
                     
                     // convert that to a UIImage
                     let nsImage = NSImage(cgImage: cgimg, size:controller.textureSize.size)
-                    controller.updatePreview(image: nsImage)
+//                    controller.updatePreview(image: nsImage)
+                    controller.updateImage(new: nsImage, isPreview: isPreviewing)
                 } else {
                     print("⚠️ No output image")
                     return
@@ -284,7 +283,8 @@ struct MetalOverlaysView: View {
                     
                     // convert that to a UIImage
                     let nsImage = NSImage(cgImage: cgimg, size:controller.textureSize.size)
-                    controller.updatePreview(image: nsImage)
+//                    controller.updatePreview(image: nsImage)
+                    controller.updateImage(new: nsImage, isPreview: isPreviewing)
                 } else {
                     print("⚠️ No output image")
                     return
@@ -310,7 +310,8 @@ struct MetalOverlaysView: View {
                     
                     // convert that to a UIImage
                     let nsImage = NSImage(cgImage: cgimg, size:controller.textureSize.size)
-                    controller.updatePreview(image: nsImage)
+//                    controller.updatePreview(image: nsImage)
+                    controller.updateImage(new: nsImage, isPreview: isPreviewing)
                 } else {
                     print("⚠️ No output image")
                     return

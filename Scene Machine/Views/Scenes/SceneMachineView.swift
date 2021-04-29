@@ -20,7 +20,15 @@ struct SceneMachineView: View {
         
         NavigationView {
             VStack {
-                Text("Left")
+                // Geometries
+                HStack {
+                    Image(systemName: "pyramid.fill")
+                    Text("Geometries")
+                    Spacer()
+                }
+                .font(.title2)
+                .foregroundColor(.orange)
+                
                 ForEach(controller.geometries) { geometry in
                     SMGeometryRow(geometry: geometry, isSelected: selectedGeometry == geometry)
                         .onTapGesture {
@@ -32,10 +40,20 @@ struct SceneMachineView: View {
                         }
                 }
                 Divider()
+                
+                // Materials
+                HStack {
+                    Image(systemName: "shield.checkerboard")
+                    Text("Materials")
+                    Spacer()
+                }
+                .font(.title2)
+                .foregroundColor(.orange)
+              
                 ForEach(controller.materials) { material in
                     HStack {
                         Image(systemName: "shield.checkerboard")
-                        Text("Material \(material.name ?? "untitled")")
+                        Text("\(material.name ?? "untitled")")
                         Spacer()
                     }
                     .onTapGesture {
@@ -45,8 +63,12 @@ struct SceneMachineView: View {
                 if let material = selectedMaterial {
                     MaterialView(material: material)
                 }
+                
+                Spacer()
             }
+            .padding(.horizontal, 6)
             
+            // Middle - Scene
             VStack {
                 HStack {
                     Button("Load") {
@@ -55,6 +77,7 @@ struct SceneMachineView: View {
                     }
                     Button("Save") {
                         print("save")
+                        controller.saveScene()
                     }
                     Toggle("UVMap", isOn: $displayUVMap)
                 }
@@ -65,8 +88,8 @@ struct SceneMachineView: View {
             .frame(minWidth: 500, maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
             
             if displayUVMap {
-                if let geoSource:SCNGeometrySource = selectedGeometry?.sources.last {
-                    let uvMap = controller.getUVPoints(from: geoSource)
+                if let geometry = selectedGeometry,
+                   let uvMap = controller.inspectUVMap(geometry: geometry) {
                     UVShape(uv:uvMap)
                         .stroke(lineWidth: 0.5)
                         .fill(Color.orange, style: FillStyle(eoFill: false, antialiased: true))

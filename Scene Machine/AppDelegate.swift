@@ -179,31 +179,28 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     
     /// Quick Noise
+    var quickNoiseWindow:NSWindow!
     @IBAction func openNoiseMaker(_ sender: NSMenuItem) {
         
-        let newWindow = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 1200, height: 800),
-            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-            backing: .buffered, defer: false)
-        newWindow.center()
-        newWindow.setFrameAutosaveName("Drag and Drop Image Window")
-        //        window.toolbarStyle = .unified
-//        window = newWindow
-        newWindow.contentView = NSHostingView(rootView: NoiseMakerView())
-        newWindow.makeKeyAndOrderFront(nil)
+        if nil == quickNoiseWindow {
+            let view = NoiseMakerView()
+            quickNoiseWindow = NSWindow(
+                contentRect: NSRect(x: 0, y: 0, width: 900, height: 500),
+                styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+                backing: .buffered, defer: false)
+            quickNoiseWindow.center()
+            quickNoiseWindow.setFrameAutosaveName("QuickNoiseWindow")
+            quickNoiseWindow.title = "Quick Noise"
+            quickNoiseWindow.isReleasedWhenClosed = false
+            quickNoiseWindow.contentView = NSHostingView(rootView: view)
+        }
+        
+        quickNoiseWindow.makeKeyAndOrderFront(nil)
     }
     
+    
     @IBAction func openSpriteKitNoise(_ sender: NSMenuItem) {
-        let newWindow = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 1200, height: 800),
-            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-            backing: .buffered, defer: false)
-        newWindow.center()
-        newWindow.setFrameAutosaveName("Drag and Drop Image Window")
-        //        window.toolbarStyle = .unified
-//        window = newWindow
-        newWindow.contentView = NSHostingView(rootView: SpriteNoiseMaker())
-        newWindow.makeKeyAndOrderFront(nil)
+        
     }
     
     @IBAction func openFrontWindow(_ sender: NSMenuItem) {
@@ -250,7 +247,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 defer: false)
             spriteNoiseWindow.center()
             spriteNoiseWindow.setFrameAutosaveName("SpriteNoiseWindow")
-            spriteNoiseWindow.title = "Scene Machine"
+            spriteNoiseWindow.title = "Sprite Noise"
             spriteNoiseWindow.isReleasedWhenClosed = false
             spriteNoiseWindow.contentView = NSHostingView(rootView: spriteNoiseView)
         }

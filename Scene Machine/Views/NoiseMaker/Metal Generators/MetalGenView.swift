@@ -104,7 +104,7 @@ struct MetalGenView: View {
                         case .Tiles:
                             MetalTilesView(controller: controller, applied: { newImage in
                                 controller.image = newImage
-                            }, image: self.image)
+                            })
                         case .Overlay:
                             MetalOverlaysView(controller: controller, applied: { newImage in
                                 controller.image = newImage

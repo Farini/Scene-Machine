@@ -11,16 +11,17 @@ import SpriteKit
 class NoiseController:ObservableObject {
     
     @Published var currentImage:NSImage
+    @Published var textureSize:TextureSize = .small
     
     init() {
-        let texture = SKTexture.init(noiseWithSmoothness: 0.5, size: CGSize(width: 512, height: 512), grayscale: true)
+        let texture = SKTexture.init(noiseWithSmoothness: 0.5, size: TextureSize.medSmall.size, grayscale: true)
         let img = texture.cgImage()
         let image = NSImage(cgImage: img, size: texture.size())
         self.currentImage = image
     }
     
     func generateNode(smooth:CGFloat) {
-        let texture = SKTexture.init(noiseWithSmoothness: smooth, size: CGSize(width: 512, height: 512), grayscale: true)
+        let texture = SKTexture.init(noiseWithSmoothness: smooth, size: textureSize.size, grayscale: true)
         let img = texture.cgImage()
         let image = NSImage(cgImage: img, size: texture.size())
         self.currentImage = image
@@ -29,27 +30,23 @@ class NoiseController:ObservableObject {
     // This opens the Finder, but not to save...
     func openSavePanel() {
         
-        let dialog = NSOpenPanel();
+        let dialog = NSSavePanel() //NSOpenPanel();
         
-        dialog.title                   = "Choose a directory";
+        dialog.title                   = "Choose destination";
         dialog.showsResizeIndicator    = true;
         dialog.showsHiddenFiles        = false;
-        dialog.allowsMultipleSelection = false;
-        dialog.canChooseDirectories = true;
-        dialog.canChooseFiles = false;
+        dialog.allowedFileTypes = ["png", "jpg", "jpeg"]
+        dialog.message = "save scene"
         
         if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
-            let result = dialog.url // Pathname of the file
             
-            if let result = result {
-                if result.isFileURL {
-                    print("Picked a file")
-                } else {
-                    // this doesn't happen
-                    print("Picked what?")
+            if let result = dialog.url, let data = currentImage.tiffRepresentation {
+                do {
+                    try data.write(to: result)
+                    print("File saved")
+                } catch {
+                    print("ERROR: \(error.localizedDescription)")
                 }
-                let path: String = result.path
-                print("Picked Path: \(path)")
             }
             
         } else {

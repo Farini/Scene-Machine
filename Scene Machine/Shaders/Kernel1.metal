@@ -103,13 +103,13 @@ extern "C" { namespace coreimage {
         return float4 (x, y, id.x, id.y);
     }
     
-    float4 hexagons(sample_t sample, float2 size, destination dest) {
+    float4 hexagons(sample_t sample, float tileCount, float2 size, destination dest) {
         
         float2 uv = (dest.coord() - .5 * size.xy) / size.y;
         
         float3 col = float3(0);
         
-        uv *= 5;
+        uv *= tileCount;
         
         float4 hc = HexCoords(uv);
         float blackThick = 1;
