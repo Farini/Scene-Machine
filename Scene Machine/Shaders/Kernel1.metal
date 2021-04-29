@@ -42,6 +42,11 @@ extern "C" { namespace coreimage {
     
     // MARK: - Noises
     
+    // Smoke noise: https://www.shadertoy.com/view/MsdGWn
+    // PerlinMix noise: https://www.shadertoy.com/view/MdGSzt
+    // water noise: https://www.shadertoy.com/view/Mt2SzR
+    // Perlin cloud like: https://www.shadertoy.com/view/4lB3zz
+    
     float4 caustic(sample_t sample, float time, float tileSize, destination dest) {
         
         float2 uv = dest.coord() / tileSize;
@@ -315,6 +320,10 @@ extern "C" { namespace coreimage {
         return float4(col, 1.0);
     }
     
+    // Waves
+    // Look into Trochoidal Waves
+    // More on waves: https://www.shadertoy.com/view/Ml2XWy
+    // Sick wave: https://www.shadertoy.com/view/4tXXW7
     float4 waves(sample_t sample, float2 size, float tilecount, float time, destination dest) {
         
         float2 uv = (dest.coord()) / size.y;
@@ -337,6 +346,113 @@ extern "C" { namespace coreimage {
         
         return float4(finalColor, 1.0);
     }
+    
+    // Bricks
+    
+    //normal functions
+    // original: https://www.shadertoy.com/view/wt3Sz4
+    //both function are modified version of https://www.shadertoy.com/view/XtV3z3
+    // Normal Tutorial: https://www.shadertoy.com/view/XtV3z3
+    
+    // Other tiles
+    // variant of https://shadertoy.com/view/4dVyDw
+    // variant with separate shape func here: https://www.shadertoy.com/view/ldVczc
+    // variant with shape groups and more shapes: https://www.shadertoy.com/view/ldGyzd
+    // variant with basketweave: https://www.shadertoy.com/view/XdtBzn
+    // groups of shapes, fork of https://shadertoy.com/view/ldVczc
+    // previous fork of https://shadertoy.com/view/lsVyRK
+    
+    float sincosbundle(float val)
+    {
+        return sin(cos(2.*val) + sin(4.*val)- cos(5.*val) + sin(3.*val))*0.05;
+    }
+    
+    //color function
+    float3 brickColor(float2 uv) {
+        
+        float2 coord = floor(uv);
+        float2 gv = fract(uv);
+        
+        float movingValue = -0.0;
+        //for randomness in brick pattern
+        movingValue = -sincosbundle(coord.y)*2.;
+        
+        float edgePos = 1.5;
+        float3 lineColor = float3(0.845);
+        float3 brickColor = float3(0.45,0.29,0.23);
+        
+        float mx = uv.y;
+        float my = 2.0;
+        
+        float modolo = mx - my * floor(mx / my);
+        float offset = floor(modolo)*(edgePos);
+        float verticalEdge = abs(cos(uv.x + offset));
+        
+        float3 brick = brickColor - movingValue;
+        
+        bool vrtEdge = step( 1. - 0.01, verticalEdge) == 1.;
+        bool hrtEdge = gv.y > (0.9) || gv.y < (0.1);
+        
+        if(hrtEdge || vrtEdge)
+            return lineColor;
+        return brick;
+    }
+    
+    float lum(float2 uv) {
+        float3 rgb = brickColor(uv);
+        return 0.2126 * rgb.r + 0.7152 * rgb.g + 0.0722 * rgb.b;
+    }
+    
+    float3 brickNormal(float2 uv) {
+        float r = 0.02;
+        
+        float x0 = lum(float2(uv.x + r, uv.y));
+        float x1 = lum(float2(uv.x - r, uv.y));
+        float y0 = lum(float2(uv.x, uv.y - r));
+        float y1 = lum(float2(uv.x, uv.y + r));
+        
+        //NOTE: Controls the "smoothness"
+        float s = 1.0;
+        float3 n = normalize(float3(x1 - x0, y1 - y0, s));
+        
+        float3 p = float3(uv * 2.0 - 1.0, 0.0);
+        float3 v = float3(0.0, 0.0, 1.0);
+        
+        float3 l = v - p;
+        float d_sqr = l.x * l.x + l.y * l.y + l.z * l.z;
+        l *= (1.0 / sqrt(d_sqr));
+        
+        float3 h = normalize(l + v);
+        
+        float dot_nl = clamp(dot(n, l), 0.0, 1.0);
+        float dot_nh = clamp(dot(n, h), 0.0, 1.0);
+        
+        float color = lum(uv) * pow(dot_nh, 14.0) * dot_nl * (1.0 / d_sqr);
+        color = pow(color, 1.0 / 2.2);
+        
+        return (n * 0.5 + 0.5);
+        
+    }
+    
+    float4 bricks(sample_t sample, float2 size, float tilecount, float time, destination dest) {
+        float2 uv = (dest.coord()) / size.y;
+        uv *= tilecount;
+        
+        float3 color = float3(0);
+        
+        if (time < 1) {
+            color = brickNormal(uv);
+        } else {
+            color = brickColor(uv);
+        }
+        
+        return float4(color, 1.0);
+        
+    }
+
+    // MARK: - Normal
+    
+    
     
     // MARK: - Black & White
     

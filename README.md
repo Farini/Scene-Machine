@@ -36,7 +36,7 @@ Procedural Image generators with `Metal`
 - [X] Organize in Sections
 - [X] Noise { Voronoi, Caustic, Waves }
 - [X] Overlay { Lens flare, Halo, Sunbeams, Caustic Refraction }
-- [ ] Tiles { Checkerboard, Hexagons, Truchet, Diagonal Lines }
+- [X] Tiles { Checkerboard, Hexagons, Truchet, Bricks, Diagonal Lines }
 - [ ] Others { Barcode, QRcode, Aztec }
 
 

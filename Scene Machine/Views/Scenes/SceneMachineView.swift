@@ -14,7 +14,7 @@ struct SceneMachineView: View {
     @State private var selectedGeometry:SCNGeometry?
     @State private var selectedMaterial:SCNMaterial?
     
-    @State private var displayUVMap:Bool = true
+    @State private var displayUVMap:Bool = false
     
     var body: some View {
         
@@ -62,6 +62,7 @@ struct SceneMachineView: View {
                 
                 SceneView(scene: controller.scene, pointOfView: nil, options: [.allowsCameraControl, .autoenablesDefaultLighting], preferredFramesPerSecond: 60, antialiasingMode: .multisampling4X, delegate: nil, technique: nil)
             }
+            .frame(minWidth: 500, maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
             
             if displayUVMap {
                 if let geoSource:SCNGeometrySource = selectedGeometry?.sources.last {

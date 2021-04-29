@@ -37,7 +37,7 @@ struct MetalTilesView: View {
         // case Voronoi
         case RandomMaze
         case Truchet
-        
+        case Bricks
     }
     
     @State var tileType:MetalTileType = .Hexagons
@@ -68,6 +68,12 @@ struct MetalTilesView: View {
                     CounterInput(value: $stepCount1, range: 1...20, title: "Tile Count")
                 case .Truchet:
                     CounterInput(value: $stepCount1, range: 1...20, title: "Tile Count")
+                case .Bricks:
+                    CounterInput(value: $stepCount1, range: 1...20, title: "Tile Count")
+                    SliderInputView(value: 0.5, vRange: 0.5...1.5, title: "Normal / Color") { value in
+                        self.slider1 = Float(value)
+                    }
+                    
                 default:
                     Text("Not Implemented").foregroundColor(.gray)
             }
@@ -232,6 +238,33 @@ struct MetalTilesView: View {
 //                }
                 let filteredImage = NSImage(cgImage: cgOutput, size: controller.textureSize.size)
                 controller.updatePreview(image: filteredImage)
+                
+            case .Bricks:
+                
+                let context = CIContext()
+                
+                let bricks = BricksFilter() //CausticNoise()
+                
+                let noise = CIFilter.randomGenerator()
+                let noiseImage = noise.outputImage!
+                
+                bricks.inputImage = noiseImage
+                bricks.tileSize = Float(controller.textureSize.size.width)
+                bricks.tileCount = stepCount1 == 1 ? 10:stepCount1
+                bricks.time = Double(slider1)
+                
+                // get a CIImage from our filter or exit if that fails
+                guard let outputImage = bricks.outputImage(),
+                      let cgOutput = context.createCGImage(outputImage, from: CGRect(origin: .zero, size: controller.textureSize.size)) else { return }
+                
+                // attempt to get a CGImage from our CIImage
+                //                if let cgimg = context.createCGImage(outputImage, from: CGRect(origin: .zero, size: CGSize(width: 1024, height: 1024))) {
+                //                    // convert that to a UIImage
+                //                    let nsImage = NSImage(cgImage: cgimg, size:CGSize(width: 1024, height: 1024))
+                //                    self.image = nsImage
+                //                }
+                let filteredImage = NSImage(cgImage: cgOutput, size: controller.textureSize.size)
+                controller.updatePreview(image: filteredImage)
             
             default:print("Not implemented")
         }
@@ -245,7 +278,7 @@ struct MetalTilesView: View {
             print("No image")
             return
         }
-        applied(image)
+        controller.image = image
     }
 }
 
