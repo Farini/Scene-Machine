@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -16,7 +16,6 @@
 		8515B36A26263FFE00A886BD /* MaterialModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B36926263FFE00A886BD /* MaterialModel.swift */; };
 		8515B372262743D000A886BD /* TerrainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B371262743D000A886BD /* TerrainView.swift */; };
 		8515B37A2627F3CE00A886BD /* SceneProgramView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B3792627F3CE00A886BD /* SceneProgramView.swift */; };
-		8515B38226287DAD00A886BD /* Kernel1.metal in Sources */ = {isa = PBXBuildFile; fileRef = 8515B38126287DAD00A886BD /* Kernel1.metal */; };
 		8515B3D52628A58B00A886BD /* LocalDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B3D42628A58B00A886BD /* LocalDatabase.swift */; };
 		8515B3DC2628B16600A886BD /* CompositionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B3DB2628B16600A886BD /* CompositionView.swift */; };
 		8515B46D262D3B3B00A886BD /* TopBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B46C262D3B3B00A886BD /* TopBar.swift */; };
@@ -66,6 +65,7 @@
 		85B9137A26329A3A0065D6D2 /* CoreImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B9137826329A3A0065D6D2 /* CoreImage+Extensions.swift */; };
 		85B9138226329DED0065D6D2 /* MetalGenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B9138126329DED0065D6D2 /* MetalGenView.swift */; };
 		85B9138326329DED0065D6D2 /* MetalGenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B9138126329DED0065D6D2 /* MetalGenView.swift */; };
+		85CB435F263CABC0006E4B10 /* Kernels2.ci.metal in Sources */ = {isa = PBXBuildFile; fileRef = 85CB435E263CABC0006E4B10 /* Kernels2.ci.metal */; };
 		85D3E7CB26390FAF00D693FA /* SceneMachineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D3E7CA26390FAF00D693FA /* SceneMachineView.swift */; };
 		85D3E7CF26390FC500D693FA /* SceneMachineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D3E7CE26390FC500D693FA /* SceneMachineController.swift */; };
 		85FAF34C263C511300081ED8 /* FXDistortView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85FAF34B263C511300081ED8 /* FXDistortView.swift */; };
@@ -75,6 +75,37 @@
 		85FFB73A2639DA0100E8FE0A /* MetalOverlaysView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85FFB7392639DA0100E8FE0A /* MetalOverlaysView.swift */; };
 		85FFB73E2639DA1700E8FE0A /* MetalOthersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85FFB73D2639DA1700E8FE0A /* MetalOthersView.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		85CB435C263CA9EA006E4B10 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.ci.metal";
+			fileType = pattern.proxy;
+			inputFiles = (
+			);
+			isEditable = 1;
+			outputFiles = (
+				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE).air",
+			);
+			runOncePerArchitecture = 0;
+			script = "# Type a script or drag a script file from your workspace to insert its path.\nxcrun metal -c -I $MTL_HEADER_SEARCH_PATHS -fcikernel \"${INPUT_FILE_PATH}\" -o \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+		};
+		85CB435D263CAABE006E4B10 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.ci.air";
+			fileType = pattern.proxy;
+			inputFiles = (
+			);
+			isEditable = 1;
+			outputFiles = (
+				"$(METAL_LIBRARY_OUTPUT_DIR)/$(INPUT_FILE_BASE).metallib",
+			);
+			runOncePerArchitecture = 0;
+			script = "# Type a script or drag a script file from your workspace to insert its path.\nxcrun metallib -cikernel \"${INPUT_FILE_PATH}\" -o \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+		};
+/* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
 		856491E52578100D00D1FE00 /* PBXContainerItemProxy */ = {
@@ -95,7 +126,6 @@
 		8515B36926263FFE00A886BD /* MaterialModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialModel.swift; sourceTree = "<group>"; };
 		8515B371262743D000A886BD /* TerrainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerrainView.swift; sourceTree = "<group>"; };
 		8515B3792627F3CE00A886BD /* SceneProgramView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneProgramView.swift; sourceTree = "<group>"; };
-		8515B38126287DAD00A886BD /* Kernel1.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Kernel1.metal; sourceTree = "<group>"; };
 		8515B3D42628A58B00A886BD /* LocalDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDatabase.swift; sourceTree = "<group>"; };
 		8515B3DB2628B16600A886BD /* CompositionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositionView.swift; sourceTree = "<group>"; };
 		8515B46C262D3B3B00A886BD /* TopBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBar.swift; sourceTree = "<group>"; };
@@ -140,6 +170,7 @@
 		85B9137326329A050065D6D2 /* BLKTransparent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLKTransparent.swift; sourceTree = "<group>"; };
 		85B9137826329A3A0065D6D2 /* CoreImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreImage+Extensions.swift"; sourceTree = "<group>"; };
 		85B9138126329DED0065D6D2 /* MetalGenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalGenView.swift; sourceTree = "<group>"; };
+		85CB435E263CABC0006E4B10 /* Kernels2.ci.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Kernels2.ci.metal; sourceTree = "<group>"; };
 		85D3E7CA26390FAF00D693FA /* SceneMachineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneMachineView.swift; sourceTree = "<group>"; };
 		85D3E7CE26390FC500D693FA /* SceneMachineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneMachineController.swift; sourceTree = "<group>"; };
 		85FAF34B263C511300081ED8 /* FXDistortView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FXDistortView.swift; sourceTree = "<group>"; };
@@ -174,10 +205,10 @@
 			children = (
 				85B91358263297D50065D6D2 /* Filters */,
 				8564923D2579828100D1FE00 /* dissolve.fragment.txt */,
-				8515B38126287DAD00A886BD /* Kernel1.metal */,
 				8597BB8325BCAEF600C705A0 /* Metal.metal */,
 				85FAF34F263C6B7600081ED8 /* PhongShader.metal */,
 				85FAF351263C6BC100081ED8 /* AAPLSharedTypes.h */,
+				85CB435E263CABC0006E4B10 /* Kernels2.ci.metal */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -425,6 +456,8 @@
 				856491CA2578100B00D1FE00 /* Resources */,
 			);
 			buildRules = (
+				85CB435D263CAABE006E4B10 /* PBXBuildRule */,
+				85CB435C263CA9EA006E4B10 /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -545,7 +578,6 @@
 				857C47382637370F006C6A32 /* MetalTilesView.swift in Sources */,
 				85FAF350263C6B7600081ED8 /* PhongShader.metal in Sources */,
 				8515B35E26263C6100A886BD /* MaterialEditView.swift in Sources */,
-				8515B38226287DAD00A886BD /* Kernel1.metal in Sources */,
 				85B9135B263298790065D6D2 /* CausticNoise.swift in Sources */,
 				85B9134C2631C13B0065D6D2 /* SwiftUI+Extensions.swift in Sources */,
 				8597BB8425BCAEF600C705A0 /* Metal.metal in Sources */,
@@ -557,6 +589,7 @@
 				85D3E7CB26390FAF00D693FA /* SceneMachineView.swift in Sources */,
 				85954043261C3144001D9040 /* SpriteKitNoiseController.swift in Sources */,
 				857A93E526126613004FFEBB /* SpriteNoiseMaker.swift in Sources */,
+				85CB435F263CABC0006E4B10 /* Kernels2.ci.metal in Sources */,
 				8515B3DC2628B16600A886BD /* CompositionView.swift in Sources */,
 				8515B474262E124300A886BD /* ImageFXView.swift in Sources */,
 				8515B342262554A700A886BD /* GradientController.swift in Sources */,
@@ -661,8 +694,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MTLLINKER_FLAGS = "-cikernel";
-				MTL_COMPILER_FLAGS = "-fcikernel";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -718,8 +749,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MTLLINKER_FLAGS = "-cikernel";
-				MTL_COMPILER_FLAGS = "-fcikernel";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -746,8 +775,6 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MTLLINKER_FLAGS = "-cikernel";
-				MTL_COMPILER_FLAGS = "-fcikernel";
 				MTL_ENABLE_INDEX_STORE = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "cfarini.Scene-Machine";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -773,8 +800,6 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MTLLINKER_FLAGS = "-cikernel";
-				MTL_COMPILER_FLAGS = "-fcikernel";
 				MTL_ENABLE_INDEX_STORE = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "cfarini.Scene-Machine";
 				PRODUCT_NAME = "$(TARGET_NAME)";

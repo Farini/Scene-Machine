@@ -27,7 +27,7 @@ extern "C" { namespace coreimage {
     
     float4 colorTransform(sampler src) {
         float4 color = src.sample(src.coord());
-//        float2 uv = src.coord()
+        //        float2 uv = src.coord()
         return float4(color.r, 0.0, color.b, 1.0);
     }
     
@@ -36,7 +36,7 @@ extern "C" { namespace coreimage {
      */
     float4 makeBlackTransparent(sample_t sample, float threshold) {
         float4 filtered = (sample.r < threshold && sample.g < threshold && sample.b < threshold) == true ? float4(0):float4(sample.r, sample.g, sample.b, sample.a);
-//        float2 uv = sample.coord()
+        //        float2 uv = sample.coord()
         return filtered;
     }
     
@@ -62,7 +62,7 @@ extern "C" { namespace coreimage {
             i = p + float2(cos(t - i.x) + sin(t + i.y), sin(t - i.y) + cos(t + i.x));
             c += 1.0/length(float2(p.x / (sin(i.x+t)/inten),p.y / (cos(i.y+t)/inten)));
         }
-     
+        
         c /= 5.0;
         c = 1.17-pow(c, 1.4);
         float3 colour = float3(pow(abs(c), 8.0));
@@ -158,9 +158,9 @@ extern "C" { namespace coreimage {
         // col += n;
         
         // Make the red grid
-//        if (gv.x>.48 || gv.y>.48) {
-//            col = float3(1, 0, 0);
-//        }
+        //        if (gv.x>.48 || gv.y>.48) {
+        //            col = float3(1, 0, 0);
+        //        }
         
         // col.rg = gv;
         
@@ -250,11 +250,11 @@ extern "C" { namespace coreimage {
         
         float n = Noise21(id);
         
-//        float width = 0.1; // width of truchet
+        //        float width = 0.1; // width of truchet
         
         gv.x *= -1; // flip diagonals
         
-//        float mask = smoothstep(0.01, -0.01, abs(gv.x + gv.y) - width);
+        //        float mask = smoothstep(0.01, -0.01, abs(gv.x + gv.y) - width);
         
         // col += mask;
         col += n;
@@ -279,7 +279,7 @@ extern "C" { namespace coreimage {
     float4 voronoi(sample_t sample, float2 size, float tilecount, float time, destination dest) {
         float2 uv = (dest.coord() - .5 * size.xy) / size.y;
         
-//        float m = 0;
+        //        float m = 0;
         float t = time;
         
         uv *= tilecount;
@@ -327,7 +327,7 @@ extern "C" { namespace coreimage {
     float4 waves(sample_t sample, float2 size, float tilecount, float time, destination dest) {
         
         float2 uv = (dest.coord()) / size.y;
-//        float2 uv = (dest.coord() - .2 * size.xy) / size.y;
+        //        float2 uv = (dest.coord() - .2 * size.xy) / size.y;
         
         float color = 0.0;
         
@@ -335,11 +335,11 @@ extern "C" { namespace coreimage {
         float amplitude = cos(uv.x * 30.0 + time * 2.0) * 2.0; // Height
         float multex = uv.x * 6.0; // Bigger >> black, Smaller >. White
         
-//        if (dest.coord().x > (size.x / 2)) {
-            color += sin(multex + sin(time + uv.y * 90 + amplitude)) * 0.5;
-//        } else {
-//            color -= sin(multex + sin(time + uv.y * 90 + amplitude)) * 0.5;
-//        }
+        //        if (dest.coord().x > (size.x / 2)) {
+        color += sin(multex + sin(time + uv.y * 90 + amplitude)) * 0.5;
+        //        } else {
+        //            color -= sin(multex + sin(time + uv.y * 90 + amplitude)) * 0.5;
+        //        }
         
         
         float3 finalColor = float3(color, color, color);
@@ -449,7 +449,7 @@ extern "C" { namespace coreimage {
         return float4(color, 1.0);
         
     }
-
+    
     // MARK: - Normal
     
     
@@ -493,7 +493,7 @@ extern "C" { namespace coreimage {
         
         return originalImage.sample(originalImage.transform(sampleCoord));
     }
-
+    
     // Warp kernel
     // In this example, we create a tiling effect. This is achieved by returning
     // the same sampling coordinate for pixels that lie within the same tile.
@@ -513,7 +513,7 @@ extern "C" { namespace coreimage {
                                     );
         return sampleCoord;
     }
-
+    
     // Color kernel
     float4 appendix4(sample_t originalImage) {
         float value = (originalImage.r + originalImage.g + originalImage.b) / 3.0;
@@ -532,8 +532,8 @@ extern "C" { namespace coreimage {
                       1.0
                       );
     }
-
-
+    
+    
     // Tint kernel
     float4 appendix5(sampler originalImage, sampler depthMap, destination d) {
         float4 originalColor = originalImage.sample(originalImage.coord());
@@ -567,7 +567,7 @@ extern "C" { namespace coreimage {
         
         return foreground; // Remove this line
     }
-
+    
     // A general kernel
     // The destination parameter is optional for general kernel. Must be last.
     float4 appendix7(sampler originalImage, sampler depthMap, destination d) {
@@ -633,26 +633,26 @@ extern "C" { namespace coreimage {
         float2 xy = samplerCoord(image).xy;
         float4 c0 = sample(image, samplerCoord(image));
         c0 = unpremultiply(c0); //umul(c0);
-
+        
         xy = samplerCoord(image).xy + float2(factor, 0);
         float4 c1 = sample(image, xy);
         c1 = unpremultiply(c1); // umul(c1);
-
+        
         xy = samplerCoord(image).xy + float2(-factor, 0);
         float4 c2 = sample(image, xy);
         c2 = unpremultiply(c2); //umul(c2);
-
+        
         xy = samplerCoord(image).xy + float2(0, factor);
         float4 c3 = sample(image, xy);
         c3 = unpremultiply(c3); //umul(c3);
-
+        
         xy = samplerCoord(image).xy + float2(0, -factor);
         float4 c4 = sample(image, xy);
         c4 = unpremultiply(c4); // umul(c4);
-
+        
         float4 cmax = max(max(max(max(c0, c1), c2), c3), c4);
-
-
+        
+        
         return premultiply(c0 / cmax); //pmul( c0 / cmax );
     }
     
@@ -738,7 +738,7 @@ extern "C" { namespace coreimage {
     }
     
     
-   
-
+    
+    
 }}
 

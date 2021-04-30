@@ -16,7 +16,7 @@ class HexagonFilter: CIFilter {
     var tilecount:Int = 5
     
     override init() {
-        let url = Bundle.main.url(forResource: "default", withExtension: "metallib")!
+        let url = Bundle.main.url(forResource: "Kernels2.ci", withExtension: "metallib")!
         guard let data = try? Data(contentsOf: url) else { fatalError() }
         guard let kkk = try? CIColorKernel(functionName: "hexagons", fromMetalLibraryData: data) else { fatalError() } // myColor // hexagons // caustic
         self.kernel = kkk
@@ -50,7 +50,7 @@ class CausticNoiseMetal: CIFilter {
     var time:Int = 1
     
     override init() {
-        let url = Bundle.main.url(forResource: "default", withExtension: "metallib")!
+        let url = Bundle.main.url(forResource: "Kernels2.ci", withExtension: "metallib")!
         guard let data = try? Data(contentsOf: url) else { fatalError() }
         guard let kkk = try? CIColorKernel(functionName: "caustic", fromMetalLibraryData: data) else { fatalError() } // myColor // hexagons
         self.kernel = kkk
@@ -97,7 +97,7 @@ class VoronoiFilter: CIFilter {
     var time:Int = 3
     
     override init() {
-        let url = Bundle.main.url(forResource: "default", withExtension: "metallib")!
+        let url = Bundle.main.url(forResource: "Kernels2.ci", withExtension: "metallib")!
         guard let data = try? Data(contentsOf: url) else { fatalError() }
         guard let kkk = try? CIColorKernel(functionName: "voronoi", fromMetalLibraryData: data) else { fatalError() } // myColor // hexagons // truchet
         // float4 truchet(sample_t sample, float2 size, destination dest) {
@@ -141,7 +141,7 @@ class TruchetFilter: CIFilter {
     var tileCount:Int = 8
     
     override init() {
-        let url = Bundle.main.url(forResource: "default", withExtension: "metallib")!
+        let url = Bundle.main.url(forResource: "Kernels2.ci", withExtension: "metallib")!
         guard let data = try? Data(contentsOf: url) else { fatalError() }
         guard let kkk = try? CIColorKernel(functionName: "truchet", fromMetalLibraryData: data) else { fatalError() } // myColor // hexagons // truchet
         // float4 truchet(sample_t sample, float2 size, destination dest) {
@@ -192,7 +192,7 @@ class CheckerMetal:CIFilter {
     var method:Method = .Gradient
     
     override init() {
-        let url = Bundle.main.url(forResource: "default", withExtension: "metallib")!
+        let url = Bundle.main.url(forResource: "Kernels2.ci", withExtension: "metallib")!
         guard let data = try? Data(contentsOf: url) else { fatalError() }
         guard let kkk = try? CIColorKernel(functionName: "checkerboard", fromMetalLibraryData: data) else { fatalError() }
         self.kernel = kkk
@@ -236,7 +236,7 @@ class RandomMaze:CIFilter {
     var tileCount:Int = 8
     
     override init() {
-        let url = Bundle.main.url(forResource: "default", withExtension: "metallib")!
+        let url = Bundle.main.url(forResource: "Kernels2.ci", withExtension: "metallib")!
         guard let data = try? Data(contentsOf: url) else { fatalError() }
         guard let kkk = try? CIColorKernel(functionName: "maze", fromMetalLibraryData: data) else { fatalError() } // myColor // hexagons // truchet
         // float4 truchet(sample_t sample, float2 size, destination dest) {
@@ -281,7 +281,7 @@ class WavesFilter:CIFilter {
     var time:Double = 1.0
     
     override init() {
-        let url = Bundle.main.url(forResource: "default", withExtension: "metallib")!
+        let url = Bundle.main.url(forResource: "Kernels2.ci", withExtension: "metallib")!
         guard let data = try? Data(contentsOf: url) else { fatalError() }
         guard let kkk = try? CIColorKernel(functionName: "waves", fromMetalLibraryData: data) else { fatalError() } // myColor // hexagons // truchet
         // float4 truchet(sample_t sample, float2 size, destination dest) {
@@ -327,7 +327,7 @@ class BricksFilter:CIFilter {
     var time:Double = 1.0
     
     override init() {
-        let url = Bundle.main.url(forResource: "default", withExtension: "metallib")!
+        let url = Bundle.main.url(forResource: "Kernels2.ci", withExtension: "metallib")!
         guard let data = try? Data(contentsOf: url) else { fatalError() }
         guard let kkk = try? CIColorKernel(functionName: "bricks", fromMetalLibraryData: data) else { fatalError() } // myColor // hexagons // truchet
         // float4 truchet(sample_t sample, float2 size, destination dest) {
