@@ -65,6 +65,7 @@ struct SpriteNoiseMaker: View {
                             Text(noiseType.rawValue)
                         }
                     }
+                    .frame(width: 150, alignment: .center)
                     .onChange(of: controller.noiseType, perform: { value in
                         controller.updateNoise()
                     })
@@ -108,6 +109,7 @@ struct SpriteNoiseMaker: View {
                         }
                         Divider()
                     }
+                    .padding(.horizontal, 6)
                     
                     // Gradients
                     Group {
@@ -127,15 +129,35 @@ struct SpriteNoiseMaker: View {
                     // Buttons
                     Group {
                         HStack {
-                            Button("Update") {
+                            // Update
+                            Button(action: {
+                                print("Update Noise")
                                 controller.updateNoise()
-                            }
-                            Button("+") {
-                                gradControl.addGradient()
-                            }
-                            Button("Save") {
+                            }, label: {
+                                Image(systemName:"arrow.triangle.2.circlepath.circle")
+                                Text("Update")
+                            })
+                            .help("Update Noise")
+                           
+//                            // Add
+//                            Button(action: {
+//                                gradControl.addGradient()
+//                            }, label: {
+//                                Image(systemName:"plus.circle")
+//                                Text("Color")
+//                            })
+//                            .help("Go back a step")
+
+                            // Save
+                            Button(action: {
                                 controller.openSavePanel()
-                            }
+                            }, label: {
+                                Image(systemName:"opticaldisc")
+                                Text("Save")
+                            })
+                            .help("Apply Changes")
+//
+                            
                         }
                     }
                     
@@ -183,17 +205,26 @@ struct SpriteNoiseColorBar: View {
                     Divider()
                     
                     HStack {
-                        Text("#\(idx)")
+                        Text("# \(idx)")
                         ColorPicker("", selection: $controller.compGradient[idx].color)
                             
                         Spacer()
                         Text("\(controller.compGradient[idx].location)")
+                        
+                        Button(action: {
+                            controller.removeGradient(at: idx)
+                        }, label: {
+                            Image(systemName: "trash")
+                        })
                     }
                     
                     
                     Slider(value: $controller.compGradient[idx].location, in: -1...1, minimumValueLabel: Text("-1"), maximumValueLabel: Text("1"), label: {
                         Text("")
                     })
+//                    .onChange(of: controller.compGradient, perform: { value in
+//                        applied(controller.compGradient)
+//                    })
                     
                 }
             }
@@ -202,9 +233,26 @@ struct SpriteNoiseColorBar: View {
             
             // Buttons
             HStack {
-                Button("Apply Color") {
+                
+                // Add
+                Button(action: {
+                    controller.addGradient()
+                }, label: {
+                    Image(systemName:"plus.circle")
+                    Text("Color")
+                })
+                .help("Go back a step")
+                
+                // Apply
+                Button(action: {
+                    print("Apply color")
                     applied(controller.compGradient)
-                }
+                }, label: {
+                    Image(systemName:"checkmark.circle.fill")
+//                    Text("Color")
+                })
+                .help("Apply Color effect")
+                
             }
         }
         .frame(width:200)

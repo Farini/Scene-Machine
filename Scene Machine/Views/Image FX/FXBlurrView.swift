@@ -154,6 +154,7 @@ struct FXBlurrView: View {
         .frame(width:250)
         .padding(8)
         .onAppear() {
+            self.image = controller.openingImage
             if let img = image {
                 self.undoImages.append(img)
             }

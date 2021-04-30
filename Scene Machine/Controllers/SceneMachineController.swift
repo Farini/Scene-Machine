@@ -7,6 +7,8 @@
 
 import Foundation
 import SceneKit
+import MetalKit
+import QuartzCore
 
 class SceneMachineController:ObservableObject {
     
@@ -14,6 +16,9 @@ class SceneMachineController:ObservableObject {
     @Published var materials:[SCNMaterial] = []
     @Published var nodes:[SCNNode] = []
     @Published var geometries:[SCNGeometry] = []
+    
+    var device: MTLDevice!
+//    var outputTexture: MTLTexture!
     
     init() {
         self.scene = SCNScene(named: "Scenes.scnassets/SMScene.scn")!
@@ -34,6 +39,9 @@ class SceneMachineController:ObservableObject {
             }
             stack.removeFirst()
         }
+        
+        device = MTLCreateSystemDefaultDevice()
+//        outputTexture = createTexture(device: device)
     }
     
     // uv
@@ -72,6 +80,74 @@ class SceneMachineController:ObservableObject {
         return nil
     }
     
+    // Program
+    func addProgram() {
+        
+        let boxGeo = SCNBox(width: 1.2, height: 1.2, length: 1.2, chamferRadius: 0.2)
+        
+        let program = SCNProgram()
+        program.vertexFunctionName = "myVertex" //"phong_vertex"
+        program.fragmentFunctionName = "myFragment" //"phong_fragment"
+//        let pDel = ProgramDelegate(program: program)
+//        program.delegate = pDel
+        
+//        program.delegate = self
+//        boxGeo.program = program
+        
+        let box = SCNNode(geometry: boxGeo)
+        let materialProperty = SCNMaterialProperty(contents: NSColor.yellow)
+        boxGeo.firstMaterial!.diffuse.contents = NSColor.yellow
+        
+        box.geometry!.firstMaterial!.program = program
+        
+        
+        box.position = SCNVector3(0, 1, 1.5)
+        scene.rootNode.addChildNode(box)
+    }
+    
+    // Call a compute kernel function to create an instance of MTLTexture
+//    func createTexture(device: MTLDevice) -> MTLTexture {
+//        // Instantiate a texture descriptor with the appropriate properties.
+//        let descriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .bgra8Unorm,
+//                                                                  width: 256,
+//                                                                  height: 256,
+//                                                                  mipmapped: false)
+//        descriptor.textureType = MTLTextureType.type2D
+//        descriptor.usage = [MTLTextureUsage.shaderRead, MTLTextureUsage.shaderWrite]
+//        let outputTexture = device.makeTexture(descriptor: descriptor)
+//
+//        let commandQueue = device.makeCommandQueue()
+//        let defaultLibrary = device.makeDefaultLibrary()!
+//
+//        let kernelFunction = defaultLibrary.makeFunction(name: "kernel_function")!
+//        var computePipelineState: MTLComputePipelineState!
+//        do {
+//            computePipelineState = try! device.makeComputePipelineState(function: kernelFunction)
+//        }
+//
+//        let commandBuffer = commandQueue?.makeCommandBuffer()
+//        commandBuffer?.addCompletedHandler {
+//            (commandBuffer) in
+//            //print("texture is ready")
+//        }
+//        let computeEncoder = commandBuffer!.makeComputeCommandEncoder()
+//        computeEncoder!.setComputePipelineState(computePipelineState)
+//        computeEncoder!.setTexture(outputTexture,
+//                                   index: 0)
+//        let threadgroupSize = MTLSizeMake(16, 16, 1)        // # of threads per group
+//        var threadgroupCount = MTLSizeMake(1, 1, 1)         // # of thread groups per gird
+//        threadgroupCount.width  = (outputTexture!.width + threadgroupSize.width - 1) / threadgroupSize.width
+//        threadgroupCount.height = (outputTexture!.height + threadgroupSize.height - 1) / threadgroupSize.height
+//        computeEncoder!.dispatchThreadgroups(threadgroupCount,
+//                                            threadsPerThreadgroup: threadgroupSize)
+//        computeEncoder!.endEncoding()
+//        commandBuffer!.commit()
+//        commandBuffer!.waitUntilCompleted()
+//
+//        return outputTexture!
+//    }
+    
+    // MARK: - Old
     
     func saveScene() {
         
@@ -180,5 +256,18 @@ extension SCNGeometry: Identifiable {
 extension SCNMaterial: Identifiable {
     static func ==(lhs:SCNMaterial, rhs:SCNMaterial) -> Bool {
         return lhs.isEqual(rhs)
+    }
+}
+
+class ProgramDelegate:NSObject, SCNProgramDelegate {
+    
+    var pVal:SCNProgram
+    
+    init(program:SCNProgram) {
+        self.pVal = program
+    }
+    
+    func program(_ program: SCNProgram, handleError error: Error) {
+        print("Error in program: \(error.localizedDescription)")
     }
 }

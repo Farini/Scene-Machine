@@ -18,10 +18,14 @@ class GradientController:ObservableObject {
     
     func addGradient() {
         var oldGradient = compGradient
-        let newStop = GradientStop(color: .white, location: 0)
+        let newStop = GradientStop(color: .white, location: 1)
         oldGradient.append(newStop)
         
         self.compGradient = oldGradient
+    }
+    
+    func removeGradient(at idx:Int) {
+        compGradient.remove(at: idx)
     }
     
     func setcolor(color:Color, stop:GradientStop) {
@@ -38,7 +42,7 @@ class GradientController:ObservableObject {
     
 }
 
-class GradientStop:Identifiable {
+class GradientStop:Identifiable, Equatable {
     
     var id:UUID = UUID()
     var color:Color
@@ -57,5 +61,9 @@ class GradientStop:Identifiable {
     
     func getNSColor() -> NSColor {
         return NSColor(color).usingColorSpace(.deviceRGB)!
+    }
+    
+    static func == (lhs: GradientStop, rhs: GradientStop) -> Bool {
+        return lhs.id == rhs.id
     }
 }

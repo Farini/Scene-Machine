@@ -7,10 +7,14 @@
 
 import SwiftUI
 
-enum FXState {
+enum FXState:String, CaseIterable {
     case empty
-    case Blurr
+    case Blur
+    
     case Color
+    
+    case Distort
+    case Stylize
 }
 
 struct ImageFXView: View {
@@ -30,7 +34,7 @@ struct ImageFXView: View {
                     case .empty:
                         Text("Select filter type").foregroundColor(.gray)
                             .padding()
-                    case .Blurr:
+                    case .Blur:
                         FXBlurrView(controller: controller, applied: { img in
                                         apply(image: img) },
                                     image: controller.openingImage)
@@ -40,6 +44,12 @@ struct ImageFXView: View {
                             apply(image: image)},
                                     image: controller.openingImage,
                                     inputColor: .white)
+                        
+                    case .Distort:
+                        FXDistortView(controller: controller, applied: { img in
+                            apply(image: img)
+                        })
+                        
                         
                     default:
                         Text("Left View")
@@ -53,6 +63,13 @@ struct ImageFXView: View {
                 // Top Bar
                 HStack {
                     
+                    Picker("FX Type", selection: $state) {
+                        ForEach(FXState.allCases, id:\.self) { fxState in
+                            Text(fxState.rawValue)
+                        }
+                    }
+                    .frame(width:150)
+                    
                     Button("Save") {
                         self.saveImage()
                     }
@@ -65,9 +82,10 @@ struct ImageFXView: View {
                     
                     Divider().frame(height:32)
                     
+                Group {
                     Button("Blur") {
-//                        let v = CIVector(values: [2, 3, 4], count: 3)
-                        self.state = .Blurr
+                        //                        let v = CIVector(values: [2, 3, 4], count: 3)
+                        self.state = .Blur
                     }
                     
                     Button("Color") {
@@ -83,7 +101,7 @@ struct ImageFXView: View {
                             Group {
                                 Button("Blurr") {
                                     //                                        controller.blurrImage()
-                                    self.state = .Blurr
+                                    self.state = .Blur
                                 }
                                 Button("Crystalize") {
                                     controller.crystallize()
@@ -126,7 +144,7 @@ struct ImageFXView: View {
                         }
                         .padding()
                     }
-                    
+                }
                     
                     Spacer()
                     

@@ -80,6 +80,11 @@ struct SceneMachineView: View {
                         controller.saveScene()
                     }
                     Toggle("UVMap", isOn: $displayUVMap)
+                    
+                    Button("Program") {
+                        controller.addProgram()
+                        
+                    }
                 }
                 .padding(.top, 8)
                 

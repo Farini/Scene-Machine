@@ -68,6 +68,9 @@
 		85B9138326329DED0065D6D2 /* MetalGenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B9138126329DED0065D6D2 /* MetalGenView.swift */; };
 		85D3E7CB26390FAF00D693FA /* SceneMachineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D3E7CA26390FAF00D693FA /* SceneMachineView.swift */; };
 		85D3E7CF26390FC500D693FA /* SceneMachineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D3E7CE26390FC500D693FA /* SceneMachineController.swift */; };
+		85FAF34C263C511300081ED8 /* FXDistortView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85FAF34B263C511300081ED8 /* FXDistortView.swift */; };
+		85FAF34E263C512B00081ED8 /* FXStylizeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85FAF34D263C512B00081ED8 /* FXStylizeView.swift */; };
+		85FAF350263C6B7600081ED8 /* PhongShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 85FAF34F263C6B7600081ED8 /* PhongShader.metal */; };
 		85FFB7362639C16F00E8FE0A /* MetalGenController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85FFB7352639C16F00E8FE0A /* MetalGenController.swift */; };
 		85FFB73A2639DA0100E8FE0A /* MetalOverlaysView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85FFB7392639DA0100E8FE0A /* MetalOverlaysView.swift */; };
 		85FFB73E2639DA1700E8FE0A /* MetalOthersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85FFB73D2639DA1700E8FE0A /* MetalOthersView.swift */; };
@@ -139,6 +142,10 @@
 		85B9138126329DED0065D6D2 /* MetalGenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalGenView.swift; sourceTree = "<group>"; };
 		85D3E7CA26390FAF00D693FA /* SceneMachineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneMachineView.swift; sourceTree = "<group>"; };
 		85D3E7CE26390FC500D693FA /* SceneMachineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneMachineController.swift; sourceTree = "<group>"; };
+		85FAF34B263C511300081ED8 /* FXDistortView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FXDistortView.swift; sourceTree = "<group>"; };
+		85FAF34D263C512B00081ED8 /* FXStylizeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FXStylizeView.swift; sourceTree = "<group>"; };
+		85FAF34F263C6B7600081ED8 /* PhongShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PhongShader.metal; sourceTree = "<group>"; };
+		85FAF351263C6BC100081ED8 /* AAPLSharedTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAPLSharedTypes.h; sourceTree = "<group>"; };
 		85FFB7352639C16F00E8FE0A /* MetalGenController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalGenController.swift; sourceTree = "<group>"; };
 		85FFB7392639DA0100E8FE0A /* MetalOverlaysView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalOverlaysView.swift; sourceTree = "<group>"; };
 		85FFB73D2639DA1700E8FE0A /* MetalOthersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalOthersView.swift; sourceTree = "<group>"; };
@@ -169,6 +176,8 @@
 				8564923D2579828100D1FE00 /* dissolve.fragment.txt */,
 				8515B38126287DAD00A886BD /* Kernel1.metal */,
 				8597BB8325BCAEF600C705A0 /* Metal.metal */,
+				85FAF34F263C6B7600081ED8 /* PhongShader.metal */,
+				85FAF351263C6BC100081ED8 /* AAPLSharedTypes.h */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -219,6 +228,8 @@
 				8515B473262E124300A886BD /* ImageFXView.swift */,
 				8515B47B262E4B5F00A886BD /* FXBlurrView.swift */,
 				8515B47F262E7DDA00A886BD /* FXColorView.swift */,
+				85FAF34B263C511300081ED8 /* FXDistortView.swift */,
+				85FAF34D263C512B00081ED8 /* FXStylizeView.swift */,
 			);
 			path = "Image FX";
 			sourceTree = "<group>";
@@ -505,6 +516,7 @@
 			files = (
 				856492222579547900D1FE00 /* ImageCompositionView.swift in Sources */,
 				8515B33D26254C8300A886BD /* GradientMakerView.swift in Sources */,
+				85FAF34E263C512B00081ED8 /* FXStylizeView.swift in Sources */,
 				857A93D226124FE7004FFEBB /* NoiseController.swift in Sources */,
 				85B913402631C00E0065D6D2 /* GraphicsImageRenderer.swift in Sources */,
 				85B913472631C0ED0065D6D2 /* UVMapShape.swift in Sources */,
@@ -519,6 +531,7 @@
 				857A93CD26124F3F004FFEBB /* NoiseMakerView.swift in Sources */,
 				85B9138226329DED0065D6D2 /* MetalGenView.swift in Sources */,
 				8515B46D262D3B3B00A886BD /* TopBar.swift in Sources */,
+				85FAF34C263C511300081ED8 /* FXDistortView.swift in Sources */,
 				8515B3D52628A58B00A886BD /* LocalDatabase.swift in Sources */,
 				8515B372262743D000A886BD /* TerrainView.swift in Sources */,
 				85771BCD2633D08F001A2B88 /* InputViews.swift in Sources */,
@@ -530,6 +543,7 @@
 				85771BD12633D3B7001A2B88 /* CIGenView.swift in Sources */,
 				8515B37A2627F3CE00A886BD /* SceneProgramView.swift in Sources */,
 				857C47382637370F006C6A32 /* MetalTilesView.swift in Sources */,
+				85FAF350263C6B7600081ED8 /* PhongShader.metal in Sources */,
 				8515B35E26263C6100A886BD /* MaterialEditView.swift in Sources */,
 				8515B38226287DAD00A886BD /* Kernel1.metal in Sources */,
 				85B9135B263298790065D6D2 /* CausticNoise.swift in Sources */,
@@ -732,7 +746,9 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MTLLINKER_FLAGS = "-cikernel";
 				MTL_COMPILER_FLAGS = "-fcikernel";
+				MTL_ENABLE_INDEX_STORE = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "cfarini.Scene-Machine";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -757,7 +773,9 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MTLLINKER_FLAGS = "-cikernel";
 				MTL_COMPILER_FLAGS = "-fcikernel";
+				MTL_ENABLE_INDEX_STORE = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "cfarini.Scene-Machine";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

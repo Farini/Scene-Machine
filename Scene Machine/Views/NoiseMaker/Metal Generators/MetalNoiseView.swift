@@ -82,23 +82,34 @@ struct MetalNoiseView: View {
                 imgPreview
                 
                 HStack {
-                    Button("Apply") {
+                    // Undo
+                    Button(action: {
+                        controller.previewUndo()
+                    }, label: {
+                        Image(systemName:"arrow.uturn.backward.circle")
+                        Text("Undo")
+                    })
+                    .help("Go back a step")
+                    
+                    // Apply
+                    Button(action: {
                         print("Apply effect")
                         self.apply()
-                    }
-                    Spacer()
-                    Button("↩️ Undo") {
-//                        if let lastImage = undoImages.dropLast().first {
-//                            self.image = lastImage
-//                        }
-                        controller.previewUndo()
-                    }
-                    Button("🔄 Update") {
-                        print("Update Preview")
-//                        self.undoImages.append(self.image!)
-                        self.updatePreview()
-                    }
+                    }, label: {
+                        Image(systemName:"checkmark.circle.fill")
+                        Text("Apply")
+                    })
+                    .help("Apply Changes")
                     
+                    // Update
+                    Button(action: {
+                        print("Update Preview")
+                        self.updatePreview()
+                    }, label: {
+                        Image(systemName:"arrow.triangle.2.circlepath.circle")
+                        Text("Update")
+                    })
+                    .help("Update Preview")
                 }
             }
             

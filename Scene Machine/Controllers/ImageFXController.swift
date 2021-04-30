@@ -18,6 +18,7 @@ class ImageFXController:ObservableObject {
     
     @Published var openingImage:NSImage
     @Published var secondImage:NSImage?
+    @Published var textureSize:TextureSize = .medium
     
     init(image:NSImage?) {
         // Init with an image or one will be created

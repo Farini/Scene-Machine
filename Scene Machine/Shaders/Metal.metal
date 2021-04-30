@@ -124,26 +124,26 @@ fragment float4 myFragment(SimpleVertex in [[stage_in]],
                           constant MyNodeBuffer& scn_node [[buffer(1)]],
                           constant SCNShaderSurface& surface [[buffer(2)]])
 {
-//    half4 color;
-//    // color = half4(1.0 ,0.0 ,0.0, 1.0);
-//
-//    float v = 1 - (abs(cos(surface.position.y * 6.28) + sin(surface.position.x * 6.28)) * .5);
-//
-//    float minColor = 1/16;
-//    float tmod = trunc(scn_frame.time / 16.0) + 0.5;
-//
-//    float vertical = (4 - surface.position.y - 16 * scn_frame.sinTime * surface.position.y); //* abs(scn_frame.sinTime);
-//    float posy = vertical * minColor;
-//    float ppart = floor(surface.position.y * 16) * scn_frame.sinTime;
-//
-//    // Colors
-//    float blu = max(minColor, vertical);
-//    float green = vertical; // ppart * v
-//    float red = v;
-//
-//    float change = (1 * scn_frame.sinTime)*surface.position.y;
+    half4 color;
+    // color = half4(1.0 ,0.0 ,0.0, 1.0);
+
+    float v = 1 - (abs(cos(surface.position.y * 6.28) + sin(surface.position.x * 6.28)) * .5);
+
+    float minColor = 1/16;
+    float tmod = trunc(scn_frame.time / 16.0) + 0.5;
+
+    float vertical = (4 - surface.position.y - 16 * scn_frame.sinTime * surface.position.y); //* abs(scn_frame.sinTime);
+    float posy = vertical * minColor;
+    float ppart = floor(surface.position.y * 16) * scn_frame.sinTime;
+
+    // Colors
+    float blu = max(minColor, vertical);
+    float green = vertical; // ppart * v
+    float red = v;
+
+    float change = (1 * scn_frame.sinTime)*surface.position.y;
     
-//    color = in.color; //half4(red, green, blu, 1);
+    color = half4(red, green, blu, 1);
     
 //    surface.emission = float4(red, green, blu, 1);
     
