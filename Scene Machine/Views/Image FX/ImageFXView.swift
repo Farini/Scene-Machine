@@ -39,7 +39,7 @@ struct ImageFXView: View {
                                         apply(image: img) },
                                     image: controller.openingImage)
                     case .Color:
-                        FXColorView(value: 1,
+                        FXColorView(controller: controller, value: 1,
                                     applied: { (image) in
                             apply(image: image)},
                                     image: controller.openingImage,
@@ -49,7 +49,10 @@ struct ImageFXView: View {
                         FXDistortView(controller: controller, applied: { img in
                             apply(image: img)
                         })
-                        
+                    case .Stylize:
+                        FXStylizeView(controller: controller, applied: { img in
+                            apply(image: img)
+                        }, image: controller.openingImage)
                         
                     default:
                         Text("Left View")

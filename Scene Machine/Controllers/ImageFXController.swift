@@ -20,6 +20,9 @@ class ImageFXController:ObservableObject {
     @Published var secondImage:NSImage?
     @Published var textureSize:TextureSize = .medium
     
+    @Published var previewImage:NSImage?
+    @Published var undoImages:[NSImage] = []
+    
     init(image:NSImage?) {
         // Init with an image or one will be created
         if let image = image {
@@ -107,7 +110,36 @@ class ImageFXController:ObservableObject {
         }
     }
     
+    func previewUndo() {
+        print("Previous Images: \(undoImages.count)")
+        
+        
+        if let lastImage:NSImage = undoImages.last {
+            // preview
+            self.previewImage = lastImage
+            undoImages.removeLast()
+        }
+    }
+    
+    func updateImage(new:NSImage, isPreview:Bool) {
+        
+        print("Context preview: \(previewImage == nil ? "No Preview":"Preview Image")")
+        print("Undo Count: \(undoImages.count)")
+        
+        if let oldImage = previewImage {
+            undoImages.append(oldImage)
+        }
+        
+        if isPreview {
+            self.previewImage = new
+        } else {
+            self.openingImage = new
+        }
+        
+    }
+    
     // MARK: - Efffects
+    // [deprecate all below]
     
     func blurrImage(radius:Double = 10) {
         

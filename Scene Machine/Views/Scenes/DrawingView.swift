@@ -14,10 +14,12 @@ struct DPoint:Codable, Identifiable {
     var point:CGPoint
     var control1:CGPoint?
     var control2:CGPoint?
+    var isCurve:Bool
     
     init(_ point:CGPoint) {
         self.point = point
         self.id = UUID()
+        self.isCurve = false
     }
 }
 
@@ -31,6 +33,7 @@ struct DrawingView: View {
     
     @State private var thePath:Path = Path()
     @State var isPathClosed:Bool = false
+    @State var isCurve:Bool = false
     
     var body: some View {
         VStack {
@@ -38,7 +41,7 @@ struct DrawingView: View {
                 Button("Close") {
                     closePath()
                 }
-                .keyboardShortcut("f", modifiers: [.command])
+                .keyboardShortcut("f", modifiers: [])
                 
                 CounterInput(value: $lineWidth, range: 1...10, title: "Line")
             }
@@ -50,8 +53,13 @@ struct DrawingView: View {
                     path.move(to: startPoint)
                     // path.addLine(to: endPoint)
                     for point in allPoints {
-                        path.addLine(to: point.point)
-                        // path.addCurve(to: <#T##CGPoint#>, control1: <#T##CGPoint#>, control2: <#T##CGPoint#>)
+                        if point.isCurve {
+                            path.addCurve(to: point.point, control1: point.control1 ?? point.point, control2: point.control2 ?? point.point)
+                        } else {
+                            path.addLine(to: point.point)
+                        }
+                        
+                        
                     }
                     if isPathClosed {
                         path.closeSubpath()
@@ -81,11 +89,22 @@ struct DrawingView: View {
                                     
                                 }
                                 .onEnded({ ended in
-                                    allPoints.append(DPoint(CGPoint(x: ended.location.x, y: ended.location.y)))
+                                    if isCurve {
+                                        var rPoint = DPoint((CGPoint(x: ended.location.x, y: ended.location.y)))
+                                        rPoint.isCurve = true
+                                        allPoints.append(rPoint)
+                                        
+                                    } else {
+                                        allPoints.append(DPoint(CGPoint(x: ended.location.x, y: ended.location.y)))
+                                    }
+                                    
                                 }))
                     .contextMenu {
                         Button("Other") {
                             
+                        }
+                        Button("Curve") {
+                            self.isCurve.toggle()
                         }
                         Button("Close") {
                             closePath()

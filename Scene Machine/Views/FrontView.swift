@@ -138,6 +138,7 @@ struct ImageFXMenuView: View {
                         
                     Text("Compose")
                 }
+                .padding(8)
                 .onTapGesture {
                     NSApp.sendAction(#selector(AppDelegate.openCompositionView), to: nil, from: nil)
                 }
@@ -147,25 +148,20 @@ struct ImageFXMenuView: View {
             HStack {
                 Text("Apply Image FX. The Image FX View has filters that can be applied to an image").foregroundColor(.gray)
                 Spacer()
-                Button("Image FX") {
+                VStack {
+                    Image(systemName: "wand.and.stars")
+                        .resizable()
+                        .frame(width: 64, height: 64, alignment: .center)
+                    Text("Image FX")
+                }
+                .padding(8)
+                .onTapGesture {
                     NSApp.sendAction(#selector(AppDelegate.openImageFXView), to: nil, from: nil)
                 }
+                
             }
             .padding()
-            
-            HStack {
-                Text("Other CI Filters are kept here.").foregroundColor(.gray)
-                Spacer()
-                Button("Filter FX") {
-                    NSApp.sendAction(#selector(AppDelegate.openSpecialCIFilters), to: nil, from: nil)
-                }
-            }
-            .padding()
-            
-            // BarCode generator
-            // QR Generator
-            // Sky Generator?
-            // HDRI Images?
+        
         }
         .toolbar(content: {
             Button("Tool") {

@@ -108,7 +108,6 @@ struct FXDistortView: View {
             }
             .padding(.horizontal, 6)
             
-            
             switch distortType {
                 case .BumpDistortion:
                     // Center, Radius and Scale
@@ -117,11 +116,11 @@ struct FXDistortView: View {
                     }
                     
                     // Radius
-                    SliderInputView(value: 10, vRange: 5...100, title: "Radius") { radiusValue in
+                    SliderInputView(value: 10, vRange: 5...512, title: "Radius") { radiusValue in
                         self.slider1 = Float(radiusValue)
                     }
                     // Scale (0 to 1)?
-                    SliderInputView(value: 0.5, vRange:0...1, title: "Scale") { scale in
+                    SliderInputView(value: 10, vRange:5...512, title: "Scale") { scale in
                         self.slider2 = Float(scale)
                     }
                 case .CircleSplash:
@@ -238,23 +237,54 @@ struct FXDistortView: View {
                 imgPreview
                 
                 HStack {
-                    Button("Apply") {
+                    // Undo
+                    Button(action: {
+                        controller.previewUndo()
+                    }, label: {
+                        Image(systemName:"arrow.uturn.backward.circle")
+                        Text("Undo")
+                    })
+                    .help("Go back a step")
+                    
+                    // Apply
+                    Button(action: {
                         print("Apply effect")
                         self.apply()
-                    }
-                    Spacer()
-                    Button("↩️ Undo") {
-                        if let lastImage = undoImages.dropLast().first {
-                            self.image = lastImage
-                        }
-                    }.disabled(undoImages.isEmpty)
-                    Button("🔄 Update") {
-                        print("Update Preview")
-                        self.undoImages.append(self.image!)
-                        self.updatePreview()
-                    }
+                    }, label: {
+                        Image(systemName:"checkmark.circle.fill")
+                        Text("Apply")
+                    })
+                    .help("Apply Changes")
                     
+                    // Update
+                    Button(action: {
+                        print("Update Preview")
+                        self.updatePreview()
+                    }, label: {
+                        Image(systemName:"arrow.triangle.2.circlepath.circle")
+                        Text("Update")
+                    })
+                    .help("Update Preview")
                 }
+                
+//                HStack {
+//                    Button("Apply") {
+//                        print("Apply effect")
+//                        self.apply()
+//                    }
+//                    Spacer()
+//                    Button("↩️ Undo") {
+//                        if let lastImage = undoImages.dropLast().first {
+//                            self.image = lastImage
+//                        }
+//                    }.disabled(undoImages.isEmpty)
+//                    Button("🔄 Update") {
+//                        print("Update Preview")
+//                        self.undoImages.append(self.image!)
+//                        self.updatePreview()
+//                    }
+//
+//                }
             }
         }
         .frame(width:250)
@@ -283,22 +313,43 @@ struct FXDistortView: View {
         
         switch distortType {
             case .BumpDistortion:
+                
                 let filter = CIFilter.bumpDistortion()
                 filter.inputImage = coreImage
-                filter.center = vecPoint
+                filter.center = CGPoint(x: vecPoint.x * mainImage.size.width, y: vecPoint.y * mainImage.size.height) //vecPoint
                 filter.radius = slider1
                 filter.scale = slider2
                 
-//                guard let outputImage = filter.outputImage
-                self.createImage(from: filter, context: context)
+                guard let outputImage = filter.outputImage,
+                      let cgImage = context.createCGImage(outputImage, from: outputImage.extent) else {
+                    print("⚠️ No output image")
+                    return
+                }
+                
+                print("Filtered?")
+                
+                let filteredImage = NSImage(cgImage: cgImage, size: NSSize(width: controller.textureSize.size.width, height: controller.textureSize.size.height))
+                
+                self.image = filteredImage
             
             case .CircleSplash:
+                
                 let filter = CIFilter.circleSplashDistortion()
                 filter.inputImage = coreImage
-                filter.center = vecPoint
+                filter.center = CGPoint(x: vecPoint.x * mainImage.size.width, y: vecPoint.y * mainImage.size.height)
                 filter.radius = slider1
                 
-                self.createImage(from: filter, context: context)
+                guard let outputImage = filter.outputImage,
+                      let cgImage = context.createCGImage(outputImage, from: outputImage.extent) else {
+                    print("⚠️ No output image")
+                    return
+                }
+                
+                print("Filtered?")
+                
+                let filteredImage = NSImage(cgImage: cgImage, size: NSSize(width: controller.textureSize.size.width, height: controller.textureSize.size.height))
+                
+                self.image = filteredImage
                 
             case .Displacement:
                 // Convert displacement image
@@ -309,6 +360,7 @@ struct FXDistortView: View {
                 }
                 
                 let filter = CIFilter.displacementDistortion()
+                filter.inputImage = coreImage
                 filter.displacementImage = dispImage
                 filter.scale = self.slider2
                 
@@ -323,22 +375,40 @@ struct FXDistortView: View {
                 }
                 
                 let filter = CIFilter.glassDistortion()
+                filter.inputImage = coreImage
                 filter.textureImage = glassImage
-                filter.center = vecPoint
+                filter.center = CGPoint(x: vecPoint.x * mainImage.size.width, y: vecPoint.y * mainImage.size.height)
                 filter.scale = slider2
                 
                 self.createImage(from: filter, context: context)
                 
             case .Pinch:
-                let filter = CIFilter.pinchDistortion()
-                filter.center = vecPoint
-                filter.radius = self.slider1
-                filter.scale = slider2
                 
-                self.createImage(from: filter, context: context)
+                let filter = CIFilter.pinchDistortion()
+                filter.inputImage = coreImage
+                filter.center = CGPoint(x: vecPoint.x * mainImage.size.width, y: vecPoint.y * mainImage.size.height)
+                filter.radius = 300 //slider1
+                filter.scale = 0.5 //slider2
+                
+                guard let outputImage = filter.outputImage,
+                      let cgImage = context.createCGImage(outputImage, from: outputImage.extent) else {
+                    
+                    
+                    print("⚠️ No output image")
+                    return
+                }
+                
+                print("Filtered?")
+                
+                let filteredImage = NSImage(cgImage: cgImage, size: NSSize(width: controller.textureSize.size.width, height: controller.textureSize.size.height))
+                
+                self.image = filteredImage
+                
+//                self.createImage(from: filter, context: context)
                 
             case .StretchCrop:
                 let filter = CIFilter.stretchCrop()
+                filter.inputImage = coreImage
                 filter.size = CGPoint(x: CGFloat(slider1), y: CGFloat(slider2))
                 filter.cropAmount = slider3
                 filter.centerStretchAmount = slider4
@@ -348,21 +418,47 @@ struct FXDistortView: View {
             case .Torus:
                 // Center, radius, refraction, width
                 let filter = CIFilter.torusLensDistortion()
-                filter.center = vecPoint
+                filter.inputImage = coreImage
+                filter.center = CGPoint(x: vecPoint.x * mainImage.size.width, y: vecPoint.y * mainImage.size.height)
                 filter.radius = slider1
                 filter.refraction = slider2
                 filter.width = slider3
                 
-                self.createImage(from: filter, context: context)
+                guard let outputImage = filter.outputImage,
+                      let cgImage = context.createCGImage(outputImage, from: outputImage.extent) else {
+                    
+                    print("⚠️ No output image")
+                    return
+                }
+                
+                print("Filtered?")
+                
+                let filteredImage = NSImage(cgImage: cgImage, size: NSSize(width: controller.textureSize.size.width, height: controller.textureSize.size.height))
+                
+                self.image = filteredImage
+                
+//                self.createImage(from: filter, context: context)
             
             case .Twirl:
                 // Center, Radius, Angle
                 let filter = CIFilter.twirlDistortion()
-                filter.center = vecPoint
+                filter.inputImage = coreImage
+                filter.center = CGPoint(x: vecPoint.x * mainImage.size.width, y: vecPoint.y * mainImage.size.height)
+                
                 filter.radius = slider1
                 filter.angle = slider2
                 
-                self.createImage(from: filter, context: context)
+                guard let outputImage = filter.outputImage,
+                      let cgImage = context.createCGImage(outputImage, from: outputImage.extent) else {
+                    print("⚠️ No output image")
+                    return
+                }
+                
+                print("Filtered?")
+                
+                let filteredImage = NSImage(cgImage: cgImage, size: NSSize(width: controller.textureSize.size.width, height: controller.textureSize.size.height))
+                
+                self.image = filteredImage
                 
             default: print("Not implemented")
         }
@@ -377,6 +473,7 @@ struct FXDistortView: View {
             print("⚠️ No output image")
             return
         }
+        
         // let cgImage = context.createCGImage(outputImage, from: CGRect(origin: .zero, size: controller.textureSize.size))
         
         let filteredImage = NSImage(cgImage: cgImage, size: NSSize(width: controller.textureSize.size.width, height: controller.textureSize.size.height))
