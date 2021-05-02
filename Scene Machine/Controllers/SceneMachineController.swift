@@ -10,12 +10,20 @@ import SceneKit
 import MetalKit
 import QuartzCore
 
+enum MachineRightView {
+    case Empty
+    case UVMap
+    case Other
+}
+
 class SceneMachineController:ObservableObject {
     
     @Published var scene:SCNScene
     @Published var materials:[SCNMaterial] = []
     @Published var nodes:[SCNNode] = []
     @Published var geometries:[SCNGeometry] = []
+    
+    @Published var rightView:MachineRightView = .UVMap
     
     var device: MTLDevice!
 //    var outputTexture: MTLTexture!
@@ -82,7 +90,8 @@ class SceneMachineController:ObservableObject {
     
     // Program
     func addProgram() {
-        
+//        let renderDelegate = MachineController(scene: self.scene)
+     
         let boxGeo = SCNBox(width: 1.2, height: 1.2, length: 1.2, chamferRadius: 0.2)
         
         let program = SCNProgram()
@@ -95,14 +104,71 @@ class SceneMachineController:ObservableObject {
 //        boxGeo.program = program
         
         let box = SCNNode(geometry: boxGeo)
-        let materialProperty = SCNMaterialProperty(contents: NSColor.yellow)
-        boxGeo.firstMaterial!.diffuse.contents = NSColor.yellow
+//        let materialProperty = SCNMaterialProperty(contents: NSColor.yellow)
+//        boxGeo.firstMaterial!.diffuse.contents = NSColor.yellow
         
         box.geometry!.firstMaterial!.program = program
         
         
         box.position = SCNVector3(0, 1, 1.5)
         scene.rootNode.addChildNode(box)
+        
+        self.scene.isPaused = false
+    }
+    
+    func addAppGeometry(geo:AppGeometries) {
+        if let node = geo.getGeometry() {
+            self.scene.rootNode.addChildNode(node)
+            var stack:[SCNNode] = [node]
+            while !stack.isEmpty {
+                if let child = stack.first {
+                    nodes.append(child)
+                    if let geometry = child.geometry {
+                        self.geometries.append(geometry)
+                        for material in geometry.materials {
+                            self.materials.append(material)
+                        }
+                    }
+                    stack.append(contentsOf: child.childNodes)
+                }
+                
+                stack.removeFirst()
+            }
+        }
+    }
+    
+    func changeBackground() {
+        print("Looking for background")
+        if let image = NSImage(named: "SMB_1.hdr") {
+            print("Found image named")
+            scene.background.contents = image
+        }
+//        let a = Bundle.main.re
+        let subdir = Bundle.main.resourceURL!.appendingPathComponent("Scenes.scnassets")
+        let folder = subdir.appendingPathComponent("HDRI", isDirectory: true)
+        let fileurl = folder.appendingPathComponent("SMB_1", isDirectory: false)
+        if let data = FileManager.default.contents(atPath: fileurl.path) {
+            print("let data")
+            if let image = NSImage(data: data) {
+                print("Image data ok")
+                self.scene.background.contents = image
+                return
+            }
+        }
+        if let image = NSImage(contentsOf: fileurl) {
+            print("Image URL ok")
+            self.scene.background.contents = image
+            return
+        }
+        print("Could not find")
+//        do {
+//            let modelPathDirectoryFiles = try FileManager.default.contentsOfDirectory(atPath: subdir)
+//            print(modelPathDirectoryFiles.count) //this works
+//            //then do my thing with the array
+//            let url = modelPathDirectoryFiles
+//        } catch {
+//            print("error getting file")
+//        }
     }
     
     // Call a compute kernel function to create an instance of MTLTexture
@@ -259,15 +325,28 @@ extension SCNMaterial: Identifiable {
     }
 }
 
-class ProgramDelegate:NSObject, SCNProgramDelegate {
-    
-    var pVal:SCNProgram
-    
-    init(program:SCNProgram) {
-        self.pVal = program
-    }
-    
-    func program(_ program: SCNProgram, handleError error: Error) {
-        print("Error in program: \(error.localizedDescription)")
-    }
-}
+//class ProgramDelegate:NSObject, SCNProgramDelegate {
+//
+//    var pVal:SCNProgram
+//
+//    init(program:SCNProgram) {
+//        self.pVal = program
+//    }
+//
+//    func program(_ program: SCNProgram, handleError error: Error) {
+//        print("Error in program: \(error.localizedDescription)")
+//    }
+//}
+
+//class MachineController: NSObject, SCNSceneRendererDelegate {
+//
+//    var scene:SCNScene
+//
+//    init(scene:SCNScene) {
+//        self.scene = scene
+//    }
+//
+//    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+//
+//    }
+//}

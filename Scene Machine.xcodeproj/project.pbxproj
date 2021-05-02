@@ -66,6 +66,7 @@
 		85B9138226329DED0065D6D2 /* MetalGenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B9138126329DED0065D6D2 /* MetalGenView.swift */; };
 		85B9138326329DED0065D6D2 /* MetalGenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B9138126329DED0065D6D2 /* MetalGenView.swift */; };
 		85CB435F263CABC0006E4B10 /* Kernels2.ci.metal in Sources */ = {isa = PBXBuildFile; fileRef = 85CB435E263CABC0006E4B10 /* Kernels2.ci.metal */; };
+		85CB4361263D0D9A006E4B10 /* DrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CB4360263D0D9A006E4B10 /* DrawingView.swift */; };
 		85D3E7CB26390FAF00D693FA /* SceneMachineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D3E7CA26390FAF00D693FA /* SceneMachineView.swift */; };
 		85D3E7CF26390FC500D693FA /* SceneMachineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D3E7CE26390FC500D693FA /* SceneMachineController.swift */; };
 		85FAF34C263C511300081ED8 /* FXDistortView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85FAF34B263C511300081ED8 /* FXDistortView.swift */; };
@@ -171,6 +172,7 @@
 		85B9137826329A3A0065D6D2 /* CoreImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreImage+Extensions.swift"; sourceTree = "<group>"; };
 		85B9138126329DED0065D6D2 /* MetalGenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalGenView.swift; sourceTree = "<group>"; };
 		85CB435E263CABC0006E4B10 /* Kernels2.ci.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Kernels2.ci.metal; sourceTree = "<group>"; };
+		85CB4360263D0D9A006E4B10 /* DrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingView.swift; sourceTree = "<group>"; };
 		85D3E7CA26390FAF00D693FA /* SceneMachineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneMachineView.swift; sourceTree = "<group>"; };
 		85D3E7CE26390FC500D693FA /* SceneMachineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneMachineController.swift; sourceTree = "<group>"; };
 		85FAF34B263C511300081ED8 /* FXDistortView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FXDistortView.swift; sourceTree = "<group>"; };
@@ -229,6 +231,7 @@
 			children = (
 				8515B371262743D000A886BD /* TerrainView.swift */,
 				85D3E7CA26390FAF00D693FA /* SceneMachineView.swift */,
+				85CB4360263D0D9A006E4B10 /* DrawingView.swift */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -577,6 +580,7 @@
 				8515B37A2627F3CE00A886BD /* SceneProgramView.swift in Sources */,
 				857C47382637370F006C6A32 /* MetalTilesView.swift in Sources */,
 				85FAF350263C6B7600081ED8 /* PhongShader.metal in Sources */,
+				85CB4361263D0D9A006E4B10 /* DrawingView.swift in Sources */,
 				8515B35E26263C6100A886BD /* MaterialEditView.swift in Sources */,
 				85B9135B263298790065D6D2 /* CausticNoise.swift in Sources */,
 				85B9134C2631C13B0065D6D2 /* SwiftUI+Extensions.swift in Sources */,

@@ -269,20 +269,20 @@ fragment half4 phong_fragment(ColorInOut in [[stage_in]])
 
 
 // Generate a texture.
-void kernel kernel_function(uint2                           gid         [[ thread_position_in_grid ]],
-                            texture2d<float, access::write> outTexture  [[texture(0)]])
-{
-    // Check if the pixel is within the bounds of the output texture
-    if ((gid.x >= outTexture.get_width()) ||
-        (gid.y >= outTexture.get_height()))
-    {
-        // Return early if the pixel is out of bounds
-        return;
-    }
-    float2 textureSize = float2(outTexture.get_width(),
-                                outTexture.get_height());
-    float2 position = float2(gid);
-    float4 pixelColor = float4(position/textureSize, 0.0, 1.0);
-    pixelColor.y = 1.0 - pixelColor.y;  // invert the green component.
-    outTexture.write(pixelColor, gid);
-}
+//void kernel kernel_function(uint2                           gid         [[ thread_position_in_grid ]],
+//                            texture2d<float, access::write> outTexture  [[texture(0)]])
+//{
+//    // Check if the pixel is within the bounds of the output texture
+//    if ((gid.x >= outTexture.get_width()) ||
+//        (gid.y >= outTexture.get_height()))
+//    {
+//        // Return early if the pixel is out of bounds
+//        return;
+//    }
+//    float2 textureSize = float2(outTexture.get_width(),
+//                                outTexture.get_height());
+//    float2 position = float2(gid);
+//    float4 pixelColor = float4(position/textureSize, 0.0, 1.0);
+//    pixelColor.y = 1.0 - pixelColor.y;  // invert the green component.
+//    outTexture.write(pixelColor, gid);
+//}

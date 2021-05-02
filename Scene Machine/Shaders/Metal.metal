@@ -107,16 +107,17 @@ vertex SimpleVertex myVertex(MyVertexInput in [[ stage_in ]],
     float ppart = floor(surface.position.y * 16) * scn_frame.sinTime;
     
     // Colors
-    float blu = max(minColor, vertical);
+    float blu = posy; //max(minColor, vertical);
     float green = vertical; // ppart * v
     float red = v;
     
     float change = (1 * scn_frame.sinTime)*surface.position.y;
     
-    float4 color = float4(red, green, blu, 1);
+    float4 color = float4(ppart, green, blu, 1);
     vert.color = color;
     
     return vert;
+    
 }
 
 fragment float4 myFragment(SimpleVertex in [[stage_in]],
@@ -144,10 +145,11 @@ fragment float4 myFragment(SimpleVertex in [[stage_in]],
     float change = (1 * scn_frame.sinTime)*surface.position.y;
     
     color = half4(red, green, blu, 1);
+    float3 semi = float3(vertical, tmod * vertical, blu);
     
 //    surface.emission = float4(red, green, blu, 1);
     
-    return in.color;
+    return float4(semi, 1.0);
 }
 
 // ATTEMPT 2
