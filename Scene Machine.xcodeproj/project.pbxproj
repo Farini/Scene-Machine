@@ -43,7 +43,6 @@
 		857C5FE8263F73800095E3B4 /* DrawingPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857C5FE7263F73800095E3B4 /* DrawingPad.swift */; };
 		85954043261C3144001D9040 /* SpriteKitNoiseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85954042261C3144001D9040 /* SpriteKitNoiseController.swift */; };
 		8597BB7E25BCA8B200C705A0 /* ImageFXController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8597BB7D25BCA8B200C705A0 /* ImageFXController.swift */; };
-		8597BB7F25BCA8B200C705A0 /* ImageFXController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8597BB7D25BCA8B200C705A0 /* ImageFXController.swift */; };
 		8597BB8425BCAEF600C705A0 /* Metal.metal in Sources */ = {isa = PBXBuildFile; fileRef = 8597BB8325BCAEF600C705A0 /* Metal.metal */; };
 		85A4776026407D4800F93AB3 /* HelpMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A4775F26407D4800F93AB3 /* HelpMainView.swift */; };
 		85B913352631057E0065D6D2 /* SceneKit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B913342631057E0065D6D2 /* SceneKit+Extensions.swift */; };
@@ -323,13 +322,10 @@
 		856492172579538B00D1FE00 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				85649218257953A900D1FE00 /* ImageCompositionController.swift */,
-				8597BB7D25BCA8B200C705A0 /* ImageFXController.swift */,
-				857A93D126124FE7004FFEBB /* NoiseController.swift */,
-				85954042261C3144001D9040 /* SpriteKitNoiseController.swift */,
+				85A477612641B08900F93AB3 /* Generators */,
+				85A477622641B0B800F93AB3 /* Image FX */,
 				8515B341262554A700A886BD /* GradientController.swift */,
 				85D3E7CE26390FC500D693FA /* SceneMachineController.swift */,
-				85FFB7352639C16F00E8FE0A /* MetalGenController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -382,6 +378,25 @@
 				85A4775F26407D4800F93AB3 /* HelpMainView.swift */,
 			);
 			path = Help;
+			sourceTree = "<group>";
+		};
+		85A477612641B08900F93AB3 /* Generators */ = {
+			isa = PBXGroup;
+			children = (
+				85954042261C3144001D9040 /* SpriteKitNoiseController.swift */,
+				857A93D126124FE7004FFEBB /* NoiseController.swift */,
+				85FFB7352639C16F00E8FE0A /* MetalGenController.swift */,
+			);
+			path = Generators;
+			sourceTree = "<group>";
+		};
+		85A477622641B0B800F93AB3 /* Image FX */ = {
+			isa = PBXGroup;
+			children = (
+				8597BB7D25BCA8B200C705A0 /* ImageFXController.swift */,
+				85649218257953A900D1FE00 /* ImageCompositionController.swift */,
+			);
+			path = "Image FX";
 			sourceTree = "<group>";
 		};
 		85B91332263105460065D6D2 /* Utilities */ = {
@@ -632,7 +647,6 @@
 				85B913412631C00E0065D6D2 /* GraphicsImageRenderer.swift in Sources */,
 				85B913482631C0ED0065D6D2 /* UVMapShape.swift in Sources */,
 				856491E92578100D00D1FE00 /* Scene_MachineTests.swift in Sources */,
-				8597BB7F25BCA8B200C705A0 /* ImageFXController.swift in Sources */,
 				85B9137A26329A3A0065D6D2 /* CoreImage+Extensions.swift in Sources */,
 				85B91363263298D20065D6D2 /* LensFlare.swift in Sources */,
 				85B913692632998D0065D6D2 /* SwapGreenRed.swift in Sources */,

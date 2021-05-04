@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+/// Facilitate the generation and visualization of `SCNMaterials`
 class GradientController:ObservableObject {
     
     @Published var compGradient:[GradientStop]
@@ -42,6 +43,7 @@ class GradientController:ObservableObject {
     
 }
 
+/// A Gradient Point
 class GradientStop:Identifiable, Equatable {
     
     var id:UUID = UUID()

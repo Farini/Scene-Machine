@@ -1,4 +1,10 @@
 # 🎬 Scene Machine
+<p>
+<img src="https://img.shields.io/badge/platforms-macOS_10.15_-blue.svg" alt="SwiftUI" />
+<img src="https://img.shields.io/badge/Swift-5.1-orange.svg" alt="Swift 5.0" />
+<img src="https://img.shields.io/github/followers/kieranb662?label=Follow" alt="Farini followers" />
+</p>
+
 Scene Machine is a tool for `SceneKit`, with a few additional features for `SpriteKit`. 
 The objective is to provide an easy way to generate textures and 3D geometries to facilitate the creation of `SceneKit` scenes, allowing creators to speed up their process, and achieve better results.
 
@@ -8,9 +14,14 @@ Plus, those patterns can be generated and placed in an UV map.
 The objective of this app is to create a more user friendly way to build a `.scn` file, or to facilitate the conversion of `.dae` files into `.scn` while maintaining good quality meshes.
 
 ![Alt text](https://user-images.githubusercontent.com/5069713/115817657-40738a80-a3c9-11eb-8f5c-9c586c1ff0af.png)
-![Alt text](https://user-images.githubusercontent.com/5069713/115817718-6731c100-a3c9-11eb-8f38-03e8f4298bc7.png)
+
 
 ## Expected Features
+
+### Noise & Generators
+- SpriteKit Noise
+- Pedal2DMetal
+- Quick Noise
 
 ### SpriteKit Noise Maker
 Create 6 common types of noises using `SpriteKit`.
@@ -19,6 +30,15 @@ Create 6 common types of noises using `SpriteKit`.
 - [X] Save Image
 - [X] Choose Image Size: 256x256, 512x512, 1024x1024, 2048x2048, 4096x4096
 - [X] Color Gradients
+
+### Pedal2DMetal
+Procedural Image generators with `Metal`
+
+- [X] Organize in Sections
+- [X] Noise { Voronoi, Caustic, Waves }
+- [X] Overlay { Lens flare, Halo, Sunbeams, Caustic Refraction }
+- [X] Tiles { Checkerboard, Hexagons, Truchet, Bricks, Diagonal Lines }
+- [ ] Others { Barcode, QRcode, Aztec }
 
 ### Image Composition
 Mix 2 images, using multiple `CoreImage` techniques
@@ -30,15 +50,32 @@ Mix 2 images, using multiple `CoreImage` techniques
 - [X] Undo Changes in Image
 - [X] Zoom in and out of images
 
-### Pedal2DMetal
-Procedural Image generators with `Metal`
+### Metal CI Shaders
+Image CIKernels built on Metal programming language
 
-- [X] Organize in Sections
-- [X] Noise { Voronoi, Caustic, Waves }
-- [X] Overlay { Lens flare, Halo, Sunbeams, Caustic Refraction }
-- [X] Tiles { Checkerboard, Hexagons, Truchet, Bricks, Diagonal Lines }
-- [ ] Others { Barcode, QRcode, Aztec }
+- [X] GRBA -> Green to Red (and back) pixels 
+- [X] Caustic Noise improved
+- [X] Black to Transparent
+- [X] Hexagons pattern
+- [X] Truchet tiling
 
+- [ ] KIFS Fractals: https://www.youtube.com/watch?v=il_Qg9AqQkE&list=RDCMUCcAlTqd9zID6aNX3TzwxJXg&index=6
+- [ ] Voronoi Noise improved
+
+
+
+### SceneKit
+Test and export `SceneKit` scenes.
+
+- [X] Show a Geometry's `UVMap`
+- [X] Save and export scene `.scn` files
+- [X] Background `HDRI` Images
+- [X] Have a few extra Geometries
+- [ ] Automatically "beautify" `.dae` files made in blender - Adjust lighting, colors, etc.
+- [ ] Have some sample code + shaders written in `Metal`  - `SCNProgram`
+- [ ] Test animated characters - Bones(in blender) vs SCNSkinner(Swift)
+
+![Alt text](https://user-images.githubusercontent.com/5069713/115817718-6731c100-a3c9-11eb-8f38-03e8f4298bc7.png)
 
 ### Scene Materials
 Create SceneKit Materials - `SCNMaterial`
@@ -52,29 +89,6 @@ Create SceneKit Materials - `SCNMaterial`
 - [ ] Save Materials
 - [ ] Basic Materials library (Wood, bricks, asphalt, plastic, metals, dirt, etc.)
 
-### SceneKit
-Test and export `SceneKit` scenes.
-
-- [X] Show a Geometry's `UVMap`
-- [X] Save and export scene `.scn` files
-- [ ] Have more sample geometries than the ones provided by SceneKit
-- [ ] Automatically "beautify" `.dae` files made in blender - Adjust lighting, colors, etc.
-- [ ] Have some sample code + shaders written in `Metal`  - `SCNProgram`
-- [ ] Test animated characters - Bones(in blender) vs SCNSkinner(Swift)
-- [ ] Background `HDRI` Images
-
-
-### Metal Shaders
-
-- [X] GRBA -> Green to Red (and back) pixels 
-- [X] Caustic Noise improved
-- [X] Black to Transparent
-- [X] Hexagons pattern
-- [X] Truchet tiling
-
-- [ ] KIFS Fractals: https://www.youtube.com/watch?v=il_Qg9AqQkE&list=RDCMUCcAlTqd9zID6aNX3TzwxJXg&index=6
-- [ ] Voronoi Noise improved
-- [ ] More patterns and noises
 
 ### Scene Ideas
 
@@ -102,20 +116,23 @@ Test and export `SceneKit` scenes.
 - [X] SpriteKit noise textures (all)
 - [X] ImageFX -> Undo
 - [X] Save and export Scenes `.scn` for your project
+- [X] Fix bug with SpriteKit Noise
+- [X] Export UVMap
 
-- [ ] Save Materials Property `SceneMaterial`
-- [ ] Fix bug with SpriteKit Noise
-- [ ] Improve MetalGenView
+- [ ] Cleanup SceneMachineController
+- [ ] Make a NormalMap shader, to transform images in Normal Maps
 
-- [ ] Export UVMap
-- [ ] Edit UVMap
+- [ ] 💾 Save Materials Property `SceneMaterial` - CoreData, or .json file?
 
-- [ ] SCNProgram -> Shaders
+- [ ] Edit UVMap - Look for SwiftUI Drawing apps examples on Github
+- [ ] Edit .txt files that can contain code for fragment/vertex shaders
 
 - [ ] AppDelegate, or SwiftUI? See `Fruta` app for latter.
 - [ ] Blender made textures
 
-- [ ] SpriteKit shaders
+- [ ] Better way to create App Help: http://swiftrien.blogspot.com/2015/06/adding-apple-help-to-os-x-application.html
+
+
 
 
 ### Important Notes - Modulo Function Metal vs GLSL

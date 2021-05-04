@@ -20,6 +20,7 @@ class NoiseController:ObservableObject {
         self.currentImage = image
     }
     
+    /// Generates a default `Perlin` noise with smoothness
     func generateNode(smooth:CGFloat) {
         let texture = SKTexture.init(noiseWithSmoothness: smooth, size: textureSize.size, grayscale: true)
         let img = texture.cgImage()
@@ -27,7 +28,7 @@ class NoiseController:ObservableObject {
         self.currentImage = image
     }
     
-    // This opens the Finder, but not to save...
+    /// Opens the NSSave panel to save the `currentImage`
     func openSavePanel() {
         
         let dialog = NSSavePanel() //NSOpenPanel();

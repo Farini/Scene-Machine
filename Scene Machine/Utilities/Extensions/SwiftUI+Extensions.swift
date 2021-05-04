@@ -10,6 +10,7 @@ import SwiftUI
 
 extension View {
     
+    /// Takes a snapshot of the current view, and outputs an `NSImage`
     func snapShot(uvSize:CGSize) -> NSImage? {
         
         let window = NSWindow(
@@ -21,7 +22,8 @@ extension View {
        
         window.contentView = NSHostingView(rootView: self)
         
-//        window.makeKeyAndOrderFront(self)
+        // Uncomment below to see what this view looks like
+        // window.makeKeyAndOrderFront(self)
         
         let cto = window.contentView!
         

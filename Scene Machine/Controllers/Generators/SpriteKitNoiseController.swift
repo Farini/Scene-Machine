@@ -76,12 +76,13 @@ class SpriteKitNoiseController:ObservableObject {
         
     }
     
+    /// Updates the size of the image generated
     func updateSizes() {
         let sceneSize = textureSize.size
         self.scene = GameScene(size: sceneSize)
     }
     
-    // This opens the Finder, but not to save...
+    /// Opens the NSSavePanel to save the image
     func openSavePanel() {
         guard let image = scene.makeImage() else {
             print("Couldn't make an image")
@@ -124,7 +125,7 @@ class SpriteKitNoiseController:ObservableObject {
     
 }
 
-// A simple game scene for textures
+/// A simple game scene for textures
 class GameScene: SKScene {
     
     var texture:SKTexture?
@@ -146,6 +147,7 @@ class GameScene: SKScene {
         
     }
     
+    /// Updates the scene with the current `GKNoiseMap` and texture size
     func makeSpriteTexture(noiseMap:GKNoiseMap, size:CGSize) {
         
         self.removeAllChildren()
@@ -158,7 +160,6 @@ class GameScene: SKScene {
     }
     
     func createNoiseMap() -> GKNoiseMap {
-        //Get our noise source, this can be customized further
         
         let source = GKPerlinNoiseSource()
         
@@ -170,6 +171,7 @@ class GameScene: SKScene {
         return map
     }
     
+    /// Converts the `SKTexture` to a `NSImage`
     func makeImage() -> NSImage? {
         guard let texture = self.texture else { return nil }
         let img = texture.cgImage()

@@ -9,6 +9,12 @@ import Foundation
 import SwiftUI
 import SceneKit
 
+/**
+ Magic Code. Do not change, if you don't know what you're doing.
+ 
+ This was made to get a GraphicsContext from the mac, since macos doesnt have a UIGraphicsContext, like iOS
+ */
+
 #if os(OSX)
 public class MacGraphicsImageRendererFormat: NSObject {
     public var opaque: Bool = false

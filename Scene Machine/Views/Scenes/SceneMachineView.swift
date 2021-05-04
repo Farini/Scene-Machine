@@ -8,48 +8,6 @@
 import SwiftUI
 import SceneKit
 
-/// Additional Geometries offered by the App
-enum AppGeometries:String, CaseIterable {
-    case Suzanne
-    case Woman
-    case Prototype
-    
-    func getGeometry() -> SCNNode? {
-//        var scene:SCNScene!
-        var node:SCNNode?
-        switch self {
-            case .Suzanne:
-                let scene = SCNScene(named: "Scenes.scnassets/monkey.scn")
-                node = scene?.rootNode.childNode(withName: "Suzanne", recursively: false)?.clone()
-            case .Woman:
-                let scene = SCNScene(named: "Scenes.scnassets/Woman.scn")
-                node = scene?.rootNode.childNode(withName: "Body_M_GeoRndr", recursively: false)?.clone()
-            case .Prototype:
-                let scene = SCNScene(named: "Scenes.scnassets/PrototypeCar.scn")
-                node = scene?.rootNode.childNode(withName: "CarBody", recursively: false)?.clone()
-        }
-        return node
-    }
-}
-
-enum AppBackgrounds: String, CaseIterable {
-    case Lava1
-    case Lava2
-    case SMB1
-    case SMB2
-    case SMB3
-    
-    var content:String {
-        switch self {
-            case .Lava1: return "LavaWorldBlur.hdr"
-            case .Lava2: return "LavaWorldBlur2.hdr"
-            case .SMB1: return "SMB_1.hdr"
-            case .SMB2: return "SMB_2.hdr"
-            case .SMB3: return "SMB_3.hdr"
-        }
-    }
-}
-
 struct SceneMachineView: View {
     
     @ObservedObject var controller = SceneMachineController()
@@ -127,6 +85,8 @@ struct SceneMachineView: View {
             
             // Middle - Scene
             VStack {
+                
+                // Top Toolbar
                 HStack {
                     
                     Button("+ Geometry") {
@@ -164,6 +124,17 @@ struct SceneMachineView: View {
                         .onChange(of: displayUVMap, perform: { value in
                             if value == true { controller.rightView = .UVMap } else { controller.rightView = .Empty }
                         })
+                    Button("Save UV") {
+                        
+                        print("saving UVMap")
+                        if let image = uvView.snapShot(uvSize: CGSize(width: 1024, height: 1024)) {
+                            controller.saveUVMap(image: image)
+                        } else {
+                            // Display an error message
+                        }
+                    }
+                    .disabled(selectedGeometry == nil)
+                    
                     Button("+ Back") {
                         popBackground.toggle()
                     }
@@ -221,6 +192,24 @@ struct SceneMachineView: View {
                 
             }
             .frame(minWidth: 600, maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+        }
+    }
+    
+    var uvView: some View {
+        
+        if let geometry = self.selectedGeometry,
+           let uvPoints:[CGPoint] = controller.inspectUVMap(geometry: geometry) {
+            return UVShape(uv: uvPoints)
+                .stroke(lineWidth: 0.5)
+                .fill(Color.orange, style: FillStyle(eoFill: false, antialiased: true))
+                .background(Color.clear)
+                .frame(width:1024, height:1024, alignment: .center)
+        } else {
+            return UVShape(uv: [])
+                .stroke(lineWidth: 0.5)
+                .fill(Color.orange, style: FillStyle(eoFill: false, antialiased: true))
+                .background(Color.clear)
+                .frame(width:1024, height:1024, alignment: .center)
         }
     }
 }

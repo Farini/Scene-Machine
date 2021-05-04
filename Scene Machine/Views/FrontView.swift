@@ -244,6 +244,7 @@ struct OpenFileView: View {
                     .padding(.horizontal)
                 }
                 
+                /*
                 Divider()
                 
                 // Materials
@@ -254,6 +255,7 @@ struct OpenFileView: View {
                         Text("Material \(material.id.uuidString)")
                     }
                 }
+                */
             }
         }
     }

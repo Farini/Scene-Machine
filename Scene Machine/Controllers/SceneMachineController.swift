@@ -28,6 +28,7 @@ class SceneMachineController:ObservableObject {
     var device: MTLDevice!
 //    var outputTexture: MTLTexture!
     
+    /// The default way to initialize `SceneMachine`
     init() {
         self.scene = SCNScene(named: "Scenes.scnassets/SMScene.scn")!
         
@@ -49,9 +50,9 @@ class SceneMachineController:ObservableObject {
         }
         
         device = MTLCreateSystemDefaultDevice()
-//        outputTexture = createTexture(device: device)
     }
     
+    /// Alternatively initialize `SceneMachine` with a given `SCNScene`
     init(scene:SCNScene) {
         self.scene = scene
         
@@ -75,7 +76,7 @@ class SceneMachineController:ObservableObject {
         device = MTLCreateSystemDefaultDevice()
     }
     
-    // uv
+    /// Get the points that compose the `UVMap`
     func inspectUVMap(geometry:SCNGeometry) -> [CGPoint]? {
         let sources = geometry.sources
         for src in sources {
@@ -109,6 +110,33 @@ class SceneMachineController:ObservableObject {
         }
         print("Could not find a UV Map")
         return nil
+    }
+    
+    /// Saves the UVMap `contour` as an Image
+    func saveUVMap(image:NSImage) {
+        // use NSSavePanel
+        let dialog = NSSavePanel() //NSOpenPanel();
+        
+        dialog.title                   = "UVMap layout";
+        dialog.showsResizeIndicator    = true;
+        dialog.showsHiddenFiles        = false;
+        dialog.allowedFileTypes = ["png", "jpg", "jpeg"]
+        dialog.message = "Save UVMap"
+        
+        if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
+            // Pathname of the file
+            if let result = dialog.url,
+               let imageData = image.tiffRepresentation {
+                do {
+                    try imageData.write(to: result)
+                } catch {
+                    print("Error. Could not save image")
+                }
+                
+            } else {
+                print("Could not save image to the specified URL")
+            }
+        }
     }
     
     // Program
@@ -354,3 +382,47 @@ extension SCNMaterial: Identifiable {
 //
 //    }
 //}
+
+
+/// Additional Geometries offered by the App
+enum AppGeometries:String, CaseIterable {
+    case Suzanne
+    case Woman
+    case Prototype
+    
+    func getGeometry() -> SCNNode? {
+        //        var scene:SCNScene!
+        var node:SCNNode?
+        switch self {
+            case .Suzanne:
+                let scene = SCNScene(named: "Scenes.scnassets/monkey.scn")
+                node = scene?.rootNode.childNode(withName: "Suzanne", recursively: false)?.clone()
+            case .Woman:
+                let scene = SCNScene(named: "Scenes.scnassets/Woman.scn")
+                node = scene?.rootNode.childNode(withName: "Body_M_GeoRndr", recursively: false)?.clone()
+            case .Prototype:
+                let scene = SCNScene(named: "Scenes.scnassets/PrototypeCar.scn")
+                node = scene?.rootNode.childNode(withName: "CarBody", recursively: false)?.clone()
+        }
+        return node
+    }
+}
+
+/// Additional HDRI Images offered by the App
+enum AppBackgrounds: String, CaseIterable {
+    case Lava1
+    case Lava2
+    case SMB1
+    case SMB2
+    case SMB3
+    
+    var content:String {
+        switch self {
+            case .Lava1: return "LavaWorldBlur.hdr"
+            case .Lava2: return "LavaWorldBlur2.hdr"
+            case .SMB1: return "SMB_1.hdr"
+            case .SMB2: return "SMB_2.hdr"
+            case .SMB3: return "SMB_3.hdr"
+        }
+    }
+}
