@@ -454,31 +454,91 @@ extern "C" { namespace coreimage {
     
     // https://www.shadertoy.com/view/XtV3z3
     
-    /*
-#define GAMMA 2.8
     
-    float texture_lum(sampler2D tex, vec2 uv) {
-        vec3 rgb = texture(tex, uv).rgb;
-        return 0.2126 * rgb.r + 0.7152 * rgb.g + 0.0722 * rgb.b;
+    float texLum(float4 color) {
+        float3 rgb = color.rgb;
+        return float(0.2126 * rgb.r + 0.7152 * rgb.g + 0.0722 * rgb.b);
+    }
+   
+    
+    float4 normalMap(sampler image, float2 size, destination dest) {
+        
+        float2 uv = dest.coord() / size.xy;
+        float sstep = 1 / size.x;
+        float sampx = image.sample(float2(uv.x+sstep, uv.y)).r;
+        float sampy = image.sample(float2(uv.x, uv.y+sstep)).r;
+        
+        // float2 remedy = float2(image.sample(sampx), image.sample(sampy));
+        float2 dxy = image.sample(uv).r - float2(sampx, sampy);
+        
+        float3 n = float4(normalize(float3(dxy * 0.1 / sstep, 1)), image.sample(uv).r).rgb * 0.5 + 0.5;
+        float4 res = float4(n, 1);
+        return res;
+        
+        
+        
+        /*
+        float r = 1.0 / size.x;
+        float2 uv = dest.coord(); // * r;
+        
+        float x0 = texLum(image.sample(float2(uv.x + 1, uv.y)));
+        float x1 = texLum(image.sample(float2(uv.x - r, uv.y)));
+        float y0 = texLum(image.sample(float2(uv.x, uv.y + 1)));
+        float y1 = texLum(image.sample(float2(uv.x, uv.y - r)));
+        
+        // smoothness
+        float smooth = 0.6;
+        float3 n = normalize(float3(x1 - x0, y1 - y0, smooth));
+        float3 color = n * 0.5 + 0.5;
+                          
+        return float4(color, 1.0);
+        */
+        
+        /*
+        float2 uv = (dest.coord() / size.xy); //- .5 * size.xy) / size.y;
+        float2 uvs = 2.0 / size;
+        
+        // uv.y = 1.0 - uv.y;
+        
+        float M =image.sample(uv).r;
+        float L =image.sample(uv + float2(uvs.x,0)).r;
+        float R =image.sample(uv + float2(-uvs.x, 0)).r;
+        float U =image.sample(uv + float2(0, uvs.y)).r;
+        float D =image.sample(uv + float2(0., -uvs.y)).r;
+        float X = ((R-M)+(M-L))*.5;
+        float Y = ((D-M)+(M-U))*.5;
+        
+        float strength = 0.01;
+        float4 N = float4(normalize(float3(X, Y, strength)), 1.0);
+        float4 col = float4(N.xyz * 0.5 + 0.5, 1.0);
+        return col;
+         */
+        
+        
     }
     
-    void mainImage(out vec4 fragColor, in vec2 fragCoord) {
-        float r = 1.0 / iChannelResolution[0].x;
-        vec2 uv = fragCoord.xy * r;
-        
-        float x0 = texture_lum(iChannel0, vec2(uv.x + r, uv.y));
-        float x1 = texture_lum(iChannel0, vec2(uv.x - r, uv.y));
-        float y0 = texture_lum(iChannel0, vec2(uv.x, uv.y + r));
-        float y1 = texture_lum(iChannel0, vec2(uv.x, uv.y - r));
-        
-        //NOTE: Controls the "smoothness"
-        float s = 1.0;
-        vec3 n = normalize(vec3(x1 - x0, y1 - y0, s));
-        
-        fragColor.xyz = n * 0.5 + 0.5;
-        
-    }
-    */
+//    float texture_lum(sampler2D tex, vec2 uv) {
+//        vec3 rgb = texture(tex, uv).rgb;
+//        return 0.2126 * rgb.r + 0.7152 * rgb.g + 0.0722 * rgb.b;
+//    }
+//
+//    void mainImage(out vec4 fragColor, in vec2 fragCoord) {
+//        float r = 1.0 / iChannelResolution[0].x;
+//        vec2 uv = fragCoord.xy * r;
+//
+//        float x0 = texture_lum(iChannel0, vec2(uv.x + r, uv.y));
+//        float x1 = texture_lum(iChannel0, vec2(uv.x - r, uv.y));
+//        float y0 = texture_lum(iChannel0, vec2(uv.x, uv.y + r));
+//        float y1 = texture_lum(iChannel0, vec2(uv.x, uv.y - r));
+//
+//        //NOTE: Controls the "smoothness"
+//        float s = 1.0;
+//        vec3 n = normalize(vec3(x1 - x0, y1 - y0, s));
+//
+//        fragColor.xyz = n * 0.5 + 0.5;
+//
+//    }
+    
     
     // MARK: - Black & White
     

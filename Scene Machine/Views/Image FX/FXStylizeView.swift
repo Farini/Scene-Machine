@@ -84,6 +84,7 @@ struct FXStylizeView: View {
         
         case SharpenLumina
         case UnsharpMask
+        case NormalMap
     }
     
     var body: some View {
@@ -197,6 +198,9 @@ struct FXStylizeView: View {
                             self.slider2 = Float(scale).rounded()
                         }
                         Text("Increases the contrast of the edges between pixels of different colors in an image.").foregroundColor(.gray)
+                        
+                    case .NormalMap:
+                        Text("Normal map")
                         
 //                    default: Text("Not implemented")
                 }
@@ -339,6 +343,26 @@ struct FXStylizeView: View {
                 filter.intensity = slider2
                 
                 createImage(from: filter, context: context)
+                
+            case .NormalMap:
+                let filter = NormalMapFilter()
+                filter.inputImage = coreImage
+                filter.tileSize = Float(mainImage.size.width)
+                
+                if let output = filter.outputImage(),
+                   let cgImage = context.createCGImage(output, from: output.extent) {
+                    print("outputting")
+                    
+                    let filteredImage = NSImage(cgImage: cgImage, size: NSSize(width: controller.textureSize.size.width, height: controller.textureSize.size.height))
+                    self.image = filteredImage
+                    
+                    controller.updateImage(new: filteredImage, isPreview: isPreviewing)
+                } else {
+                    print("nooutpout")
+                }
+                
+                
+//                createImage(from: filter, context: context)
                 
 //            default: print("Not implemented")
         }
