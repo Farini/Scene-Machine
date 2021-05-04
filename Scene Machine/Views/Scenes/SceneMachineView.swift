@@ -161,27 +161,25 @@ struct SceneMachineView: View {
                         .frame(minWidth: 300, alignment: .trailing)
                     
                     if displayUVMap {
-                        if let geometry = selectedGeometry,
-                           let uvMap = controller.inspectUVMap(geometry: geometry) {
+                        if let geometry:SCNGeometry = selectedGeometry,
+                           let uvMap:[CGPoint] = controller.inspectUVMap(geometry: geometry) {
                             ScrollView([.vertical, .horizontal], showsIndicators:true) {
                                 HStack {
-                                    ZStack {
-                                        
-                                        
-                                        UVShape(uv:uvMap)
-                                            .stroke(lineWidth: 0.5)
-                                            .fill(Color.orange, style: FillStyle(eoFill: false, antialiased: true))
-                                            .background(Color.gray.opacity(0.1))
-                                            .frame(width: 1024, height: 1024, alignment: .center)
-                                        
-//                                        if let m = geometry.materials.first?.diffuse.contents as? String {
-                                            //                                           let img = NSImage(byReferencingFile: m) { //diffuse.contents as? NSImage {
-                                            Image("Scenes.scnassets/UVMaps/WomanDiffuse.png")
-                                                .resizable()
-                                                .frame(width: 1024, height: 1024, alignment: .center)
-//                                        }
-                                    }
+                                    UVMapStack(geometry: geometry, points: uvMap)
                                     
+//                                    ZStack {
+//
+//                                        UVShape(uv:uvMap)
+//                                            .stroke(lineWidth: 0.5)
+//                                            .fill(Color.orange, style: FillStyle(eoFill: false, antialiased: true))
+//                                            .background(Color.gray.opacity(0.1))
+//                                            .frame(width: 1024, height: 1024, alignment: .center)
+//
+//                                        if let img = Bundle.main.path(forResource: (geometry.materials.first!.diffuse.contents as! String), ofType: "png", inDirectory: "Scenes.scnassets") {
+//                                            let nsimg = NSImage(contentsOfFile: img)!
+//                                            Image(nsImage: nsimg)
+//                                        }
+//                                    }
                                 }
                                 .padding(30)
                             }
@@ -235,6 +233,62 @@ struct SMGeometryRow: View {
         .background(isSelected ? Color.black:Color.clear)
         .padding(4)
         .frame(width:200)
+    }
+}
+
+struct UVMapStack: View {
+    
+    var geometry:SCNGeometry
+    var points:[CGPoint]
+    var image:NSImage?
+    
+    init(geometry:SCNGeometry, points:[CGPoint]) {
+        self.geometry = geometry
+        self.points = points
+        
+        if let difMap = geometry.materials.first?.diffuse {
+            print("Diffuse map loaded")
+            if let cont = difMap.contents as? String {
+                print("Did let contents as String")
+                if let imagePath = Bundle.main.path(forResource: cont, ofType: nil, inDirectory: "Scenes.scnassets") {
+                    print("image path in")
+                    if let nsimage = NSImage(byReferencingFile: imagePath) {
+                        print("image 1 in")
+                        self.image = nsimage
+                    } else if let nsimage = NSImage(contentsOfFile: imagePath) {
+                        print("image 2 in")
+                        self.image = nsimage
+                    }
+                } else {
+                    print("no image path")
+                    if let nsimage = NSImage(contentsOfFile: cont) {
+                        print("Another source")
+                        self.image = nsimage
+                    }
+                }
+            }
+        }
+    }
+    
+    var body: some View {
+        VStack {
+            Text("UVMap")
+            ZStack {
+                
+                if let image = image {
+                    Image(nsImage: image)
+                        .resizable()
+                        .frame(width: 1024, height: 1024, alignment: .center)
+                }
+                
+                UVShape(uv:points)
+                    .stroke(lineWidth: 0.5)
+                    .fill(Color.orange, style: FillStyle(eoFill: false, antialiased: true))
+                    .background(Color.gray.opacity(0.1))
+                    .frame(width: 1024, height: 1024, alignment: .center)
+                
+            }
+        }
     }
 }
 

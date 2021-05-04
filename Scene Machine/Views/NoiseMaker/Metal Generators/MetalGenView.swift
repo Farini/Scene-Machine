@@ -7,13 +7,6 @@
 
 import SwiftUI
 
-enum MetalGenType:String, CaseIterable {
-    case CIGenerators
-    case Noise
-    case Tiles
-    case Overlay
-    case Other
-}
 
 struct MetalGenView: View {
     
@@ -22,8 +15,6 @@ struct MetalGenView: View {
     @State var textureSize:TextureSize = .medium
     @State var image:NSImage = NSImage(size: NSSize(width: 1024, height: 1024))
     @State var selection:MetalGenType = .Noise
-    
-    @State private var zoomLevel:Double = 1.0
     
     var topBar: some View {
         HStack {
@@ -70,7 +61,7 @@ struct MetalGenView: View {
                 }).font(.title2)
                 
                 // Zoom Label
-                let zoomString = String(format: "x %.2f", zoomLevel)
+                let zoomString = String(format: "x %.2f", controller.zoomLevel)
                 Text(zoomString)
                 
                 // Zoom +
@@ -93,10 +84,10 @@ struct MetalGenView: View {
             ScrollView {
                 VStack {
                     switch controller.selection {
-                        case .CIGenerators:
-                            CIGenView(applied: { (newImage) in
-                                controller.image = newImage
-                            }, generatorType: .Checkerboard, image: image)
+//                        case .CIGenerators:
+//                            CIGenView(applied: { (newImage) in
+//                                controller.image = newImage
+//                            }, generatorType: .Checkerboard, image: image)
                         case .Noise:
                             MetalNoiseView(controller: controller, applied: { newImage in
                                 controller.image = newImage
@@ -129,7 +120,7 @@ struct MetalGenView: View {
                         Spacer()
                         Image(nsImage: controller.image)
                             .resizable()
-                            .frame(width: textureSize.size.width * CGFloat(zoomLevel), height: textureSize.size.height * CGFloat(zoomLevel), alignment: .center)
+                            .frame(width: textureSize.size.width * CGFloat(controller.zoomLevel), height: textureSize.size.height * CGFloat(controller.zoomLevel), alignment: .center)
                             .padding(20)
                         Spacer()
                     }

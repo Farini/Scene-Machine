@@ -8,6 +8,17 @@
 import Foundation
 import SceneKit
 
+extension SCNGeometry: Identifiable {
+    static func ==(lhs:SCNGeometry, rhs:SCNGeometry) -> Bool {
+        return lhs.isEqual(rhs)
+    }
+}
+extension SCNMaterial: Identifiable {
+    static func ==(lhs:SCNMaterial, rhs:SCNMaterial) -> Bool {
+        return lhs.isEqual(rhs)
+    }
+}
+
 extension SCNGeometrySource {
     
     /// Use this if the source is `SCNGeometrySourceSemanticVertex` or `SCNGeometrySourceSemanticNormal`

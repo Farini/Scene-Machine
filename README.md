@@ -1,6 +1,6 @@
 # 🎬 Scene Machine
 <p>
-<img src="https://img.shields.io/badge/platforms-macOS_11.2.3_-orange.svg" alt="SwiftUI" />
+<img src="https://img.shields.io/badge/platforms-macOS_11.2_-orange.svg" alt="SwiftUI" />
 <img src="https://img.shields.io/badge/Swift-5.1-orange.svg" alt="Swift 5.0" />
 <img src="https://img.shields.io/github/followers/Farini?label=Follow" alt="Farini followers" />
 </p>
@@ -118,17 +118,20 @@ Create SceneKit Materials - `SCNMaterial`
 - [X] Save and export Scenes `.scn` for your project
 - [X] Fix bug with SpriteKit Noise
 - [X] Export UVMap
+- [X] Fix Zoom issues on Pedal2DMetal
+- [X] Cleanup SceneMachineController
+- [X] Remove CIGenerators from Pedal2DMetal
 
-- [ ] Cleanup SceneMachineController
-- [ ] Make a NormalMap shader, to transform images in Normal Maps
-
-- [ ] 💾 Save Materials Property `SceneMaterial` - CoreData, or .json file?
-
+- [X] Under UVMap (ZStack), add image of the UV (if any)
 - [ ] Edit UVMap - Look for SwiftUI Drawing apps examples on Github
 - [ ] Edit .txt files that can contain code for fragment/vertex shaders
 
-- [ ] AppDelegate, or SwiftUI? See `Fruta` app for latter.
+- [ ] Make a NormalMap shader, to transform images in Normal Maps
+
+- [ ] 💾 Save Materials Property `SceneMaterial` - CoreData, or .json file?
 - [ ] Blender made textures
+
+- [ ] AppDelegate, or SwiftUI? See `Fruta` app for latter.
 
 - [ ] Better way to create App Help: http://swiftrien.blogspot.com/2015/06/adding-apple-help-to-os-x-application.html
 

@@ -9,10 +9,19 @@ import Foundation
 import Cocoa
 import CoreImage
 
+enum MetalGenType:String, CaseIterable {
+//    case CIGenerators
+    case Noise
+    case Tiles
+    case Overlay
+    case Other
+}
+
+
 class MetalGenController:ObservableObject {
     
     @Published var textureSize:TextureSize
-    @Published var selection:MetalGenType = .CIGenerators
+    @Published var selection:MetalGenType = .Noise
     
     @Published var image:NSImage {
         didSet {
@@ -35,6 +44,7 @@ class MetalGenController:ObservableObject {
             undoImages.removeLast()
         }
     }
+    
     
 //    func updatePreview(image:NSImage) {
 //

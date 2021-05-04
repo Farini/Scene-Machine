@@ -18,6 +18,8 @@ struct FrontView: View {
     }
     
     @State private var selection:NavigationItem? = .noise
+//    @Environment(\.managedObjectContext)
+    
     
     // To Open New Window:
     // https://stackoverflow.com/questions/62779479/button-to-open-view-in-new-window-swiftui-5-3-for-mac-os-x
@@ -72,7 +74,7 @@ struct FrontView: View {
 struct NoiseMenuView: View {
     var body: some View {
         VStack {
-            Text("Noise Generators").font(.title2).foregroundColor(.orange)
+            Text("Noise & Generators").font(.title2).foregroundColor(.orange)
                 .padding()
             
             HStack(spacing:12) {
@@ -117,66 +119,90 @@ struct NoiseMenuView: View {
 struct ImageFXMenuView: View {
     
     var body: some View {
-        VStack {
-            
-            Group {
-                Text("Image Effects").font(.title2).foregroundColor(.orange).padding()
+        ScrollView {
+            VStack {
                 
-                Text("Image effects need an Input image to transform it into an Output image. Be prepared to have an image as source")
-                    .foregroundColor(.gray)
-                    .frame(maxWidth:400)
-                
-                Divider()
-            }
-            
-            HStack {
-                Text("Compose Images. The CompositionView uses 2 images, and merge them using one of the chosen operations").foregroundColor(.gray)
-                Spacer()
-                VStack {
+                Group {
+                    
                     Image("Core_Image_icon")
                         .resizable()
                         .frame(width: 64, height: 64, alignment: .center)
-                        
-                    Text("Compose")
-                }
-                .padding(8)
-                .onTapGesture {
-                    NSApp.sendAction(#selector(AppDelegate.openCompositionView), to: nil, from: nil)
-                }
-            }
-            .padding()
-            
-            HStack {
-                Text("Apply Image FX. The Image FX View has filters that can be applied to an image").foregroundColor(.gray)
-                Spacer()
-                VStack {
-                    Image(systemName: "wand.and.stars")
-                        .resizable()
-                        .frame(width: 64, height: 64, alignment: .center)
-                    Text("Image FX")
-                }
-                .padding(8)
-                .onTapGesture {
-                    NSApp.sendAction(#selector(AppDelegate.openImageFXView), to: nil, from: nil)
+                        .padding(.top)
+                    
+                    Text("Image Effects").font(.title2).foregroundColor(.orange).padding()
+                    
+                    Divider()
                 }
                 
+                // Mixer Group
+                HStack {
+                    
+                    VStack(alignment:.leading) {
+                        Text("Mix Images").font(.title2).foregroundColor(.blue)
+                        Text("Mix Images. The CompositionView uses 2 images, and merge them using one of the chosen operations").foregroundColor(.gray)
+                    }
+                    .padding(6)
+                    
+                    Spacer()
+                    VStack {
+                        Image(systemName:"square.stack.3d.forward.dottedline")
+                            .resizable()
+                            .frame(width: 64, height: 64, alignment: .center)
+                        
+                        Text("Mixer")
+                    }
+                    .padding(8)
+                    .onTapGesture {
+                        NSApp.sendAction(#selector(AppDelegate.openCompositionView), to: nil, from: nil)
+                    }
+                }
+                .padding()
+                
+                // Effects Group
+                HStack {
+                    VStack(alignment:.leading) {
+                        Text("Image FX").font(.title2).foregroundColor(.blue)
+                        Text("Apply Image FX. The Image FX View has filters that can be applied to an image").foregroundColor(.gray)
+                    }
+                    .padding(6)
+                    
+                    Spacer()
+                    VStack {
+                        Image(systemName: "wand.and.stars")
+                            .resizable()
+                            .frame(width: 64, height: 64, alignment: .center)
+                        Text("Image FX")
+                    }
+                    .padding(8)
+                    .onTapGesture {
+                        NSApp.sendAction(#selector(AppDelegate.openImageFXView), to: nil, from: nil)
+                    }
+                    
+                }
+                .padding()
+                
             }
-            .padding()
+            .toolbar(content: {
+                Button("Tool") {
+                    print("Tool button clicked")
+                }
+            })
         
         }
-        .toolbar(content: {
-            Button("Tool") {
-                print("Tool button clicked")
-            }
-        })
     }
+        
 }
 
 struct OpenFileView: View {
     
-    @State var materials = LocalDatabase.shared.materials
+    @Environment(\.managedObjectContext) private var viewContext
+    // CoreData Tutorial: https://blckbirds.com/post/core-data-and-swiftui/
+    
+//    @State var materials = LocalDatabase.shared.materials
     @State var urls = LocalDatabase.shared.savedURLS
     @State var errorMessage:String = ""
+    
+    @FetchRequest(entity: SMMaterial.entity(), sortDescriptors: []) var materials: FetchedResults<SMMaterial>
     
     var dirImages:[NSImage] = FrontView.loadableImages()
     
@@ -248,14 +274,29 @@ struct OpenFileView: View {
                 Divider()
                 
                 // Materials
+                // This is working ok. Commented out because I intend to have it
+                // for future versions
+                
                 Text("Materials").font(.title2).foregroundColor(.orange)
                     .padding(8)
                 Group {
                     ForEach(materials) { material in
-                        Text("Material \(material.id.uuidString)")
+                        Text("Material \(material.id!.uuidString)")
+                    }
+                }
+                Button("Add") {
+                    let newMat = SMMaterial(context: viewContext)
+                    newMat.id = UUID()
+                    newMat.lightModel = MaterialShading.PhysicallyBased.rawValue
+                    do {
+                        try viewContext.save()
+                        print("saved")
+                    } catch {
+                        print("could not save. \(error.localizedDescription)")
                     }
                 }
                 */
+                
             }
         }
     }
@@ -307,48 +348,79 @@ struct OpenFileView: View {
 }
 
 struct OpenSceneView: View {
+    
     var body: some View {
-        VStack {
+        
+        ScrollView {
             
-            Group {
-                Image("SceneKitIcon")
-                    .resizable()
-                    .frame(width: 64, height: 64, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-                Text("SceneKit Scenes").font(.title2).foregroundColor(.orange)
+            VStack {
                 
-                Divider()
-            }
-            
-            Group {
-                Text("Terrain Editor")
-                Button("Terrain") {
-                    NSApp.sendAction(#selector(AppDelegate.openTerrainWindow), to: nil, from: nil)
+                Group {
+                    
+                    Image("SceneKitIcon")
+                        .resizable()
+                        .frame(width: 64, height: 64, alignment: .center)
+                    
+                    Text("SceneKit").font(.title2).foregroundColor(.orange)
+                    
+                    Divider()
                 }
-                Divider()
-            }
-            
-            Group {
-                Text("Material Editor")
-                Button("Suzanne") {
-                    NSApp.sendAction(#selector(AppDelegate.displayMonkeyTest), to: nil, from: nil)
+                .padding(.top)
+                
+                // Terrain Editor group
+                Group {
+                    HStack {
+                        
+                        VStack(alignment:.leading) {
+                            Text("Terrain Editor").font(.title2).foregroundColor(.blue)
+                            Text("Edit a terrain by giving it a displacement texture. Make sure the texture is white color. The white color displaces the terrain by a certain magnitude.").foregroundColor(.gray)
+                        }
+                        .padding(6)
+                        
+                        VStack {
+                            Image(systemName:"map")
+                                .resizable()
+                                .frame(width: 64, height: 64, alignment: .center)
+                                .padding(6)
+                            Text("Terrain")
+                        }
+                        .padding(8)
+                        .onTapGesture {
+                            NSApp.sendAction(#selector(AppDelegate.openTerrainWindow), to: nil, from: nil)
+                        }
+                    }
+                    
+                    
+                    Divider()
                 }
-                Divider()
-            }
-            
-            Group {
-                Text("⚙️ Scene Machine")
-                Button("Open") {
-                    NSApp.sendAction(#selector(AppDelegate.openSceneMachine), to: nil, from: nil)
+                
+                // Scene Machine Editor
+                Group {
+                    HStack {
+                        VStack(alignment:.leading) {
+                            Text("⚙️ Scene Machine").font(.title2).foregroundColor(.blue)
+                            Text("Import and export '.dae', or '.scn' files. Checkout the materials, and also print the UVMap borders, to easily visualize Texture Painting.").foregroundColor(.gray)
+                        }
+                        .padding(6)
+                        VStack {
+                            Image(systemName:"square.stack.3d.up")
+                                .resizable()
+                                .frame(width: 64, height: 64, alignment: .center)
+                                .padding(6)
+                            Text("Machine")
+                        }
+                        .padding(8)
+                        .onTapGesture {
+                            NSApp.sendAction(#selector(AppDelegate.openSceneMachine), to: nil, from: nil)
+                        }
+                    }
+                    
+                    //                Button("Open") {
+                    //                    NSApp.sendAction(#selector(AppDelegate.openSceneMachine), to: nil, from: nil)
+                    //                }
+                    //                Divider()
                 }
-                Divider()
             }
-            
-            
-            Text("Others").font(.title3).foregroundColor(.orange)
-            Text("(Needs Implementation)").foregroundColor(.gray)
-            
-            Text("Woman")
-            Text("DNA")
         }
     }
 }
@@ -357,5 +429,8 @@ struct FrontView_Previews: PreviewProvider {
     static var previews: some View {
         FrontView()
         OpenFileView()
+        OpenSceneView()
+        ImageFXMenuView()
+//        NoiseMenuView()
     }
 }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-
+/*
 
 struct CIGenView: View {
     
@@ -225,3 +225,5 @@ struct CIGenView_Previews: PreviewProvider {
         CIGenView()
     }
 }
+*/
+

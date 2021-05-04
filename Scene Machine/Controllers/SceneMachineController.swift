@@ -26,7 +26,7 @@ class SceneMachineController:ObservableObject {
     @Published var rightView:MachineRightView = .UVMap
     
     var device: MTLDevice!
-//    var outputTexture: MTLTexture!
+//    var outputTexture: MTLTexture?
     
     /// The default way to initialize `SceneMachine`
     init() {
@@ -141,25 +141,16 @@ class SceneMachineController:ObservableObject {
     
     // Program
     func addProgram() {
-//        let renderDelegate = MachineController(scene: self.scene)
      
         let boxGeo = SCNBox(width: 1.2, height: 1.2, length: 1.2, chamferRadius: 0.2)
         
         let program = SCNProgram()
         program.vertexFunctionName = "myVertex" //"phong_vertex"
         program.fragmentFunctionName = "myFragment" //"phong_fragment"
-//        let pDel = ProgramDelegate(program: program)
-//        program.delegate = pDel
-        
-//        program.delegate = self
-//        boxGeo.program = program
         
         let box = SCNNode(geometry: boxGeo)
-//        let materialProperty = SCNMaterialProperty(contents: NSColor.yellow)
-//        boxGeo.firstMaterial!.diffuse.contents = NSColor.yellow
         
         box.geometry!.firstMaterial!.program = program
-        
         
         box.position = SCNVector3(0, 1, 1.5)
         scene.rootNode.addChildNode(box)
@@ -167,6 +158,7 @@ class SceneMachineController:ObservableObject {
         self.scene.isPaused = false
     }
     
+    /// Adds an in-app geometry
     func addAppGeometry(geo:AppGeometries) {
         if let node = geo.getGeometry() {
             self.scene.rootNode.addChildNode(node)
@@ -188,6 +180,7 @@ class SceneMachineController:ObservableObject {
         }
     }
     
+    /// Changes the HDRI background of the Scene
     func changeBackground(back:AppBackgrounds) {
         print("Looking for background")
        
@@ -203,49 +196,7 @@ class SceneMachineController:ObservableObject {
 //        }
     }
     
-    // Call a compute kernel function to create an instance of MTLTexture
-//    func createTexture(device: MTLDevice) -> MTLTexture {
-//        // Instantiate a texture descriptor with the appropriate properties.
-//        let descriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .bgra8Unorm,
-//                                                                  width: 256,
-//                                                                  height: 256,
-//                                                                  mipmapped: false)
-//        descriptor.textureType = MTLTextureType.type2D
-//        descriptor.usage = [MTLTextureUsage.shaderRead, MTLTextureUsage.shaderWrite]
-//        let outputTexture = device.makeTexture(descriptor: descriptor)
-//
-//        let commandQueue = device.makeCommandQueue()
-//        let defaultLibrary = device.makeDefaultLibrary()!
-//
-//        let kernelFunction = defaultLibrary.makeFunction(name: "kernel_function")!
-//        var computePipelineState: MTLComputePipelineState!
-//        do {
-//            computePipelineState = try! device.makeComputePipelineState(function: kernelFunction)
-//        }
-//
-//        let commandBuffer = commandQueue?.makeCommandBuffer()
-//        commandBuffer?.addCompletedHandler {
-//            (commandBuffer) in
-//            //print("texture is ready")
-//        }
-//        let computeEncoder = commandBuffer!.makeComputeCommandEncoder()
-//        computeEncoder!.setComputePipelineState(computePipelineState)
-//        computeEncoder!.setTexture(outputTexture,
-//                                   index: 0)
-//        let threadgroupSize = MTLSizeMake(16, 16, 1)        // # of threads per group
-//        var threadgroupCount = MTLSizeMake(1, 1, 1)         // # of thread groups per gird
-//        threadgroupCount.width  = (outputTexture!.width + threadgroupSize.width - 1) / threadgroupSize.width
-//        threadgroupCount.height = (outputTexture!.height + threadgroupSize.height - 1) / threadgroupSize.height
-//        computeEncoder!.dispatchThreadgroups(threadgroupCount,
-//                                            threadsPerThreadgroup: threadgroupSize)
-//        computeEncoder!.endEncoding()
-//        commandBuffer!.commit()
-//        commandBuffer!.waitUntilCompleted()
-//
-//        return outputTexture!
-//    }
-    
-    // MARK: - Old
+    // MARK: - Saving
     
     func saveScene() {
         
@@ -271,14 +222,17 @@ class SceneMachineController:ObservableObject {
     // MARK: - Loading
     
     func loadPanel() {
+        
         let dialog = NSOpenPanel()
-        dialog.title                   = "Choose a file";
+        
+        dialog.title                   = "Choose a scene file.";
         dialog.showsResizeIndicator    = true;
         dialog.showsHiddenFiles        = false;
         dialog.canChooseFiles = true
         dialog.canChooseDirectories = true
         dialog.allowsMultipleSelection = false
         dialog.isAccessoryViewDisclosed = true
+        dialog.allowedFileTypes = ["scn", "dae", "usz", "obj"]
         
         if dialog.runModal() == NSApplication.ModalResponse.OK {
             if let url = dialog.url, url.isFileURL {
@@ -289,6 +243,7 @@ class SceneMachineController:ObservableObject {
         
     }
     
+    /// Loads a Scene chosen in the load Panel
     func loadScene(url:URL) {
         if let scene = try? SCNScene(url: url, options: [SCNSceneSource.LoadingOption.convertToYUp:NSNumber(value:1)]) {
             print("Scene in")
@@ -312,50 +267,66 @@ class SceneMachineController:ObservableObject {
         }
     }
     
-//    static func makeDefaultScene() -> SCNScene {
-//        let scene = SCNScene()
-//        let floor = SCNFloor()
-//        let material = SCNMaterial()
-//        material.name = "FloorMaterial"
-//        material.lightingModel = .physicallyBased
-//        material.diffuse.contents = NSColor.blue
-//        material.isDoubleSided = true
-//        material.roughness.contents = 0.1
-//        floor.insertMaterial(material, at: 0)
-//        let floorNode = SCNNode(geometry: floor)
-//        scene.rootNode.addChildNode(floorNode)
-//        return scene
-//    }
+    /// Create a Scene from Code (unsused for now)
+    static func makeDefaultScene() -> SCNScene {
+        
+        let scene = SCNScene()
+        let floor = SCNFloor()
+        let material = SCNMaterial()
+        material.name = "FloorMaterial"
+        material.lightingModel = .physicallyBased
+        material.diffuse.contents = NSColor.blue
+        material.isDoubleSided = true
+        material.roughness.contents = 0.1
+        floor.insertMaterial(material, at: 0)
+        let floorNode = SCNNode(geometry: floor)
+        scene.rootNode.addChildNode(floorNode)
+        return scene
+    }
+    
+    // Call a compute kernel function to create an instance of MTLTexture
+    //    func createTexture(device: MTLDevice) -> MTLTexture {
+    //        // Instantiate a texture descriptor with the appropriate properties.
+    //        let descriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .bgra8Unorm,
+    //                                                                  width: 256,
+    //                                                                  height: 256,
+    //                                                                  mipmapped: false)
+    //        descriptor.textureType = MTLTextureType.type2D
+    //        descriptor.usage = [MTLTextureUsage.shaderRead, MTLTextureUsage.shaderWrite]
+    //        let outputTexture = device.makeTexture(descriptor: descriptor)
+    //
+    //        let commandQueue = device.makeCommandQueue()
+    //        let defaultLibrary = device.makeDefaultLibrary()!
+    //
+    //        let kernelFunction = defaultLibrary.makeFunction(name: "kernel_function")!
+    //        var computePipelineState: MTLComputePipelineState!
+    //        do {
+    //            computePipelineState = try! device.makeComputePipelineState(function: kernelFunction)
+    //        }
+    //
+    //        let commandBuffer = commandQueue?.makeCommandBuffer()
+    //        commandBuffer?.addCompletedHandler {
+    //            (commandBuffer) in
+    //            //print("texture is ready")
+    //        }
+    //        let computeEncoder = commandBuffer!.makeComputeCommandEncoder()
+    //        computeEncoder!.setComputePipelineState(computePipelineState)
+    //        computeEncoder!.setTexture(outputTexture,
+    //                                   index: 0)
+    //        let threadgroupSize = MTLSizeMake(16, 16, 1)        // # of threads per group
+    //        var threadgroupCount = MTLSizeMake(1, 1, 1)         // # of thread groups per gird
+    //        threadgroupCount.width  = (outputTexture!.width + threadgroupSize.width - 1) / threadgroupSize.width
+    //        threadgroupCount.height = (outputTexture!.height + threadgroupSize.height - 1) / threadgroupSize.height
+    //        computeEncoder!.dispatchThreadgroups(threadgroupCount,
+    //                                            threadsPerThreadgroup: threadgroupSize)
+    //        computeEncoder!.endEncoding()
+    //        commandBuffer!.commit()
+    //        commandBuffer!.waitUntilCompleted()
+    //
+    //        return outputTexture!
+    //    }
 }
 
-//extension SceneMachineController:SCNSceneRendererDelegate {
-//    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-//        // Updates
-//    }
-//    func renderer(_ renderer: SCNSceneRenderer, didApplyAnimationsAtTime time: TimeInterval) {
-//        // Animated
-//    }
-//    func renderer(_ renderer: SCNSceneRenderer, didApplyConstraintsAtTime time: TimeInterval) {
-//        // Constraints
-//    }
-//    func renderer(_ renderer: SCNSceneRenderer, didSimulatePhysicsAtTime time: TimeInterval) {
-//        // physics
-//    }
-//    func renderer(_ renderer: SCNSceneRenderer, didRenderScene scene: SCNScene, atTime time: TimeInterval) {
-//        // Did render
-//    }
-//
-//}
-extension SCNGeometry: Identifiable {
-    static func ==(lhs:SCNGeometry, rhs:SCNGeometry) -> Bool {
-        return lhs.isEqual(rhs)
-    }
-}
-extension SCNMaterial: Identifiable {
-    static func ==(lhs:SCNMaterial, rhs:SCNMaterial) -> Bool {
-        return lhs.isEqual(rhs)
-    }
-}
 
 //class ProgramDelegate:NSObject, SCNProgramDelegate {
 //
@@ -370,7 +341,7 @@ extension SCNMaterial: Identifiable {
 //    }
 //}
 
-//class MachineController: NSObject, SCNSceneRendererDelegate {
+//class MachineRenderer: NSObject, SCNSceneRendererDelegate {
 //
 //    var scene:SCNScene
 //
@@ -383,46 +354,3 @@ extension SCNMaterial: Identifiable {
 //    }
 //}
 
-
-/// Additional Geometries offered by the App
-enum AppGeometries:String, CaseIterable {
-    case Suzanne
-    case Woman
-    case Prototype
-    
-    func getGeometry() -> SCNNode? {
-        //        var scene:SCNScene!
-        var node:SCNNode?
-        switch self {
-            case .Suzanne:
-                let scene = SCNScene(named: "Scenes.scnassets/monkey.scn")
-                node = scene?.rootNode.childNode(withName: "Suzanne", recursively: false)?.clone()
-            case .Woman:
-                let scene = SCNScene(named: "Scenes.scnassets/Woman.scn")
-                node = scene?.rootNode.childNode(withName: "Body_M_GeoRndr", recursively: false)?.clone()
-            case .Prototype:
-                let scene = SCNScene(named: "Scenes.scnassets/PrototypeCar.scn")
-                node = scene?.rootNode.childNode(withName: "CarBody", recursively: false)?.clone()
-        }
-        return node
-    }
-}
-
-/// Additional HDRI Images offered by the App
-enum AppBackgrounds: String, CaseIterable {
-    case Lava1
-    case Lava2
-    case SMB1
-    case SMB2
-    case SMB3
-    
-    var content:String {
-        switch self {
-            case .Lava1: return "LavaWorldBlur.hdr"
-            case .Lava2: return "LavaWorldBlur2.hdr"
-            case .SMB1: return "SMB_1.hdr"
-            case .SMB2: return "SMB_2.hdr"
-            case .SMB3: return "SMB_3.hdr"
-        }
-    }
-}

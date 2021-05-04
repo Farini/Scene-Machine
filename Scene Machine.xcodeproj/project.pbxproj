@@ -221,6 +221,7 @@
 		8515B32E2624E69800A886BD /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				85A477672641CE3700F93AB3 /* CoreData */,
 				8515B3D42628A58B00A886BD /* LocalDatabase.swift */,
 				856491D32578100B00D1FE00 /* Scene_Machine.xcdatamodeld */,
 				8515B32F2624E6EE00A886BD /* ImageBasics.swift */,
@@ -397,6 +398,13 @@
 				85649218257953A900D1FE00 /* ImageCompositionController.swift */,
 			);
 			path = "Image FX";
+			sourceTree = "<group>";
+		};
+		85A477672641CE3700F93AB3 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 		85B91332263105460065D6D2 /* Utilities */ = {
