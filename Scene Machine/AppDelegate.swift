@@ -7,6 +7,7 @@
 
 import Cocoa
 import SwiftUI
+import SceneKit
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -309,6 +310,27 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         imageFXWindow.makeKeyAndOrderFront(nil)
     }
+    @objc func openImageFX(_ sender:NSImage) {
+        
+        let controller = ImageFXController(image: sender)
+        let fxView = ImageFXView(controller: controller)
+        
+        if nil == imageFXWindow {
+            imageFXWindow = NSWindow(
+                contentRect: NSRect(x: 0, y: 0, width: 1200, height: 800),
+                styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+                backing: .buffered, defer: false)
+            imageFXWindow.center()
+            imageFXWindow.setFrameAutosaveName("ImageFX")
+            imageFXWindow.title = "Image FX"
+            imageFXWindow.isReleasedWhenClosed = false
+            imageFXWindow.contentView = NSHostingView(rootView: fxView)
+        } else {
+            imageFXWindow.contentView = NSHostingView(rootView: fxView)
+        }
+        
+        imageFXWindow.makeKeyAndOrderFront(nil)
+    }
     
     // MARK: - Scenes
     
@@ -364,5 +386,46 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         sceneMachineWindow.makeKeyAndOrderFront(nil)
     }
+    
+    @objc func openScene(_ sender:SCNScene) {
+        let controller = SceneMachineController(scene: sender)
+        let sceneView = SceneMachineView(controller: controller)
+        
+        if nil == sceneMachineWindow {
+            
+            sceneMachineWindow = NSWindow(
+                contentRect: NSRect(x: 0, y: 0, width: 900, height: 500),
+                styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+                backing: .buffered, defer: false)
+            sceneMachineWindow.center()
+            sceneMachineWindow.setFrameAutosaveName("SceneMachine")
+            sceneMachineWindow.title = "Scene Machine"
+            sceneMachineWindow.isReleasedWhenClosed = false
+            sceneMachineWindow.contentView = NSHostingView(rootView: sceneView)
+        }
+        sceneMachineWindow.makeKeyAndOrderFront(nil)
+    }
+    
+    
+    // MARK: - Help
+    
+    var helpWindow:NSWindow!
+    @IBAction func openHelp(_ sender: NSMenuItem) {
+        
+        if nil == helpWindow {
+            let view = HelpMainView()
+            helpWindow = NSWindow(
+                contentRect: NSRect(x: 0, y: 0, width: 900, height: 500),
+                styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+                backing: .buffered, defer: false)
+            helpWindow.center()
+            helpWindow.setFrameAutosaveName("SceneMachine")
+            helpWindow.title = "Scene Machine Help"
+            helpWindow.isReleasedWhenClosed = false
+            helpWindow.contentView = NSHostingView(rootView: view)
+        }
+        helpWindow.makeKeyAndOrderFront(nil)
+    }
+    
 }
 

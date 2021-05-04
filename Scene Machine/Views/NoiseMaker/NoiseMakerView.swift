@@ -50,6 +50,8 @@ struct NoiseMakerView: View {
                     HStack {
                         Spacer()
                         Image(nsImage: controller.currentImage)
+                            .resizable()
+                            .frame(width: controller.textureSize.size.width, height: controller.textureSize.size.height, alignment: .center)
                             .padding(25)
                         Spacer()
                         

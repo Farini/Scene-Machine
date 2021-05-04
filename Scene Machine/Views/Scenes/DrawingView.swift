@@ -113,7 +113,24 @@ struct DrawingView: View {
                 Color.clear
             }
             .frame(width: 1024, height: 1024, alignment: .center)
-            
+            .gesture(DragGesture()
+                        .onChanged { (value) in
+                            self.startPoint = CGPoint(x: value.location.x, y: value.location.y)
+                            
+                        }
+                        .onEnded({ ended in
+                            self.endPoint = CGPoint(x: ended.location.x, y: ended.location.y)
+                            self.allPoints = [DPoint((CGPoint(x: ended.location.x, y: ended.location.y)))]
+//                            if isCurve {
+//                                var rPoint = DPoint((CGPoint(x: ended.location.x, y: ended.location.y)))
+//                                rPoint.isCurve = true
+//                                allPoints.append(rPoint)
+//
+//                            } else {
+//                                allPoints.append(DPoint(CGPoint(x: ended.location.x, y: ended.location.y)))
+//                            }
+                            
+                        }))
         }
         
         

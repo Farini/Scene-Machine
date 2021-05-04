@@ -52,6 +52,29 @@ class SceneMachineController:ObservableObject {
 //        outputTexture = createTexture(device: device)
     }
     
+    init(scene:SCNScene) {
+        self.scene = scene
+        
+        // Recursively get Materials
+        let root = scene.rootNode
+        var stack:[SCNNode] = [root]
+        while !stack.isEmpty {
+            if let node = stack.first {
+                nodes.append(node)
+                if let geometry = node.geometry {
+                    self.geometries.append(geometry)
+                    for material in geometry.materials {
+                        self.materials.append(material)
+                    }
+                }
+                stack.append(contentsOf: node.childNodes)
+            }
+            stack.removeFirst()
+        }
+        
+        device = MTLCreateSystemDefaultDevice()
+    }
+    
     // uv
     func inspectUVMap(geometry:SCNGeometry) -> [CGPoint]? {
         let sources = geometry.sources
@@ -137,29 +160,10 @@ class SceneMachineController:ObservableObject {
         }
     }
     
-    func changeBackground() {
+    func changeBackground(back:AppBackgrounds) {
         print("Looking for background")
-        if let image = NSImage(named: "SMB_1.hdr") {
-            print("Found image named")
-            scene.background.contents = image
-        }
-//        let a = Bundle.main.re
-        let subdir = Bundle.main.resourceURL!.appendingPathComponent("Scenes.scnassets")
-        let folder = subdir.appendingPathComponent("HDRI", isDirectory: true)
-        let fileurl = folder.appendingPathComponent("SMB_1", isDirectory: false)
-        if let data = FileManager.default.contents(atPath: fileurl.path) {
-            print("let data")
-            if let image = NSImage(data: data) {
-                print("Image data ok")
-                self.scene.background.contents = image
-                return
-            }
-        }
-        if let image = NSImage(contentsOf: fileurl) {
-            print("Image URL ok")
-            self.scene.background.contents = image
-            return
-        }
+       
+        scene.background.contents = "Scenes.scnassets/HDRI/\(back.content)"
         print("Could not find")
 //        do {
 //            let modelPathDirectoryFiles = try FileManager.default.contentsOfDirectory(atPath: subdir)

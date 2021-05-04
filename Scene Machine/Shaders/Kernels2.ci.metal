@@ -452,7 +452,33 @@ extern "C" { namespace coreimage {
     
     // MARK: - Normal
     
+    // https://www.shadertoy.com/view/XtV3z3
     
+    /*
+#define GAMMA 2.8
+    
+    float texture_lum(sampler2D tex, vec2 uv) {
+        vec3 rgb = texture(tex, uv).rgb;
+        return 0.2126 * rgb.r + 0.7152 * rgb.g + 0.0722 * rgb.b;
+    }
+    
+    void mainImage(out vec4 fragColor, in vec2 fragCoord) {
+        float r = 1.0 / iChannelResolution[0].x;
+        vec2 uv = fragCoord.xy * r;
+        
+        float x0 = texture_lum(iChannel0, vec2(uv.x + r, uv.y));
+        float x1 = texture_lum(iChannel0, vec2(uv.x - r, uv.y));
+        float y0 = texture_lum(iChannel0, vec2(uv.x, uv.y + r));
+        float y1 = texture_lum(iChannel0, vec2(uv.x, uv.y - r));
+        
+        //NOTE: Controls the "smoothness"
+        float s = 1.0;
+        vec3 n = normalize(vec3(x1 - x0, y1 - y0, s));
+        
+        fragColor.xyz = n * 0.5 + 0.5;
+        
+    }
+    */
     
     // MARK: - Black & White
     

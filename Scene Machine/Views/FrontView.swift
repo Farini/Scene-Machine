@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SceneKit
 
 struct FrontView: View {
     
@@ -175,13 +176,23 @@ struct OpenFileView: View {
     
     @State var materials = LocalDatabase.shared.materials
     @State var urls = LocalDatabase.shared.savedURLS
+    @State var errorMessage:String = ""
     
     var dirImages:[NSImage] = FrontView.loadableImages()
     
     // Needs a Grid showing the pictures
     var body: some View {
+        
         ScrollView {
+            
             VStack {
+                
+                Text(errorMessage)
+                    .font(errorMessage.isEmpty ? .body:.title2.bold())
+                    .foregroundColor(errorMessage.isEmpty ? .clear:.red)
+                    .padding(errorMessage.isEmpty ? 0:8)
+                    // .animation(errorMessage.isEmpty ? nil:Animation.spring(response: 0.35, dampingFraction: 0.7).delay(0.75))
+                
                 Group {
                     Text("Files").font(.title2).foregroundColor(.orange)
                         .padding(6)
@@ -190,41 +201,102 @@ struct OpenFileView: View {
                 }
                 .padding(6)
                 
-                Text("App Directory").font(.title2).foregroundColor(.orange)
-                LazyVGrid(columns: [GridItem(.fixed(200)), GridItem(.fixed(200))], alignment: .center, spacing: 8, pinnedViews: [], content: {
-                    
-                    ForEach(0..<dirImages.count) { idx in
-                        Image(nsImage:dirImages[idx])
-                            .resizable()
-                            .frame(width:200, height:200, alignment:.center)
-                    }
-                })
+                Text("Image").font(.title2).foregroundColor(.orange)
                 
+                HStack {
+                    Text("Open an image with Image FX, and apply effects to an image.")
+                        .foregroundColor(.gray)
+                    Spacer()
+                    VStack {
+                        Image(systemName: "folder")//.font(.title)
+                            .resizable()
+                            .frame(width: 64, height: 64, alignment: .center)
+                            .padding(6)
+                        Text("Image FX")
+                    }
+                    .padding(8)
+                    .onTapGesture {
+                        openPanel()
+                    }
+                }
+                .padding(.horizontal)
                 
                 Divider()
+                
                 Group {
-                    Text("Saved URLs").font(.title2).foregroundColor(.orange)
-                        .padding()
-                    Text("File: 1...")
-                    LazyVGrid(columns: [GridItem(.fixed(200)), GridItem(.fixed(200))], alignment: .center, spacing: 8, pinnedViews: [], content: {
-                        
-                        ForEach(0..<urls.count) { idx in
-                            Text(urls[idx].lastPathComponent)
-                                .onTapGesture {
-                                    NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: urls[idx].absoluteString)
-                                }
+                    Text("Scene").font(.title2).foregroundColor(.orange)
+                        .padding(8)
+                    HStack {
+                        Text("Open a scene to edit with SceneKit").foregroundColor(.gray)
+                        Spacer()
+                        VStack {
+                            Image("SceneKitIcon")
+                                .resizable()
+                                .frame(width: 64, height: 64, alignment: .center)
+                                .padding(6)
+                            Text("Scene")
                         }
-                    })
+                        .padding(8)
+                        .onTapGesture {
+                            openPanel()
+                        }
+                    }
+                    .padding(.horizontal)
                 }
                 
                 Divider()
                 
                 // Materials
                 Text("Materials").font(.title2).foregroundColor(.orange)
-                    .padding()
+                    .padding(8)
                 Group {
                     ForEach(materials) { material in
                         Text("Material \(material.id.uuidString)")
+                    }
+                }
+            }
+        }
+    }
+    
+    func openPanel() {
+        let panel = NSOpenPanel()
+        
+        let imageTypes = ["png", "jpg", "jpeg", "tiff", "bmp"]
+        let sceneTypes = ["scn", "dae", "obj"]
+        
+        panel.allowedFileTypes = imageTypes + sceneTypes
+        
+        panel.allowsMultipleSelection = false
+        panel.canChooseFiles = true
+        panel.canChooseDirectories = false
+        panel.resolvesAliases = true
+        panel.isAccessoryViewDisclosed = true
+        panel.showsResizeIndicator    = true;
+        panel.showsHiddenFiles        = false;
+        
+        if panel.runModal() == NSApplication.ModalResponse.OK {
+            if let url = panel.url, url.isFileURL {
+                let filext = url.pathExtension
+                
+                if imageTypes.contains(filext) {
+                    if let image = NSImage(contentsOf: url) {
+                        // Open an Image
+                        NSApp.sendAction(#selector(AppDelegate.openImageFX(_:)), to: nil, from: image)
+                        self.errorMessage = ""
+                    } else {
+                        withAnimation(Animation.spring(response: 0.5, dampingFraction: 0.8).delay(0.75)) {
+                            self.errorMessage = "Could not open image file: \(url.absoluteString)"
+                        }
+                    }
+                    
+                } else if sceneTypes.contains(filext) {
+                    // Open a scene
+                    if let scene = try? SCNScene(url: url, options: [SCNSceneSource.LoadingOption.convertToYUp:NSNumber(value:1)]) {
+                        NSApp.sendAction(#selector(AppDelegate.openScene(_:)), to: nil, from: scene)
+                    } else {
+                        withAnimation(Animation.spring(response: 0.5, dampingFraction: 0.8).delay(0.75)) {
+                            self.errorMessage = "Could not open Scene file: \(url.absoluteString)"
+                        }
                     }
                 }
             }
@@ -282,5 +354,6 @@ struct OpenSceneView: View {
 struct FrontView_Previews: PreviewProvider {
     static var previews: some View {
         FrontView()
+        OpenFileView()
     }
 }

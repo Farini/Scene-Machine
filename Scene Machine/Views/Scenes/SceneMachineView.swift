@@ -32,6 +32,24 @@ enum AppGeometries:String, CaseIterable {
     }
 }
 
+enum AppBackgrounds: String, CaseIterable {
+    case Lava1
+    case Lava2
+    case SMB1
+    case SMB2
+    case SMB3
+    
+    var content:String {
+        switch self {
+            case .Lava1: return "LavaWorldBlur.hdr"
+            case .Lava2: return "LavaWorldBlur2.hdr"
+            case .SMB1: return "SMB_1.hdr"
+            case .SMB2: return "SMB_2.hdr"
+            case .SMB3: return "SMB_3.hdr"
+        }
+    }
+}
+
 struct SceneMachineView: View {
     
     @ObservedObject var controller = SceneMachineController()
@@ -40,6 +58,8 @@ struct SceneMachineView: View {
     
     @State private var displayUVMap:Bool = false
     @State private var popGeoImport:Bool = false
+    @State private var popBackground:Bool = false
+    
     // Additional Objects:
     // Monkey
     // Woman
@@ -108,9 +128,7 @@ struct SceneMachineView: View {
             // Middle - Scene
             VStack {
                 HStack {
-                    Button("+ Back") {
-                        controller.changeBackground()
-                    }
+                    
                     Button("+ Geometry") {
                         popGeoImport.toggle()
                     }
@@ -136,17 +154,35 @@ struct SceneMachineView: View {
                         print("save")
                         controller.saveScene()
                     }
-                    Toggle("UVMap", isOn: $displayUVMap)
-                        .onChange(of: displayUVMap, perform: { value in
-                            if value == true { controller.rightView = .UVMap } else { controller.rightView = .Empty }
-                        })
+                    Spacer()
                     
                     Button("Program") {
                         controller.addProgram()
                         
                     }
+                    Toggle("UVMap", isOn: $displayUVMap)
+                        .onChange(of: displayUVMap, perform: { value in
+                            if value == true { controller.rightView = .UVMap } else { controller.rightView = .Empty }
+                        })
+                    Button("+ Back") {
+                        popBackground.toggle()
+                    }
+                    .popover(isPresented: $popBackground) {
+                        VStack {
+                            ForEach(AppBackgrounds.allCases, id:\.self) { appBack in
+                                HStack {
+                                    Text(appBack.rawValue)
+                                    Spacer()
+                                    Button("Change") {
+                                        controller.changeBackground(back: appBack)
+                                    }
+                                }
+                                .frame(width:200)
+                            }
+                        }
+                    }
                 }
-                .padding(.top, 8)
+                .padding([.top, .leading, .trailing], 8)
                 
                 
                 HSplitView {
@@ -158,11 +194,23 @@ struct SceneMachineView: View {
                            let uvMap = controller.inspectUVMap(geometry: geometry) {
                             ScrollView([.vertical, .horizontal], showsIndicators:true) {
                                 HStack {
-                                    UVShape(uv:uvMap)
-                                        .stroke(lineWidth: 0.5)
-                                        .fill(Color.orange, style: FillStyle(eoFill: false, antialiased: true))
-                                        .background(Color.gray.opacity(0.1))
-                                        .frame(width: 1024, height: 1024, alignment: .center)
+                                    ZStack {
+                                        
+                                        
+                                        UVShape(uv:uvMap)
+                                            .stroke(lineWidth: 0.5)
+                                            .fill(Color.orange, style: FillStyle(eoFill: false, antialiased: true))
+                                            .background(Color.gray.opacity(0.1))
+                                            .frame(width: 1024, height: 1024, alignment: .center)
+                                        
+//                                        if let m = geometry.materials.first?.diffuse.contents as? String {
+                                            //                                           let img = NSImage(byReferencingFile: m) { //diffuse.contents as? NSImage {
+                                            Image("Scenes.scnassets/UVMaps/WomanDiffuse.png")
+                                                .resizable()
+                                                .frame(width: 1024, height: 1024, alignment: .center)
+//                                        }
+                                    }
+                                    
                                 }
                                 .padding(30)
                             }
