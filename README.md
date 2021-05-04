@@ -1,8 +1,8 @@
 # 🎬 Scene Machine
 <p>
-<img src="https://img.shields.io/badge/platforms-macOS_10.15_-blue.svg" alt="SwiftUI" />
+<img src="https://img.shields.io/badge/platforms-macOS_11.2.3_-orange.svg" alt="SwiftUI" />
 <img src="https://img.shields.io/badge/Swift-5.1-orange.svg" alt="Swift 5.0" />
-<img src="https://img.shields.io/github/followers/kieranb662?label=Follow" alt="Farini followers" />
+<img src="https://img.shields.io/github/followers/Farini?label=Follow" alt="Farini followers" />
 </p>
 
 Scene Machine is a tool for `SceneKit`, with a few additional features for `SpriteKit`. 
