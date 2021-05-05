@@ -15,7 +15,7 @@ class MetalFilter: CIFilter {
     var inputImage: CIImage?
     
     override init() {
-        let url = Bundle.main.url(forResource: "default", withExtension: "metallib")!
+        let url = Bundle.main.url(forResource: "Kernels2.ci", withExtension: "metallib")!
         guard let data = try? Data(contentsOf: url) else { fatalError() }
         guard let kkk = try? CIColorKernel(functionName: "myColor", fromMetalLibraryData: data) else { fatalError() } // myColor // hexagons
         self.kernel = kkk

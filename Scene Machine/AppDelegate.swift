@@ -165,20 +165,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
-    @IBAction func openNewImagePlaceholder(_ sender: NSMenuItem) {
-        let newWindow = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
-            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-            backing: .buffered, defer: false)
-        newWindow.center()
-        newWindow.setFrameAutosaveName("Drag and Drop Image Window")
-//        window.toolbarStyle = .unified
-        window.contentView = NSHostingView(rootView: TestImageDragDrop())
-        window.makeKeyAndOrderFront(nil)
-    }
-    
-    
-    
     /// Quick Noise
     var quickNoiseWindow:NSWindow!
     @IBAction func openNoiseMaker(_ sender: NSMenuItem) {
@@ -201,7 +187,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     
     @IBAction func openSpriteKitNoise(_ sender: NSMenuItem) {
-        
+        openSpriteNoiseWindow()
     }
     
     @IBAction func openFrontWindow(_ sender: NSMenuItem) {
@@ -217,21 +203,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.makeKeyAndOrderFront(nil)
     }
     
-    @IBAction func openSpecialCIFilters(_ sender: NSMenuItem) {
-        /*
-        let newWindow = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 1200, height: 800),
-            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-            backing: .buffered, defer: false)
-        newWindow.center()
-        newWindow.setFrameAutosaveName("FrontView")
-        //        window.toolbarStyle = .unified
-        window = newWindow
-        window.contentView = NSHostingView(rootView: Hacking())
-        window.makeKeyAndOrderFront(nil)
-        */
-        print("Deprecated")
-    }
     
     // MARK: - App Windows
     

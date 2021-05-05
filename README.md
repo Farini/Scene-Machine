@@ -50,7 +50,7 @@ Mix 2 images, using multiple `CoreImage` techniques
 - [X] Undo Changes in Image
 - [X] Zoom in and out of images
 
-### Metal CI Shaders
+### Metal Kernel Shaders
 Image CIKernels built on Metal programming language
 
 - [X] GRBA -> Green to Red (and back) pixels 
@@ -58,11 +58,8 @@ Image CIKernels built on Metal programming language
 - [X] Black to Transparent
 - [X] Hexagons pattern
 - [X] Truchet tiling
-
 - [ ] KIFS Fractals: https://www.youtube.com/watch?v=il_Qg9AqQkE&list=RDCMUCcAlTqd9zID6aNX3TzwxJXg&index=6
 - [ ] Voronoi Noise improved
-
-
 
 ### SceneKit
 Test and export `SceneKit` scenes.
@@ -134,8 +131,6 @@ Create SceneKit Materials - `SCNMaterial`
 - [ ] AppDelegate, or SwiftUI? See `Fruta` app for latter.
 
 - [ ] Better way to create App Help: http://swiftrien.blogspot.com/2015/06/adding-apple-help-to-os-x-application.html
-
-
 
 
 ### Important Notes - Modulo Function Metal vs GLSL

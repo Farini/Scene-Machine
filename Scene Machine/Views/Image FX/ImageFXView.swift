@@ -8,13 +8,11 @@
 import SwiftUI
 
 enum FXState:String, CaseIterable {
-    case empty
     case Blur
-    
     case Color
-    
     case Distort
     case Stylize
+    case Other
 }
 
 struct ImageFXView: View {
@@ -22,7 +20,7 @@ struct ImageFXView: View {
     @ObservedObject var controller:ImageFXController = ImageFXController(image: nil)
     
     @State private var popover:Bool = false
-    @State private var state:FXState = .empty
+    @State private var state:FXState = .Blur
     @State private var zoomLevel:Double = 1.0
     
     @State var sliderValue:Double = 0
@@ -31,9 +29,9 @@ struct ImageFXView: View {
         NavigationView {
             VStack {
                 switch state {
-                    case .empty:
-                        Text("Select filter type").foregroundColor(.gray)
-                            .padding()
+//                    case .empty:
+//                        Text("Select filter type").foregroundColor(.gray)
+//                            .padding()
                     case .Blur:
                         FXBlurrView(controller: controller, applied: { img in
                                         apply(image: img) },
@@ -51,6 +49,11 @@ struct ImageFXView: View {
                         })
                     case .Stylize:
                         FXStylizeView(controller: controller, applied: { img in
+                            apply(image: img)
+                        }, image: controller.openingImage)
+                        
+                    case .Other:
+                        FXOtherView(controller: controller, applied: { img in
                             apply(image: img)
                         }, image: controller.openingImage)
                         
@@ -85,70 +88,6 @@ struct ImageFXView: View {
                     
                     Divider().frame(height:32)
                     
-                Group {
-                    Button("Blur") {
-                        //                        let v = CIVector(values: [2, 3, 4], count: 3)
-                        self.state = .Blur
-                    }
-                    
-                    Button("Color") {
-                        self.state = .Color
-                    }
-                    
-                    Button("Other") {
-                        popover.toggle()
-                    }
-                    .popover(isPresented: $popover) {
-                        VStack {
-                            
-                            Group {
-                                Button("Blurr") {
-                                    //                                        controller.blurrImage()
-                                    self.state = .Blur
-                                }
-                                Button("Crystalize") {
-                                    controller.crystallize()
-                                }
-                                Button("Pixellate") {
-                                    controller.pixellate()
-                                }
-                                Button("Twirl") {
-                                    controller.twirlDistortion()
-                                }
-                            }
-                            
-                            Group {
-                                Button("Caustic Noise") {
-                                    controller.causticNoise()
-                                }
-                                Button("Caustic Refraction") {
-                                    controller.causticRefraction()
-                                }
-                                Button("Lens Flare") {
-                                    controller.lensFlare()
-                                }
-                            }
-                            
-                            Button("Metal Color") {
-                                controller.metalColor()
-                            }
-                            Button("Black2Alpha") {
-                                controller.metalBlackToTransparent()
-                            }
-                            Button("Mix last") {
-                                controller.mixImages()
-                            }
-                            .disabled(controller.secondImage == nil)
-                            
-                            Divider()
-                            Button("Save") {
-                                self.saveImage()
-                            }
-                        }
-                        .padding()
-                    }
-                }
-                    
                     Spacer()
                     
                     
@@ -176,14 +115,6 @@ struct ImageFXView: View {
                 }
                 .padding(.horizontal, 8)
                 
-                // Current Image
-//                ScrollView {
-//                    Image(nsImage: controller.openingImage)
-//                        .resizable()
-//                        .scaledToFit()
-//                        .padding(20)
-//                }
-                
                 // Image View
                 ScrollView([.vertical, .horizontal], showsIndicators: true) {
                     
@@ -205,25 +136,18 @@ struct ImageFXView: View {
     }
     
     func saveImage() {
-        
-        // Saving with SwiftUI
-        // https://stackoverflow.com/questions/56645819/how-to-open-file-dialog-with-swiftui-on-platform-uikit-for-mac
-        // Swift 5
-        // https://ourcodeworld.com/articles/read/1117/how-to-implement-a-file-and-directory-picker-in-macos-using-swift-5
-        
         controller.openSavePanel(for: controller.openingImage)
     }
-    
 }
 
 struct InputSlider: View {
-    
+
     var sliderRange:ClosedRange<Float> = 0...1
-    
+
     @State var value:Float = 0
-    
+
     var finish: (_ value:Double) -> Void = {_ in }
-    
+
     var body: some View {
         VStack {
             Slider(value: $value, in: sliderRange)
@@ -252,11 +176,11 @@ struct ImageFXView_Previews: PreviewProvider {
     }
 }
 
-struct InputViews_Previews: PreviewProvider {
-    static var previews: some View {
-        InputSlider()
-    }
-}
+//struct InputViews_Previews: PreviewProvider {
+//    static var previews: some View {
+//        InputSlider()
+//    }
+//}
 
 extension NumberFormatter {
     static var slider:NumberFormatter {

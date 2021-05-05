@@ -31,7 +31,14 @@ struct FXBlurrView: View {
             
             // Header and Picker
             Group {
-                Text("Blur Effect").font(.title2).foregroundColor(.accentColor)
+                HStack {
+                    Text("Blur Effects")
+                    Spacer()
+                    Image(systemName:"wand.and.stars")
+                }
+                .font(.title2)
+                .foregroundColor(.accentColor)
+                
                 Picker("", selection: $blurrType) {
                     ForEach(BlurrType.allCases, id:\.self) { bType in
                         Text(bType.rawValue)

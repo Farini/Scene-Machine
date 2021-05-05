@@ -405,7 +405,7 @@ class NormalMapFilter:CIFilter {
         // float4 truchet(sample_t sample, float2 size, destination dest) {
         return kernel.apply(extent: inputImage.extent, roiCallback: {
             (index, rect) in
-            return rect.insetBy(dx: 0, dy: 0)
+            return rect // .insetBy(dx: 0, dy: 0)
         }, arguments: [src, vec])
     }
 }

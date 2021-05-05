@@ -31,14 +31,21 @@ extern "C" { namespace coreimage {
         return float4(color.r, 0.0, color.b, 1.0);
     }
     
-    /** GREAT IDEA
-     Make a Shader that Takes a black pixel and transform into a transparent pixel
-     */
+    /** Takes a black pixel and transform into a transparent pixel */
     float4 makeBlackTransparent(sample_t sample, float threshold) {
         float4 filtered = (sample.r < threshold && sample.g < threshold && sample.b < threshold) == true ? float4(0):float4(sample.r, sample.g, sample.b, sample.a);
         //        float2 uv = sample.coord()
         return filtered;
     }
+    
+    /// Opposite of black transparent. White
+    float4 makeWhiteTransparent(sample_t sample, float threshold) {
+        float4 filtered = (sample.r > 1 - threshold && sample.g > 1 - threshold && sample.b > 1 - threshold) == true ? float4(0):float4(sample.r, sample.g, sample.b, sample.a);
+        //        float2 uv = sample.coord()
+        return filtered;
+    }
+    
+    
     
     // MARK: - Noises
     
@@ -362,8 +369,7 @@ extern "C" { namespace coreimage {
     // groups of shapes, fork of https://shadertoy.com/view/ldVczc
     // previous fork of https://shadertoy.com/view/lsVyRK
     
-    float sincosbundle(float val)
-    {
+    float sincosbundle(float val) {
         return sin(cos(2.*val) + sin(4.*val)- cos(5.*val) + sin(3.*val))*0.05;
     }
     
@@ -455,14 +461,54 @@ extern "C" { namespace coreimage {
     // https://www.shadertoy.com/view/XtV3z3
     
     
-    float texLum(float4 color) {
-        float3 rgb = color.rgb;
-        return float(0.2126 * rgb.r + 0.7152 * rgb.g + 0.0722 * rgb.b);
+    float texLum(float3 lcolor) {
+        // float3 rgb = color.rgb;
+        // return float(0.2126 * lcolor.r + 0.7152 * lcolor.g + 0.0722 * lcolor.b);
+        return (lcolor.r + lcolor.g + lcolor.b) / 3.;
     }
    
-    
     float4 normalMap(sampler image, float2 size, destination dest) {
         
+        //float2 uv = dest.coord() / size.xy;
+        // float2 uv = (dest.coord() - .5 * size.xy) / size.y;
+        float2 texelSize = 1.0 / size.xy;
+        
+        float2 spoint =  float2(dest.coord().x, size.y-dest.coord().y); //size - dest.coord();
+        
+        float dx = 0;
+        float dy = 0;
+        
+        dx -= texLum(image.sample(float2(spoint.x - texelSize.x, spoint.y - texelSize.y)).rgb) * 1.0;
+        dx -= texLum(image.sample(float2(spoint.x - texelSize.x, spoint.y)).rgb) * 2.0;
+        dx -= texLum(image.sample(float2(spoint.x - texelSize.x, spoint.y + texelSize.y)).rgb) * 1.0;
+        dx += texLum(image.sample(float2(spoint.x + texelSize.x, spoint.y - texelSize.y)).rgb) * 1.0;
+        dx += texLum(image.sample(float2(spoint.x + texelSize.x, spoint.y)).rgb) * 2.0;
+        dx += texLum(image.sample(float2(spoint.x + texelSize.x, spoint.y + texelSize.y)).rgb) * 2.0;
+        
+        dy -= texLum(image.sample(float2(spoint.x - texelSize.x, spoint.y - texelSize.y)).rgb) * 1.0;
+        dy -= texLum(image.sample(float2(spoint.x, spoint.y - texelSize.y)).rgb) * 2.0;
+        dy -= texLum(image.sample(float2(spoint.x + texelSize.x, spoint.y - texelSize.y)).rgb) * 1.0;
+        dy += texLum(image.sample(float2(spoint.x - texelSize.x, spoint.y + texelSize.y)).rgb) * 1.0;
+        dy += texLum(image.sample(float2(spoint.x, spoint.y + texelSize.y)).rgb) * 2.0;
+        dy += texLum(image.sample(float2(spoint.x + texelSize.x, spoint.y + texelSize.y)).rgb) * 1.0;
+        
+        float nx = dx;
+        float ny = dy;
+        
+        float3 norm = float3(nx, ny, sqrt(1.0 - nx*nx - ny*ny));
+        float4 fragColor = float4(norm * float3(0.5, 0.5, 1.0) + float3(0.5, 0.5, 0.0), 1.0);
+        
+        return fragColor;
+        
+        
+//        float3 lcolor = image.sample(spoint).rgb;
+//        float lumina = texLum(lcolor);
+//
+//        return float4(lcolor.r, lumina, lumina, 1); // float4(lumina/2, lumina/3, lumina, 1.0);
+        
+        
+        
+        /*
         float2 uv = dest.coord() / size.xy;
         float sstep = 1 / size.x;
         float sampx = image.sample(float2(uv.x+sstep, uv.y)).r;
@@ -474,7 +520,7 @@ extern "C" { namespace coreimage {
         float3 n = float4(normalize(float3(dxy * 0.1 / sstep, 1)), image.sample(uv).r).rgb * 0.5 + 0.5;
         float4 res = float4(n, 1);
         return res;
-        
+        */
         
         
         /*
@@ -513,32 +559,7 @@ extern "C" { namespace coreimage {
         float4 col = float4(N.xyz * 0.5 + 0.5, 1.0);
         return col;
          */
-        
-        
     }
-    
-//    float texture_lum(sampler2D tex, vec2 uv) {
-//        vec3 rgb = texture(tex, uv).rgb;
-//        return 0.2126 * rgb.r + 0.7152 * rgb.g + 0.0722 * rgb.b;
-//    }
-//
-//    void mainImage(out vec4 fragColor, in vec2 fragCoord) {
-//        float r = 1.0 / iChannelResolution[0].x;
-//        vec2 uv = fragCoord.xy * r;
-//
-//        float x0 = texture_lum(iChannel0, vec2(uv.x + r, uv.y));
-//        float x1 = texture_lum(iChannel0, vec2(uv.x - r, uv.y));
-//        float y0 = texture_lum(iChannel0, vec2(uv.x, uv.y + r));
-//        float y1 = texture_lum(iChannel0, vec2(uv.x, uv.y - r));
-//
-//        //NOTE: Controls the "smoothness"
-//        float s = 1.0;
-//        vec3 n = normalize(vec3(x1 - x0, y1 - y0, s));
-//
-//        fragColor.xyz = n * 0.5 + 0.5;
-//
-//    }
-    
     
     // MARK: - Black & White
     
@@ -786,8 +807,25 @@ extern "C" { namespace coreimage {
      let ciImage = CIImage(image: image)
      let laplacianImage = ciImage?.laplacian(metalLib: data)
      */
-    void laplacian(sampler_h s, group::destination_h dest) {
+//    void laplatian(sampler_h s, group::destination_h dest) {
+//        float2 dc = dest.coord();
+//        half4 g1 = s.gatherX(s.transform(dc + float2(-0.5,-0.5)));
+//        half4 g2 = s.gatherX(s.transform(dc + float2( 1.5,-0.5)));
+//        half4 g3 = s.gatherX(s.transform(dc + float2(-0.5, 1.5)));
+//        half4 g4 = s.gatherX(s.transform(dc + float2( 1.5, 1.5)));
+//
+//        half r1 = (g1.y -4 * g1.z + g1.w + g2.w + g3.y);
+//        half r2 = (g2.y -4 * g2.z + g2.w + g1.z + g4.x);
+//        half r3 = (g3.x -4 * g3.y + g3.w + g1.z + g4.x);
+//        half r4 = (g4.x -4 * g4.y + g4.w + g2.w + g3.y);
+//
+//        dest.write(half4(r1, r1, r1, 1), half4(r2, r2, r2, 1), half4(r3, r3, r3, 1), half4(r4, r4, r4, 1));
+//    }
+    
+    float4 laplatian(sampler_h s, destination dest) {
+        
         float2 dc = dest.coord();
+        
         half4 g1 = s.gatherX(s.transform(dc + float2(-0.5,-0.5)));
         half4 g2 = s.gatherX(s.transform(dc + float2( 1.5,-0.5)));
         half4 g3 = s.gatherX(s.transform(dc + float2(-0.5, 1.5)));
@@ -798,7 +836,13 @@ extern "C" { namespace coreimage {
         half r3 = (g3.x -4 * g3.y + g3.w + g1.z + g4.x);
         half r4 = (g4.x -4 * g4.y + g4.w + g2.w + g3.y);
         
-        dest.write(half4(r1, r1, r1, 1), half4(r2, r2, r2, 1), half4(r3, r3, r3, 1), half4(r4, r4, r4, 1));
+//        float4 reds = float4(r1, r2, r3, 1);
+//        float4
+        
+        return float4(r1, r2, r3, 1);
+        // float4(half4(r1, r1, r1, 1), half4(r2, r2, r2, 1), half4(r3, r3, r3, 1), half4(r4, r4, r4, 1));
+//        return float4(float4(r1, r1, r1, 1), float4(r2, r2, r2, 1), float4(r3, r3, r3, 1), float4(r4, r4, r4, 1));
+//        return col;
     }
     
     float4 threshold_binary(sample_t source, float threshold) {
@@ -810,9 +854,7 @@ extern "C" { namespace coreimage {
     
     
     /*
-     return HDRZebraFilter.kernel.apply(extent: input.extent,
-     arguments: [input, inputTime])
-     see: https://www.paraches.com/archives/7722
+     Apple's WWDC20 HDR Zebra
      */
     float4 HDRZebra (coreimage::sample_t s, float time, coreimage::destination dest)
     {
@@ -822,9 +864,6 @@ extern "C" { namespace coreimage {
             return float4(2.0, 0.0, 0.0, 1.0);
         return s;
     }
-    
-    
-    
     
 }}
 

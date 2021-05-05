@@ -30,7 +30,14 @@ struct FXColorView: View {
     
     var body: some View {
         VStack {
-            Text("Color Effect").font(.title2).foregroundColor(.accentColor)
+            HStack {
+                Text("Color Effects")
+                Spacer()
+                Image(systemName:"wand.and.stars")
+            }
+            .font(.title2)
+            .foregroundColor(.accentColor)
+            
             Picker("", selection: $colorType) {
                 ForEach(ColorType.allCases, id:\.self) { bType in
                     Text(bType.rawValue)

@@ -73,7 +73,6 @@ struct FXStylizeView: View {
         }
     }
     
-    
     enum StylizeType:String, CaseIterable {
         case Crystallize
         case Edges
@@ -95,7 +94,7 @@ struct FXStylizeView: View {
                 // Header and Picker
                 Group {
                     HStack {
-                        Text("Distort Effect")
+                        Text("Stylize Effect")
                         Spacer()
                         Image(systemName:"wand.and.stars")
                     }
@@ -248,7 +247,7 @@ struct FXStylizeView: View {
             .onAppear() {
                 self.image = controller.openingImage
 //                if let img = image {
-////                    self.undoImages.append(img)
+///                    self.undoImages.append(img)
 //
 //                }
             }
@@ -353,7 +352,7 @@ struct FXStylizeView: View {
                    let cgImage = context.createCGImage(output, from: output.extent) {
                     print("outputting")
                     
-                    let filteredImage = NSImage(cgImage: cgImage, size: NSSize(width: controller.textureSize.size.width, height: controller.textureSize.size.height))
+                    let filteredImage = NSImage(cgImage: cgImage, size: NSSize(width: controller.openingImage.size.width, height: controller.openingImage.size.height))
                     self.image = filteredImage
                     
                     controller.updateImage(new: filteredImage, isPreview: isPreviewing)
