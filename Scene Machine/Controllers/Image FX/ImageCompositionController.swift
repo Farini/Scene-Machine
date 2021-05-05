@@ -145,43 +145,19 @@ class ImageCompositionController:ObservableObject {
         
         let dialog = NSSavePanel() //NSOpenPanel();
         
-        dialog.title                   = "Choose a directory";
+        dialog.title                   = "Save mixed image";
         dialog.showsResizeIndicator    = true;
         dialog.showsHiddenFiles        = false;
+        dialog.message = "Save the image. Choose 'png' is there is transparency"
+        dialog.allowedFileTypes = ["png", "jpg", "jpeg"]
         
         if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
             let result = dialog.url // Pathname of the file
             
             if let result = result {
                 
-                var finalURL = result
-                
-                // Make sure there is an extension...
-                
-                let path: String = result.path
-                print("Picked Path: \(path)")
-                
-                var filename = result.lastPathComponent
-                print("Filename: \(filename)")
-                if filename.isEmpty {
-                    filename = "Untitled"
-                }
-                
-                let xtend = result.pathExtension.lowercased()
-                print("Extension: \(xtend)")
-                
-                let knownImageExtensions = ["jpg", "jpeg", "png", "bmp", "tiff"]
-                
-                if !knownImageExtensions.contains(xtend) {
-                    filename = "\(filename).png"
-                    
-                    let prev = finalURL.deletingLastPathComponent()
-                    let next = prev.appendingPathComponent(filename, isDirectory: false)
-                    finalURL = next
-                }
-                
                 do {
-                    try data?.write(to: finalURL)
+                    try data?.write(to: result)
                     print("File saved")
                 } catch {
                     print("ERROR: \(error.localizedDescription)")

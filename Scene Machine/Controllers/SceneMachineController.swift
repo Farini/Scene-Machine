@@ -76,6 +76,57 @@ class SceneMachineController:ObservableObject {
         device = MTLCreateSystemDefaultDevice()
     }
     
+    /// Called mostly when removing a Geometry, to update the scene, and remove the node of the geometry selected.
+    func nodeTreeUpdate() {
+        
+        print("Removing a node....")
+        
+        self.nodes = []
+        self.materials = []
+        
+        // Recursively get Materials
+        let root = scene.rootNode
+        var stack:[SCNNode] = [root]
+        while !stack.isEmpty {
+            
+            if let node = stack.first {
+                print("First from stack")
+                // nodes.append(node)
+                var shouldAdd:Bool = false
+                
+                if let geometry = node.geometry {
+                    print("geometry")
+
+                    if geometries.contains(geometry) {
+                        print("no remove")
+                        nodes.append(node)
+                        for material in geometry.materials {
+                            //self.materials.append(material)
+                            materials.append(material)
+                            shouldAdd = true
+                        }
+                    } else {
+
+                        print("Should remove: \(node.name ?? "na")")
+                        let removable:[SCNNode] = scene.rootNode.childNodes { pNode, pBol in
+                            return pNode.geometry == geometry
+                        }
+                        removable.first?.removeFromParentNode()
+                    }
+                } else {
+                    print("no geometry")
+                    stack.append(contentsOf: node.childNodes)
+                }
+                if shouldAdd {
+                    stack.append(contentsOf: node.childNodes)
+                }
+            }
+            stack.removeFirst()
+        }
+    }
+    
+    // MARK: - UV Map
+    
     /// Get the points that compose the `UVMap`
     func inspectUVMap(geometry:SCNGeometry) -> [CGPoint]? {
         let sources = geometry.sources
@@ -139,6 +190,8 @@ class SceneMachineController:ObservableObject {
         }
     }
     
+    // MARK: - SCNProgram
+    
     // Program
     func addProgram() {
      
@@ -158,8 +211,11 @@ class SceneMachineController:ObservableObject {
         self.scene.isPaused = false
     }
     
+    // MARK: - Extra Assets
+    
     /// Adds an in-app geometry
     func addAppGeometry(geo:AppGeometries) {
+        
         if let node = geo.getGeometry() {
             self.scene.rootNode.addChildNode(node)
             var stack:[SCNNode] = [node]
@@ -180,20 +236,16 @@ class SceneMachineController:ObservableObject {
         }
     }
     
+    /// Remove Geometry from list (and scene)
+    func removeGeometry(geo:SCNGeometry) {
+        self.geometries.removeAll(where: { $0 == geo })
+        self.nodeTreeUpdate()
+    }
+    
     /// Changes the HDRI background of the Scene
     func changeBackground(back:AppBackgrounds) {
-        print("Looking for background")
-       
         scene.background.contents = "Scenes.scnassets/HDRI/\(back.content)"
-        print("Could not find")
-//        do {
-//            let modelPathDirectoryFiles = try FileManager.default.contentsOfDirectory(atPath: subdir)
-//            print(modelPathDirectoryFiles.count) //this works
-//            //then do my thing with the array
-//            let url = modelPathDirectoryFiles
-//        } catch {
-//            print("error getting file")
-//        }
+        scene.lightingEnvironment.contents = "Scenes.scnassets/HDRI/\(back.content)"
     }
     
     // MARK: - Saving

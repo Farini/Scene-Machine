@@ -31,6 +31,8 @@ struct SceneMachineView: View {
     var body: some View {
         
         NavigationView {
+            
+            // Geometries + Materials
             ScrollView {
                 VStack {
                     // Geometries
@@ -43,7 +45,7 @@ struct SceneMachineView: View {
                     .foregroundColor(.orange)
                     
                     ForEach(controller.geometries) { geometry in
-                        SMGeometryRow(geometry: geometry, isSelected: selectedGeometry == geometry)
+                        SMGeometryRow(controller:controller, geometry: geometry, isSelected: selectedGeometry == geometry)
                             .onTapGesture {
                                 if selectedGeometry == geometry {
                                     selectedGeometry = nil
@@ -214,6 +216,7 @@ struct SceneMachineView: View {
 
 struct SMGeometryRow: View {
     
+    @ObservedObject var controller:SceneMachineController
     var geometry:SCNGeometry
     var isSelected:Bool
     
@@ -228,10 +231,17 @@ struct SMGeometryRow: View {
             HStack {
                 Text("Elements: \(geometry.elementCount)")
                 Text("Materials: \(geometry.materials.count)")
+                Spacer()
+                Button(action: {
+                    controller.removeGeometry(geo: geometry)
+                }, label: {
+                    Image(systemName: "trash")
+                })
             }
         }
-        .background(isSelected ? Color.black:Color.clear)
         .padding(4)
+        .background(isSelected ? Color.black:Color.clear)
+        .cornerRadius(isSelected ? 8:0)
         .frame(width:200)
     }
 }

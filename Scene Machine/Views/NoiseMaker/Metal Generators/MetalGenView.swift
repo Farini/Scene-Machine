@@ -19,22 +19,9 @@ struct MetalGenView: View {
     var topBar: some View {
         HStack {
             
-            Picker("Size", selection: $controller.textureSize) {
-                ForEach(TextureSize.allCases, id:\.self) { tSize in
-                    Text(tSize.fullLabel)
-                }
-                .onChange(of: controller.textureSize, perform: { value in
-                    //                            self.image = NSImage(size: value.size)
-                    let imSize:CGSize = value.size
-                    let image = MetalGenController.noiseImage(size: imSize)
-                    controller.image = image
-                })
-            }
-            .frame(width: 150)
-            
             Group {
                 
-                Picker("Gen", selection: $controller.selection) {
+                Picker("Generator", selection: $controller.selection) {
                     ForEach(MetalGenType.allCases, id:\.self) { genn in
                         Text("\(genn.rawValue)")
                     }
@@ -48,6 +35,21 @@ struct MetalGenView: View {
                     Text("Save")
                 })
             }
+            
+            Spacer()
+            
+            Picker("Size", selection: $controller.textureSize) {
+                ForEach(TextureSize.allCases, id:\.self) { tSize in
+                    Text(tSize.fullLabel)
+                }
+                .onChange(of: controller.textureSize, perform: { value in
+                    //                            self.image = NSImage(size: value.size)
+                    let imSize:CGSize = value.size
+                    let image = MetalGenController.noiseImage(size: imSize)
+                    controller.image = image
+                })
+            }
+            .frame(width: 150)
             
             // Zoom
             Group {
@@ -76,7 +78,9 @@ struct MetalGenView: View {
             
         }
         .padding(6)
+        .padding(.horizontal, 8)
         .background(Color.black.opacity(0.2))
+        .cornerRadius(8)
     }
     
     var body: some View {

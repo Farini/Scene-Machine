@@ -28,40 +28,42 @@ struct TerrainView: View {
     }
     
     var body: some View {
-        HStack {
-            VStack {
-                Text("Terrain")
-                Text("Drop image from finder to update the UV")
-                    .foregroundColor(.gray)
-                    .frame(maxWidth:180)
-                
-                Text("Diffuse")
-                SubMatImageArea(url: nil, active: true, image: nil) { droppedImage, droppedURL in
-                    print("Image dropped. Size: \(droppedImage.size)")
-                    self.diffuseImagePath = droppedURL.path
-                    self.textDropped()
-                }
-                
-                Text("Displacement")
-                SubMatImageArea(url: nil, active: true, image: nil) { droppedImage, droppedURL in
-                    print("Image dropped. Size: \(droppedImage.size)")
-                    self.displaceImagePath = droppedURL.path
-                    self.textDropped()
-                }
-                
-                
-                Button("Geometry") {
-                    self.describeTerrain()
-                }
-                
-                Button("Export") {
-//                    let doc = FileManager.default.urls(for: .desktopDirectory, in: .userDomainMask).first!
-//                    let url = doc.appendingPathComponent("SceneName.scn", isDirectory: false)
-//                    self.exporter.exportScene(to: url)
+        HSplitView {
+            ScrollView {
+                VStack {
+                    Text("Terrain").font(.title2).foregroundColor(.orange)
+                        .padding(8)
+                    Text("Drop image from finder to update the UV")
+                        .foregroundColor(.gray)
+                        .frame(maxWidth:180)
+                        .padding(.bottom, 6)
                     
-                    exportScene()
+                    Text("Diffuse")
+                    SubMatImageArea(url: nil, active: true, image: nil) { droppedImage, droppedURL in
+                        print("Image dropped. Size: \(droppedImage.size)")
+                        self.diffuseImagePath = droppedURL.path
+                        self.textDropped()
+                    }
+                    
+                    Text("Displacement")
+                    SubMatImageArea(url: nil, active: true, image: nil) { droppedImage, droppedURL in
+                        print("Image dropped. Size: \(droppedImage.size)")
+                        self.displaceImagePath = droppedURL.path
+                        self.textDropped()
+                    }
+                    
+                    
+//                    Button("Geometry") {
+//                        self.describeTerrain()
+//                    }
+                    
+                    Button("Export") {
+                        
+                        exportScene()
+                    }
                 }
             }
+            .frame(minWidth: 160, maxWidth: 200, alignment: .center)
             
             SceneView(scene: scene, pointOfView: nil, options: .allowsCameraControl, preferredFramesPerSecond: 60, antialiasingMode: .multisampling4X, delegate: TerrainDelegate(), technique: nil)
             
@@ -76,39 +78,14 @@ struct TerrainView: View {
         dialog.title                   = "Choose a directory";
         dialog.showsResizeIndicator    = true;
         dialog.showsHiddenFiles        = false;
+        dialog.allowedFileTypes = ["scn", "dae", "obj"]
         
         if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
             let result = dialog.url // Pathname of the file
             
             if let result = result {
                 
-                var finalURL = result
-                
-                // Make sure there is an extension...
-                
-                let path: String = result.path
-                print("Picked Path: \(path)")
-                
-                var filename = result.lastPathComponent
-                print("Filename: \(filename)")
-                if filename.isEmpty {
-                    filename = "Untitled"
-                }
-                
-                let xtend = result.pathExtension.lowercased()
-                print("Extension: \(xtend)")
-                
-                let knownImageExtensions = ["scn"]
-                
-                if !knownImageExtensions.contains(xtend) {
-                    filename = "\(filename).scn"
-                    
-                    let prev = finalURL.deletingLastPathComponent()
-                    let next = prev.appendingPathComponent(filename, isDirectory: false)
-                    finalURL = next
-                }
-                
-                self.exporter.exportScene(to: finalURL)
+                self.exporter.exportScene(to: result)
                 
             }
         } else {
@@ -133,18 +110,18 @@ struct TerrainView: View {
         }
     }
     
-    func describeTerrain() {
-        if let plane = scene.rootNode.childNode(withName: "plane", recursively: false) {
-            print("plane")
-            if let geometry = plane.geometry {
-                print("Geometry: \(geometry.elementCount)")
-                if let gsource = geometry.sources.first {
-                    print("Source: \(gsource.debugDescription)")
-                    print("Semantic: \(gsource.semantic.rawValue)")
-                }
-            }
-        }
-    }
+//    func describeTerrain() {
+//        if let plane = scene.rootNode.childNode(withName: "plane", recursively: false) {
+//            print("plane")
+//            if let geometry = plane.geometry {
+//                print("Geometry: \(geometry.elementCount)")
+//                if let gsource = geometry.sources.first {
+//                    print("Source: \(gsource.debugDescription)")
+//                    print("Semantic: \(gsource.semantic.rawValue)")
+//                }
+//            }
+//        }
+//    }
 }
 
 struct TerrainView_Previews: PreviewProvider {
@@ -214,17 +191,21 @@ struct SubMatImageArea: View {
     var dropped: (_ image:NSImage, _ url:URL) -> Void = {_,_  in }
     
     var body: some View {
+        
         VStack {
-//            Text("Drop Image")
             Group {
                 if let dropped = image {
                     Image(nsImage: dropped)
                         .resizable()
-                        .frame(width:100, height:100)
+//                        .frame(width:150, height:150)
                 } else {
-                    Text(" [ Drop Image ] ").foregroundColor(.gray).padding(.vertical, 30)
+                    Text(" [ Drop Image ] ").foregroundColor(.gray)// .padding(.vertical, 30)
                 }
             }
+            .frame(width: 150, height: 150, alignment: .center)
+            .background(Color.black.opacity(0.5))
+            .cornerRadius(12)
+            .padding(8)
             .onDrop(of: ["public.file-url"], isTargeted: $active) { providers -> Bool in
                 providers.first?.loadDataRepresentation(forTypeIdentifier: "public.file-url", completionHandler: { (data, error) in
                     if let data = data, let uu = URL(dataRepresentation: data, relativeTo: nil) {
@@ -236,6 +217,7 @@ struct SubMatImageArea: View {
                 })
                 return true
             }
+            Spacer()
         }
     }
 }

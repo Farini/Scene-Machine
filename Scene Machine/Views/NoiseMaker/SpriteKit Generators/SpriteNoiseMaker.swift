@@ -170,12 +170,21 @@ struct SpriteNoiseMaker: View {
             .frame(minWidth: 240, maxWidth: 280, alignment: .center)
             
             
-            ZStack(alignment: .top) {
-                
-                ScrollView {
-                    SpriteView(scene: controller.scene).frame(width: scene.size.width, height: scene.size.height)
+//            ZStack(alignment: .center) {
+            ScrollView([.vertical, .horizontal]) {
+                    HStack {
+                        Spacer()
+                        VStack {
+                            SpriteView(scene: controller.scene)
+                                .frame(width: 1024, height: 1024)
+                                .padding(20)
+                        }
+                        Spacer()
+                    }
+                    
                 }
-            }
+                
+//            }
         }
     }
 }
@@ -199,7 +208,8 @@ struct SpriteNoiseColorBar: View {
         VStack {
             Text("Colors").font(.title2).foregroundColor(.orange)
             
-            ForEach(0..<controller.compGradient.count, id:\.self) { idx in
+            ForEach(controller.compGradient) { gradient in
+                let idx = controller.indexForGradient(gradient: gradient)
                 VStack {
                     
                     Divider()
@@ -207,7 +217,7 @@ struct SpriteNoiseColorBar: View {
                     HStack {
                         Text("# \(idx)")
                         ColorPicker("", selection: $controller.compGradient[idx].color)
-                            
+                        
                         Spacer()
                         Text("\(controller.compGradient[idx].location)")
                         
@@ -216,18 +226,22 @@ struct SpriteNoiseColorBar: View {
                         }, label: {
                             Image(systemName: "trash")
                         })
+                        .help("Remove color: You may remove all but 2 colors from a procedural noise.")
                     }
                     
                     
                     Slider(value: $controller.compGradient[idx].location, in: -1...1, minimumValueLabel: Text("-1"), maximumValueLabel: Text("1"), label: {
                         Text("")
                     })
-//                    .onChange(of: controller.compGradient, perform: { value in
-//                        applied(controller.compGradient)
-//                    })
+                    //                    .onChange(of: controller.compGradient, perform: { value in
+                    //                        applied(controller.compGradient)
+                    //                    })
                     
                 }
             }
+//            ForEach(0..<controller.compGradient.count, id:\.self) { idx in
+//
+//            }
             
             Divider()
             

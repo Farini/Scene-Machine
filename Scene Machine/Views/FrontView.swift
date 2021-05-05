@@ -29,7 +29,7 @@ struct FrontView: View {
             List(selection:$selection) {
                 
                 NavigationLink(destination: NoiseMenuView(), tag: NavigationItem.noise, selection: $selection) {
-                    Label("Noise", systemImage: "puzzlepiece")
+                    Label("Generators", systemImage: "puzzlepiece")
                 }
                 .tag(NavigationItem.noise)
                 

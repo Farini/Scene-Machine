@@ -160,7 +160,7 @@ struct CompositionView: View {
                     }).font(.title2)
                     
                     // Zoom Label
-                    let zoomString = String(format: "Zoom: %.2f", zoomLevel)
+                    let zoomString = String(format: "x %.2f", zoomLevel)
                     Text(zoomString)
                     
                     // Zoom +

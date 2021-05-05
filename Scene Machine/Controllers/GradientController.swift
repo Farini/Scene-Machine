@@ -26,7 +26,15 @@ class GradientController:ObservableObject {
     }
     
     func removeGradient(at idx:Int) {
-        compGradient.remove(at: idx)
+        if compGradient.count > 2 {
+            compGradient.remove(at: idx)
+        } else {
+            print("Cannot remove the last 2 gradients")
+        }
+    }
+    
+    func indexForGradient(gradient:GradientStop) -> Int {
+        return compGradient.firstIndex(of: gradient)!
     }
     
     func setcolor(color:Color, stop:GradientStop) {
