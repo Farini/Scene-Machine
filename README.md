@@ -5,13 +5,14 @@
 <img src="https://img.shields.io/github/followers/Farini?label=Follow" alt="Farini followers" />
 </p>
 
-Scene Machine is a tool for `SceneKit`, with a few additional features for `SpriteKit`. 
-The objective is to provide an easy way to generate textures and 3D geometries to facilitate the creation of `SceneKit` scenes, allowing creators to speed up their process, and achieve better results.
+Scene Machine is a tool for `SceneKit`, with additional features for `SpriteKit`. 
+The objective is to provide an easy way to generate textures and *3D geometries* to facilitate the creation of `SceneKit` scenes, allowing creators to speed up their process, and achieve better results.
 
 Although SpriteKit offers ways to generate noise textures, the options are limited. In Blender, for example, there are many more options, and graphics operations that can be performed to generate a texture. 
-Plus, those patterns can be generated and placed in an UV map.
 
-The objective of this app is to create a more user friendly way to build a `.scn` file, or to facilitate the conversion of `.dae` files into `.scn` while maintaining good quality meshes.
+Plus, those patterns can be generated and placed in a UV map.
+
+The objective of this app is to create a more user-friendly way to build a `.scn` file, or to facilitate the conversion of `.dae` files into `.scn` while maintaining high-quality meshes.
 
 ![Alt text](https://user-images.githubusercontent.com/5069713/115817657-40738a80-a3c9-11eb-8f5c-9c586c1ff0af.png)
 
@@ -38,7 +39,6 @@ Procedural Image generators with `Metal`
 - [X] Noise { Voronoi, Caustic, Waves }
 - [X] Overlay { Lens flare, Halo, Sunbeams, Caustic Refraction }
 - [X] Tiles { Checkerboard, Hexagons, Truchet, Bricks, Diagonal Lines }
-- [ ] Others { Barcode, QRcode, Aztec }
 
 ### Image Composition
 Mix 2 images, using multiple `CoreImage` techniques
@@ -58,6 +58,8 @@ Image CIKernels built on Metal programming language
 - [X] Black to Transparent
 - [X] Hexagons pattern
 - [X] Truchet tiling
+- [X] Epitrochoidal Waves
+- [X] Mercurialize
 - [ ] KIFS Fractals: https://www.youtube.com/watch?v=il_Qg9AqQkE&list=RDCMUCcAlTqd9zID6aNX3TzwxJXg&index=6
 - [ ] Voronoi Noise improved
 
@@ -68,7 +70,7 @@ Test and export `SceneKit` scenes.
 - [X] Save and export scene `.scn` files
 - [X] Background `HDRI` Images
 - [X] Have a few extra Geometries
-- [ ] Automatically "beautify" `.dae` files made in blender - Adjust lighting, colors, etc.
+- [X] Add Geometry from `.dae`, or `.obj` files.
 - [ ] Have some sample code + shaders written in `Metal`  - `SCNProgram`
 - [ ] Test animated characters - Bones(in blender) vs SCNSkinner(Swift)
 

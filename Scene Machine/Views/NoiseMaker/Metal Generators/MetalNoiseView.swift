@@ -35,6 +35,7 @@ struct MetalNoiseView: View {
         case Voronoi
         case Caustic
         case Waves
+        case Epitrochoidal
     }
     
     @State var noiseType:MetalNoiseType = .Voronoi
@@ -72,7 +73,14 @@ struct MetalNoiseView: View {
                     Text("Waves")
                     
                     CounterInput(value: $stepCount1, range: 1...20, title: "Time")
+                case .Epitrochoidal:
+                    // zoom, time
                     
+                    SliderInputView(value: slider1, vRange: 0.1...1.0, title: "Time") { time in
+                        self.slider1 = Float(time)
+                    }
+                    CounterInput(value: $stepCount1, range: 3...10, title: "Zoom")
+                    Text("Produces Epitrochoidal Waves.")
             }
             
             Divider()
@@ -203,11 +211,6 @@ struct MetalNoiseView: View {
                 
                 let filteredImage = NSImage(cgImage: cgOutput, size: mainImage.size)
                 
-//                if isPreviewing {
-//                    controller.previewImage = filteredImage
-//                } else {
-//                    controller.image = filteredImage
-//                }
                 controller.updateImage(new: filteredImage, isPreview: isPreviewing)
                 
             case .Waves:
@@ -231,6 +234,25 @@ struct MetalNoiseView: View {
 //                } else {
 //                    controller.image = filteredImage
 //                }
+                controller.updateImage(new: filteredImage, isPreview: isPreviewing)
+                
+            case .Epitrochoidal:
+                
+                let filter = EpitrochoidalWaves()
+                filter.inputImage = coreImage
+                filter.tileSize = Float(controller.textureSize.size.width)
+                filter.time = slider1
+                filter.zoom = stepCount1
+                
+                guard let output = filter.outputImage(),
+                      let cgOutput = context.createCGImage(output, from: output.extent)
+                else {
+                    print("⚠️ No output image")
+                    return
+                }
+                
+                let filteredImage = NSImage(cgImage: cgOutput, size: mainImage.size)
+                
                 controller.updateImage(new: filteredImage, isPreview: isPreviewing)
                 
             default:print("Not implemented")

@@ -409,3 +409,55 @@ class NormalMapFilter:CIFilter {
         }, arguments: [src, vec])
     }
 }
+
+class EpitrochoidalWaves:CIFilter {
+    // epitrochoidal_taps
+    private var kernel:CIColorKernel
+    
+    var inputImage:CIImage?
+    
+    /// Size of output image (retuired)
+    var tileSize:Float = 512.0
+    
+    /// Zoom. Defaults to 4
+    var zoom:Int = 4
+    
+    /// Time. defaults to 1
+    var time:Float = 1
+    
+    override init() {
+        let url = Bundle.main.url(forResource: "Kernels2.ci", withExtension: "metallib")!
+        guard let data = try? Data(contentsOf: url) else { fatalError() }
+        guard let kkk = try? CIColorKernel(functionName: "epitrochoidal_taps", fromMetalLibraryData: data) else { fatalError() } // myColor // hexagons // truchet
+        // float4 truchet(sample_t sample, float2 size, destination dest) {
+        self.kernel = kkk
+        super.init()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func outputImage() -> CIImage? {
+        
+        if inputImage == nil {
+            let baseImage = NSImage(size: NSSize(width: CGFloat(tileSize), height: CGFloat(tileSize)))
+            guard let inputData = baseImage.tiffRepresentation,
+                  let bitmap = NSBitmapImageRep(data: inputData),
+                  let inputCIImage = CIImage(bitmapImageRep: bitmap) else {
+                print("Missing something")
+                return nil
+            }
+            self.inputImage = inputCIImage
+        }
+        
+        guard let inputImage = inputImage else {return nil}
+        
+        let src = CISampler(image: inputImage)
+        let vec = CIVector(cgPoint: CGPoint(x: CGFloat(tileSize), y: CGFloat(tileSize)))
+        let fZoom = Float(zoom)
+        
+        // float2 size, float zoom, float time, destination dest
+        return kernel.apply(extent: inputImage.extent, arguments: [src, vec, fZoom, time])
+    }
+}

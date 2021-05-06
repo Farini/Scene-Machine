@@ -79,6 +79,7 @@ struct FXOtherView: View {
         case WhiteTransp
         case Laplatian
         case Sketch
+        case Mercurialize
     }
     
     var body: some View {
@@ -119,14 +120,25 @@ struct FXOtherView: View {
                     }
                     Text("Converts white pixels to transparent")
                 case .Laplatian:
-                    Text("Testing laplatian")
+                    Text("Applies a laplatian effect on contours of the image.")
                 case .Sketch:
                     // texel width, texel height, intensity
-                    Text("Testing sketch")
+                    Text("Applies a Sketch effect to the image.")
+                case .Mercurialize:
                     
-                default:
-                    Text("Not implemented")
-
+                    SliderInputView(value: 5.0, vRange: 3.0...6.0, title: "Edge") { threshold in
+                        self.slider1 = Float(threshold)
+                    }
+                    SliderInputView(value: 10.0, vRange: 2.0...20.0, title: "Scale") { scale in
+                        self.slider2 = Float(scale)
+                    }
+                    SliderInputView(value: 0.05, vRange: 0.01...0.5, title: "Shininess") { shine in
+                        self.slider3 = Float(shine)
+                    }
+                    
+                    Text("Mercury like effect.")
+                    
+                // default: Text("Not implemented")
             }
             
             Divider()
@@ -194,7 +206,6 @@ struct FXOtherView: View {
         
         switch otherType {
             case .GreenRed:
-                print("gr")
                 
                 let filter = MetalFilter()
                 filter.inputImage = coreImage
@@ -269,7 +280,7 @@ struct FXOtherView: View {
                 }
                 
             case .WhiteTransp:
-                print("not implemented")
+                
                 let filter = WHITransparent()
                 filter.inputImage = coreImage
                 filter.threshold = slider1
@@ -286,104 +297,28 @@ struct FXOtherView: View {
                     print("nooutpout")
                 }
                 
+            case .Mercurialize:
+                
+                let filter = MercurializeFilter()
+                filter.inputImage = coreImage
+                filter.inputEdgeThickness = CGFloat(slider1)//5.0
+                filter.inputScale = max(CGFloat(slider2), 5)//CGFloat(10)
+                filter.inputShininess = CGFloat(slider3) //0.05
+                
+                if let output = filter.outputImage,
+                   let cgImage = context.createCGImage(output, from: output.extent) {
+                    print("outputting")
+                    
+                    let filteredImage = NSImage(cgImage: cgImage, size: NSSize(width: controller.openingImage.size.width, height: controller.openingImage.size.height))
+                    self.image = filteredImage
+                    
+                    controller.updateImage(new: filteredImage, isPreview: isPreviewing)
+                } else {
+                    print("nooutpout")
+                }
+                
             default:
                 print("no implement")
-//            case .Crystallize:
-//
-//                let filter = CIFilter.crystallize()
-//                filter.inputImage = coreImage
-//                filter.center = CGPoint(x: vecPoint.x * mainImage.size.width, y: vecPoint.y * mainImage.size.height)
-//                filter.radius = slider1
-//
-//                self.createImage(from: filter, context: context)
-//
-//            case .Edges:
-//
-//                let filter = CIFilter.edges()
-//                filter.inputImage = coreImage
-//                filter.intensity = self.slider1
-//
-//                self.createImage(from: filter, context: context)
-//
-//            case .EdgeWork:
-//
-//                let filter = CIFilter.edgeWork()
-//                filter.inputImage = coreImage
-//                filter.radius = self.slider1
-//
-//                self.createImage(from: filter, context: context)
-//
-//            case .LineOverlay:
-//
-//                let filter = CIFilter.lineOverlay()
-//                filter.nrNoiseLevel = 0.07
-//                filter.nrSharpness = 0.71
-//                filter.edgeIntensity = self.slider1
-//                filter.threshold = self.slider2
-//                filter.contrast = self.slider3
-//
-//                self.createImage(from: filter, context: context)
-//
-//            case .Spotlight:
-//
-//                let filter = CIFilter.spotLight()
-//                filter.inputImage = coreImage
-//                let imSize = controller.openingImage.size
-//                let lpX = imSize.width / 2 + vecPoint.x * imSize.width
-//                let lpY = imSize.height / 2 + vecPoint.y * imSize.height
-//                filter.lightPosition = CIVector(values: [lpX, lpY, 256], count: 3)
-//                filter.lightPointsAt = CIVector(cgPoint: vecPoint2)
-//                filter.brightness = self.slider1
-//                filter.concentration = self.slider2
-//
-//                self.createImage(from: filter, context: context)
-//
-//            case .Bloom:
-//                let filter = CIFilter.bloom()
-//                filter.inputImage = coreImage
-//                filter.radius = slider1
-//                filter.intensity = slider2
-//
-//                self.createImage(from: filter, context: context)
-//
-//            case .SharpenLumina:
-//                // Center, radius, refraction, width
-//                let filter = CIFilter.sharpenLuminance()
-//                filter.inputImage = coreImage
-//                filter.sharpness = slider1
-//
-//                self.createImage(from: filter, context: context)
-//
-//            case .UnsharpMask:
-//                // Center, Radius, Angle
-//                let filter = CIFilter.unsharpMask()
-//                filter.inputImage = coreImage
-//                filter.radius = slider1
-//                filter.intensity = slider2
-//
-//                createImage(from: filter, context: context)
-//
-//            case .NormalMap:
-//                let filter = NormalMapFilter()
-//                filter.inputImage = coreImage
-//                filter.tileSize = Float(mainImage.size.width)
-//
-//                if let output = filter.outputImage(),
-//                   let cgImage = context.createCGImage(output, from: output.extent) {
-//                    print("outputting")
-//
-//                    let filteredImage = NSImage(cgImage: cgImage, size: NSSize(width: controller.openingImage.size.width, height: controller.openingImage.size.height))
-//                    self.image = filteredImage
-//
-//                    controller.updateImage(new: filteredImage, isPreview: isPreviewing)
-//                } else {
-//                    print("nooutpout")
-//                }
-                
-                
-            //                createImage(from: filter, context: context)
-            
-            //            default: print("Not implemented")
         }
     }
     

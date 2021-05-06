@@ -18,6 +18,7 @@ struct SceneMachineView: View {
     @State private var popGeoImport:Bool = false
     @State private var popBackground:Bool = false
     
+    
     // Additional Objects:
     // Monkey
     // Woman
@@ -120,8 +121,9 @@ struct SceneMachineView: View {
                     
                     Button("Program") {
                         controller.addProgram()
-                        
                     }
+                    .help("Adds a glowing box, created in Metal")
+                    
                     Toggle("UVMap", isOn: $displayUVMap)
                         .onChange(of: displayUVMap, perform: { value in
                             if value == true { controller.rightView = .UVMap } else { controller.rightView = .Empty }
@@ -159,29 +161,20 @@ struct SceneMachineView: View {
                 
                 
                 HSplitView {
+                    // Scene
                     SceneView(scene: controller.scene, pointOfView: nil, options: [.allowsCameraControl, .autoenablesDefaultLighting], preferredFramesPerSecond: 60, antialiasingMode: .multisampling4X, delegate: nil, technique: nil)
                         .frame(minWidth: 300, alignment: .trailing)
+                        .sheet(isPresented: $controller.presentingTempAlert, content: {
+                            TempAlert(message: controller.tempAlertMessage)
+                        })
                     
+                    // UVMap
                     if displayUVMap {
                         if let geometry:SCNGeometry = selectedGeometry,
                            let uvMap:[CGPoint] = controller.inspectUVMap(geometry: geometry) {
                             ScrollView([.vertical, .horizontal], showsIndicators:true) {
                                 HStack {
                                     UVMapStack(geometry: geometry, points: uvMap)
-                                    
-//                                    ZStack {
-//
-//                                        UVShape(uv:uvMap)
-//                                            .stroke(lineWidth: 0.5)
-//                                            .fill(Color.orange, style: FillStyle(eoFill: false, antialiased: true))
-//                                            .background(Color.gray.opacity(0.1))
-//                                            .frame(width: 1024, height: 1024, alignment: .center)
-//
-//                                        if let img = Bundle.main.path(forResource: (geometry.materials.first!.diffuse.contents as! String), ofType: "png", inDirectory: "Scenes.scnassets") {
-//                                            let nsimg = NSImage(contentsOfFile: img)!
-//                                            Image(nsImage: nsimg)
-//                                        }
-//                                    }
                                 }
                                 .padding(30)
                             }
@@ -299,6 +292,18 @@ struct UVMapStack: View {
                 
             }
         }
+    }
+}
+
+struct TempAlert: View {
+    
+    var message:String
+    var body: some View {
+        VStack {
+            Text("⚠️ Alert").font(.title).foregroundColor(.orange)
+            Text(message)
+        }
+        .padding()
     }
 }
 

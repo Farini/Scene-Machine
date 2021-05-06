@@ -34,7 +34,7 @@ struct FrontView: View {
                 .tag(NavigationItem.noise)
                 
                 NavigationLink(destination: ImageFXMenuView(), tag: NavigationItem.imageFX, selection: $selection) {
-                    Label("Image FX", systemImage: "puzzlepiece")
+                    Label("Image FX", systemImage: "wand.and.rays")
                 }
                 .tag(NavigationItem.imageFX)
                 

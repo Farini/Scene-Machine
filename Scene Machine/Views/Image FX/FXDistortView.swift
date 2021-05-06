@@ -239,7 +239,8 @@ struct FXDistortView: View {
                 HStack {
                     // Undo
                     Button(action: {
-                        controller.previewUndo()
+//                        controller.previewUndo()
+                        self.image = controller.openingImage
                     }, label: {
                         Image(systemName:"arrow.uturn.backward.circle")
                         Text("Undo")

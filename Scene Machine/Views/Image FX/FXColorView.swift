@@ -11,8 +11,11 @@ struct FXColorView: View {
     
     @ObservedObject var controller:ImageFXController
     
-    @State var sliderRange:ClosedRange<Float> = 0...1
-    @State var value:Float = 0
+//    @State var sliderRange:ClosedRange<Float> = 0...1
+//    @State var value:Float = 0
+    @State private var slider1:Float = 0
+    @State private var slider2:Float = 0
+    @State private var slider3:Float = 0
     
     /// Completion function. Returns an image
     var applied: (_ image:NSImage) -> Void = {_ in }
@@ -25,6 +28,7 @@ struct FXColorView: View {
     @State var isPreviewing:Bool = true
     
     @State var inputColor:Color = .white
+    @State var inputPoint:CGPoint = .zero
     
     @State private var undoImages:[NSImage] = []
     
@@ -48,14 +52,12 @@ struct FXColorView: View {
             
             switch colorType {
                 case .Threshold:
-                    Slider(value: $value, in: sliderRange)
-                        .onChange(of: value, perform: { value in
-                            //                            finish(Double(value))
-                            print("Value changed")
-                        })
+                    SliderInputView(value: 1.0, vRange: 0...2, title: "Threshold") { threshold in
+                        self.slider1 = Float(threshold)
+                    }
                     HStack {
                         Spacer()
-                        Text("Threshold: \(value)")
+                        Text("Threshold: \(slider1)")
                         Spacer()
                     }
                     
@@ -64,132 +66,60 @@ struct FXColorView: View {
                     ColorPicker("", selection:$inputColor)
                     
                     SliderInputView(value: 0.4, vRange: 0...1, title: "Intensity") { newValue in
-                        self.value = Float(newValue)
+                        self.slider1 = Float(newValue)
                     }
                     .padding(.bottom, 20)
                     
-                case .AbsoluteDifference:
-                    Image("Example")
-                    Slider(value: $value, in: sliderRange)
-                        .onChange(of: value, perform: { value in
-                            //                            finish(Double(value))
-                            print("Value changed")
-                        })
-                    
-                /*
-                 A droppable image should be implemented here
-                 */
-                case .Gaussian:
-                    Slider(value: $value, in: sliderRange)
-                        .onChange(of: value, perform: { value in
-                            // finish(Double(value))
-                            print("Value changed")
-                        })
-                    HStack {
-                        Button("/10") {
-                            print("divide magnitude")
-                        }
-                        Spacer()
-                        Text("Value: \(value)")
-                        Spacer()
-                        Button("x10") {
-                            print("multiply magnitude")
-                        }
-                    }
-                case .MaskedVariable:
-                    Slider(value: $value, in: sliderRange)
-                        .onChange(of: value, perform: { value in
-                            // finish(Double(value))
-                            print("Value changed")
-                        })
-                    HStack {
-                        Button("/10") {
-                            print("divide magnitude")
-                        }
-                        Spacer()
-                        Text("Value: \(value)")
-                        Spacer()
-                        Button("x10") {
-                            print("multiply magnitude")
-                        }
-                    }
-                    Image("Example")
-                /*
-                 A droppable image should be implemented here
-                 */
-                case .MedianFilter:
-                    // (No input)
-                    Text("There is no input for this filter").foregroundColor(.gray)
-                case .Motion:
-                    // Radius and angle
-                    // Radius
-                    Slider(value: $value, in: sliderRange)
-                        .onChange(of: value, perform: { value in
-                            // finish(Double(value))
-                            print("Value changed")
-                        })
-                    HStack {
-                        Button("/10") {
-                            print("divide magnitude")
-                        }
-                        Spacer()
-                        Text("Value: \(value)")
-                        Spacer()
-                        Button("x10") {
-                            print("multiply magnitude")
-                        }
-                    }
-                    // Angle
-                    /*
-                     Use Vector from: Point Input
-                     */
-                    PointInput()
-                case .NoiseReduction:
-                    // Noise Level, Sharpness
-                    // Default values: 0.02, 0.4
-                    Slider(value: $value, in: sliderRange)
-                        .onChange(of: value, perform: { value in
-                            // finish(Double(value))
-                            print("Value changed")
-                        })
-                    HStack {
-                        Button("/10") {
-                            print("divide magnitude")
-                        }
-                        Spacer()
-                        Text("Value: \(value)")
-                        Spacer()
-                        Button("x10") {
-                            print("multiply magnitude")
-                        }
-                    }
-                /*
-                 Needs another Slider - Sharpness
-                 */
+                    Text(colorType.descriptor)
                 
-                case .Zoom:
-                    // Center, Amount
-                    Slider(value: $value, in: sliderRange)
-                        .onChange(of: value, perform: { value in
-                            // finish(Double(value))
-                            print("Value changed")
-                        })
-                    HStack {
-                        Button("/10") {
-                            print("divide magnitude")
-                        }
-                        Spacer()
-                        Text("Value: \(value)")
-                        Spacer()
-                        Button("x10") {
-                            print("multiply magnitude")
-                        }
+                case .ColorControls:
+                    // Saturation 1.0 (0 - 2), Brightness 1.0 (0 - 2), Contrast 1.0 (0 - 2)
+                    SliderInputView(value: 1.0, vRange: 0...2, title: "Saturation") { saturation in
+                        self.slider1 = Float(saturation)
                     }
-                    /*
-                     Center: Point Input
-                     */
-                    PointInput()
+                    SliderInputView(value: 1.0, vRange: 0...2, title: "Brighness") { brightness in
+                        self.slider2 = Float(brightness)
+                    }
+                    SliderInputView(value: 1.0, vRange: 0...2, title: "Contrast") { contrast in
+                        self.slider3 = Float(contrast)
+                    }
                     
+                    Text(colorType.descriptor)
+                    
+                case .ExposureAdjust:
+                    // ev
+                    SliderInputView(value: 0.5, vRange: 0...1, title: "Exposure") { exposure in
+                        self.slider1 = Float(exposure)
+                    }
+                    Text(colorType.descriptor)
+                    
+                case .Vibrance:
+                    SliderInputView(value: 0.5, vRange: 0...1, title: "Amount") { amount in
+                        self.slider1 = Float(amount)
+                    }
+                    Text(colorType.descriptor)
+                    
+                case .WhitepointAdjust:
+                    ColorPicker("Color", selection:$inputColor)
+                    Text(colorType.descriptor)
+                    
+                case .ColorInvert:
+                    Text(colorType.descriptor)
+                    Text("No input other than an image").foregroundColor(.gray)
+                    
+                case .VignetteEffect:
+                    // Center, Intensity, Radius
+                    PointInput(tapLocation: .zero, dragLocation: .zero, multiplier: 1) { point in
+                        self.inputPoint = point
+                    }
+                    SliderInputView(value: 1.0, vRange: 0...1, title: "Intensity") { intensity in
+                        self.slider1 = Float(intensity)
+                    }
+                    SliderInputView(value: 0.0, vRange: 0...1, title: "Radius") { radius in
+                        self.slider2 = Float(radius)
+                    }
+                    
+                    Text(colorType.descriptor)
             }
             
             Divider()
@@ -197,28 +127,10 @@ struct FXColorView: View {
             // Button & Preview
             imgPreview
             
-//            HStack {
-//                Button("Apply") {
-//                    print("Apply effect")
-//                    self.apply()
-//                }
-//                Spacer()
-//                Button("↩️ Undo") {
-//                    if let lastImage = undoImages.dropLast().first {
-//                        self.image = lastImage
-//                    }
-//                }
-//                Button("🔄 Update") {
-//                    print("Update Preview")
-//                    self.undoImages.append(self.image!)
-//                    self.updatePreview()
-//                }
-//            }
-            
             HStack {
                 // Undo
                 Button(action: {
-                    controller.previewUndo()
+                    self.image = controller.openingImage
                 }, label: {
                     Image(systemName:"arrow.uturn.backward.circle")
                     Text("Undo")
@@ -249,7 +161,6 @@ struct FXColorView: View {
         .frame(width:250)
         .padding(8)
         .onAppear() {
-//            self.image = controller.openingImage
             if let img = image {
                 self.undoImages.append(img)
             }
@@ -282,53 +193,145 @@ struct FXColorView: View {
     /// Updates the image preview
     func updatePreview() {
         print("Updating Preview")
+        let nsimage = controller.openingImage
+        let context = CIContext()
+        
+        guard
+            let bitmap = nsimage.tiffRepresentation,
+            let dataIn = NSBitmapImageRep(data: bitmap),
+            let ciimage = CIImage(bitmapImageRep: dataIn) else {
+            print("Error. Something is missing")
+            return
+        }
+        
         switch colorType {
             case .Threshold:
-                if let inputImage = image {
-                    let inputData = inputImage.tiffRepresentation!
-                    let bitmap = NSBitmapImageRep(data: inputData)!
-                    let inputCIImage = CIImage(bitmapImageRep: bitmap)
-                    
-                    let context = CIContext()
-                    let currentFilter = CIFilter.colorThreshold()
-                    currentFilter.inputImage = inputCIImage
-                    currentFilter.threshold = self.value
-                    
-                    // get a CIImage from our filter or exit if that fails
-                    guard let outputImage = currentFilter.outputImage else { return }
-                    
-                    // attempt to get a CGImage from our CIImage
-                    if let cgimg = context.createCGImage(outputImage, from: outputImage.extent) {
-                        // convert that to a UIImage
-                        let nsImage = NSImage(cgImage: cgimg, size:inputImage.size)
-                        self.image = nsImage
-                    }
-                }
-            case .Monochrome:
-                if let inputImage = image {
-                    let inputData = inputImage.tiffRepresentation!
-                    let bitmap = NSBitmapImageRep(data: inputData)!
-                    let inputCIImage = CIImage(bitmapImageRep: bitmap)
-                    
-                    let context = CIContext()
-                    let currentFilter = CIFilter.colorMonochrome()
-                    currentFilter.inputImage = inputCIImage
-                    currentFilter.color = CIColor(cgColor: inputColor.cgColor!)
-                    currentFilter.intensity = self.value
-                    
-                    // get a CIImage from our filter or exit if that fails
-                    guard let outputImage = currentFilter.outputImage else { return }
-                    
-                    // attempt to get a CGImage from our CIImage
-                    if let cgimg = context.createCGImage(outputImage, from: outputImage.extent) {
-                        // convert that to a UIImage
-                        let nsImage = NSImage(cgImage: cgimg, size:inputImage.size)
-                        self.image = nsImage
-                    }
+                
+                let filter = CIFilter.colorThreshold()
+                filter.inputImage = ciimage
+                filter.threshold = self.slider1
+                
+                // get a CIImage from our filter or exit if that fails
+                guard let outputImage = filter.outputImage else { return }
+                
+                // attempt to get a CGImage from our CIImage
+                if let cgimg = context.createCGImage(outputImage, from: outputImage.extent) {
+                    // convert that to a UIImage
+                    let nsImage = NSImage(cgImage: cgimg, size:ciimage.extent.size)
+                    self.image = nsImage
                 }
                 
-            default:
-                print("Needs Implementation")
+            case .Monochrome:
+                
+                let filter = CIFilter.colorMonochrome()
+                filter.inputImage = ciimage
+                filter.color = CIColor(cgColor: inputColor.cgColor!)
+                filter.intensity = self.slider1
+                
+                // get a CIImage from our filter or exit if that fails
+                guard let outputImage = filter.outputImage else { return }
+                
+                // attempt to get a CGImage from our CIImage
+                if let cgimg = context.createCGImage(outputImage, from: outputImage.extent) {
+                    // convert that to a UIImage
+                    let nsImage = NSImage(cgImage: cgimg, size:ciimage.extent.size)
+                    self.image = nsImage
+                }
+                
+            case .ColorControls:
+                
+                let filter = CIFilter.colorControls()
+                filter.inputImage = ciimage
+                filter.saturation = slider1
+                filter.brightness = slider2
+                filter.contrast = slider3
+                
+                guard let output = filter.outputImage else { return }
+                
+                // attempt to get a CGImage from our CIImage
+                if let cgimg = context.createCGImage(output, from: ciimage.extent) {
+                    // convert that to a UIImage
+                    let newImage = NSImage(cgImage: cgimg, size:ciimage.extent.size)
+                    self.image = newImage
+                }
+                
+            case .ExposureAdjust:
+                
+                let filter = CIFilter.exposureAdjust()
+                filter.inputImage = ciimage
+                filter.ev = slider1
+                
+                guard let output = filter.outputImage else { return }
+                
+                // attempt to get a CGImage from our CIImage
+                if let cgimg = context.createCGImage(output, from: ciimage.extent) {
+                    // convert that to a UIImage
+                    let newImage = NSImage(cgImage: cgimg, size:ciimage.extent.size)
+                    self.image = newImage
+                }
+                
+            case .Vibrance:
+                
+                let filter = CIFilter.vibrance()
+                filter.inputImage = ciimage
+                filter.amount = slider1
+                
+                guard let output = filter.outputImage else { return }
+                
+                // attempt to get a CGImage from our CIImage
+                if let cgimg = context.createCGImage(output, from: ciimage.extent) {
+                    // convert that to a UIImage
+                    let newImage = NSImage(cgImage: cgimg, size:ciimage.extent.size)
+                    self.image = newImage
+                }
+                
+            case .WhitepointAdjust:
+                
+                let filter = CIFilter.whitePointAdjust()
+                filter.inputImage = ciimage
+                filter.color = CIColor(cgColor: inputColor.cgColor!)
+                
+                guard let output = filter.outputImage else { return }
+                
+                // attempt to get a CGImage from our CIImage
+                if let cgimg = context.createCGImage(output, from: ciimage.extent) {
+                    // convert that to a UIImage
+                    let newImage = NSImage(cgImage: cgimg, size:ciimage.extent.size)
+                    self.image = newImage
+                }
+                
+            case .ColorInvert:
+                
+                let filter = CIFilter.colorInvert()
+                filter.inputImage = ciimage
+                
+                guard let output = filter.outputImage else { return }
+                
+                // attempt to get a CGImage from our CIImage
+                if let cgimg = context.createCGImage(output, from: ciimage.extent) {
+                    // convert that to a UIImage
+                    let newImage = NSImage(cgImage: cgimg, size:ciimage.extent.size)
+                    self.image = newImage
+                }
+                
+            case .VignetteEffect:
+                
+                let filter = CIFilter.vignetteEffect()
+                filter.inputImage = ciimage
+                filter.center = CGPoint(x: inputPoint.x * image!.size.width, y: image!.size.height - inputPoint.y * image!.size.height)
+                
+                    // CGPoint(x:inputPoint.x * image!.size.width, y: inputPoint.y * image!.size.height)
+                filter.intensity = slider1
+                filter.radius = slider2
+                
+                guard let output = filter.outputImage else { return }
+                
+                // attempt to get a CGImage from our CIImage
+                if let cgimg = context.createCGImage(output, from: ciimage.extent) {
+                    // convert that to a UIImage
+                    let newImage = NSImage(cgImage: cgimg, size:ciimage.extent.size)
+                    self.image = newImage
+                }
         }
     }
     
@@ -346,21 +349,32 @@ struct FXColorView: View {
     }
     
     enum ColorType:String, CaseIterable {
-        case Threshold
         
+        case Threshold
         case Monochrome
         
-        case AbsoluteDifference
+        // New
+        case ColorControls
+        case ExposureAdjust
+        case Vibrance
+        case WhitepointAdjust
+        case ColorInvert
+        case VignetteEffect
         
-        
-        
-        
-        case Gaussian
-        case MaskedVariable
-        case MedianFilter
-        case Motion
-        case NoiseReduction
-        case Zoom
+        var descriptor:String {
+            switch self {
+                case .Threshold: return "Applies a threshold from wich intensity of colors won't pass."
+                case .Monochrome: return "Remaps colors so they fall within shades of a single color."
+                case .ColorControls: return "Adjusts saturation, brightness, and contrast values."
+                case .ExposureAdjust: return "Adjusts the exposure setting for an image similar to the way you control exposure for a camera when you change the F-stop."
+                case .Vibrance: return "Adjusts the saturation of an image while keeping pleasing skin tones."
+                case .WhitepointAdjust:
+                    return "Adjusts the reference white point for an image and maps all colors in the source using the new reference."
+                case .ColorInvert: return "Inverts the colors in an image."
+                case .VignetteEffect: return "Modifies the brightness of an image around the periphery of a specified region."
+                default: return ""
+            }
+        }
     }
 }
 

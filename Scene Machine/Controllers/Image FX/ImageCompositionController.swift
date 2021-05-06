@@ -18,9 +18,7 @@ enum CompositionType:String, CaseIterable {
     case CIColorDodgeBlendMode
     case CIDarkenBlendMode
     
-
     case CIDivideBlendMode
-
     case CIScreenBlendMode
     
     /* OTHER

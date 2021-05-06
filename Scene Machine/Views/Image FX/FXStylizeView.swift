@@ -123,18 +123,23 @@ struct FXStylizeView: View {
                         SliderInputView(value: 10, vRange: 5...512, title: "Radius") { radiusValue in
                             self.slider1 = Float(radiusValue)
                         }
+                        Text("Softens edges and applies a pleasant glow to an image.").foregroundColor(.gray)
 
                     case .Edges:
                         // Intensity
                         SliderInputView(value: 1, vRange: 0...1, title: "Intensity") { radiusValue in
                             self.slider1 = Float(radiusValue)
                         }
+                        Text("Finds all edges in an image and displays them in color.").foregroundColor(.gray)
+                        
                     case .EdgeWork:
                         // radius
                         // Radius (Distance) = 3
                         SliderInputView(value: 3, vRange:2...20, title: "Radius") { scale in
                             self.slider1 = Float(scale)
                         }
+                        Text("Produces a stylized black-and-white rendition of an image that looks similar to a woodblock cutout.").foregroundColor(.gray)
+                        
                     case .LineOverlay:
                         // NRNoiseLevel(0.07), NRSharpness(0.71), Edge Intensity(1.0), threshold(0.1), contrast(50)
                         SliderInputView(value: 1.0, vRange:0...1, title: "Intensity") { scale in
@@ -146,7 +151,7 @@ struct FXStylizeView: View {
                         SliderInputView(value: 50.0, vRange:0...100.0, title: "Contrast") { scale in
                             self.slider3 = Float(scale)
                         }
-                    
+                        Text("Creates a sketch that outlines the edges of an image in black. The portions of the image that are not outlined are transparent.").foregroundColor(.gray)
                         
                     case .Spotlight:
                         // lightPosition, lightPointsAt, brightness, concentration, color
@@ -168,6 +173,7 @@ struct FXStylizeView: View {
                         SliderInputView(value: 0.5, vRange:0...1, title: "Concentration") { scale in
                             self.slider2 = Float(scale)
                         }
+                        Text("Applies a directional spotlight effect to an image.").foregroundColor(.gray)
                         
                     case .Bloom:
                         // radius, intensity
@@ -178,7 +184,7 @@ struct FXStylizeView: View {
                         SliderInputView(value: 0.5, vRange:0...1, title: "Intensity") { scale in
                             self.slider2 = Float(scale).rounded()
                         }
-                        
+                        Text("Softens edges and applies a pleasant glow to an image.").foregroundColor(.gray)
                     case .SharpenLumina:
                         // sharpness
                         SliderInputView(value: 0.4, vRange: 0...1, title: "Sharpness") { radiusValue in
@@ -213,7 +219,8 @@ struct FXStylizeView: View {
                     HStack {
                         // Undo
                         Button(action: {
-                            controller.previewUndo()
+//                            controller.previewUndo()
+                            self.image = controller.openingImage
                         }, label: {
                             Image(systemName:"arrow.uturn.backward.circle")
                             Text("Undo")
@@ -309,10 +316,12 @@ struct FXStylizeView: View {
                 let filter = CIFilter.spotLight()
                 filter.inputImage = coreImage
                 let imSize = controller.openingImage.size
-                let lpX = imSize.width / 2 + vecPoint.x * imSize.width
-                let lpY = imSize.height / 2 + vecPoint.y * imSize.height
+                let lpX = vecPoint.x * imSize.width
+                let lpY = imSize.height - vecPoint.y * imSize.height
                 filter.lightPosition = CIVector(values: [lpX, lpY, 256], count: 3)
-                filter.lightPointsAt = CIVector(cgPoint: vecPoint2)
+                let ppX = vecPoint2.x * imSize.width
+                let ppY = imSize.height - vecPoint2.y * imSize.height
+                filter.lightPointsAt = CIVector(cgPoint: CGPoint(x: ppX, y: ppY))
                 filter.brightness = self.slider1
                 filter.concentration = self.slider2
                 

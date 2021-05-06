@@ -37,7 +37,7 @@ struct ImageFXView: View {
                                         apply(image: img) },
                                     image: controller.openingImage)
                     case .Color:
-                        FXColorView(controller: controller, value: 1,
+                        FXColorView(controller: controller,
                                     applied: { (image) in
                             apply(image: image)},
                                     image: controller.openingImage,

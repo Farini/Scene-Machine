@@ -78,58 +78,24 @@ extern "C" { namespace coreimage {
         return float4(colour, 1.0);
     }
     
-    // Hexagons
-    
-    float HexDist(float2 p) {
-        p = abs(p);
-        float c = dot(p, normalize(float2(1, 1.73)));
-        c = max(c, p.x);
-        return c;
-    }
-    
-    float4 HexCoords(float2 uv) {
-        float2 r = float2(1, 1.73);
-        float2 h = r * 0.5;
-        float2 a = (uv - r * floor(uv/r)) - h; //fract(uv)-0.5; // (uv - r * floor(uv / r)) - h; //fract(uv)-0.5; //fmod(uv, r)-h; //fract(uv)-0.5;
-        float2 b = ((uv - h) - r * floor((uv-h)/r)) - h; //fract(uv-0.5)-0.5; // ((uv-0.5) - r * floor((uv-0.5)/r)) - h; //fract(uv-0.5)-0.5; //fmod(uv-h, r)-h; // fract(uv-0.5)-0.5;
+    float4 plasma(sample_t sample, float time, float iterations, float sharpness, float scale, destination dest) {
         
-        // func
-        float2 gv;
-        if (length(a)<length(b)) {
-            gv = a;
-        } else {
-            gv = b;
+        float2 uv = dest.coord() / scale;
+        // float2 uv0=uv;
+        float4 i = float4(1.0, 1.0, 1.0, 0.0);
+        
+        for(int s = 0;s < int(iterations); s++) {
+            float2 r = float2(cos(uv.y * i.x - i.w + time / i.y),sin(uv.x * i.x - i.w + time / i.y)) / i.z;
+            r+= float2(-r.y,r.x) * 0.3;
+            uv.xy+=r;
+            i *= float4(1.93, 1.15, (2.25 - sharpness), time * i.y);
         }
         
-        float x = atan(gv.x / gv.y);
-        
-        float y = 0.5 - HexDist(gv);
-        
-        float2 id = uv-gv;
-        
-        return float4 (x, y, id.x, id.y);
+            float r = sin(uv.x-time)*0.5+0.5;
+            float b=sin(uv.y+time)*0.5+0.5;
+            float g=sin((uv.x+uv.y+sin(time))*0.5)*0.5+0.5;
+            return float4(r,g,b,1.0);
     }
-    
-    float4 hexagons(sample_t sample, float tileCount, float2 size, destination dest) {
-        
-        float2 uv = (dest.coord() - .5 * size.xy) / size.y;
-        
-        float3 col = float3(0);
-        
-        uv *= tileCount;
-        
-        float4 hc = HexCoords(uv);
-        float blackThick = 1;
-        
-        // Draw
-        float c = smoothstep(0.01, 0.05, hc.y * 1/blackThick);
-        
-        col += c;
-        
-        return float4(col, 1);
-    }
-    
-    // Truchet
     
     // random number
     float Noise21(float2 p) {
@@ -139,6 +105,9 @@ extern "C" { namespace coreimage {
         return fract(p.x * p.y);
     }
     
+    // MARK: - Tiled Noise
+    
+    // Truchet
     float4 truchet(sample_t sample, float tileCount, float2 size, destination dest) {
         float2 uv = (dest.coord() - .5 * size.xy) / size.y;
         
@@ -208,40 +177,6 @@ extern "C" { namespace coreimage {
         
         return float4(col, 1);
         
-    }
-    
-    // Checkerboard. pass size, tilecount(num of tiles), randomize: 0..<.5 = Gradient, .5..<1 = White, 1...10 = Random black
-    float4 checkerboard(sample_t sample, float2 size, float tilecount, float randomize, destination dest) {
-        
-        float2 uv = (dest.coord() - .5 * size.xy) / size.y;
-        
-        float3 col = float3(0);
-        
-        uv *= tilecount;
-        
-        float2 gv = fract(uv) - 0.5;
-        float2 id = floor(uv); // id of the tile
-        
-        if (randomize >= 1.0) {
-            // Noise (randomized tiles)
-            float n = Noise21(id);
-            col += n;
-        } else if (randomize < 0.5) {
-            // red contour
-            if (gv.x>.48 || gv.y>.48) {
-                col = float3(1, 0, 0);
-            } else {
-                // Gradient
-                col.gb = gv;
-            }
-        } else if (randomize >= 0.5) {
-            // white
-            float width = 0.1;
-            float mask = smoothstep(0.01, -0.01, abs(gv.x + gv.y) - width);
-            col += mask;
-        }
-        
-        return float4(col, 1);
     }
     
     // Checkerboard, with tiles varying from black to white
@@ -354,6 +289,93 @@ extern "C" { namespace coreimage {
         return float4(finalColor, 1.0);
     }
     
+    // MARK: - Tiles
+    // Hexagons
+    
+    float HexDist(float2 p) {
+        p = abs(p);
+        float c = dot(p, normalize(float2(1, 1.73)));
+        c = max(c, p.x);
+        return c;
+    }
+    
+    float4 HexCoords(float2 uv) {
+        float2 r = float2(1, 1.73);
+        float2 h = r * 0.5;
+        float2 a = (uv - r * floor(uv/r)) - h; //fract(uv)-0.5; // (uv - r * floor(uv / r)) - h; //fract(uv)-0.5; //fmod(uv, r)-h; //fract(uv)-0.5;
+        float2 b = ((uv - h) - r * floor((uv-h)/r)) - h; //fract(uv-0.5)-0.5; // ((uv-0.5) - r * floor((uv-0.5)/r)) - h; //fract(uv-0.5)-0.5; //fmod(uv-h, r)-h; // fract(uv-0.5)-0.5;
+        
+        // func
+        float2 gv;
+        if (length(a)<length(b)) {
+            gv = a;
+        } else {
+            gv = b;
+        }
+        
+        float x = atan(gv.x / gv.y);
+        
+        float y = 0.5 - HexDist(gv);
+        
+        float2 id = uv-gv;
+        
+        return float4 (x, y, id.x, id.y);
+    }
+    
+    float4 hexagons(sample_t sample, float tileCount, float2 size, destination dest) {
+        
+        float2 uv = (dest.coord() - .5 * size.xy) / size.y;
+        
+        float3 col = float3(0);
+        
+        uv *= tileCount;
+        
+        float4 hc = HexCoords(uv);
+        float blackThick = 1;
+        
+        // Draw
+        float c = smoothstep(0.01, 0.05, hc.y * 1/blackThick);
+        
+        col += c;
+        
+        return float4(col, 1);
+    }
+    
+    // Checkerboard. pass size, tilecount(num of tiles), randomize: 0..<.5 = Gradient, .5..<1 = White, 1...10 = Random black
+    float4 checkerboard(sample_t sample, float2 size, float tilecount, float randomize, destination dest) {
+        
+        float2 uv = (dest.coord() - .5 * size.xy) / size.y;
+        
+        float3 col = float3(0);
+        
+        uv *= tilecount;
+        
+        float2 gv = fract(uv) - 0.5;
+        float2 id = floor(uv); // id of the tile
+        
+        if (randomize >= 1.0) {
+            // Noise (randomized tiles)
+            float n = Noise21(id);
+            col += n;
+        } else if (randomize < 0.5) {
+            // red contour
+            if (gv.x>.48 || gv.y>.48) {
+                col = float3(1, 0, 0);
+            } else {
+                // Gradient
+                col.gb = gv;
+            }
+        } else if (randomize >= 0.5) {
+            // white
+            float width = 0.1;
+            float mask = smoothstep(0.01, -0.01, abs(gv.x + gv.y) - width);
+            col += mask;
+        }
+        
+        return float4(col, 1);
+    }
+    
+    
     // Bricks
     
     //normal functions
@@ -459,7 +481,6 @@ extern "C" { namespace coreimage {
     // MARK: - Normal
     
     // https://www.shadertoy.com/view/XtV3z3
-    
     
     float texLum(float3 lcolor) {
         // float3 rgb = color.rgb;
@@ -708,7 +729,7 @@ extern "C" { namespace coreimage {
         return task5(foreground, background, depthSample);
     }
     
-    // MARK: - More
+    // MARK: - More Effects
     
     float4 sketch(sampler src, float texelWidth, float texelHeight, float intensity40) {
         float size = 1.25f + (intensity40 / 100.0f) * 2.0f;
@@ -865,5 +886,49 @@ extern "C" { namespace coreimage {
         return s;
     }
     
+    
+    // Epitrochoidal Waves: https://www.shadertoy.com/view/4tXXW7
+    // Just Awesome!
+    
+    //From tekF: https://www.shadertoy.com/view/ltXGWS
+    float cells(float4 p){
+        p = fract(p/2.0)*2.0;
+        p = min( p, 2.0-p );
+        return min(length(p),length(p-1.0));
+    }
+    float noise42d(float4 p, float time)
+    {
+        p*= 2.4;
+        p.x += sin(p.z+p.y+p.w+time);
+        return pow(cells(p),2.)-.6;
+    }
+    //Using n+2 dimensional noise to create seamless repetition on two axes
+    float tap4d(float2 p, float time) {
+        float c = 4; // number of passes
+        // float zoom = 3;
+        
+        float x = cos(p.x)-cos(p.x*c);
+        float y = sin(p.x)-sin(p.x*c);
+        
+        float xx = cos(p.y)-cos(p.y*c);
+        float yy = sin(p.y)-sin(p.y*c);
+        
+        float4 z = float4(x, xx, y, yy);
+        z *= .33;
+        
+        return noise42d(z, time);
+    }
+    
+    float4 epitrochoidal_taps(sample_t source, float2 size, float zoom, float time, destination dest) {
+        float2 p = dest.coord().xy / size.xy;
+        p.x *= size.x/size.y;
+        p.x += time*0.1;
+        p.y -= 0.05;
+        
+        p *= zoom;
+        float3 col = float3(tap4d(p, time));
+        float4 finale = float4(col, 1.0);
+        return finale;
+    }
 }}
 

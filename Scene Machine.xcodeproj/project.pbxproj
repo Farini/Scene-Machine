@@ -71,6 +71,7 @@
 		85CB4361263D0D9A006E4B10 /* DrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CB4360263D0D9A006E4B10 /* DrawingView.swift */; };
 		85D3E7CB26390FAF00D693FA /* SceneMachineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D3E7CA26390FAF00D693FA /* SceneMachineView.swift */; };
 		85D3E7CF26390FC500D693FA /* SceneMachineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D3E7CE26390FC500D693FA /* SceneMachineController.swift */; };
+		85DEFC682643AFC8003DEC36 /* MercurializeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DEFC672643AFC8003DEC36 /* MercurializeFilter.swift */; };
 		85FAF34C263C511300081ED8 /* FXDistortView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85FAF34B263C511300081ED8 /* FXDistortView.swift */; };
 		85FAF34E263C512B00081ED8 /* FXStylizeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85FAF34D263C512B00081ED8 /* FXStylizeView.swift */; };
 		85FAF350263C6B7600081ED8 /* PhongShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 85FAF34F263C6B7600081ED8 /* PhongShader.metal */; };
@@ -180,6 +181,7 @@
 		85CB4360263D0D9A006E4B10 /* DrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingView.swift; sourceTree = "<group>"; };
 		85D3E7CA26390FAF00D693FA /* SceneMachineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneMachineView.swift; sourceTree = "<group>"; };
 		85D3E7CE26390FC500D693FA /* SceneMachineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneMachineController.swift; sourceTree = "<group>"; };
+		85DEFC672643AFC8003DEC36 /* MercurializeFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MercurializeFilter.swift; sourceTree = "<group>"; };
 		85FAF34B263C511300081ED8 /* FXDistortView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FXDistortView.swift; sourceTree = "<group>"; };
 		85FAF34D263C512B00081ED8 /* FXStylizeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FXStylizeView.swift; sourceTree = "<group>"; };
 		85FAF34F263C6B7600081ED8 /* PhongShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PhongShader.metal; sourceTree = "<group>"; };
@@ -449,6 +451,7 @@
 		85B913592632983C0065D6D2 /* CI Filters */ = {
 			isa = PBXGroup;
 			children = (
+				85DEFC672643AFC8003DEC36 /* MercurializeFilter.swift */,
 				85B9135A263298790065D6D2 /* CausticNoise.swift */,
 				85B91361263298D20065D6D2 /* LensFlare.swift */,
 			);
@@ -590,6 +593,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85DEFC682643AFC8003DEC36 /* MercurializeFilter.swift in Sources */,
 				856492222579547900D1FE00 /* ImageCompositionView.swift in Sources */,
 				8515B33D26254C8300A886BD /* GradientMakerView.swift in Sources */,
 				85FAF34E263C512B00081ED8 /* FXStylizeView.swift in Sources */,

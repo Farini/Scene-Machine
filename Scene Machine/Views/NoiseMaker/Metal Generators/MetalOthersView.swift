@@ -37,7 +37,8 @@ struct MetalOthersView: View {
         // case Voronoi
         case RandomMaze
         case Truchet
-        
+        // New
+//        case Epitrochoidal
     }
     
     @State var tileType:MetalTileType = .Hexagons

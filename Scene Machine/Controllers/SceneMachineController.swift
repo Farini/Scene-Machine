@@ -25,6 +25,10 @@ class SceneMachineController:ObservableObject {
     
     @Published var rightView:MachineRightView = .UVMap
     
+    // Alert
+    @Published var presentingTempAlert:Bool = false
+    @Published var tempAlertMessage:String = ""
+    
     var device: MTLDevice!
 //    var outputTexture: MTLTexture?
     
@@ -90,15 +94,15 @@ class SceneMachineController:ObservableObject {
         while !stack.isEmpty {
             
             if let node = stack.first {
-                print("First from stack")
+//                print("First from stack")
                 // nodes.append(node)
                 var shouldAdd:Bool = false
                 
                 if let geometry = node.geometry {
-                    print("geometry")
+//                    print("geometry")
 
                     if geometries.contains(geometry) {
-                        print("no remove")
+//                        print("no remove")
                         nodes.append(node)
                         for material in geometry.materials {
                             //self.materials.append(material)
@@ -159,6 +163,12 @@ class SceneMachineController:ObservableObject {
             // + color (vertex color)
             // + tangent
         }
+        tempAlertMessage = "Could not find UV map."
+        presentingTempAlert.toggle()
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
+            self.presentingTempAlert.toggle()
+            self.tempAlertMessage = ""
+        }
         print("Could not find a UV Map")
         return nil
     }
@@ -186,6 +196,12 @@ class SceneMachineController:ObservableObject {
                 
             } else {
                 print("Could not save image to the specified URL")
+                tempAlertMessage = "Could not save image to the specified URL."
+                presentingTempAlert.toggle()
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
+                    self.presentingTempAlert.toggle()
+                    self.tempAlertMessage = ""
+                }
             }
         }
     }
@@ -266,6 +282,14 @@ class SceneMachineController:ObservableObject {
                 scene.write(to: result, options: ["checkConsistency":NSNumber.init(booleanLiteral: true)], delegate: nil) { (progress, error, boolean) in
                     print("Write progress: \(progress)")
                     print("Error: \(error?.localizedDescription ?? "no_error")")
+                    if let error = error {
+                        self.tempAlertMessage = "\(error.localizedDescription)"
+                        self.presentingTempAlert.toggle()
+                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
+                            self.presentingTempAlert.toggle()
+                            self.tempAlertMessage = ""
+                        }
+                    }
                 }
             }
         }
@@ -315,6 +339,13 @@ class SceneMachineController:ObservableObject {
                     stack.append(contentsOf: node.childNodes)
                 }
                 stack.removeFirst()
+            }
+        } else {
+            tempAlertMessage = "Could not load the scene at \(url.absoluteString)."
+            presentingTempAlert.toggle()
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
+                self.presentingTempAlert.toggle()
+                self.tempAlertMessage = ""
             }
         }
     }
