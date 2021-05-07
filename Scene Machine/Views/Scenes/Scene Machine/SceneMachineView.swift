@@ -11,7 +11,7 @@ import SceneKit
 struct SceneMachineView: View {
     
     @ObservedObject var controller = SceneMachineController()
-    @State private var selectedGeometry:SCNGeometry?
+//    @State private var selectedGeometry:SCNGeometry?
     @State private var selectedMaterial:SCNMaterial?
     
     @State private var displayUVMap:Bool = false
@@ -36,6 +36,36 @@ struct SceneMachineView: View {
             // Geometries + Materials
             ScrollView {
                 VStack {
+                    // Node
+                    HStack {
+                        Text("●")
+                        Text("Nodes")
+                        Spacer()
+                    }
+                    .font(.title2)
+                    .foregroundColor(.orange)
+                    
+                    ForEach(controller.scene.rootNode.childNodes, id:\.self) { node in
+                        SMNodeRow(controller: controller, node: node)
+                            .padding(.vertical, 4)
+                            .contextMenu {
+                                if node.geometry != nil {
+                                    Button("Delete") {
+                                        controller.removeGeometry(geo: node.geometry!)
+                                    }
+                                }
+                                Button("Hide/Unhide") {
+                                    node.isHidden.toggle()
+                                }
+                                Button("Pause/Unpause") {
+                                    node.isPaused.toggle()
+                                }
+                            }
+                            .onTapGesture {
+                                controller.selectedNode = node
+                            }
+                    }
+                    
                     // Geometries
                     HStack {
                         Image(systemName: "pyramid.fill")
@@ -45,16 +75,16 @@ struct SceneMachineView: View {
                     .font(.title2)
                     .foregroundColor(.orange)
                     
-                    ForEach(controller.geometries) { geometry in
-                        SMGeometryRow(controller:controller, geometry: geometry, isSelected: selectedGeometry == geometry)
-                            .onTapGesture {
-                                if selectedGeometry == geometry {
-                                    selectedGeometry = nil
-                                } else {
-                                    self.selectedGeometry = geometry
-                                }
-                            }
-                    }
+//                    ForEach(controller.geometries) { geometry in
+//                        SMGeometryRow(controller:controller, geometry: geometry, isSelected: selectedGeometry == geometry)
+//                            .onTapGesture {
+//                                if selectedGeometry == geometry {
+//                                    selectedGeometry = nil
+//                                } else {
+//                                    self.selectedGeometry = geometry
+//                                }
+//                            }
+//                    }
                     Divider()
                     
                     // Materials
@@ -84,7 +114,6 @@ struct SceneMachineView: View {
                 }
                 .padding(.horizontal, 6)
             }
-            
             
             // Middle - Scene
             VStack {
@@ -119,6 +148,31 @@ struct SceneMachineView: View {
                     }
                     Spacer()
                     
+                    if let theNode = controller.selectedNode {
+                        Button("\(theNode.name ?? "Node")") {
+                            controller.isNodeOptionSelected.toggle()
+                        }
+                        .popover(isPresented: $controller.isNodeOptionSelected) {
+                            VStack {
+                                Text("\(theNode.name ?? "Node")")
+                                HStack {
+                                    Text("Pos:")
+                                    Text(theNode.position.toString())
+                                    Image(systemName: "signpost.right")
+                                }
+                                SliderInputView(value: Float(theNode.position.x), vRange: -50...50, title: "X") { movedX in
+                                    theNode.position.x = CGFloat(movedX)
+                                }
+                                SliderInputView(value: Float(theNode.position.y), vRange: -50...50, title: "Y") { movedY in
+                                    theNode.position.y = CGFloat(movedY)
+                                }
+                                SliderInputView(value: Float(theNode.position.z), vRange: -50...50, title: "Z") { movedZ in
+                                    theNode.position.z = CGFloat(movedZ)
+                                }
+                            }
+                        }
+                    }
+                    
                     Button("Program") {
                         controller.addProgram()
                     }
@@ -137,7 +191,7 @@ struct SceneMachineView: View {
                             // Display an error message
                         }
                     }
-                    .disabled(selectedGeometry == nil)
+                    .disabled(controller.selectedNode?.geometry == nil)
                     
                     Button("+ Back") {
                         popBackground.toggle()
@@ -167,10 +221,11 @@ struct SceneMachineView: View {
                         .sheet(isPresented: $controller.presentingTempAlert, content: {
                             TempAlert(message: controller.tempAlertMessage)
                         })
-                    
+                        
                     // UVMap
                     if displayUVMap {
-                        if let geometry:SCNGeometry = selectedGeometry,
+                        if let node = controller.selectedNode,
+                           let geometry:SCNGeometry = node.geometry,
                            let uvMap:[CGPoint] = controller.inspectUVMap(geometry: geometry) {
                             ScrollView([.vertical, .horizontal], showsIndicators:true) {
                                 HStack {
@@ -190,7 +245,8 @@ struct SceneMachineView: View {
     
     var uvView: some View {
         
-        if let geometry = self.selectedGeometry,
+        if let node = controller.selectedNode,
+           let geometry = node.geometry,
            let uvPoints:[CGPoint] = controller.inspectUVMap(geometry: geometry) {
             return UVShape(uv: uvPoints)
                 .stroke(lineWidth: 0.5)

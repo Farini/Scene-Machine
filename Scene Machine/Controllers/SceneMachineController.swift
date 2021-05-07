@@ -23,6 +23,9 @@ class SceneMachineController:ObservableObject {
     @Published var nodes:[SCNNode] = []
     @Published var geometries:[SCNGeometry] = []
     
+    @Published var selectedNode:SCNNode?
+    @Published var isNodeOptionSelected:Bool = false
+    
     @Published var rightView:MachineRightView = .UVMap
     
     // Alert

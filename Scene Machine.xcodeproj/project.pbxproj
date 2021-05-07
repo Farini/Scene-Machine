@@ -22,6 +22,7 @@
 		8515B474262E124300A886BD /* ImageFXView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B473262E124300A886BD /* ImageFXView.swift */; };
 		8515B47C262E4B5F00A886BD /* FXBlurrView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B47B262E4B5F00A886BD /* FXBlurrView.swift */; };
 		8515B480262E7DDA00A886BD /* FXColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B47F262E7DDA00A886BD /* FXColorView.swift */; };
+		855053732644F38B00A577E2 /* SMNodeRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 855053722644F38B00A577E2 /* SMNodeRow.swift */; };
 		856491D02578100B00D1FE00 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856491CF2578100B00D1FE00 /* AppDelegate.swift */; };
 		856491D52578100B00D1FE00 /* Scene_Machine.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 856491D32578100B00D1FE00 /* Scene_Machine.xcdatamodeld */; };
 		856491D72578100C00D1FE00 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 856491D62578100C00D1FE00 /* Assets.xcassets */; };
@@ -136,6 +137,7 @@
 		8515B473262E124300A886BD /* ImageFXView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFXView.swift; sourceTree = "<group>"; };
 		8515B47B262E4B5F00A886BD /* FXBlurrView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FXBlurrView.swift; sourceTree = "<group>"; };
 		8515B47F262E7DDA00A886BD /* FXColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FXColorView.swift; sourceTree = "<group>"; };
+		855053722644F38B00A577E2 /* SMNodeRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMNodeRow.swift; sourceTree = "<group>"; };
 		856491CC2578100B00D1FE00 /* Scene Machine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Scene Machine.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		856491CF2578100B00D1FE00 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		856491D42578100B00D1FE00 /* Scene_Machine.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Scene_Machine.xcdatamodel; sourceTree = "<group>"; };
@@ -237,7 +239,7 @@
 			isa = PBXGroup;
 			children = (
 				8515B371262743D000A886BD /* TerrainView.swift */,
-				85D3E7CA26390FAF00D693FA /* SceneMachineView.swift */,
+				855053712644F33500A577E2 /* Scene Machine */,
 				85CB4360263D0D9A006E4B10 /* DrawingView.swift */,
 				857C5FE7263F73800095E3B4 /* DrawingPad.swift */,
 			);
@@ -275,6 +277,15 @@
 				85A4776C2642EE1C00F93AB3 /* FXOtherView.swift */,
 			);
 			path = "Image FX";
+			sourceTree = "<group>";
+		};
+		855053712644F33500A577E2 /* Scene Machine */ = {
+			isa = PBXGroup;
+			children = (
+				85D3E7CA26390FAF00D693FA /* SceneMachineView.swift */,
+				855053722644F38B00A577E2 /* SMNodeRow.swift */,
+			);
+			path = "Scene Machine";
 			sourceTree = "<group>";
 		};
 		856491C32578100B00D1FE00 = {
@@ -601,6 +612,7 @@
 				857A93D226124FE7004FFEBB /* NoiseController.swift in Sources */,
 				85B913402631C00E0065D6D2 /* GraphicsImageRenderer.swift in Sources */,
 				85B913472631C0ED0065D6D2 /* UVMapShape.swift in Sources */,
+				855053732644F38B00A577E2 /* SMNodeRow.swift in Sources */,
 				85B9137426329A050065D6D2 /* BLKTransparent.swift in Sources */,
 				85D3E7CF26390FC500D693FA /* SceneMachineController.swift in Sources */,
 				85B91362263298D20065D6D2 /* LensFlare.swift in Sources */,
@@ -816,6 +828,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Scene Machine/Preview Content\"";
 				DEVELOPMENT_TEAM = FXF7BJD3VH;
 				ENABLE_PREVIEWS = YES;
@@ -841,6 +854,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Scene Machine/Preview Content\"";
 				DEVELOPMENT_TEAM = FXF7BJD3VH;
 				ENABLE_PREVIEWS = YES;
