@@ -184,6 +184,18 @@ struct CompositionView: View {
                         .resizable()
                         .frame(width: controller.resultImage.size.width * CGFloat(zoomLevel), height: controller.resultImage.size.height * CGFloat(zoomLevel), alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                         .padding()
+                        .gesture(MagnificationGesture()
+                                    .onChanged { val in
+                                        let delta = (1.0 - Double(val)) / self.zoomLevel
+                                        let dd = zoomLevel + delta
+                                        if dd < 1 {
+                                            zoomLevel = 1
+                                        } else if dd > 8 {
+                                            zoomLevel = 8
+                                        } else {
+                                            zoomLevel = dd
+                                        }
+                                    })
                 }
                 .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                 

@@ -273,7 +273,7 @@ class SceneMachineController:ObservableObject {
         dialog.title                   = "Choose destination";
         dialog.showsResizeIndicator    = true;
         dialog.showsHiddenFiles        = false;
-        dialog.allowedFileTypes = ["scn"]
+        dialog.allowedFileTypes = ["scn", ".dae"]
         dialog.message = "save scene"
         
         if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {

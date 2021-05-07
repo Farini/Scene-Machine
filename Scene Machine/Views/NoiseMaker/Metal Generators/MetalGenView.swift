@@ -126,6 +126,18 @@ struct MetalGenView: View {
                             .resizable()
                             .frame(width: textureSize.size.width * CGFloat(controller.zoomLevel), height: textureSize.size.height * CGFloat(controller.zoomLevel), alignment: .center)
                             .padding(20)
+                            .gesture(MagnificationGesture()
+                                        .onChanged { val in
+                                            let delta = (1.0 - Double(val)) / controller.zoomLevel
+                                            let dd = controller.zoomLevel + delta
+                                            if dd < 1 {
+                                                controller.zoomLevel = 1
+                                            } else if dd > 8 {
+                                                controller.zoomLevel = 8
+                                            } else {
+                                                controller.zoomLevel = dd
+                                            }
+                                        })
                         Spacer()
                     }
                     

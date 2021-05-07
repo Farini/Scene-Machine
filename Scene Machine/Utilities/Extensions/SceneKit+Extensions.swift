@@ -49,7 +49,7 @@ extension SCNGeometrySource {
                 case 8:
                     return vectorFromData(Float64.self, index: index)
                 case 16:
-                    return vectorFromData(Float80.self, index: index)
+                    return SCNVector3Zero // vectorFromData(Float80.self, index: index)
                 default:
                     return SCNVector3Zero
             }
@@ -84,7 +84,7 @@ extension SCNGeometrySource {
                 case 8:
                     return vectorFromData(Float64.self, index: index)
                 case 16:
-                    return vectorFromData(Float80.self, index: index)
+                    return CGPoint.zero//vectorFromData(Float80.self, index: index)
                 default:
                     return CGPoint.zero
             }
