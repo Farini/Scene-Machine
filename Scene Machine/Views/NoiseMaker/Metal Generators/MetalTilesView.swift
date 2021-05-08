@@ -307,7 +307,7 @@ struct MetalTilesView: View {
                     controller.image = filteredImage
                 }
                 
-            default:print("Not implemented")
+//            default:print("Not implemented")
         }
     }
     

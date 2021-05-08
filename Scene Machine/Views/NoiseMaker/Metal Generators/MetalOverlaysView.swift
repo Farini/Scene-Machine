@@ -143,8 +143,7 @@ struct MetalOverlaysView: View {
                     }
                     .padding(.vertical, 8)
                     
-                default:
-                    Text("Not Implemented").foregroundColor(.gray)
+//                default: Text("Not Implemented").foregroundColor(.gray)
             }
             
             Divider()
@@ -333,7 +332,7 @@ struct MetalOverlaysView: View {
                     return
                 }
                 
-            default:print("Not implemented")
+//            default: print("Not implemented")
         }
     }
     

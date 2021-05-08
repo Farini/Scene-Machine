@@ -255,7 +255,7 @@ struct MetalNoiseView: View {
                 
                 controller.updateImage(new: filteredImage, isPreview: isPreviewing)
                 
-            default:print("Not implemented")
+//            default:print("Not implemented")
                 
         }
     }

@@ -227,7 +227,7 @@ struct FXDistortView: View {
                     }
                     Text("Rotates pixels around a point to give a twirling effect.").foregroundColor(.gray)
                     
-                default: Text("Not implemented")
+//                default: Text("Not implemented")
             }
             
             Divider()
@@ -461,7 +461,7 @@ struct FXDistortView: View {
                 
                 self.image = filteredImage
                 
-            default: print("Not implemented")
+//            default: print("Not implemented")
         }
     }
     

@@ -39,6 +39,7 @@ Procedural Image generators with `Metal`
 - [X] Noise { Voronoi, Caustic, Waves }
 - [X] Overlay { Lens flare, Halo, Sunbeams, Caustic Refraction }
 - [X] Tiles { Checkerboard, Hexagons, Truchet, Bricks, Diagonal Lines }
+- [ ] SpriteKit Normal map. `SKTexture.generatingNormalMap()` see: https://developer.apple.com/documentation/spritekit/sktexture/1519687-generatingnormalmap
 
 ### Image Composition
 Mix 2 images, using multiple `CoreImage` techniques
@@ -89,13 +90,13 @@ Create SceneKit Materials - `SCNMaterial`
 - [ ] Basic Materials library (Wood, ✅ bricks, asphalt, plastic, metals, dirt, skin, etc.)
 
 
-### Scene Ideas
+### Extra Geometries
 
-1. Forest
-2. Terrain
-3. Beach
-4. Maze
-5. House in the forest
+1. Suzanne ✅
+2. Woman ✅
+3. Prototype car ✅
+4. Trees
+5. House
 
 ### Animatable Ideas
 

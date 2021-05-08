@@ -372,7 +372,7 @@ struct FXColorView: View {
                     return "Adjusts the reference white point for an image and maps all colors in the source using the new reference."
                 case .ColorInvert: return "Inverts the colors in an image."
                 case .VignetteEffect: return "Modifies the brightness of an image around the periphery of a specified region."
-                default: return ""
+//                default: return ""
             }
         }
     }

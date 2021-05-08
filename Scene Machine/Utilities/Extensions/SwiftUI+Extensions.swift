@@ -50,3 +50,15 @@ extension NSView {
         }
     }
 }
+
+extension NumberFormatter {
+    static var scnFormat: NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.minimumIntegerDigits = 1
+        formatter.maximumIntegerDigits = 4
+        formatter.minimumFractionDigits = 1
+        formatter.maximumFractionDigits = 4
+        return formatter
+    }
+}

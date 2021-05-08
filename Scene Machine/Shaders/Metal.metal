@@ -97,10 +97,10 @@ vertex SimpleVertex myVertex(MyVertexInput in [[ stage_in ]],
     SimpleVertex vert;
     vert.position = scn_node.modelViewProjectionTransform * float4(in.position, 1.0);
     
-    float v = 1 - (abs(cos(surface.position.y * 6.28) + sin(surface.position.x * 6.28)) * .5);
+//    float v = 1 - (abs(cos(surface.position.y * 6.28) + sin(surface.position.x * 6.28)) * .5);
     
     float minColor = 1/16;
-    float tmod = trunc(scn_frame.time / 16.0) + 0.5;
+//    float tmod = trunc(scn_frame.time / 16.0) + 0.5;
     
     float vertical = (4 - surface.position.y - 16 * scn_frame.sinTime * surface.position.y); //* abs(scn_frame.sinTime);
     float posy = vertical * minColor;
@@ -109,9 +109,9 @@ vertex SimpleVertex myVertex(MyVertexInput in [[ stage_in ]],
     // Colors
     float blu = posy; //max(minColor, vertical);
     float green = vertical; // ppart * v
-    float red = v;
+//    float red = v;
     
-    float change = (1 * scn_frame.sinTime)*surface.position.y;
+//    float change = (1 * scn_frame.sinTime)*surface.position.y;
     
     float4 color = float4(ppart, green, blu, 1);
     vert.color = color;
@@ -134,15 +134,15 @@ fragment float4 myFragment(SimpleVertex in [[stage_in]],
     float tmod = trunc(scn_frame.time / 16.0) + 0.5;
 
     float vertical = (4 - surface.position.y - 16 * scn_frame.sinTime * surface.position.y); //* abs(scn_frame.sinTime);
-    float posy = vertical * minColor;
-    float ppart = floor(surface.position.y * 16) * scn_frame.sinTime;
+//    float posy = vertical * minColor;
+//    float ppart = floor(surface.position.y * 16) * scn_frame.sinTime;
 
     // Colors
     float blu = max(minColor, vertical);
     float green = vertical; // ppart * v
     float red = v;
 
-    float change = (1 * scn_frame.sinTime)*surface.position.y;
+//    float change = (1 * scn_frame.sinTime)*surface.position.y;
     
     color = half4(red, green, blu, 1);
     float3 semi = float3(vertical, tmod * vertical, blu);

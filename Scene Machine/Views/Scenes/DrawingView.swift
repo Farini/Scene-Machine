@@ -60,7 +60,8 @@ struct DrawingView: View {
     @State var allPoints:[DPoint] = [DPoint(CGPoint(x: 256, y: 256))]
     @State private var lineWidth:Int = 3
     
-    @State private var thePath:Path = Path()
+//    @State private var thePath:Path = Path()
+    @State var drawnPaths:[DPoint] = []
     @State var isPathClosed:Bool = false
     @State var isCurve:Bool = false
     @State var isMoving:Bool = true
@@ -75,18 +76,31 @@ struct DrawingView: View {
                 }
                 .keyboardShortcut("f", modifiers: [])
                 .help("f is for 'face'. It closes the path, creating an edge from the last point to the initial point.")
-                
-                CounterInput(value: $lineWidth, range: 1...10, title: "Line")
+                Button("t") {
+                    print("Terminate")
+                    drawnPaths.append(contentsOf: allPoints)
+                    allPoints = [DPoint(CGPoint(x: 256, y: 256))]
+                }
+                Divider()
+                Spacer()
                 Toggle(isOn: $isCurve, label: {
                     Text("Curve")
                 })
                 
+                ShortCounterInput(title: "Width", value: $lineWidth, range: 1...20)
+                    .frame(width:150)
+                
                 ColorPicker("Stroke", selection: $strokeColor)
             }
-
+            .frame(height:43)
+            .padding(.horizontal, 8)
+            
+            Divider()
+            
             ZStack {
                 
-                DrawingBackground { location in
+                // Canvas: NSView on bottom of the stack.
+                DrawingCanvas { location in
 
                     if isMoving {
                         allPoints.removeLast()
@@ -97,6 +111,7 @@ struct DrawingView: View {
                     endPoint = adjPoint
                 }
                 
+                // Currently drawing Path
                 Path { (path) in
                     path.move(to: startPoint)
                     // path.addLine(to: endPoint)
@@ -247,7 +262,7 @@ struct DrawingPointView: View {
     }
 }
 
-struct DrawingBackground:NSViewRepresentable {
+struct DrawingCanvas:NSViewRepresentable {
     
     var tapCallback:((CGPoint) -> Void)
     
@@ -264,16 +279,17 @@ struct DrawingBackground:NSViewRepresentable {
     
     func makeNSView(context: Context) -> some NSView {
         let v = NSView(frame: .zero)
+        v.layer?.backgroundColor = NSColor.red.cgColor
         let gesture = NSClickGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.tapped))
         v.addGestureRecognizer(gesture)
         return v
     }
     
-    func makeCoordinator() -> DrawingBackground.Coordinator {
+    func makeCoordinator() -> DrawingCanvas.Coordinator {
         return Coordinator(tappedCallback: self.tapCallback)
     }
     
-    func updateNSView(_ nsView: NSViewType, context: NSViewRepresentableContext<DrawingBackground>) {
+    func updateNSView(_ nsView: NSViewType, context: NSViewRepresentableContext<DrawingCanvas>) {
         
     }
 }

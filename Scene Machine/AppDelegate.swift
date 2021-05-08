@@ -16,6 +16,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         
+        NSApp.appearance = NSAppearance(named: .darkAqua)
+        
         // Add `@Environment(\.managedObjectContext)` in the views that will need the context.
         let contentView = FrontView().environment(\.managedObjectContext, persistentContainer.viewContext)
         
@@ -41,6 +43,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.toolbarStyle = .unified
         window.contentView = NSHostingView(rootView: contentView)
         window.makeKeyAndOrderFront(nil)
+        
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

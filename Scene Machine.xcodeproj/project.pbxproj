@@ -548,7 +548,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1220;
-				LastUpgradeCheck = 1240;
+				LastUpgradeCheck = 1250;
 				TargetAttributes = {
 					856491CB2578100B00D1FE00 = {
 						CreatedOnToolsVersion = 12.2;
@@ -831,6 +831,7 @@
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Scene Machine/Preview Content\"";
 				DEVELOPMENT_TEAM = FXF7BJD3VH;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Scene Machine/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -857,6 +858,7 @@
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Scene Machine/Preview Content\"";
 				DEVELOPMENT_TEAM = FXF7BJD3VH;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Scene Machine/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (

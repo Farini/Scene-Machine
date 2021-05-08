@@ -166,10 +166,101 @@ struct CounterInput: View {
                     }
             }
             .font(.title3)
-            .frame(width:200)
+            .frame(maxWidth:200)
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 6)
+    }
+}
+
+struct ShortCounterInput: View {
+    
+    var title:String
+    @Binding var value:Int
+    var range:ClosedRange<Int> = 1...10
+    
+    @State private var minusEnabled:Bool = true
+    @State private var plusEnabled:Bool = true
+    
+    var body: some View {
+        HStack {
+            HStack {
+                
+                Image(systemName: minusEnabled ? "minus.circle.fill" : "minus.circle")
+                    .onTapGesture {
+                        if value > range.lowerBound {
+                            value -= 1
+                            plusEnabled = true
+                        }
+                        if value == range.lowerBound {
+                            minusEnabled = false
+                            plusEnabled = true
+                        }
+                    }
+                Spacer()
+                Text(title).font(.title3)
+                    .padding(.vertical, 6)
+                Text("\(value)")
+                Spacer()
+                Image(systemName: plusEnabled ? "plus.circle.fill" : "plus.circle")
+                    .onTapGesture {
+                        if value < range.upperBound {
+                            value += 1
+                            minusEnabled = true
+                        }
+                        if value == range.upperBound {
+                            plusEnabled = false
+                            minusEnabled = true
+                        }
+                    }
+            }
+            .font(.title3)
+            .frame(maxWidth:200)
+        }
+        .padding(.horizontal, 8)
+        .padding(.vertical, 6)
+    }
+}
+
+import SceneKit
+struct NodeXYZInput:View {
+    
+    @State var node:SCNNode
+    
+    var body: some View  {
+        VStack {
+            Text("Position").font(.headline).foregroundColor(.orange)
+            HStack {
+                Text("X")
+                TextField("X", value: $node.position.x, formatter: NumberFormatter.scnFormat)
+                Text("Y")
+                TextField("Y", value: $node.position.y, formatter: NumberFormatter.scnFormat)
+                Text("Z")
+                TextField("Z", value: $node.position.z, formatter: NumberFormatter.scnFormat)
+            }
+            Divider()
+            Text("Euler Angles").font(.headline).foregroundColor(.orange)
+            HStack {
+                Text("X")
+                TextField("X", value: $node.eulerAngles.x, formatter: NumberFormatter.scnFormat)
+                Text("Y")
+                TextField("Y", value: $node.eulerAngles.y, formatter: NumberFormatter.scnFormat)
+                Text("Z")
+                TextField("Z", value: $node.eulerAngles.z, formatter: NumberFormatter.scnFormat)
+            }
+            Divider()
+            Text("Scale").font(.headline).foregroundColor(.orange)
+            HStack {
+                Text("X")
+                TextField("X", value: $node.scale.x, formatter: NumberFormatter.scnFormat)
+                Text("Y")
+                TextField("Y", value: $node.scale.y, formatter: NumberFormatter.scnFormat)
+                Text("Z")
+                TextField("Z", value: $node.scale.z, formatter: NumberFormatter.scnFormat)
+            }
+        }
+        .padding(.horizontal, 4)
+        
     }
 }
 
@@ -194,5 +285,8 @@ struct PointInput3_Previews: PreviewProvider {
 struct CounterInput_Previews: PreviewProvider {
     static var previews: some View {
         CounterInput(value: .constant(2), title: "Test")
+        ShortCounterInput(title: "Stroke", value: .constant(5), range: 1...10)
+        NodeXYZInput(node:SCNNode()).frame(width:300)
+        
     }
 }

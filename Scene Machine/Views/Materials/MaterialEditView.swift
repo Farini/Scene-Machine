@@ -232,9 +232,9 @@ struct MaterialView: View {
     @State var emissionColor:Color = .white
     @State var emissionImage:NSImage = NSImage()
     
-    @State var displacementURL:URL?
-    @State var displacementColor:Color = .white
-    @State var displacementImage:NSImage = NSImage()
+    @State var normalURL:URL?
+    @State var normalColor:Color = .white
+    @State var normalImage:NSImage = NSImage()
     
     var body: some View {
         VStack {
@@ -310,7 +310,7 @@ struct MaterialView: View {
                     Text("Roughness:")
                     Spacer()
                     if let number = rough as? CGFloat {
-                        Text("\(number)")
+                        Text("\(NumberFormatter.scnFormat.string(from: NSNumber(value: Float(number))) ?? "--")")
                     } else {
                         
                         ColorPicker("", selection:$roughnessColor)
@@ -387,27 +387,27 @@ struct MaterialView: View {
                 }
             }
             
-            // Displacement
-            if let _ = material.displacement.contents {
+            // Normal
+            if let _ = material.normal.contents {
                 HStack {
-                    Text("Displacement:")
+                    Text("Normal:")
                     Spacer()
                     Image(systemName: "rectangle.dashed.and.paperclip").font(.title2).foregroundColor(.gray)
                         .onDrop(of: ["public.file-url"], isTargeted: $active) { providers -> Bool in
                             providers.first?.loadDataRepresentation(forTypeIdentifier: "public.file-url", completionHandler: { (data, error) in
                                 if let data = data, let uu = URL(dataRepresentation: data, relativeTo: nil) {
                                     if let dropImage = NSImage(contentsOf: uu) {
-                                        self.material.displacement.contents = dropImage
-                                        self.displacementURL = uu
+                                        self.material.normal.contents = dropImage
+                                        self.normalURL = uu
                                     }
                                 }
                             })
                             return true
                         }
                     
-                    ColorPicker("", selection:$displacementColor)
-                        .onChange(of: displacementColor, perform: { value in
-                            self.material.displacement.contents = NSColor(displacementColor)
+                    ColorPicker("", selection:$normalColor)
+                        .onChange(of: normalColor, perform: { value in
+                            self.material.normal.contents = NSColor(normalColor)
                         })
                 }
             }
@@ -455,18 +455,12 @@ struct MaterialView: View {
         } else if let color = material.emission.contents as? NSColor {
             self.emissionColor = Color(color)
         }
-        // Displacement
-        if let image = material.displacement.contents as? NSImage {
-            self.displacementImage = image
+        // Normal
+        if let image = material.normal.contents as? NSImage {
+            self.normalImage = image
         } else if let color = material.displacement.contents as? NSColor {
-            self.displacementColor = Color(color)
+            self.normalColor = Color(color)
         }
-        
-        // Should use MaterialModel instead?
-        // PROs
-        // Direct access to save, etc
-        // CONs
-        // Not the original object
     }
 }
 

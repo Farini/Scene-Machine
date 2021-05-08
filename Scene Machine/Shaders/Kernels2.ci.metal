@@ -855,7 +855,7 @@ extern "C" { namespace coreimage {
         half r1 = (g1.y -4 * g1.z + g1.w + g2.w + g3.y);
         half r2 = (g2.y -4 * g2.z + g2.w + g1.z + g4.x);
         half r3 = (g3.x -4 * g3.y + g3.w + g1.z + g4.x);
-        half r4 = (g4.x -4 * g4.y + g4.w + g2.w + g3.y);
+//        half r4 = (g4.x -4 * g4.y + g4.w + g2.w + g3.y);
         
 //        float4 reds = float4(r1, r2, r3, 1);
 //        float4

@@ -317,8 +317,7 @@ struct FXOtherView: View {
                     print("nooutpout")
                 }
                 
-            default:
-                print("no implement")
+//            default: print("not implemented")
         }
     }
     

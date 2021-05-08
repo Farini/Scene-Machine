@@ -106,6 +106,7 @@ struct SceneMachineView: View {
                             self.selectedMaterial = material
                         }
                     }
+                    
                     if let material = selectedMaterial {
                         MaterialView(material: material)
                     }
@@ -155,21 +156,10 @@ struct SceneMachineView: View {
                         .popover(isPresented: $controller.isNodeOptionSelected) {
                             VStack {
                                 Text("\(theNode.name ?? "Node")")
-                                HStack {
-                                    Text("Pos:")
-                                    Text(theNode.position.toString())
-                                    Image(systemName: "signpost.right")
-                                }
-                                SliderInputView(value: Float(theNode.position.x), vRange: -50...50, title: "X") { movedX in
-                                    theNode.position.x = CGFloat(movedX)
-                                }
-                                SliderInputView(value: Float(theNode.position.y), vRange: -50...50, title: "Y") { movedY in
-                                    theNode.position.y = CGFloat(movedY)
-                                }
-                                SliderInputView(value: Float(theNode.position.z), vRange: -50...50, title: "Z") { movedZ in
-                                    theNode.position.z = CGFloat(movedZ)
-                                }
+                                NodeXYZInput(node: theNode)
                             }
+                            .padding(8)
+                            .frame(minWidth:300)
                         }
                     }
                     

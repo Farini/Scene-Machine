@@ -57,9 +57,9 @@ struct ImageFXView: View {
                             apply(image: img)
                         }, image: controller.openingImage)
                         
-                    default:
-                        Text("Left View")
-                        Text("Needs implementation")
+//                    default:
+//                        Text("Left View")
+//                        Text("Needs implementation")
                 }
                 Spacer()
             }
