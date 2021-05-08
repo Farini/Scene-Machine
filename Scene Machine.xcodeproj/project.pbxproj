@@ -23,6 +23,7 @@
 		8515B47C262E4B5F00A886BD /* FXBlurrView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B47B262E4B5F00A886BD /* FXBlurrView.swift */; };
 		8515B480262E7DDA00A886BD /* FXColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B47F262E7DDA00A886BD /* FXColorView.swift */; };
 		855053732644F38B00A577E2 /* SMNodeRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 855053722644F38B00A577E2 /* SMNodeRow.swift */; };
+		855053752646A50B00A577E2 /* SMMaterialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 855053742646A50B00A577E2 /* SMMaterialView.swift */; };
 		856491D02578100B00D1FE00 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856491CF2578100B00D1FE00 /* AppDelegate.swift */; };
 		856491D52578100B00D1FE00 /* Scene_Machine.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 856491D32578100B00D1FE00 /* Scene_Machine.xcdatamodeld */; };
 		856491D72578100C00D1FE00 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 856491D62578100C00D1FE00 /* Assets.xcassets */; };
@@ -138,6 +139,7 @@
 		8515B47B262E4B5F00A886BD /* FXBlurrView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FXBlurrView.swift; sourceTree = "<group>"; };
 		8515B47F262E7DDA00A886BD /* FXColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FXColorView.swift; sourceTree = "<group>"; };
 		855053722644F38B00A577E2 /* SMNodeRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMNodeRow.swift; sourceTree = "<group>"; };
+		855053742646A50B00A577E2 /* SMMaterialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMMaterialView.swift; sourceTree = "<group>"; };
 		856491CC2578100B00D1FE00 /* Scene Machine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Scene Machine.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		856491CF2578100B00D1FE00 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		856491D42578100B00D1FE00 /* Scene_Machine.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Scene_Machine.xcdatamodel; sourceTree = "<group>"; };
@@ -284,6 +286,7 @@
 			children = (
 				85D3E7CA26390FAF00D693FA /* SceneMachineView.swift */,
 				855053722644F38B00A577E2 /* SMNodeRow.swift */,
+				855053742646A50B00A577E2 /* SMMaterialView.swift */,
 			);
 			path = "Scene Machine";
 			sourceTree = "<group>";
@@ -626,6 +629,7 @@
 				8515B46D262D3B3B00A886BD /* TopBar.swift in Sources */,
 				85FAF34C263C511300081ED8 /* FXDistortView.swift in Sources */,
 				8515B3D52628A58B00A886BD /* LocalDatabase.swift in Sources */,
+				855053752646A50B00A577E2 /* SMMaterialView.swift in Sources */,
 				8515B372262743D000A886BD /* TerrainView.swift in Sources */,
 				85771BCD2633D08F001A2B88 /* InputViews.swift in Sources */,
 				8515B3302624E6EE00A886BD /* ImageBasics.swift in Sources */,

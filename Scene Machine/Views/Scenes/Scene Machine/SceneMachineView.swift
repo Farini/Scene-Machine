@@ -36,6 +36,7 @@ struct SceneMachineView: View {
             // Geometries + Materials
             ScrollView {
                 VStack {
+                    
                     // Node
                     HStack {
                         Text("●")
@@ -108,7 +109,8 @@ struct SceneMachineView: View {
                     }
                     
                     if let material = selectedMaterial {
-                        MaterialView(material: material)
+//                        MaterialView(material: material)
+                        SMMaterialView(material: material)
                     }
                     
                     Spacer()

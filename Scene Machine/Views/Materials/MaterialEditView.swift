@@ -413,15 +413,14 @@ struct MaterialView: View {
             }
             
             // Buttons
-            Group {
-                Divider()
-                HStack {
-                    Button("Save") {
-                        print("Save Material")
-                    }
-                }
-            }
-            
+//            Group {
+//                Divider()
+//                HStack {
+//                    Button("Save") {
+//                        print("Save Material")
+//                    }
+//                }
+//            }
         }
         .frame(width:200)
         .padding(.horizontal, 6)
@@ -482,7 +481,7 @@ struct MaterialExample {
         let newMat = SCNMaterial()
         newMat.name = "Example 1"
         newMat.lightingModel = .physicallyBased
-        newMat.diffuse.contents = NSColor.red
+        newMat.diffuse.contents = NSImage(named:"Checkerboard")
         newMat.roughness.contents = 0.2
         self.material = newMat
     }

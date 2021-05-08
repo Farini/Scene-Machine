@@ -19,6 +19,24 @@ extension SCNMaterial: Identifiable {
     }
 }
 
+extension SCNWrapMode {
+    
+    static func ==(lhs:SCNWrapMode, rhs:SCNWrapMode) -> Bool {
+        return lhs.rawValue == rhs.rawValue
+    }
+    
+    func toString() -> String {
+        switch self.rawValue {
+            case 1: return "Clamp"
+            case 2: return "`Repeat`"
+            case 3: return "Clamp border"
+            case 4: return "Mirror"
+            default: return "N/A"
+        }
+    }
+    
+}
+
 extension SCNGeometrySource {
     
     /// Use this if the source is `SCNGeometrySourceSemanticVertex` or `SCNGeometrySourceSemanticNormal`
