@@ -57,9 +57,11 @@ struct CompositionView: View {
                         .onDrop(of: ["public.file-url"], isTargeted: $dragOver) { providers -> Bool in
                             providers.first?.loadDataRepresentation(forTypeIdentifier: "public.file-url", completionHandler: { (data, error) in
                                 if let data = data, let uu = URL(dataRepresentation: data, relativeTo: nil) {
-                                    if let dropImage = NSImage(contentsOf: uu) {
-//                                        self.droppedImage = dropImage
-                                        controller.backgroundImage = dropImage
+                                    DispatchQueue.main.async {
+                                        if let dropImage = NSImage(contentsOf: uu) {
+                                            // self.droppedImage = dropImage
+                                            controller.backgroundImage = dropImage
+                                        }
                                     }
                                 }
                             })

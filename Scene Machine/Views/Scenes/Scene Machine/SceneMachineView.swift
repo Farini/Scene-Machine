@@ -119,6 +119,8 @@ struct SceneMachineView: View {
                     }
                     .popover(isPresented: $popGeoImport) {
                         VStack {
+                            Text("Add Geometry").font(.title2).foregroundColor(.orange)
+                            Divider()
                             ForEach(AppGeometries.allCases, id:\.self) { appGeo in
                                 HStack {
                                     Text(appGeo.rawValue)
@@ -127,9 +129,10 @@ struct SceneMachineView: View {
                                         controller.addAppGeometry(geo: appGeo)
                                     }
                                 }
-                                .frame(width:200)
                             }
                         }
+                        .frame(width:200)
+                        .padding()
                     }
                     Button("Load") {
                         print("load")

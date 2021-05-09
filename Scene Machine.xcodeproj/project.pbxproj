@@ -22,6 +22,7 @@
 		8515B474262E124300A886BD /* ImageFXView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B473262E124300A886BD /* ImageFXView.swift */; };
 		8515B47C262E4B5F00A886BD /* FXBlurrView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B47B262E4B5F00A886BD /* FXBlurrView.swift */; };
 		8515B480262E7DDA00A886BD /* FXColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B47F262E7DDA00A886BD /* FXColorView.swift */; };
+		8541531B2648680B007C926B /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8541531A2648680B007C926B /* AppConstants.swift */; };
 		855053732644F38B00A577E2 /* SMNodeRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 855053722644F38B00A577E2 /* SMNodeRow.swift */; };
 		855053752646A50B00A577E2 /* SMMaterialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 855053742646A50B00A577E2 /* SMMaterialView.swift */; };
 		856491D02578100B00D1FE00 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856491CF2578100B00D1FE00 /* AppDelegate.swift */; };
@@ -138,6 +139,7 @@
 		8515B473262E124300A886BD /* ImageFXView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFXView.swift; sourceTree = "<group>"; };
 		8515B47B262E4B5F00A886BD /* FXBlurrView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FXBlurrView.swift; sourceTree = "<group>"; };
 		8515B47F262E7DDA00A886BD /* FXColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FXColorView.swift; sourceTree = "<group>"; };
+		8541531A2648680B007C926B /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		855053722644F38B00A577E2 /* SMNodeRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMNodeRow.swift; sourceTree = "<group>"; };
 		855053742646A50B00A577E2 /* SMMaterialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMMaterialView.swift; sourceTree = "<group>"; };
 		856491CC2578100B00D1FE00 /* Scene Machine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Scene Machine.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -229,6 +231,7 @@
 		8515B32E2624E69800A886BD /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				8541531A2648680B007C926B /* AppConstants.swift */,
 				85A477672641CE3700F93AB3 /* CoreData */,
 				8515B3D42628A58B00A886BD /* LocalDatabase.swift */,
 				8515B32F2624E6EE00A886BD /* ImageBasics.swift */,
@@ -662,6 +665,7 @@
 				8515B342262554A700A886BD /* GradientController.swift in Sources */,
 				8515B480262E7DDA00A886BD /* FXColorView.swift in Sources */,
 				856491D02578100B00D1FE00 /* AppDelegate.swift in Sources */,
+				8541531B2648680B007C926B /* AppConstants.swift in Sources */,
 				8597BB7E25BCA8B200C705A0 /* ImageFXController.swift in Sources */,
 				85FFB73A2639DA0100E8FE0A /* MetalOverlaysView.swift in Sources */,
 			);
@@ -843,6 +847,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.1;
 				MTL_ENABLE_INDEX_STORE = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "cfarini.Scene-Machine";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -870,6 +875,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.1;
 				MTL_ENABLE_INDEX_STORE = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "cfarini.Scene-Machine";
 				PRODUCT_NAME = "$(TARGET_NAME)";

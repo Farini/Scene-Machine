@@ -16,6 +16,8 @@ struct MetalGenView: View {
     @State var image:NSImage = NSImage(size: NSSize(width: 1024, height: 1024))
     @State var selection:MetalGenType = .Noise
     
+    @State private var popAppImages:Bool = false
+    
     var topBar: some View {
         HStack {
             
@@ -37,6 +39,29 @@ struct MetalGenView: View {
             }
             
             Spacer()
+            
+            Button("+ Image") {
+                popAppImages.toggle()
+            }
+            .help("Other images in app")
+            .popover(isPresented: $popAppImages) {
+                VStack {
+                    ForEach(AppTextures.allCases, id:\.self) { texture in
+                        HStack {
+                            Text(texture.labelName)
+                            Spacer()
+                            Button("+") {
+                                if let image = texture.image {
+                                    controller.image = image
+                                }
+                            }
+                        }
+                        .frame(width:165)
+                    }
+                }
+                .padding()
+            }
+            
             
             Picker("Size", selection: $controller.textureSize) {
                 ForEach(TextureSize.allCases, id:\.self) { tSize in

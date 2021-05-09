@@ -94,19 +94,20 @@ Create SceneKit Materials - `SCNMaterial`
 - [ ] Save Materials
 
 
-### Extra Geometries
+### App Resources
 
+**Geometries**
 1. Suzanne ✅
 2. Woman ✅
 3. Prototype car ✅
 4. Trees
 5. House
 
-### Animatable Ideas
-
-1. Car, or Rover
-2. Monkey
-3. Person
+**Textures**
+    ✅ Wall
+    ✅ Asphalt
+    ✅ Wood
+    ✅ UVGrid
 
 ## To-Do list
 

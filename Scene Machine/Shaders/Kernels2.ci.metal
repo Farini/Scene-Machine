@@ -359,17 +359,23 @@ extern "C" { namespace coreimage {
             col += n;
         } else if (randomize < 0.5) {
             // red contour
-            if (gv.x>.48 || gv.y>.48) {
-                col = float3(1, 0, 0);
+            if (gv.x>.49 || gv.y>.49) {
+                col = float3(1, 1, 1);
             } else {
                 // Gradient
                 col.gb = gv;
+                col.r = 0.25 - (gv.y * 4 + gv.x * 4);
             }
         } else if (randomize >= 0.5) {
+            if (gv.x>.49 || gv.y>.49) {
+                col = float3(0, 0, 0);
+            } else {
+                col = float3(1, 1, 1);
+            }
             // white
-            float width = 0.1;
-            float mask = smoothstep(0.01, -0.01, abs(gv.x + gv.y) - width);
-            col += mask;
+//            float width = 0.1;
+//            float mask = smoothstep(0.01, -0.01, abs(gv.x + gv.y) - width);
+//            col += mask;
         }
         
         return float4(col, 1);
