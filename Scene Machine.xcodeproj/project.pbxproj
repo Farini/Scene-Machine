@@ -140,6 +140,7 @@
 		8515B47B262E4B5F00A886BD /* FXBlurrView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FXBlurrView.swift; sourceTree = "<group>"; };
 		8515B47F262E7DDA00A886BD /* FXColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FXColorView.swift; sourceTree = "<group>"; };
 		8541531A2648680B007C926B /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
+		8541531C264871AE007C926B /* ShadersReadme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ShadersReadme.md; sourceTree = "<group>"; };
 		855053722644F38B00A577E2 /* SMNodeRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMNodeRow.swift; sourceTree = "<group>"; };
 		855053742646A50B00A577E2 /* SMMaterialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMMaterialView.swift; sourceTree = "<group>"; };
 		856491CC2578100B00D1FE00 /* Scene Machine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Scene Machine.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -191,7 +192,6 @@
 		85FAF34B263C511300081ED8 /* FXDistortView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FXDistortView.swift; sourceTree = "<group>"; };
 		85FAF34D263C512B00081ED8 /* FXStylizeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FXStylizeView.swift; sourceTree = "<group>"; };
 		85FAF34F263C6B7600081ED8 /* PhongShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PhongShader.metal; sourceTree = "<group>"; };
-		85FAF351263C6BC100081ED8 /* AAPLSharedTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAPLSharedTypes.h; sourceTree = "<group>"; };
 		85FFB7352639C16F00E8FE0A /* MetalGenController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalGenController.swift; sourceTree = "<group>"; };
 		85FFB7392639DA0100E8FE0A /* MetalOverlaysView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalOverlaysView.swift; sourceTree = "<group>"; };
 		85FFB73D2639DA1700E8FE0A /* MetalOthersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalOthersView.swift; sourceTree = "<group>"; };
@@ -218,11 +218,11 @@
 		8515B32D2624E63E00A886BD /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				8541531C264871AE007C926B /* ShadersReadme.md */,
 				85B91358263297D50065D6D2 /* Filters */,
 				8564923D2579828100D1FE00 /* dissolve.fragment.txt */,
 				8597BB8325BCAEF600C705A0 /* Metal.metal */,
 				85FAF34F263C6B7600081ED8 /* PhongShader.metal */,
-				85FAF351263C6BC100081ED8 /* AAPLSharedTypes.h */,
 				85CB435E263CABC0006E4B10 /* Kernels2.ci.metal */,
 			);
 			path = Shaders;

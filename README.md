@@ -30,12 +30,17 @@ The objective of this app is to create a more user-friendly way to build a `.scn
 - Pedal2DMetal
 - Quick Noise
 
+**Common Features** 
+
+- [X] Choose Image Size: 256x256, 512x512, 1024x1024, 2048x2048, 4096x4096
+- [X] Zoom in and out of images - Scale 0.2 to 8.0
+- [X] Save Image
+- [X] Undo Changes
+
 ### SpriteKit Noise Maker
 Create 6 common types of noises using `SpriteKit`.
 
 - [X] Generate any noise in SpriteKit: Perlin, Voronoi, Ridged, Billow, Checker, Cylinder
-- [X] Save Image
-- [X] Choose Image Size: 256x256, 512x512, 1024x1024, 2048x2048, 4096x4096
 - [X] Color Gradients
 
 ### Pedal2DMetal
@@ -49,12 +54,7 @@ Procedural Image generators with `Metal`
 ### Image Composition
 Mix 2 images, using multiple `CoreImage` techniques
 
-- [X] CIFilter with Kernels
-- [X] Save CIImage
-- [X] Test new Metal shader: makeBlackTransparent >> Substitute black pixels for transparent ones
-- [X] Choose Texture size: 256, 512, 1024, 2048, 4096 Pixels
-- [X] Undo Changes in Image
-- [X] Zoom in and out of images
+- [X] Basic CIFilters
 
 ### Metal Kernel Shaders
 Image CIKernels built on Metal programming language
@@ -75,7 +75,7 @@ Test and export `SceneKit` scenes.
 - [X] Show a Geometry's `UVMap`
 - [X] Save and export scene `.scn` files
 - [X] Background `HDRI` Images
-- [X] Have a few extra Geometries
+- [X] App Geometries
 - [X] Add Geometry from `.dae`, or `.obj` files.
 - [ ] Have some sample code + shaders written in `Metal`  - `SCNProgram`
 - [ ] Test animated characters - Bones(in blender) vs SCNSkinner(Swift)
@@ -108,6 +108,9 @@ Create SceneKit Materials - `SCNMaterial`
     ✅ Asphalt
     ✅ Wood
     ✅ UVGrid
+    ⭕️ Brushed Metal
+    ⭕️ Dirt
+    ⭕️ Skin
 
 ## To-Do list
 
@@ -126,45 +129,17 @@ Create SceneKit Materials - `SCNMaterial`
 - [X] Fix Zoom issues on Pedal2DMetal
 - [X] Cleanup SceneMachineController
 - [X] Remove CIGenerators from Pedal2DMetal
-
 - [X] Under UVMap (ZStack), add image of the UV (if any)
 
 - [ ] Draw textures on UVMaps
 - [ ] Ability to use .txt files that can contain code for fragment/vertex shaders
-
 - [ ] Make a NormalMap shader, to transform images in Normal Maps, or...
 - [ ] SpriteKit Normal map. `SKTexture.generatingNormalMap()` see: https://developer.apple.com/documentation/spritekit/sktexture/1519687-generatingnormalmap
-
-- [ ] 💾 Save Materials Property `SceneMaterial` - CoreData, or .json file?
-- [ ] Blender made textures
-- [ ] Basic Materials library (Wood, ✅ bricks, asphalt, plastic, metals, dirt, skin, etc.)
-
-- [ ] Better way to create App Help: http://swiftrien.blogspot.com/2015/06/adding-apple-help-to-os-x-application.html
+- [ ] 💾 Save Materials Property `SceneMaterial`
+- [ ] Improve App Help: http://swiftrien.blogspot.com/2015/06/adding-apple-help-to-os-x-application.html
 
 
-### Important Notes - Modulo Function Metal vs GLSL
 
-GLSL mod() can be expanded to:
-
-> return x - y * floor(x/y)
-
-Metal fmod() can be expanded to:
-
-> x – y * trunc(x/y)
-
-`GLSL's` mod function is this for `Metal`
-```
-float mod(float x, float y) {
-    return x - y * floor(x / y);
-}
-```
-
-`Metal` **fmod** function is equivalent to
-```
-float fmod(float x, float y) {
-    return x - y * trunc(x / y);
-}
-```
 
 # 🍎 SceneKit
 
