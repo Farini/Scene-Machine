@@ -76,16 +76,6 @@ struct SceneMachineView: View {
                     .font(.title2)
                     .foregroundColor(.orange)
                     
-//                    ForEach(controller.geometries) { geometry in
-//                        SMGeometryRow(controller:controller, geometry: geometry, isSelected: selectedGeometry == geometry)
-//                            .onTapGesture {
-//                                if selectedGeometry == geometry {
-//                                    selectedGeometry = nil
-//                                } else {
-//                                    self.selectedGeometry = geometry
-//                                }
-//                            }
-//                    }
                     Divider()
                     
                     // Materials
@@ -162,7 +152,21 @@ struct SceneMachineView: View {
                             }
                             .padding(8)
                             .frame(minWidth:300)
+                            
+                            VStack {
+                                Text("\(theNode.name ?? "Node")")
+                                SceneView(scene: self.sceneWithWired(node: theNode.clone()), pointOfView: nil, options: .allowsCameraControl, preferredFramesPerSecond: 30, antialiasingMode: .multisampling2X, delegate: nil, technique: nil)
+                                    .frame(width: 300, height: 300, alignment: .center)
+                            }
+                            .padding(8)
+                            .frame(minWidth:300)
                         }
+//                        Button("\(theNode.name ?? "Geom")") {
+//                            controller.isNodeOptionSelected.toggle()
+//                        }
+//                        .popover(isPresented: $controller.isNodeOptionSelected) {
+//
+//                        }
                     }
                     
                     Button("Program") {
@@ -252,6 +256,13 @@ struct SceneMachineView: View {
                 .background(Color.clear)
                 .frame(width:1024, height:1024, alignment: .center)
         }
+    }
+    func sceneWithWired(node:SCNNode) -> SCNScene {
+        let newScene = SCNScene()
+        newScene.rootNode.addChildNode(node)
+        node.geometry?.firstMaterial?.fillMode = .lines
+        newScene.background.contents = NSColor.gray
+        return newScene
     }
 }
 

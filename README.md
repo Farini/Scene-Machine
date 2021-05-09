@@ -5,14 +5,20 @@
 <img src="https://img.shields.io/github/followers/Farini?label=Follow" alt="Farini followers" />
 </p>
 
-Scene Machine is a tool for `SceneKit`, with additional features for `SpriteKit`. 
-The objective is to provide an easy way to generate textures and *3D geometries* to facilitate the creation of `SceneKit` scenes, allowing creators to speed up their process, and achieve better results.
+Scene Machine is a tool for App Developers and Graphic Designers. You may use Scene Machine to generate textures, images and UVMaps.
 
-Although SpriteKit offers ways to generate noise textures, the options are limited. In Blender, for example, there are many more options, and graphics operations that can be performed to generate a texture. 
+Use textures generated on 3D objects. Export and import scenes in `.scn` format. Save the contours of a UVMap to later edit images for pixel-perfect scene materials.
 
-Plus, those patterns can be generated and placed in a UV map.
+Scene Machine focuses on generation of tile, noise, and pattern images. After images are generated, it is possible to further customize those images and apply filters to them.
+The objective is to provide an easy way to generate textures, especially ones that can be used in 3D geometries in `SceneKit` scenes.
 
-The objective of this app is to create a more user-friendly way to build a `.scn` file, or to facilitate the conversion of `.dae` files into `.scn` while maintaining high-quality meshes.
+Scene Machine uses Metal programming language to generate images and `SCNProgram` code snippets.
+
+Although SpriteKit offers ways to generate noise textures, the options are limited. In Blender, for example, there are many options, and graphics operations that can be performed to generate a texture. Scene Machine seeks to bring that type of graphic settings, essential for building great 3D scenes. Furthermore, a few pre-made geometries and backgrounds were added, to expand the users options for those types of assets.
+
+Mix images using Core Image blend modes. When textures are more complex, you may need to mix two, or more images using Blend options like Color burn, Color dodge, Darken, Divide and Screen modes are also supported.
+
+The objective of this app is to create a more user-friendly way to build a `.scn` file, or to facilitate the conversion of `.dae` files into `.scn` while maintaining high-quality meshes, with their textures. Besides these scenes, if your interest is in generating patterns and effects, this app can be very useful as well.
 
 ![Alt text](https://user-images.githubusercontent.com/5069713/115817657-40738a80-a3c9-11eb-8f5c-9c586c1ff0af.png)
 
@@ -39,7 +45,6 @@ Procedural Image generators with `Metal`
 - [X] Noise { Voronoi, Caustic, Waves }
 - [X] Overlay { Lens flare, Halo, Sunbeams, Caustic Refraction }
 - [X] Tiles { Checkerboard, Hexagons, Truchet, Bricks, Diagonal Lines }
-- [ ] SpriteKit Normal map. `SKTexture.generatingNormalMap()` see: https://developer.apple.com/documentation/spritekit/sktexture/1519687-generatingnormalmap
 
 ### Image Composition
 Mix 2 images, using multiple `CoreImage` techniques
@@ -87,7 +92,6 @@ Create SceneKit Materials - `SCNMaterial`
 - [X] Ambient Occlusion
 - [X] Save UVMap Image
 - [ ] Save Materials
-- [ ] Basic Materials library (Wood, ✅ bricks, asphalt, plastic, metals, dirt, skin, etc.)
 
 
 ### Extra Geometries
@@ -123,15 +127,16 @@ Create SceneKit Materials - `SCNMaterial`
 - [X] Remove CIGenerators from Pedal2DMetal
 
 - [X] Under UVMap (ZStack), add image of the UV (if any)
-- [ ] Edit UVMap - Look for SwiftUI Drawing apps examples on Github
-- [ ] Edit .txt files that can contain code for fragment/vertex shaders
 
-- [ ] Make a NormalMap shader, to transform images in Normal Maps
+- [ ] Draw textures on UVMaps
+- [ ] Ability to use .txt files that can contain code for fragment/vertex shaders
+
+- [ ] Make a NormalMap shader, to transform images in Normal Maps, or...
+- [ ] SpriteKit Normal map. `SKTexture.generatingNormalMap()` see: https://developer.apple.com/documentation/spritekit/sktexture/1519687-generatingnormalmap
 
 - [ ] 💾 Save Materials Property `SceneMaterial` - CoreData, or .json file?
 - [ ] Blender made textures
-
-- [ ] AppDelegate, or SwiftUI? See `Fruta` app for latter.
+- [ ] Basic Materials library (Wood, ✅ bricks, asphalt, plastic, metals, dirt, skin, etc.)
 
 - [ ] Better way to create App Help: http://swiftrien.blogspot.com/2015/06/adding-apple-help-to-os-x-application.html
 

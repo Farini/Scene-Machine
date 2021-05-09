@@ -96,6 +96,7 @@ class SpriteKitNoiseController:ObservableObject {
         dialog.title                   = "Choose a directory";
         dialog.showsResizeIndicator    = true;
         dialog.showsHiddenFiles        = false;
+        dialog.allowedFileTypes = ["png", "jpg"]
         
         if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
             let result = dialog.url // Pathname of the file

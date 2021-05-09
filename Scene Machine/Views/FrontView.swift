@@ -83,20 +83,28 @@ struct NoiseMenuView: View {
                 VStack {
                     Image("SpriteKitIcon")
                         .resizable()
-                        .frame(width: 64, height: 64, alignment: .center)
+                        .frame(width: 42, height: 42, alignment: .center)
                     Text("SpriteKit Noise")
                 }.onTapGesture {
                     NSApp.sendAction(#selector(AppDelegate.openSpriteNoiseWindow), to: nil, from: nil)
                 }
+                .frame(width: 100, height: 100, alignment: .center)
+                .background(Color.black.opacity(0.5))
+                .cornerRadius(12)
+                .shadow(color: .white.opacity(0.4), radius: 6, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/)
                 
                 // Metal Noise
                 VStack {
                     Image("MetalIcon")
                         .resizable()
-                        .frame(width: 64, height: 64, alignment: .center)
+                        .frame(width: 42, height: 42, alignment: .center)
                     // Core_Image_icon
                     Text("Pedal 2D Metal")
                 }
+                .frame(width: 100, height: 100, alignment: .center)
+                .background(Color.black.opacity(0.5))
+                .cornerRadius(12)
+                .shadow(color: .white.opacity(0.4), radius: 6, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/)
                 .onTapGesture {
                     NSApp.sendAction(#selector(AppDelegate.openMetalGenerators), to: nil, from: nil)
                 }
@@ -104,9 +112,13 @@ struct NoiseMenuView: View {
                 VStack {
                     Image("SpriteBot")
                         .resizable()
-                        .frame(width: 64, height: 64, alignment: .center)
+                        .frame(width: 42, height: 42, alignment: .center)
                     Text("Quick Noise")
                 }
+                .frame(width: 100, height: 100, alignment: .center)
+                .background(Color.black.opacity(0.5))
+                .cornerRadius(12)
+                .shadow(color: .white.opacity(0.4), radius: 6, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/)
                 .onTapGesture {
                     NSApp.sendAction(#selector(AppDelegate.openNoiseMaker), to: nil, from: nil)
                 }
@@ -121,7 +133,7 @@ struct ImageFXMenuView: View {
     var body: some View {
         ScrollView {
             VStack {
-                
+                // Header / Title
                 Group {
                     
                     Image("Core_Image_icon")
@@ -147,11 +159,16 @@ struct ImageFXMenuView: View {
                     VStack {
                         Image(systemName:"square.stack.3d.forward.dottedline")
                             .resizable()
-                            .frame(width: 64, height: 64, alignment: .center)
+                            .frame(width: 42, height: 42, alignment: .center)
                         
                         Text("Mixer")
                     }
-                    .padding(8)
+//                    .padding(8)
+                    .frame(width: 80, height: 80, alignment: .center)
+                    .background(Color.black.opacity(0.5))
+                    .cornerRadius(12)
+                    .shadow(color: .white.opacity(0.4), radius: 6, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/)
+                    
                     .onTapGesture {
                         NSApp.sendAction(#selector(AppDelegate.openCompositionView), to: nil, from: nil)
                     }
@@ -170,10 +187,13 @@ struct ImageFXMenuView: View {
                     VStack {
                         Image(systemName: "wand.and.stars")
                             .resizable()
-                            .frame(width: 64, height: 64, alignment: .center)
+                            .frame(width: 42, height: 42, alignment: .center)
                         Text("Image FX")
                     }
-                    .padding(8)
+                    .frame(width: 80, height: 80, alignment: .center)
+                    .background(Color.black.opacity(0.5))
+                    .cornerRadius(12)
+                    .shadow(color: .white.opacity(0.4), radius: 6, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/)
                     .onTapGesture {
                         NSApp.sendAction(#selector(AppDelegate.openImageFXView), to: nil, from: nil)
                     }
@@ -236,11 +256,13 @@ struct OpenFileView: View {
                     VStack {
                         Image(systemName: "folder")//.font(.title)
                             .resizable()
-                            .frame(width: 64, height: 64, alignment: .center)
-                            .padding(6)
+                            .frame(width: 42, height: 42, alignment: .center)
                         Text("Image FX")
                     }
-                    .padding(8)
+                    .frame(width: 80, height: 80, alignment: .center)
+                    .background(Color.black.opacity(0.5))
+                    .cornerRadius(12)
+                    .shadow(color: .white.opacity(0.4), radius: 6, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/)
                     .onTapGesture {
                         openPanel()
                     }
@@ -258,11 +280,13 @@ struct OpenFileView: View {
                         VStack {
                             Image("SceneKitIcon")
                                 .resizable()
-                                .frame(width: 64, height: 64, alignment: .center)
-                                .padding(6)
+                                .frame(width: 42, height: 42, alignment: .center)
                             Text("Scene")
                         }
-                        .padding(8)
+                        .frame(width: 80, height: 80, alignment: .center)
+                        .background(Color.black.opacity(0.5))
+                        .cornerRadius(12)
+                        .shadow(color: .white.opacity(0.4), radius: 6, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/)
                         .onTapGesture {
                             openPanel()
                         }
@@ -376,19 +400,24 @@ struct OpenSceneView: View {
                             Text("Edit a terrain by giving it a displacement texture. Make sure the texture is white color. The white color displaces the terrain by a certain magnitude.").foregroundColor(.gray)
                         }
                         .padding(6)
-                        
+                        Spacer()
                         VStack {
                             Image(systemName:"map")
                                 .resizable()
-                                .frame(width: 64, height: 64, alignment: .center)
-                                .padding(6)
+                                .frame(width: 42, height: 42, alignment: .center)
+//                                .padding(6)
                             Text("Terrain")
                         }
-                        .padding(8)
+                        //.padding(8)
+                        .frame(width: 80, height: 80, alignment: .center)
+                        .background(Color.black.opacity(0.5))
+                        .cornerRadius(12)
+                        .shadow(color: .white.opacity(0.4), radius: 6, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/)
                         .onTapGesture {
                             NSApp.sendAction(#selector(AppDelegate.openTerrainWindow), to: nil, from: nil)
                         }
                     }
+                    .padding()
                     
                     
                     Divider()
@@ -398,22 +427,28 @@ struct OpenSceneView: View {
                 Group {
                     HStack {
                         VStack(alignment:.leading) {
-                            Text("⚙️ Scene Machine").font(.title2).foregroundColor(.blue)
+                            Text("Scene Machine").font(.title2).foregroundColor(.blue)
                             Text("Import and export '.dae', or '.scn' files. Checkout the materials, and also print the UVMap borders, to easily visualize Texture Painting.").foregroundColor(.gray)
                         }
                         .padding(6)
+                        Spacer()
                         VStack {
                             Image(systemName:"square.stack.3d.up")
                                 .resizable()
-                                .frame(width: 64, height: 64, alignment: .center)
-                                .padding(6)
+                                .frame(width: 42, height: 42, alignment: .center)
+//                                .padding(6)
                             Text("Machine")
                         }
-                        .padding(8)
+//                        .padding(8)
+                        .frame(width: 80, height: 80, alignment: .center)
+                        .background(Color.black.opacity(0.5))
+                        .cornerRadius(12)
+                        .shadow(color: .white.opacity(0.4), radius: 6, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/)
                         .onTapGesture {
                             NSApp.sendAction(#selector(AppDelegate.openSceneMachine), to: nil, from: nil)
                         }
                     }
+                    .padding()
                     
                     //                Button("Open") {
                     //                    NSApp.sendAction(#selector(AppDelegate.openSceneMachine), to: nil, from: nil)
