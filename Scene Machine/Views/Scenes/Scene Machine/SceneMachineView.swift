@@ -164,12 +164,11 @@ struct SceneMachineView: View {
                             .padding(8)
                             .frame(minWidth:300)
                         }
-//                        Button("\(theNode.name ?? "Geom")") {
-//                            controller.isNodeOptionSelected.toggle()
-//                        }
-//                        .popover(isPresented: $controller.isNodeOptionSelected) {
-//
-//                        }
+
+                    } else {
+                        Button("+ Shape") {
+                            controller.rightView = .ShapeEditor
+                        }
                     }
                     
                     Button("Program") {
@@ -220,21 +219,42 @@ struct SceneMachineView: View {
                         .sheet(isPresented: $controller.presentingTempAlert, content: {
                             TempAlert(message: controller.tempAlertMessage)
                         })
-                        
-                    // UVMap
-                    if displayUVMap {
-                        if let node = controller.selectedNode,
-                           let geometry:SCNGeometry = node.geometry,
-                           let uvMap:[CGPoint] = controller.inspectUVMap(geometry: geometry) {
-                            ScrollView([.vertical, .horizontal], showsIndicators:true) {
-                                HStack {
-                                    UVMapStack(geometry: geometry, points: uvMap)
+                    
+                    switch controller.rightView {
+                        case .Empty: EmptyView().frame(width: 0, height: 0, alignment: .center)
+                        case .UVMap:
+                            if let node = controller.selectedNode,
+                               let geometry:SCNGeometry = node.geometry,
+                               let uvMap:[CGPoint] = controller.inspectUVMap(geometry: geometry) {
+                                ScrollView([.vertical, .horizontal], showsIndicators:true) {
+                                    HStack {
+                                        UVMapStack(geometry: geometry, points: uvMap)
+                                    }
+                                    .padding(30)
                                 }
-                                .padding(30)
+                                .frame(minWidth: 300, alignment: .trailing)
+                            }
+                        case .ShapeEditor:
+                            ScrollView([.vertical, .horizontal], showsIndicators:true) {
+                                SMShapeEditorView(controller: controller)
                             }
                             .frame(minWidth: 300, alignment: .trailing)
-                        }
                     }
+                        
+                    // UVMap
+//                    if displayUVMap {
+//                        if let node = controller.selectedNode,
+//                           let geometry:SCNGeometry = node.geometry,
+//                           let uvMap:[CGPoint] = controller.inspectUVMap(geometry: geometry) {
+//                            ScrollView([.vertical, .horizontal], showsIndicators:true) {
+//                                HStack {
+//                                    UVMapStack(geometry: geometry, points: uvMap)
+//                                }
+//                                .padding(30)
+//                            }
+//                            .frame(minWidth: 300, alignment: .trailing)
+//                        }
+//                    }
                 }
                 
             }

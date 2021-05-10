@@ -77,6 +77,7 @@ Test and export `SceneKit` scenes.
 - [X] Background `HDRI` Images
 - [X] App Geometries
 - [X] Add Geometry from `.dae`, or `.obj` files.
+- [X] Export Scenes in `.scn` or `.dae`
 - [ ] Have some sample code + shaders written in `Metal`  - `SCNProgram`
 - [ ] Test animated characters - Bones(in blender) vs SCNSkinner(Swift)
 
@@ -95,21 +96,22 @@ Create SceneKit Materials - `SCNMaterial`
 
 
 ### App Resources
+✅ = Added, ⭕️ = Buiding
 
 **Geometries**
-1. Suzanne ✅
-2. Woman ✅
-3. Prototype car ✅
-4. Trees
-5. House
+✅ Suzanne, 
+✅ Woman, 
+✅ Prototype car, 
+⭕️ Trees,
+⭕️ House
 
 **Textures**
-    ✅ Wall
-    ✅ Asphalt
-    ✅ Wood
-    ✅ UVGrid
-    ⭕️ Brushed Metal
-    ⭕️ Dirt
+    ✅ Wall,
+    ✅ Asphalt,
+    ✅ Wood,
+    ✅ UVGrid,
+    ⭕️ Brushed Metal,
+    ⭕️ Dirt,
     ⭕️ Skin
 
 ## To-Do list
@@ -131,15 +133,18 @@ Create SceneKit Materials - `SCNMaterial`
 - [X] Remove CIGenerators from Pedal2DMetal
 - [X] Under UVMap (ZStack), add image of the UV (if any)
 
+### New Features v 1.1
+- [X] Export .dae format
+- [X] App Textures
+- [X] Terrain Editor - Displace intensity
+- [X] Add SCNShape to SceneMachine
+
 - [ ] Draw textures on UVMaps
 - [ ] Ability to use .txt files that can contain code for fragment/vertex shaders
 - [ ] Make a NormalMap shader, to transform images in Normal Maps, or...
 - [ ] SpriteKit Normal map. `SKTexture.generatingNormalMap()` see: https://developer.apple.com/documentation/spritekit/sktexture/1519687-generatingnormalmap
 - [ ] 💾 Save Materials Property `SceneMaterial`
 - [ ] Improve App Help: http://swiftrien.blogspot.com/2015/06/adding-apple-help-to-os-x-application.html
-
-
-
 
 # 🍎 SceneKit
 

@@ -23,10 +23,15 @@ class NoiseController:ObservableObject {
     /// Generates a default `Perlin` noise with smoothness
     func generateNode(smooth:CGFloat) {
         let texture = SKTexture.init(noiseWithSmoothness: smooth, size: textureSize.size, grayscale: true)
+        //.generatingNormalMap()
+//        SKTexture.generatingNormalMap()
+//        texture.generatingNormalMap()
+        
         let img = texture.cgImage()
         let image = NSImage(cgImage: img, size: texture.size())
         self.currentImage = image
     }
+    
     
     /// Opens the NSSave panel to save the `currentImage`
     func openSavePanel() {

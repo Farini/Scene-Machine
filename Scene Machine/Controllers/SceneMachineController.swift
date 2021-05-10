@@ -10,10 +10,11 @@ import SceneKit
 import MetalKit
 import QuartzCore
 
+/// The View on the Right side of the SplitView Scene Machine View
 enum MachineRightView {
     case Empty
     case UVMap
-    case Other
+    case ShapeEditor
 }
 
 class SceneMachineController:ObservableObject {
@@ -26,7 +27,7 @@ class SceneMachineController:ObservableObject {
     @Published var selectedNode:SCNNode?
     @Published var isNodeOptionSelected:Bool = false
     
-    @Published var rightView:MachineRightView = .UVMap
+    @Published var rightView:MachineRightView = .Empty
     
     // Alert
     @Published var presentingTempAlert:Bool = false
@@ -211,6 +212,8 @@ class SceneMachineController:ObservableObject {
     
     // MARK: - SCNProgram
     
+    
+    
     // Program
     func addProgram() {
      
@@ -228,6 +231,42 @@ class SceneMachineController:ObservableObject {
         scene.rootNode.addChildNode(box)
         
         self.scene.isPaused = false
+    }
+    
+    // Shape
+    func makeShape(path:NSBezierPath) {
+        
+        print("Making shape path: \(path.debugDescription)")
+        
+        // Create material
+        let redMat = SCNMaterial()
+        redMat.lightingModel = .physicallyBased
+        redMat.emission.contents = NSColor.red
+        redMat.diffuse.contents = NSColor.white
+        
+        // Create Shape
+        
+        let shape = SCNShape(path: path, extrusionDepth: 1)
+//        shape.extrusionDepth = 3 // Thickness in Z Axis
+//        shape.chamferMode = .front
+//        shape.chamferRadius = 0.1
+//        shape.
+        
+        // shape.chamferProfile - Needs another bezier path (like in blender)
+        
+        shape.insertMaterial(redMat, at: 0)
+        
+        let shapeNode = SCNNode(geometry: shape)
+        shapeNode.name = "Shape"
+        shapeNode.position = SCNVector3(0, 2, 0)
+        shapeNode.scale = SCNVector3(5, 5, 5)
+        
+        let rot = SCNAction.rotateBy(x: 1.2, y: 0.2, z: 0, duration: 5)
+        shapeNode.runAction(rot)
+        
+        self.nodes.append(shapeNode)
+        self.materials.append(redMat)
+        self.scene.rootNode.addChildNode(shapeNode)
     }
     
     // MARK: - Extra Assets
@@ -273,27 +312,44 @@ class SceneMachineController:ObservableObject {
         
         let dialog = NSSavePanel() //NSOpenPanel();
         
-        dialog.title                   = "Choose destination";
+        dialog.title                   = "Saving Scene";
         dialog.showsResizeIndicator    = true;
         dialog.showsHiddenFiles        = false;
-        dialog.allowedFileTypes = ["scn", ".dae"]
-        dialog.message = "save scene"
+        dialog.allowedFileTypes        = ["scn", "dae"]
+        dialog.message = "Note: By default, it will export .scn file. Use '.dae' extension to export collada file."
         
         if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
             // Pathname of the file
             if let result = dialog.url {
-                scene.write(to: result, options: ["checkConsistency":NSNumber.init(booleanLiteral: true)], delegate: nil) { (progress, error, boolean) in
-                    print("Write progress: \(progress)")
-                    print("Error: \(error?.localizedDescription ?? "no_error")")
-                    if let error = error {
-                        self.tempAlertMessage = "\(error.localizedDescription)"
-                        self.presentingTempAlert.toggle()
-                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
+                if result.pathExtension == "dae" {
+                    print("Mode:.dae")
+                    scene.write(to: result, options: nil, delegate: nil) { (progress, error, boolean) in
+                        print("Write progress: \(progress)")
+                        print("Error: \(error?.localizedDescription ?? "no_error")")
+                        if let error = error {
+                            self.tempAlertMessage = "\(error.localizedDescription)"
                             self.presentingTempAlert.toggle()
-                            self.tempAlertMessage = ""
+                            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
+                                self.presentingTempAlert.toggle()
+                                self.tempAlertMessage = ""
+                            }
+                        }
+                    }
+                } else {
+                    scene.write(to: result, options: ["checkConsistency":NSNumber.init(booleanLiteral: true)], delegate: nil) { (progress, error, boolean) in
+                        print("Write progress: \(progress)")
+                        print("Error: \(error?.localizedDescription ?? "no_error")")
+                        if let error = error {
+                            self.tempAlertMessage = "\(error.localizedDescription)"
+                            self.presentingTempAlert.toggle()
+                            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
+                                self.presentingTempAlert.toggle()
+                                self.tempAlertMessage = ""
+                            }
                         }
                     }
                 }
+                
             }
         }
     }

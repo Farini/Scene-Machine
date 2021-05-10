@@ -19,9 +19,9 @@ extension SCNMaterial: Identifiable {
     }
 }
 
-extension SCNWrapMode {
+extension SCNWrapMode:Equatable {
     
-    static func ==(lhs:SCNWrapMode, rhs:SCNWrapMode) -> Bool {
+    public static func ==(lhs:SCNWrapMode, rhs:SCNWrapMode) -> Bool {
         return lhs.rawValue == rhs.rawValue
     }
     
@@ -34,7 +34,13 @@ extension SCNWrapMode {
             default: return "N/A"
         }
     }
+}
+
+extension SCNWrapMode:Codable, CaseIterable {
     
+    public static var allCases: [SCNWrapMode] {
+        return [SCNWrapMode.clamp, SCNWrapMode.clampToBorder, SCNWrapMode.mirror, SCNWrapMode.repeat]
+    }
 }
 
 extension SCNGeometrySource {
@@ -109,3 +115,5 @@ extension SCNGeometrySource {
         }
     }
 }
+
+

@@ -17,6 +17,7 @@ struct TerrainView: View {
     
     @State var diffuseImagePath:String = ""
     @State var displaceImagePath:String = ""
+    @State var displacementIntensity:Double = 1.0
     
     // Displacement url
     // Diffuse url
@@ -52,7 +53,11 @@ struct TerrainView: View {
                         self.textDropped()
                     }
                     
-                    
+                    SliderInputView(value: 1.0, vRange: 0...1, title: "Intensity") { intensity in
+                        self.displacementIntensity = intensity
+                        self.textDropped()
+                        self.createRectangle()
+                    }
 //                    Button("Geometry") {
 //                        self.describeTerrain()
 //                    }
@@ -78,7 +83,8 @@ struct TerrainView: View {
         dialog.title                   = "Choose a directory";
         dialog.showsResizeIndicator    = true;
         dialog.showsHiddenFiles        = false;
-        dialog.allowedFileTypes = ["scn", "dae", "obj"]
+        dialog.message = "By default, it will export .scn file. Use *.dae to export collada file."
+        dialog.allowedFileTypes = ["scn", "dae"]
         
         if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
             let result = dialog.url // Pathname of the file
@@ -104,10 +110,50 @@ struct TerrainView: View {
                 }
                 if let displacementImage = NSImage(contentsOf:URL(fileURLWithPath: self.displaceImagePath)) {
                     material.displacement.contents = displacementImage
-                    material.diffuse.intensity = 1
+                    material.displacement.intensity = CGFloat(self.displacementIntensity)
                 }
             }
         }
+    }
+    
+    func createRectangle() {
+        // Initialize the path.
+        let path = NSBezierPath()
+        
+        // Specify the point that the path should start get drawn.
+        path.move(to: CGPoint(x: 2.0, y: 3.0))
+        
+        // Create a line between the starting point and the bottom-left side of the view.
+        path.line(to: NSPoint(x: 0.0, y: 10))//(to: CGPoint(x: 0.0, y: 10))
+        
+        // Create the bottom line (bottom-left to bottom-right).
+        path.line(to: NSPoint(x: 12, y: 10))
+        
+        // Create the vertical line from the bottom-right to the top-right side.
+        path.line(to: NSPoint(x: 12, y: 0.0))
+        
+        // Close the path. This will create the last line automatically.
+        path.close()
+        
+        // Create material
+        let redMat = SCNMaterial()
+        redMat.lightingModel = .physicallyBased
+        redMat.emission.contents = NSColor.red
+        
+        // Create Shape
+        let shape = SCNShape(path: path, extrusionDepth: 1.2)
+        shape.extrusionDepth = 1 // Thickness in Z Axis
+        shape.chamferMode = .both
+        shape.chamferRadius = 0.2
+        
+        // shape.chamferProfile - Needs another bezier path (like in blender)
+        
+        shape.insertMaterial(redMat, at: 0)
+        
+        let shapeNode = SCNNode(geometry: shape)
+        
+        shapeNode.position = SCNVector3(0, 2, 0)
+        self.scene.rootNode.addChildNode(shapeNode)
     }
     
 //    func describeTerrain() {

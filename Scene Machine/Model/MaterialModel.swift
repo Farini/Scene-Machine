@@ -30,6 +30,14 @@ class SceneMaterial: Codable, Identifiable, Equatable {
         material.lightingModel = lightModel?.make() ?? .physicallyBased
         
         material.diffuse.contents =  diffuse?.makeAnyProperty()
+        
+//        material.diffuse.wrapS = .repeat
+        material.diffuse.wrapT = .repeat
+        
+//        material.diffuse.intensity
+//        material.diffuse.magnificationFilter = .linear
+//        material.diffuse.
+        
         material.metalness.contents = metalness?.makeAnyProperty() ?? 0.0
         material.roughness.contents = roughness?.makeAnyProperty() ?? 0.4
         material.normal.contents = roughness?.makeAnyProperty() ?? Color.white
@@ -144,6 +152,9 @@ class SubMaterialData:Codable {
     var imageURL:URL?
     
     var intensity:Double = 1.0
+    
+    var wrapS:SCNWrapMode = .clamp
+    var wrapT:SCNWrapMode = .clamp
     
     init() {
         
@@ -272,4 +283,9 @@ enum MaterialShading:String, Codable, CaseIterable {
         }
     }
 }
+
+// Names
+// SMMaterial
+// SMMaterialProperty
+
 

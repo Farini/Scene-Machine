@@ -1,61 +1,18 @@
 //
-//  DrawingView.swift
+//  SMShapeEditorView.swift
 //  Scene Machine
 //
-//  Created by Carlos Farini on 5/1/21.
+//  Created by Carlos Farini on 5/10/21.
 //
 
 import SwiftUI
 
-protocol PointMaker {
-    func makeMarks() -> [CGPoint]
-}
-
-class DPoint:Codable, Identifiable, PointMaker {
+struct SMShapeEditorView: View {
     
-    var id:UUID
-    var point:CGPoint
-    var control1:CGPoint?
-    var control2:CGPoint?
-    var isCurve:Bool
-    
-    init(_ point:CGPoint, curved:Bool? = false) {
-        
-        self.point = point
-        self.id = UUID()
-        self.isCurve = curved!
-        if curved == true {
-            self.control1 = CGPoint(x: point.x + 5, y: point.x + 5)
-            self.control2 = CGPoint(x: point.x - 5, y: point.x - 5)
-        }
-    }
-    
-    func toggleCurve() {
-        isCurve.toggle()
-    }
-    
-    func move(to:CGPoint) {
-        self.point = to
-    }
-    
-    func moveControl(_ idx:Int, newPoint:CGPoint) {
-        if idx == 1 { self.control1 = newPoint }
-        if idx == 2 { self.control2 = newPoint }
-    }
-    
-    func makeMarks() -> [CGPoint] {
-        if !isCurve {
-            return [point]
-        } else {
-            return [point, control1!, control2!]
-        }
-    }
-}
-
-struct DrawingView: View {
+    @ObservedObject var controller:SceneMachineController
     
     @State private var startPoint: CGPoint = CGPoint(x: 256, y: 256)
-    @State private var endPoint: CGPoint = CGPoint(x: 240, y: 256)
+    @State private var endPoint: CGPoint = CGPoint(x: 226, y: 256)
     
     @State var allPoints:[DPoint] = [DPoint(CGPoint(x: 256, y: 256))]
     @State private var lineWidth:Int = 3
@@ -65,10 +22,11 @@ struct DrawingView: View {
     @State var isCurve:Bool = false
     @State var isMoving:Bool = true
     
-    @State var strokeColor:Color = .red
+    @State var strokeColor:Color = .white
     
     var body: some View {
         VStack {
+            // Toolbar
             HStack {
                 Button("f") {
                     closePath()
@@ -90,6 +48,10 @@ struct DrawingView: View {
                     .frame(width:150)
                 
                 ColorPicker("Stroke", selection: $strokeColor)
+                
+                Button("Make Shape") {
+                    self.createShape()
+                }
             }
             .frame(height:43)
             .padding(.horizontal, 8)
@@ -100,7 +62,7 @@ struct DrawingView: View {
                 
                 // Canvas: NSView on bottom of the stack.
                 DrawingCanvas { location in
-
+                    
                     if isMoving {
                         allPoints.removeLast()
                     }
@@ -231,71 +193,38 @@ struct DrawingView: View {
         return newPath
     }
     
+    func createShape() {
+        // Initialize the path.
+        let path = NSBezierPath()
+        
+        let firstPoint = self.allPoints.first!.point
+        
+        // Specify the point that the path should start get drawn.
+//        path.move(to: self.allPoints.first!.point)
+        path.move(to: .zero)
+        
+        let remainingPoints = Array(allPoints.dropFirst())
+        
+        for point in remainingPoints {
+            if point.isCurve {
+                path.curve(to: NSPoint(x: point.point.x - firstPoint.x, y: point.point.y - firstPoint.y), controlPoint1: NSPoint(x: point.control1!.x - firstPoint.x, y: point.control1!.y - firstPoint.y), controlPoint2: NSPoint(x: point.control2!.x - firstPoint.x, y: point.control2!.y - firstPoint.y))
+            } else {
+                path.line(to: CGPoint(x: point.point.x - firstPoint.x, y: point.point.y - firstPoint.y))
+            }
+        }
+        
+//        path.close()
+        
+        controller.makeShape(path: path)
+    }
+    
     func closePath() {
         isPathClosed = true
     }
 }
 
-struct DrawingPointView: View {
-    
-    var point:DPoint
-    
-    var body: some View {
-        if point.isCurve {
-            qPoint
-        } else {
-            cPoint
-        }
-    }
-    
-    var cPoint: some View {
-        Rectangle()
-            .frame(width: 16, height: 16)
-            .foregroundColor(.green)
-        
-    }
-    var qPoint: some View {
-        Circle()
-            .frame(width: 16, height: 16)
-            .foregroundColor(.green)
-    }
-}
-
-struct DrawingCanvas:NSViewRepresentable {
-    
-    var tapCallback:((CGPoint) -> Void)
-    
-    class Coordinator:NSObject {
-        var tappedCallback:((CGPoint) -> Void)
-        init(tappedCallback: @escaping ((CGPoint) -> Void)) {
-            self.tappedCallback = tappedCallback
-        }
-        @objc func tapped(gesture:NSClickGestureRecognizer) {
-            let point = gesture.location(in: gesture.view)
-            self.tappedCallback(point)
-        }
-    }
-    
-    func makeNSView(context: Context) -> some NSView {
-        let v = NSView(frame: .zero)
-        v.layer?.backgroundColor = NSColor.red.cgColor
-        let gesture = NSClickGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.tapped))
-        v.addGestureRecognizer(gesture)
-        return v
-    }
-    
-    func makeCoordinator() -> DrawingCanvas.Coordinator {
-        return Coordinator(tappedCallback: self.tapCallback)
-    }
-    
-    func updateNSView(_ nsView: NSViewType, context: NSViewRepresentableContext<DrawingCanvas>) {
-        
-    }
-}
-
-struct DrawingView_Previews: PreviewProvider {
+struct SMShapeEditorView_Previews: PreviewProvider {
     static var previews: some View {
-        DrawingView()
+        SMShapeEditorView(controller:SceneMachineController())
     }
 }
-
