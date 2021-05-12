@@ -20,6 +20,8 @@ constant float3 kRec601Luma  = float3(0.299 , 0.587 , 0.114);
 
 extern "C" { namespace coreimage {
     
+    // MARK: - Color Tricks
+    
     float4 myColor(sample_t s) {
         
         return s.grba;
@@ -44,8 +46,6 @@ extern "C" { namespace coreimage {
         //        float2 uv = sample.coord()
         return filtered;
     }
-    
-    
     
     // MARK: - Noises
     
@@ -211,6 +211,8 @@ extern "C" { namespace coreimage {
         return float4(col, 1);
     }
     
+    // Voronoi
+    
     // Random position
     float2 Noise22(float2 p) {
         float3 a = fract(p.xyx * float3(123.34, 234.34, 345.65));
@@ -218,10 +220,32 @@ extern "C" { namespace coreimage {
         return fract(float2(a.x*a.y, a.y*a.z));
     }
     
-    float4 voronoi(sample_t sample, float2 size, float tilecount, float time, destination dest) {
-        float2 uv = (dest.coord() - .5 * size.xy) / size.y;
+    float2 BetterNoise(float2 pos) {
+        return fract(cos(pos*float2x2(-64.2,71.3,81.4,-29.8))*8321.3);
+    }
+    
+    float Worley(float2 pos) {
+        float Dist = 1.0;
+        float2 flo = floor(pos);
+        float2 fra = fract(pos);
         
-        //        float m = 0;
+        for(int X = -1;X<=1;X++)
+            for(int Y = -1;Y<=1;Y++)
+            {
+                float D = distance(BetterNoise(flo+float2(X,Y))+float2(X,Y),fra);
+                Dist = min(Dist,D);
+            }
+        return Dist;
+    }
+    
+    float4 voronoi(sample_t sample, float2 size, float tilecount, float time, destination dest) {
+        
+        float tilesize = 160 - 8.0 * tilecount;
+        
+        return float4(float3(Worley(dest.coord()/tilesize+time)),1.0);
+        
+        /*
+        float2 uv = (dest.coord() - .5 * size.xy) / size.y;
         float t = time;
         
         uv *= tilecount;
@@ -260,6 +284,7 @@ extern "C" { namespace coreimage {
         float3 col = float3(minDist);
         
         return float4(col, 1.0);
+         */
     }
     
     // Waves
@@ -838,46 +863,6 @@ extern "C" { namespace coreimage {
         
         return centerPoint;
     }
-    
-    // It is possible to use the following....
-    // see: https://tech.unifa-e.com/entry/2019/05/17/185120
-    /*
-     extension CIImage {
-     func laplacian(metalLib: Data) -> CIImage? {
-     guard let kernel = try? CIKernel(functionName: "laplacian", fromMetalLibraryData: metalLib) else {
-     return self
-     }
-     
-     let correctedImage = kernel.apply(extent: extent, roiCallback: { i, r in r }, arguments: [self])
-     return correctedImage
-     }
-     }
-     
-     guard let url = Bundle.main.url(forResource: "default", withExtension: "metallib") else {
-     fatalError("Not found default.metallib.")
-     }
-     guard let data = try? Data(contentsOf: url) else {
-     fatalError("The default.metallib can not read as Data.")
-     }
-     
-     let image = UIImage(named: "lena.png")!
-     let ciImage = CIImage(image: image)
-     let laplacianImage = ciImage?.laplacian(metalLib: data)
-     */
-//    void laplatian(sampler_h s, group::destination_h dest) {
-//        float2 dc = dest.coord();
-//        half4 g1 = s.gatherX(s.transform(dc + float2(-0.5,-0.5)));
-//        half4 g2 = s.gatherX(s.transform(dc + float2( 1.5,-0.5)));
-//        half4 g3 = s.gatherX(s.transform(dc + float2(-0.5, 1.5)));
-//        half4 g4 = s.gatherX(s.transform(dc + float2( 1.5, 1.5)));
-//
-//        half r1 = (g1.y -4 * g1.z + g1.w + g2.w + g3.y);
-//        half r2 = (g2.y -4 * g2.z + g2.w + g1.z + g4.x);
-//        half r3 = (g3.x -4 * g3.y + g3.w + g1.z + g4.x);
-//        half r4 = (g4.x -4 * g4.y + g4.w + g2.w + g3.y);
-//
-//        dest.write(half4(r1, r1, r1, 1), half4(r2, r2, r2, 1), half4(r3, r3, r3, 1), half4(r4, r4, r4, 1));
-//    }
     
     float4 laplatian(sampler_h s, destination dest) {
         

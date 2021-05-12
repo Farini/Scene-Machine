@@ -61,20 +61,42 @@ struct MetalTilesView: View {
                     Text("Hexagons")
                     // Number of tiles, Color inside?, Color outside?
                     CounterInput(value: $stepCount1, range: 1...20, title: "Time")
+                        .onChange(of: stepCount1) { value in
+                            updatePreview()
+                        }
                     CounterInput(value: $stepCount2, range: 5...20, title: "Tile Count")
+                        .onChange(of: stepCount2) { value in
+                            updatePreview()
+                        }
                     
                 case .Checkerboard:
                     CounterInput(value: $stepCount1, range: 5...20, title: "Tile Count")
+                        .onChange(of: stepCount1) { value in
+                            updatePreview()
+                        }
                     CounterInput(value: $stepCount2, range: 1...3, title: "Method")
+                        .onChange(of: stepCount2) { value in
+                            updatePreview()
+                        }
                     Text("Method 1: Gradient, 2 = Random, 3 = white")
                 case .RandomMaze:
                     CounterInput(value: $stepCount1, range: 1...20, title: "Tile Count")
+                        .onChange(of: stepCount1) { value in
+                            updatePreview()
+                        }
                 case .Truchet:
                     CounterInput(value: $stepCount1, range: 1...20, title: "Tile Count")
+                        .onChange(of: stepCount1) { value in
+                            updatePreview()
+                        }
                 case .Bricks:
                     CounterInput(value: $stepCount1, range: 1...20, title: "Tile Count")
+                        .onChange(of: stepCount1) { value in
+                            updatePreview()
+                        }
                     SliderInputView(value: 0.5, vRange: 0.5...1.5, title: "Normal / Color") { value in
                         self.slider1 = Float(value)
+                        updatePreview()
                     }
                     
 //                default: Text("Not Implemented").foregroundColor(.gray)

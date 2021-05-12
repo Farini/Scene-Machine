@@ -260,7 +260,7 @@ struct DrawingPointView: View {
             .foregroundColor(.green)
     }
 }
-
+import SceneKit
 struct DrawingCanvas:NSViewRepresentable {
     
     var tapCallback:((CGPoint) -> Void)
@@ -272,6 +272,7 @@ struct DrawingCanvas:NSViewRepresentable {
         }
         @objc func tapped(gesture:NSClickGestureRecognizer) {
             let point = gesture.location(in: gesture.view)
+            
             self.tappedCallback(point)
         }
     }
@@ -298,4 +299,5 @@ struct DrawingView_Previews: PreviewProvider {
         DrawingView()
     }
 }
+
 

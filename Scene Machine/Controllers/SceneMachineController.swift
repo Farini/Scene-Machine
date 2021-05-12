@@ -259,11 +259,23 @@ class SceneMachineController:ObservableObject {
         
         let shapeNode = SCNNode(geometry: shape)
         shapeNode.name = "Shape"
-        shapeNode.position = SCNVector3(0, 2, 0)
-        shapeNode.scale = SCNVector3(5, 5, 5)
         
-        let rot = SCNAction.rotateBy(x: 1.2, y: 0.2, z: 0, duration: 5)
-        shapeNode.runAction(rot)
+        
+        shapeNode.scale = SCNVector3(0.05, 0.05, 0.05)
+        
+        let bb = abs(shape.boundingBox.min.y) * 0.05
+        shapeNode.position = SCNVector3(0, bb, 0)
+        print("Bounding box: Min:\(shape.boundingBox.min.y), Max:\(shape.boundingBox.max.y)")
+        
+        shapeNode.look(at: scene.rootNode.childNode(withName: "camera", recursively: false)?.position ?? SCNVector3())
+        
+        let bc = abs(shape.boundingBox.min.y) * 0.025
+        shapeNode.position = SCNVector3(0, bc, 0)
+        print("Bounding box2: Min:\(shape.boundingBox.min.y), Max:\(shape.boundingBox.max.y)")
+        
+        
+        // let rot = SCNAction.rotateBy(x: 1.2, y: 0.2, z: 0, duration: 5)
+        // shapeNode.runAction(rot)
         
         self.nodes.append(shapeNode)
         self.materials.append(redMat)

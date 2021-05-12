@@ -461,3 +461,48 @@ class EpitrochoidalWaves:CIFilter {
         return kernel.apply(extent: inputImage.extent, arguments: [src, vec, fZoom, time])
     }
 }
+
+class PlasmaFilter:CIFilter {
+    
+    private var kernel:CIColorKernel
+    var inputImage:CIImage?
+    var tileSize:Float = 512.0
+    var time:Float = 1
+    var iterations:Float = 5
+    var sharpness:Float = 1
+    
+    override init() {
+        let url = Bundle.main.url(forResource: "Kernels2.ci", withExtension: "metallib")!
+        guard let data = try? Data(contentsOf: url) else { fatalError() }
+        guard let kern = try? CIColorKernel(functionName: "plasma", fromMetalLibraryData: data) else { fatalError() } // myColor // hexagons
+        self.kernel = kern
+        super.init()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func outputImage() -> CIImage? {
+        
+        if inputImage == nil {
+            let baseImage = NSImage(size: NSSize(width: CGFloat(tileSize), height: CGFloat(tileSize)))
+            guard let inputData = baseImage.tiffRepresentation,
+                  let bitmap = NSBitmapImageRep(data: inputData),
+                  let inputCIImage = CIImage(bitmapImageRep: bitmap) else {
+                print("Missing something")
+                return nil
+            }
+            self.inputImage = inputCIImage
+        }
+        
+        guard let inputImage = inputImage else {return nil}
+        
+        let src = CISampler(image: inputImage)
+//        let iterations:Float = 5
+//        let sharpness:Float = 1
+        
+        // plasma(sample_t sample, float time, float iterations, float sharpness, float scale, destination dest) {
+        return kernel.apply(extent: inputImage.extent, arguments: [src, time, iterations, sharpness, tileSize])
+    }
+}

@@ -36,6 +36,7 @@ struct MetalNoiseView: View {
         case Caustic
         case Waves
         case Epitrochoidal
+        case Plasma
     }
     
     @State var noiseType:MetalNoiseType = .Voronoi
@@ -60,14 +61,24 @@ struct MetalNoiseView: View {
                     Text("Voronoi")
                     // Number of tiles, Color inside?, Color outside?
                     CounterInput(value: $stepCount1, range: 1...20, title: "Time")
-                    CounterInput(value: $stepCount2, range: 5...20, title: "Tile Count")
+                        .onChange(of: stepCount1) { value in
+                            updatePreview()
+                        }
+                    CounterInput(value: $stepCount2, range: 5...17, title: "Tile Count")
+                        .onChange(of: stepCount2) { _ in
+                            updatePreview()
+                        }
                 case .Caustic:
                     Text("Caustic")
                     // Tile size
                     // Time
                     CounterInput(value: $stepCount1, range: 1...20, title: "Time")
+                        .onChange(of: stepCount1) { value in
+                            updatePreview()
+                        }
                     SliderInputView(value: slider1, vRange: 0.1...1.0, title: "Tile size") { (tileSize) in
                         self.slider1 = Float(tileSize)
+                        updatePreview()
                     }
                 case .Waves:
                     Text("Waves")
@@ -78,9 +89,27 @@ struct MetalNoiseView: View {
                     
                     SliderInputView(value: slider1, vRange: 0.1...1.0, title: "Time") { time in
                         self.slider1 = Float(time)
+                        updatePreview()
                     }
                     CounterInput(value: $stepCount1, range: 3...10, title: "Zoom")
+                        .onChange(of: stepCount1) { value in
+                            updatePreview()
+                        }
                     Text("Produces Epitrochoidal Waves.")
+                case .Plasma:
+                    
+                    CounterInput(value: $stepCount1, range: 3...10, title: "Iterations")
+                        .onChange(of: stepCount1) { value in
+                            updatePreview()
+                        }
+                    SliderInputView(value: 1, vRange: 1...24, title: "Time") { newTime in
+                        self.slider1 = Float(newTime)
+                        updatePreview()
+                    }
+                    SliderInputView(value: 1, vRange: 0...2, title: "Sharpness") { newTime in
+                        self.slider2 = Float(newTime)
+                        updatePreview()
+                    }
             }
             
             Divider()
@@ -243,6 +272,28 @@ struct MetalNoiseView: View {
                 filter.tileSize = Float(controller.textureSize.size.width)
                 filter.time = slider1
                 filter.zoom = stepCount1
+                
+                guard let output = filter.outputImage(),
+                      let cgOutput = context.createCGImage(output, from: output.extent)
+                else {
+                    print("⚠️ No output image")
+                    return
+                }
+                
+                let filteredImage = NSImage(cgImage: cgOutput, size: mainImage.size)
+                
+                controller.updateImage(new: filteredImage, isPreview: isPreviewing)
+                
+            case .Plasma:
+                
+                let filter = PlasmaFilter()
+                filter.inputImage = coreImage
+                filter.tileSize = Float(controller.textureSize.size.width)
+                filter.time = slider1
+                filter.iterations = Float(stepCount1)
+                filter.sharpness = slider2
+                
+//                filter.zoom = stepCount1
                 
                 guard let output = filter.outputImage(),
                       let cgOutput = context.createCGImage(output, from: output.extent)

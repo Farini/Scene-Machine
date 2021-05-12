@@ -15,14 +15,13 @@ struct SMShapeEditorView: View {
     @State private var endPoint: CGPoint = CGPoint(x: 226, y: 256)
     
     @State var allPoints:[DPoint] = [DPoint(CGPoint(x: 256, y: 256))]
-    @State private var lineWidth:Int = 3
-    
-    @State var drawnPaths:[DPoint] = []
+
     @State var isPathClosed:Bool = false
     @State var isCurve:Bool = false
     @State var isMoving:Bool = true
     
-    @State var strokeColor:Color = .white
+    /// Currently dragging the next point
+    @State var draggingPoint:CGPoint?
     
     var body: some View {
         VStack {
@@ -33,21 +32,16 @@ struct SMShapeEditorView: View {
                 }
                 .keyboardShortcut("f", modifiers: [])
                 .help("f is for 'face'. It closes the path, creating an edge from the last point to the initial point.")
-                Button("t") {
-                    print("Terminate")
-                    drawnPaths.append(contentsOf: allPoints)
+                
+                Button("Clear") {
                     allPoints = [DPoint(CGPoint(x: 256, y: 256))]
                 }
+                
                 Divider()
                 Spacer()
                 Toggle(isOn: $isCurve, label: {
                     Text("Curve")
                 })
-                
-                ShortCounterInput(title: "Width", value: $lineWidth, range: 1...20)
-                    .frame(width:150)
-                
-                ColorPicker("Stroke", selection: $strokeColor)
                 
                 Button("Make Shape") {
                     self.createShape()
@@ -87,8 +81,8 @@ struct SMShapeEditorView: View {
                         path.closeSubpath()
                     }
                 }
-                .strokedPath(StrokeStyle(lineWidth: CGFloat(lineWidth), lineCap: .square, lineJoin: .round))
-                .foregroundColor(strokeColor)
+                .strokedPath(StrokeStyle(lineWidth: 2, lineCap: .square, lineJoin: .round))
+                .foregroundColor(.white)
                 
                 //Circle 1
                 Circle()
@@ -100,6 +94,12 @@ struct SMShapeEditorView: View {
                                     self.startPoint = CGPoint(x: value.location.x, y: value.location.y)
                                 })
                 
+                // Dragging
+                if let dp = draggingPoint {
+                    makePath(from: dp, to: allPoints.last!.point)
+                        .strokedPath(StrokeStyle(lineWidth: CGFloat(0.5), lineCap: .square, lineJoin: .round))
+                        .foregroundColor(.yellow.opacity(0.5))
+                }
                 //Circle 2
                 DrawingPointView(point: allPoints.last!)
                     .frame(width: 16, height: 16)
@@ -108,13 +108,13 @@ struct SMShapeEditorView: View {
                     .gesture(DragGesture()
                                 .onChanged { (value) in
                                     self.endPoint = CGPoint(x: value.location.x, y: value.location.y)
+                                    self.draggingPoint = value.location
                                 }
                                 .onEnded({ ended in
                                     if isCurve {
                                         let rPoint = DPoint((CGPoint(x: ended.location.x, y: ended.location.y)), curved: true)
-                                        
                                         allPoints.append(rPoint)
-                                        
+                                        self.draggingPoint = nil
                                     } else {
                                         allPoints.append(DPoint(CGPoint(x: ended.location.x, y: ended.location.y)))
                                     }
@@ -200,16 +200,15 @@ struct SMShapeEditorView: View {
         let firstPoint = self.allPoints.first!.point
         
         // Specify the point that the path should start get drawn.
-//        path.move(to: self.allPoints.first!.point)
         path.move(to: .zero)
         
         let remainingPoints = Array(allPoints.dropFirst())
         
         for point in remainingPoints {
             if point.isCurve {
-                path.curve(to: NSPoint(x: point.point.x - firstPoint.x, y: point.point.y - firstPoint.y), controlPoint1: NSPoint(x: point.control1!.x - firstPoint.x, y: point.control1!.y - firstPoint.y), controlPoint2: NSPoint(x: point.control2!.x - firstPoint.x, y: point.control2!.y - firstPoint.y))
+                path.curve(to: NSPoint(x: firstPoint.x - point.point.x, y: firstPoint.y - point.point.y), controlPoint1: NSPoint(x: firstPoint.x - point.control1!.x, y: firstPoint.y - point.control1!.y), controlPoint2: NSPoint(x: firstPoint.x - point.control2!.x , y: firstPoint.y - point.control2!.y))
             } else {
-                path.line(to: CGPoint(x: point.point.x - firstPoint.x, y: point.point.y - firstPoint.y))
+                path.line(to: CGPoint(x:firstPoint.x - point.point.x, y: firstPoint.y - point.point.y))
             }
         }
         
@@ -219,7 +218,7 @@ struct SMShapeEditorView: View {
     }
     
     func closePath() {
-        isPathClosed = true
+        isPathClosed.toggle()
     }
 }
 

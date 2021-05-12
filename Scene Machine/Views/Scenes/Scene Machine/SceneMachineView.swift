@@ -147,7 +147,7 @@ struct SceneMachineView: View {
                             
                             VStack {
                                 Text("\(theNode.name ?? "Node")")
-                                SceneView(scene: self.sceneWithWired(node: theNode.clone()), pointOfView: nil, options: .allowsCameraControl, preferredFramesPerSecond: 30, antialiasingMode: .multisampling2X, delegate: nil, technique: nil)
+                                SceneView(scene: self.sceneWithWired(node: theNode.flattenedClone()), pointOfView: nil, options: .allowsCameraControl, preferredFramesPerSecond: 30, antialiasingMode: .multisampling2X, delegate: nil, technique: nil)
                                     .frame(width: 300, height: 300, alignment: .center)
                             }
                             .padding(8)
@@ -269,11 +269,19 @@ struct SceneMachineView: View {
                 .frame(width:1024, height:1024, alignment: .center)
         }
     }
+    
     func sceneWithWired(node:SCNNode) -> SCNScene {
+        
         let newScene = SCNScene()
         newScene.rootNode.addChildNode(node)
-        node.geometry?.firstMaterial?.fillMode = .lines
-        newScene.background.contents = NSColor.gray
+        
+        // Create ew material, so we don't mess with the existing
+        let newMaterial = SCNMaterial()
+        newMaterial.diffuse.contents = node.geometry?.firstMaterial?.diffuse.contents ?? NSColor.white
+        newMaterial.fillMode = .lines
+        node.geometry?.insertMaterial(newMaterial, at: 0)
+        
+        newScene.background.contents = NSColor.darkGray
         return newScene
     }
 }

@@ -138,6 +138,8 @@ Create SceneKit Materials - `SCNMaterial`
 - [X] App Textures
 - [X] Terrain Editor - Displace intensity
 - [X] Add SCNShape to SceneMachine
+- [X] Better Voronoi
+- [X] Plasma Generator
 
 - [ ] Draw textures on UVMaps
 - [ ] Ability to use .txt files that can contain code for fragment/vertex shaders
