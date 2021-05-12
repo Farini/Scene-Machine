@@ -243,6 +243,7 @@ class SceneMachineController:ObservableObject {
         redMat.lightingModel = .physicallyBased
         redMat.emission.contents = NSColor.red
         redMat.diffuse.contents = NSColor.white
+//        redMat.isDoubleSided = true
         
         // Create Shape
         

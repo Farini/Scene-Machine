@@ -7,24 +7,35 @@
 
 import SwiftUI
 import SceneKit
+import ModelIO
+import SceneKit.ModelIO
 
 struct TerrainView: View {
     
     @ObservedObject var exporter:SceneExporter
-    @State var scene:SCNScene = SCNScene(named: "Scenes.scnassets/Terrain.scn")!
+    @State var scene:SCNScene = TerrainView.createTerrain() //SCNScene(named: "Scenes.scnassets/Terrain.scn")!
     
     @State private var dragOver = false
     
     @State var diffuseImagePath:String = ""
     @State var displaceImagePath:String = ""
-    @State var displacementIntensity:Double = 1.0
+    @State var displacementIntensity:Double = 0.2
     
-    // Displacement url
-    // Diffuse url
-    // Ambient Occlusion?
+    // Controllable parts
+    // ------------------
+    // Material roughness
+    // Light Position
+    // Light Color
+    // Sky Arrangement
+    // Mesh 'creaseThreshold' property
+    // plane.widthSegmentCount = 200
+    // plane.heightSegmentCount = 200
+    // subdivisions
+    // Scene background
+    // Environment Lighting
     
     init() {
-        let theScene = SCNScene(named: "Scenes.scnassets/Terrain.scn")!
+        let theScene = TerrainView.createTerrain() //SCNScene(named: "Scenes.scnassets/Terrain.scn")!
         self.exporter = SceneExporter(scene: theScene)
     }
     
@@ -45,6 +56,7 @@ struct TerrainView: View {
                         self.diffuseImagePath = droppedURL.path
                         self.textDropped()
                     }
+                    .help("Color Map of the terrain")
                     
                     Text("Displacement")
                     SubMatImageArea(url: nil, active: true, image: nil) { droppedImage, droppedURL in
@@ -52,18 +64,14 @@ struct TerrainView: View {
                         self.displaceImagePath = droppedURL.path
                         self.textDropped()
                     }
+                    .help("Height Map of the terrain")
                     
-                    SliderInputView(value: 1.0, vRange: 0...1, title: "Intensity") { intensity in
+                    SliderInputView(value: 0.2, vRange: 0...1, title: "Intensity") { intensity in
                         self.displacementIntensity = intensity
                         self.textDropped()
-                        self.createRectangle()
                     }
-//                    Button("Geometry") {
-//                        self.describeTerrain()
-//                    }
                     
                     Button("Export") {
-                        
                         exportScene()
                     }
                 }
@@ -75,12 +83,95 @@ struct TerrainView: View {
         }
     }
     
+    static func createTerrain() -> SCNScene {
+        
+        // Plane Geometry
+        let plane = SCNPlane(width: 4, height: 4)
+        plane.widthSegmentCount = 200
+        plane.heightSegmentCount = 200
+//        plane.cornerSegmentCount = 10
+//        plane.cornerRadius = 2
+        plane.name = "Terrain"
+        
+        // Material
+        let material = SCNMaterial()
+        material.lightingModel = .physicallyBased
+        material.name = "TerrainMaterial"
+        material.diffuse.contents = NSColor(calibratedRed: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
+        material.roughness.contents = 0.75
+        material.displacement.contents = "Scenes.scnassets/UVMaps/CausticNoise.png" //NSImage(byReferencingFile:
+        material.displacement.intensity = 0.2
+        
+        //(named: "Scenes.scnassets/UVMaps/CausticNoise.png")
+        material.isDoubleSided = true
+        
+        plane.insertMaterial(material, at: 0)
+        
+        // Plane Mesh
+//        let planeMesh = MDLMesh(planeWithExtent: vector_float3(4, 4, 0), segments: vector_uint2(100, 100), geometryType: .quads, allocator: nil)
+        let planeMesh = MDLMesh(scnGeometry: plane)
+        planeMesh.addNormals(withAttributeNamed: "normal", creaseThreshold: 0.2)
+        
+        // SCNGeometry Node
+//        let planeNode = SCNNode(geometry: plane)
+//        planeNode.name = "Plane"
+//        planeNode.castsShadow = true
+        
+        // MDL Node
+        let planeNode = SCNNode(mdlObject: planeMesh)
+        planeNode.name = "plane"
+        planeNode.eulerAngles = SCNVector3(x: -.pi/2, y: 0, z: 0)
+        
+        // Camera
+        let camera = SCNCamera()
+        let camNode = SCNNode()
+        camNode.camera = camera
+        camNode.position = SCNVector3(x: -5, y: 1, z: 5)
+        camNode.look(at: SCNVector3(0, 0, 0))
+        
+        
+        // Light
+        let light = SCNLight()
+        light.type = .directional
+        light.color = NSColor(calibratedRed: 0.9, green: 0.8, blue: 0.9, alpha: 1.0)
+        light.castsShadow = true
+        light.automaticallyAdjustsShadowProjection = true
+        light.shadowCascadeCount = 2
+        light.shadowCascadeSplittingFactor = 0.15
+        light.shadowSampleCount = 2
+        
+        // Light Node
+        let lNode = SCNNode()
+        lNode.light = light
+        lNode.position = SCNVector3(3.0, 1.0, 1.0)
+        lNode.look(at: SCNVector3(x: 0, y: 0, z: 0))
+        
+        // Scene
+        let baseScene = SCNScene()
+        baseScene.rootNode.addChildNode(planeNode)
+        baseScene.rootNode.addChildNode(lNode)
+        baseScene.rootNode.addChildNode(camNode)
+        
+        // Environment
+        let sky = MDLSkyCubeTexture(name: "sky",
+                                    channelEncoding: .float16,
+                                    textureDimensions: vector_int2(128, 128),
+                                    turbidity: 0,
+                                    sunElevation: 1.5,
+                                    upperAtmosphereScattering: 0.5,
+                                    groundAlbedo: 0.5)
+        
+        baseScene.background.contents = sky
+        baseScene.lightingEnvironment.contents = sky
+        
+        return baseScene
+    }
+    
     func exportScene() {
         
+        let dialog = NSSavePanel()
         
-        let dialog = NSSavePanel() //NSOpenPanel();
-        
-        dialog.title                   = "Choose a directory";
+        dialog.title                   = "Save Scene";
         dialog.showsResizeIndicator    = true;
         dialog.showsHiddenFiles        = false;
         dialog.message = "By default, it will export .scn file. Use *.dae to export collada file."
@@ -88,11 +179,8 @@ struct TerrainView: View {
         
         if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
             let result = dialog.url // Pathname of the file
-            
             if let result = result {
-                
                 self.exporter.exportScene(to: result)
-                
             }
         } else {
             // User clicked on "Cancel"
@@ -104,10 +192,12 @@ struct TerrainView: View {
         if let plane = scene.rootNode.childNode(withName: "plane", recursively: false) {
             print("plane")
             if let material = plane.geometry?.materials.first {
+                
                 if let diffuseImage = NSImage(contentsOf:URL(fileURLWithPath: self.diffuseImagePath)) {
                     material.diffuse.contents = diffuseImage
                     material.diffuse.intensity = 1
                 }
+                
                 if let displacementImage = NSImage(contentsOf:URL(fileURLWithPath: self.displaceImagePath)) {
                     material.displacement.contents = displacementImage
                     material.displacement.intensity = CGFloat(self.displacementIntensity)
@@ -115,59 +205,6 @@ struct TerrainView: View {
             }
         }
     }
-    
-    func createRectangle() {
-        // Initialize the path.
-        let path = NSBezierPath()
-        
-        // Specify the point that the path should start get drawn.
-        path.move(to: CGPoint(x: 2.0, y: 3.0))
-        
-        // Create a line between the starting point and the bottom-left side of the view.
-        path.line(to: NSPoint(x: 0.0, y: 10))//(to: CGPoint(x: 0.0, y: 10))
-        
-        // Create the bottom line (bottom-left to bottom-right).
-        path.line(to: NSPoint(x: 12, y: 10))
-        
-        // Create the vertical line from the bottom-right to the top-right side.
-        path.line(to: NSPoint(x: 12, y: 0.0))
-        
-        // Close the path. This will create the last line automatically.
-        path.close()
-        
-        // Create material
-        let redMat = SCNMaterial()
-        redMat.lightingModel = .physicallyBased
-        redMat.emission.contents = NSColor.red
-        
-        // Create Shape
-        let shape = SCNShape(path: path, extrusionDepth: 1.2)
-        shape.extrusionDepth = 1 // Thickness in Z Axis
-        shape.chamferMode = .both
-        shape.chamferRadius = 0.2
-        
-        // shape.chamferProfile - Needs another bezier path (like in blender)
-        
-        shape.insertMaterial(redMat, at: 0)
-        
-        let shapeNode = SCNNode(geometry: shape)
-        
-        shapeNode.position = SCNVector3(0, 2, 0)
-        self.scene.rootNode.addChildNode(shapeNode)
-    }
-    
-//    func describeTerrain() {
-//        if let plane = scene.rootNode.childNode(withName: "plane", recursively: false) {
-//            print("plane")
-//            if let geometry = plane.geometry {
-//                print("Geometry: \(geometry.elementCount)")
-//                if let gsource = geometry.sources.first {
-//                    print("Source: \(gsource.debugDescription)")
-//                    print("Semantic: \(gsource.semantic.rawValue)")
-//                }
-//            }
-//        }
-//    }
 }
 
 struct TerrainView_Previews: PreviewProvider {
@@ -225,8 +262,6 @@ struct DroppableArea: View {
     }
 }
 
-// 1 Image Only
-// SubMatImageArea -> Drop Image
 struct SubMatImageArea: View {
     
     @State var url:URL?
@@ -267,7 +302,6 @@ struct SubMatImageArea: View {
         }
     }
 }
-// MatImageDelegate -> DropDelegate
 
 struct MyDropDelegate: DropDelegate {
     

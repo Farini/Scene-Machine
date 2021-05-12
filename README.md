@@ -142,7 +142,7 @@ Create SceneKit Materials - `SCNMaterial`
 - [ ] Draw textures on UVMaps
 - [ ] Ability to use .txt files that can contain code for fragment/vertex shaders
 - [ ] Make a NormalMap shader, to transform images in Normal Maps, or...
-- [ ] SpriteKit Normal map. `SKTexture.generatingNormalMap()` see: https://developer.apple.com/documentation/spritekit/sktexture/1519687-generatingnormalmap
+- [ ] SpriteKit Normal map. `SKTexture.generatingNormalMap()` 
 - [ ] 💾 Save Materials Property `SceneMaterial`
 - [ ] Improve App Help: http://swiftrien.blogspot.com/2015/06/adding-apple-help-to-os-x-application.html
 

@@ -173,7 +173,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBAction func openNoiseMaker(_ sender: NSMenuItem) {
         
         if nil == quickNoiseWindow {
-            let view = NoiseMakerView()
+            let view = QuickNoiseView()
             quickNoiseWindow = NSWindow(
                 contentRect: NSRect(x: 0, y: 0, width: 900, height: 500),
                 styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],

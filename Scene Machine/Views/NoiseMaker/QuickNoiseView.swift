@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct NoiseMakerView: View {
+struct QuickNoiseView: View {
     
-    @ObservedObject var controller:NoiseController = NoiseController()
+    @ObservedObject var controller:QuickNoiseController = QuickNoiseController()
     @State var sliderVal:Float = Float(0.5)
     
     var body: some View {
@@ -66,6 +66,6 @@ struct NoiseMakerView: View {
 
 struct NoiseMakerView_Previews: PreviewProvider {
     static var previews: some View {
-        NoiseMakerView()
+        QuickNoiseView()
     }
 }

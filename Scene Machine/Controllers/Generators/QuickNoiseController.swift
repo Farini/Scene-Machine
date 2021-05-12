@@ -8,7 +8,7 @@
 import Foundation
 import SpriteKit
 
-class NoiseController:ObservableObject {
+class QuickNoiseController:ObservableObject {
     
     @Published var currentImage:NSImage
     @Published var textureSize:TextureSize = .small
@@ -22,10 +22,8 @@ class NoiseController:ObservableObject {
     
     /// Generates a default `Perlin` noise with smoothness
     func generateNode(smooth:CGFloat) {
-        let texture = SKTexture.init(noiseWithSmoothness: smooth, size: textureSize.size, grayscale: true)
-        //.generatingNormalMap()
-//        SKTexture.generatingNormalMap()
-//        texture.generatingNormalMap()
+        
+        let texture = SKTexture.init(noiseWithSmoothness: smooth, size: textureSize.size, grayscale: true)// .generatingNormalMap()
         
         let img = texture.cgImage()
         let image = NSImage(cgImage: img, size: texture.size())
@@ -42,7 +40,7 @@ class NoiseController:ObservableObject {
         dialog.showsResizeIndicator    = true;
         dialog.showsHiddenFiles        = false;
         dialog.allowedFileTypes = ["png", "jpg", "jpeg"]
-        dialog.message = "save scene"
+        dialog.message = "Save image. If not extension is provided, a 'png' file will be created."
         
         if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
             
@@ -59,21 +57,6 @@ class NoiseController:ObservableObject {
             // User clicked on "Cancel"
             return
         }
-    }
-    
-    // Deprecate
-    func mixImages() {
-        let texture = SKTexture.init(noiseWithSmoothness: 0.5, size: CGSize(width: 512, height: 512), grayscale: true)
-        let img = currentImage.cgImage(forProposedRect: nil, context: nil, hints: nil) ?? texture.cgImage()
-        let ciimg = CIImage(cgImage: img)
-        
-        let newTexture = SKTexture.init(noiseWithSmoothness: 0.85, size: CGSize(width: 512, height: 512), grayscale: true).cgImage()
-        let newImage = ciimg.composited(over: CIImage(cgImage:newTexture))
-        
-        let rep = NSCIImageRep(ciImage: newImage)
-        let nsImage = NSImage(size: rep.size)
-        nsImage.addRepresentation(rep)
-        self.currentImage = nsImage
     }
     
 }

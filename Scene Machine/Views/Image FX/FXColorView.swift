@@ -52,7 +52,7 @@ struct FXColorView: View {
             
             switch colorType {
                 case .Threshold:
-                    SliderInputView(value: 1.0, vRange: 0...2, title: "Threshold") { threshold in
+                    SliderInputView(value: 0.5, vRange: 0...1, title: "Threshold") { threshold in
                         self.slider1 = Float(threshold)
                     }
                     HStack {
@@ -74,13 +74,13 @@ struct FXColorView: View {
                 
                 case .ColorControls:
                     // Saturation 1.0 (0 - 2), Brightness 1.0 (0 - 2), Contrast 1.0 (0 - 2)
-                    SliderInputView(value: 1.0, vRange: 0...2, title: "Saturation") { saturation in
+                    SliderInputView(value: 0.5, vRange: -1...1, title: "Saturation") { saturation in
                         self.slider1 = Float(saturation)
                     }
-                    SliderInputView(value: 1.0, vRange: 0...2, title: "Brighness") { brightness in
+                    SliderInputView(value: 0.5, vRange: -1...1, title: "Brighness") { brightness in
                         self.slider2 = Float(brightness)
                     }
-                    SliderInputView(value: 1.0, vRange: 0...2, title: "Contrast") { contrast in
+                    SliderInputView(value: 0.5, vRange: -1...1, title: "Contrast") { contrast in
                         self.slider3 = Float(contrast)
                     }
                     
@@ -88,7 +88,7 @@ struct FXColorView: View {
                     
                 case .ExposureAdjust:
                     // ev
-                    SliderInputView(value: 0.5, vRange: 0...1, title: "Exposure") { exposure in
+                    SliderInputView(value: 0.5, vRange: -1...1, title: "Exposure") { exposure in
                         self.slider1 = Float(exposure)
                     }
                     Text(colorType.descriptor)
@@ -322,7 +322,7 @@ struct FXColorView: View {
                 
                     // CGPoint(x:inputPoint.x * image!.size.width, y: inputPoint.y * image!.size.height)
                 filter.intensity = slider1
-                filter.radius = slider2
+                filter.radius = slider2 * Float(image!.size.width)
                 
                 guard let output = filter.outputImage else { return }
                 

@@ -498,9 +498,9 @@ extern "C" { namespace coreimage {
         
         //float2 uv = dest.coord() / size.xy;
         // float2 uv = (dest.coord() - .5 * size.xy) / size.y;
-        float2 texelSize = 1.0 / size.xy;
+        float2 texelSize = 2.0 / size.xy;
         
-        float2 spoint =  float2(dest.coord().x, size.y-dest.coord().y); //size - dest.coord();
+        float2 spoint =  float2(image.coord().x, image.coord().y); //size - dest.coord();
         
         float dx = 0;
         float dy = 0;
@@ -519,10 +519,10 @@ extern "C" { namespace coreimage {
         dy += texLum(image.sample(float2(spoint.x, spoint.y + texelSize.y)).rgb) * 2.0;
         dy += texLum(image.sample(float2(spoint.x + texelSize.x, spoint.y + texelSize.y)).rgb) * 1.0;
         
-        float nx = dx;
-        float ny = dy;
+        // float nx = dx;
+        // float ny = dy;
         
-        float3 norm = float3(nx, ny, sqrt(1.0 - nx*nx - ny*ny));
+        float3 norm = float3(dx, dy, sqrt(1.0 - dx*dx - dy*dy));
         float4 fragColor = float4(norm * float3(0.5, 0.5, 1.0) + float3(0.5, 0.5, 0.0), 1.0);
         
         return fragColor;

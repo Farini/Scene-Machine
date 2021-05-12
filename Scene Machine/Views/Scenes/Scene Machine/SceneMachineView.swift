@@ -18,17 +18,6 @@ struct SceneMachineView: View {
     @State private var popGeoImport:Bool = false
     @State private var popBackground:Bool = false
     
-    
-    // Additional Objects:
-    // Monkey
-    // Woman
-    // Prototype
-    // Walls?
-    
-    // Background Images
-    // Procedural Sky
-    // Some Blender
-    
     var body: some View {
         
         NavigationView {

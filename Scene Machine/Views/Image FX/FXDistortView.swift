@@ -196,6 +196,7 @@ struct FXDistortView: View {
                     // Center
                     PointInput(tapLocation: .zero, dragLocation: .zero, multiplier: 1) { point in
                         self.vecPoint = point
+                        self.updatePreview()
                     }
                     // Radius
                     SliderInputView(value: 160, vRange: 0...512, title: "Radius") { radiusValue in
@@ -216,6 +217,7 @@ struct FXDistortView: View {
                     // Center
                     PointInput(tapLocation: .zero, dragLocation: .zero, multiplier: 1) { point in
                         self.vecPoint = point
+                        self.updatePreview()
                     }
                     // Radius
                     SliderInputView(value: 160, vRange: 0...512, title: "Radius") { radiusValue in
@@ -337,11 +339,11 @@ struct FXDistortView: View {
                 
                 let filter = CIFilter.circleSplashDistortion()
                 filter.inputImage = coreImage
-                filter.center = CGPoint(x: vecPoint.x * mainImage.size.width, y: vecPoint.y * mainImage.size.height)
-                filter.radius = slider1
+                filter.center = CGPoint(x: vecPoint.x * mainImage.size.width, y: (1 - vecPoint.y) * mainImage.size.height)
+                filter.radius = slider1 * Float(image!.size.width)
                 
                 guard let outputImage = filter.outputImage,
-                      let cgImage = context.createCGImage(outputImage, from: outputImage.extent) else {
+                      let cgImage = context.createCGImage(outputImage, from: coreImage.extent) else {
                     print("⚠️ No output image")
                     return
                 }
@@ -410,9 +412,9 @@ struct FXDistortView: View {
             case .StretchCrop:
                 let filter = CIFilter.stretchCrop()
                 filter.inputImage = coreImage
-                filter.size = CGPoint(x: CGFloat(slider1), y: CGFloat(slider2))
-                filter.cropAmount = slider3
-                filter.centerStretchAmount = slider4
+                filter.size = CGPoint(x: CGFloat(slider1) * image!.size.width, y: CGFloat(slider2) * image!.size.height)
+                filter.cropAmount = slider3 * Float(image!.size.width)
+                filter.centerStretchAmount = slider4 * Float(image!.size.width)
                 
                 self.createImage(from: filter, context: context)
                 
@@ -420,7 +422,7 @@ struct FXDistortView: View {
                 // Center, radius, refraction, width
                 let filter = CIFilter.torusLensDistortion()
                 filter.inputImage = coreImage
-                filter.center = CGPoint(x: vecPoint.x * mainImage.size.width, y: vecPoint.y * mainImage.size.height)
+                filter.center = CGPoint(x: vecPoint.x * mainImage.size.width, y: (1 - vecPoint.y) * mainImage.size.height)
                 filter.radius = slider1
                 filter.refraction = slider2
                 filter.width = slider3
@@ -444,7 +446,7 @@ struct FXDistortView: View {
                 // Center, Radius, Angle
                 let filter = CIFilter.twirlDistortion()
                 filter.inputImage = coreImage
-                filter.center = CGPoint(x: vecPoint.x * mainImage.size.width, y: vecPoint.y * mainImage.size.height)
+                filter.center = CGPoint(x: vecPoint.x * mainImage.size.width, y: (1 - vecPoint.y) * mainImage.size.height)
                 
                 filter.radius = slider1
                 filter.angle = slider2

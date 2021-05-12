@@ -127,7 +127,7 @@ struct FXBlurrView: View {
                         self.vecPoint = newPoint
                     }
                     // Amount Default value: 20.00
-                    SliderInputView(value: 20.0, vRange: 2...50, title: "Sharpness") { newValue in
+                    SliderInputView(value: 20.0, vRange: 2...50, title: "Amount") { newValue in
                         self.slider1 = Float(newValue)
                     }
             }

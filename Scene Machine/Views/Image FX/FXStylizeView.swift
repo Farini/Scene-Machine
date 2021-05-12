@@ -303,6 +303,7 @@ struct FXStylizeView: View {
             case .LineOverlay:
               
                 let filter = CIFilter.lineOverlay()
+                filter.inputImage = coreImage
                 filter.nrNoiseLevel = 0.07
                 filter.nrSharpness = 0.71
                 filter.edgeIntensity = self.slider1
@@ -315,6 +316,7 @@ struct FXStylizeView: View {
                 
                 let filter = CIFilter.spotLight()
                 filter.inputImage = coreImage
+                
                 let imSize = controller.openingImage.size
                 let lpX = vecPoint.x * imSize.width
                 let lpY = imSize.height - vecPoint.y * imSize.height
