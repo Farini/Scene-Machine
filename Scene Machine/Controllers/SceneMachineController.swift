@@ -11,10 +11,10 @@ import MetalKit
 import QuartzCore
 
 /// The View on the Right side of the SplitView Scene Machine View
-enum MachineRightView {
+enum MachineRightView:String, CaseIterable {
     case Empty
     case UVMap
-    case ShapeEditor
+    case Shape
 }
 
 class SceneMachineController:ObservableObject {
@@ -240,10 +240,20 @@ class SceneMachineController:ObservableObject {
         
         // Create material
         let redMat = SCNMaterial()
+        var matName:String = "Shape Material"
+        var matID:Int = 0
+        
+        while materials.contains(where: { $0.name == matName }) {
+            matID += 1
+            let pux = matName.prefix(14)
+            matName = "\(pux)_\(matID)"
+        }
+        
+        redMat.name = matName
         redMat.lightingModel = .physicallyBased
         redMat.emission.contents = NSColor.red
         redMat.diffuse.contents = NSColor.white
-//        redMat.isDoubleSided = true
+        redMat.isDoubleSided = true
         
         // Create Shape
         

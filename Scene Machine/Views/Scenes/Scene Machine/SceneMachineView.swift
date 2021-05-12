@@ -11,10 +11,9 @@ import SceneKit
 struct SceneMachineView: View {
     
     @ObservedObject var controller = SceneMachineController()
-//    @State private var selectedGeometry:SCNGeometry?
+
     @State private var selectedMaterial:SCNMaterial?
     
-    @State private var displayUVMap:Bool = false
     @State private var popGeoImport:Bool = false
     @State private var popBackground:Bool = false
     
@@ -56,16 +55,19 @@ struct SceneMachineView: View {
                             }
                     }
                     
-                    // Geometries
-                    HStack {
-                        Image(systemName: "pyramid.fill")
-                        Text("Geometries")
-                        Spacer()
-                    }
-                    .font(.title2)
-                    .foregroundColor(.orange)
-                    
                     Divider()
+                    
+                    
+                    // Geometries
+//                    HStack {
+//                        Image(systemName: "pyramid.fill")
+//                        Text("Geometries")
+//                        Spacer()
+//                    }
+//                    .font(.title2)
+//                    .foregroundColor(.orange)
+//
+//                    Divider()
                     
                     // Materials
                     HStack {
@@ -82,14 +84,15 @@ struct SceneMachineView: View {
                             Text("\(material.name ?? "untitled")")
                             Spacer()
                         }
+                        .padding(4)
+                        .background(material == selectedMaterial ? Color.black.opacity(0.5):Color.clear)
                         .onTapGesture {
                             self.selectedMaterial = material
                         }
                     }
                     
-                    if let material = selectedMaterial {
-//                        MaterialView(material: material)
-                        SMMaterialView(material: material)
+                    if let _ = selectedMaterial {
+                        SMMaterialView(material: self.selectedMaterial!)
                     }
                     
                     Spacer()
@@ -154,31 +157,43 @@ struct SceneMachineView: View {
                             .frame(minWidth:300)
                         }
 
-                    } else {
-                        Button("+ Shape") {
-                            controller.rightView = .ShapeEditor
-                        }
                     }
                     
-                    Button("Program") {
-                        controller.addProgram()
-                    }
-                    .help("Adds a glowing box, created in Metal")
+//                    else {
+//                        Button("+ Shape") {
+//                            controller.rightView = .Shape
+//                        }
+//                    }
                     
-                    Toggle("UVMap", isOn: $displayUVMap)
-                        .onChange(of: displayUVMap, perform: { value in
-                            if value == true { controller.rightView = .UVMap } else { controller.rightView = .Empty }
-                        })
-                    Button("Save UV") {
-                        
-                        print("saving UVMap")
-                        if let image = uvView.snapShot(uvSize: CGSize(width: 1024, height: 1024)) {
-                            controller.saveUVMap(image: image)
-                        } else {
-                            // Display an error message
+//                    Button("Program") {
+//                        controller.addProgram()
+//                    }
+//                    .help("Adds a glowing box, created in Metal")
+                    
+//                        Toggle("UVMap", isOn: $displayUVMap)
+//                            .onChange(of: displayUVMap, perform: { value in
+//                                if value == true { controller.rightView = .UVMap } else { controller.rightView = .Empty }
+//                            })
+                    Spacer()
+//                    Button("Save UV") {
+//
+//                        print("saving UVMap")
+//                        if let image = uvView.snapShot(uvSize: CGSize(width: 1024, height: 1024)) {
+//                            controller.saveUVMap(image: image)
+//                        } else {
+//                            // Display an error message
+//                        }
+//                    }
+//                    .disabled(controller.selectedNode?.geometry == nil)
+                    
+                    // Segment
+                    Picker(selection: $controller.rightView, label: Image(systemName: "rectangle.righthalf.inset.fill"), content: {
+                        ForEach(MachineRightView.allCases, id:\.self) { rightView in
+                            Text(rightView.rawValue)
                         }
-                    }
-                    .disabled(controller.selectedNode?.geometry == nil)
+                    })
+                    .pickerStyle(SegmentedPickerStyle())
+                    .frame(width:180)
                     
                     Button("+ Back") {
                         popBackground.toggle()
@@ -217,59 +232,26 @@ struct SceneMachineView: View {
                                let uvMap:[CGPoint] = controller.inspectUVMap(geometry: geometry) {
                                 ScrollView([.vertical, .horizontal], showsIndicators:true) {
                                     HStack {
-                                        UVMapStack(geometry: geometry, points: uvMap)
+                                        UVMapStack(controller: controller, geometry: geometry, points: uvMap)
                                     }
                                     .padding(30)
                                 }
                                 .frame(minWidth: 300, alignment: .trailing)
                             }
-                        case .ShapeEditor:
+                        case .Shape:
                             ScrollView([.vertical, .horizontal], showsIndicators:true) {
                                 SMShapeEditorView(controller: controller)
                             }
                             .frame(minWidth: 300, alignment: .trailing)
                     }
-                        
-                    // UVMap
-//                    if displayUVMap {
-//                        if let node = controller.selectedNode,
-//                           let geometry:SCNGeometry = node.geometry,
-//                           let uvMap:[CGPoint] = controller.inspectUVMap(geometry: geometry) {
-//                            ScrollView([.vertical, .horizontal], showsIndicators:true) {
-//                                HStack {
-//                                    UVMapStack(geometry: geometry, points: uvMap)
-//                                }
-//                                .padding(30)
-//                            }
-//                            .frame(minWidth: 300, alignment: .trailing)
-//                        }
-//                    }
                 }
                 
             }
-            .frame(minWidth: 600, maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+            .frame(minWidth: 600)
         }
     }
     
-    var uvView: some View {
-        
-        if let node = controller.selectedNode,
-           let geometry = node.geometry,
-           let uvPoints:[CGPoint] = controller.inspectUVMap(geometry: geometry) {
-            return UVShape(uv: uvPoints)
-                .stroke(lineWidth: 0.5)
-                .fill(Color.orange, style: FillStyle(eoFill: false, antialiased: true))
-                .background(Color.clear)
-                .frame(width:1024, height:1024, alignment: .center)
-        } else {
-            return UVShape(uv: [])
-                .stroke(lineWidth: 0.5)
-                .fill(Color.orange, style: FillStyle(eoFill: false, antialiased: true))
-                .background(Color.clear)
-                .frame(width:1024, height:1024, alignment: .center)
-        }
-    }
-    
+    /// Returns a scene containing the node in "wire" mode, like quickLook.
     func sceneWithWired(node:SCNNode) -> SCNScene {
         
         let newScene = SCNScene()
@@ -285,7 +267,7 @@ struct SceneMachineView: View {
         return newScene
     }
 }
-
+/*
 struct SMGeometryRow: View {
     
     @ObservedObject var controller:SceneMachineController
@@ -317,14 +299,22 @@ struct SMGeometryRow: View {
         .frame(width:200)
     }
 }
+*/
 
 struct UVMapStack: View {
     
+    @ObservedObject var controller:SceneMachineController
     var geometry:SCNGeometry
     var points:[CGPoint]
     var image:NSImage?
     
-    init(geometry:SCNGeometry, points:[CGPoint]) {
+    @State var imgSize:CGSize = TextureSize.medium.size
+    @State var showUVEdges:Bool = true
+    
+    // Note: Make background droppable URL, and check image size
+    
+    init(controller:SceneMachineController, geometry:SCNGeometry, points:[CGPoint]) {
+        self.controller = controller
         self.geometry = geometry
         self.points = points
         
@@ -333,19 +323,22 @@ struct UVMapStack: View {
             if let cont = difMap.contents as? String {
                 print("Did let contents as String")
                 if let imagePath = Bundle.main.path(forResource: cont, ofType: nil, inDirectory: "Scenes.scnassets") {
-                    print("image path in")
+                    print("Image in App Bundle")
                     if let nsimage = NSImage(byReferencingFile: imagePath) {
                         print("image 1 in")
                         self.image = nsimage
+                        self.imgSize = nsimage.size
                     } else if let nsimage = NSImage(contentsOfFile: imagePath) {
                         print("image 2 in")
                         self.image = nsimage
+                        self.imgSize = nsimage.size
                     }
                 } else {
-                    print("no image path")
+                    print("Image in User's file")
                     if let nsimage = NSImage(contentsOfFile: cont) {
                         print("Another source")
                         self.image = nsimage
+                        self.imgSize = nsimage.size
                     }
                 }
             }
@@ -354,22 +347,60 @@ struct UVMapStack: View {
     
     var body: some View {
         VStack {
-            Text("UVMap")
+            
+            // Toolbar
+            HStack {
+                Text("UVMap")
+                
+                Button("Load Image") {
+                    print("Load an image")
+                }
+                
+                Spacer()
+                
+                Button("💾 Save") {
+                    print("Save UVMap contours")
+                    
+                    if let image = uvTexture.snapShot(uvSize: CGSize(width: imgSize.width, height: imgSize.height)) {
+                        controller.saveUVMap(image: image)
+                    } else {
+                        // Display an error message
+                        // Send it to controller
+                    }
+                }
+            }
+            
             ZStack {
                 
                 if let image = image {
                     Image(nsImage: image)
                         .resizable()
-                        .frame(width: 1024, height: 1024, alignment: .center)
+                        .frame(width: imgSize.width, height: imgSize.height, alignment: .center)
                 }
                 
                 UVShape(uv:points)
                     .stroke(lineWidth: 0.5)
                     .fill(Color.orange, style: FillStyle(eoFill: false, antialiased: true))
                     .background(Color.gray.opacity(0.1))
-                    .frame(width: 1024, height: 1024, alignment: .center)
+                    .frame(width: imgSize.width, height: imgSize.height, alignment: .center)
                 
             }
+        }
+    }
+    
+    var uvTexture: some View {
+        ZStack {
+            // Background Image
+            Image(nsImage: image ?? NSImage(size: imgSize))
+                .resizable()
+                .frame(width: imgSize.width, height: imgSize.height, alignment: .center)
+            
+            // Countours
+            UVShape(uv:points)
+                .stroke(lineWidth: 0.5)
+                .fill(Color.orange, style: FillStyle(eoFill: false, antialiased: true))
+                .background(Color.gray.opacity(0.1))
+                .frame(width: imgSize.width, height: imgSize.height, alignment: .center)
         }
     }
 }

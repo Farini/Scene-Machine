@@ -106,7 +106,7 @@ struct MetalNoiseView: View {
                         self.slider1 = Float(newTime)
                         updatePreview()
                     }
-                    SliderInputView(value: 1, vRange: 0...2, title: "Sharpness") { newTime in
+                    SliderInputView(value: 1, vRange: 0...1, title: "Sharpness") { newTime in
                         self.slider2 = Float(newTime)
                         updatePreview()
                     }

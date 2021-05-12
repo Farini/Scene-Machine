@@ -47,6 +47,7 @@ struct SMNodeRow: View {
                 if let geometry = node.geometry {
                     Image(systemName: "pyramid")
                     Text("\(geometry.sources.last?.vertices.count ?? 0)")
+                    Text("Src: \(geometry.sources.count)")
                 }
                 
                 if node.camera != nil {
@@ -65,7 +66,7 @@ struct SMNodeRow: View {
             }
             
             HStack {
-                Text("Pos: \(node.position.toString())")
+                Text("⌖ \(node.position.toString())")
                 Spacer()
                 Image(systemName: node.isHidden ? "eye.slash":"eye")
                     .onTapGesture {
@@ -73,21 +74,32 @@ struct SMNodeRow: View {
                     }
             }
             
-            HStack {
-                Text("Euler: \(node.eulerAngles.toString())")
-                Spacer()
-            }
-            
             // Children
             if !node.childNodes.isEmpty {
                 HStack {
                     Image(systemName: "arrow.down.forward.circle")
                     Text("● \(node.childNodes.count)")
+                    Spacer()
+                }
+                ForEach(node.childNodes, id:\.self) { child in
+                    SMNodeRow(controller: controller, node: child)
+                        .padding(.leading, CGFloat(self.indent(node: child)))
                 }
             }
         }
         .frame(width: 200)
         .background(controller.selectedNode == node ? Color.black.opacity(0.5):.clear)
+    }
+    
+    func indent(node:SCNNode) -> Int {
+        var nextNode:SCNNode? = node
+        var indentation:Int = 4
+        
+        while nextNode != nil {
+            indentation += 4
+            nextNode = nextNode!.parent
+        }
+        return indentation
     }
 }
 

@@ -10,7 +10,7 @@ import SceneKit
 
 struct SMMaterialView: View {
     
-    @State var material:SCNMaterial
+    var material:SCNMaterial
     
     @State var active:Bool = false
     

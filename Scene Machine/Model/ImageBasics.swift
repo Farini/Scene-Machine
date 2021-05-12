@@ -11,19 +11,19 @@ import SceneKit
 /// A helper to identify the sizes of a texture
 enum TextureSize:Double, CaseIterable {
     
-    /// 256
+    /// 256 x 256
     case small = 256
     
-    /// 512
+    /// 512 x 512
     case medSmall = 512
     
-    // 1024
+    /// 1024 x 1024
     case medium = 1024
     
-    /// 2048
+    /// 2048 x 2048
     case medLarge = 2048
     
-    /// 4096
+    /// 4096 x 4096
     case large = 4096
     
     var size:CGSize {
