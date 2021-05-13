@@ -10,7 +10,8 @@ import SceneKit
 
 struct SMMaterialView: View {
     
-    var material:SCNMaterial
+    @State var controller:SceneMachineController
+    @State var material:SCNMaterial
     
     @State var active:Bool = false
     
@@ -397,6 +398,10 @@ struct SMMaterialView: View {
         .onAppear() {
             self.prepareUI()
         }
+        .onChange(of: controller.selectedMaterial!) { value in
+            self.material = value
+            self.prepareUI()
+        }
     }
     
     func prepareUI() {
@@ -434,8 +439,13 @@ struct SMMaterialView: View {
 }
 
 struct SMMaterialView_Previews: PreviewProvider {
+    
+    
+    
     static var previews: some View {
-        SMMaterialView(material:MaterialExample().material)
+        var control = SceneMachineController()
+        control.selectedMaterial = MaterialExample().material
+        return SMMaterialView(controller:control, material: control.selectedMaterial!)
     }
 }
 

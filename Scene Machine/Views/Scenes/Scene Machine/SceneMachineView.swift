@@ -12,7 +12,7 @@ struct SceneMachineView: View {
     
     @ObservedObject var controller = SceneMachineController()
 
-    @State private var selectedMaterial:SCNMaterial?
+    @State var selectedMaterial:SCNMaterial?
     
     @State private var popGeoImport:Bool = false
     @State private var popBackground:Bool = false
@@ -57,18 +57,6 @@ struct SceneMachineView: View {
                     
                     Divider()
                     
-                    
-                    // Geometries
-//                    HStack {
-//                        Image(systemName: "pyramid.fill")
-//                        Text("Geometries")
-//                        Spacer()
-//                    }
-//                    .font(.title2)
-//                    .foregroundColor(.orange)
-//
-//                    Divider()
-                    
                     // Materials
                     HStack {
                         Image(systemName: "shield.checkerboard")
@@ -88,11 +76,12 @@ struct SceneMachineView: View {
                         .background(material == selectedMaterial ? Color.black.opacity(0.5):Color.clear)
                         .onTapGesture {
                             self.selectedMaterial = material
+                            controller.selectedMaterial = material
                         }
                     }
                     
-                    if let _ = selectedMaterial {
-                        SMMaterialView(material: self.selectedMaterial!)
+                    if let material = selectedMaterial {
+                        SMMaterialView(controller: controller, material: material)
                     }
                     
                     Spacer()
@@ -239,10 +228,10 @@ struct SceneMachineView: View {
                                 .frame(minWidth: 300, alignment: .trailing)
                             }
                         case .Shape:
-                            ScrollView([.vertical, .horizontal], showsIndicators:true) {
-                                SMShapeEditorView(controller: controller)
-                            }
+                            
+                            SMShapeEditorView(controller: controller)
                             .frame(minWidth: 300, alignment: .trailing)
+                            
                     }
                 }
                 

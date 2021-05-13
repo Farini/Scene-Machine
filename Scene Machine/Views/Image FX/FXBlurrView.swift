@@ -233,13 +233,16 @@ struct FXBlurrView: View {
     
     /// Updates the image preview
     func updatePreview() {
+        
         print("Updating Preview")
+        
         let mainImage = controller.openingImage
         guard let imageData = mainImage.tiffRepresentation,
               let imageBitmap = NSBitmapImageRep(data:imageData),
               let coreImage = CIImage(bitmapImageRep: imageBitmap) else {
             return
         }
+        
         
         let context = CIContext()
         
@@ -372,9 +375,13 @@ struct FXBlurrView: View {
                 
             case .Zoom:
                 
+                // Prepare
+                let center:CGPoint = CGPoint(x: vecPoint.x * mainImage.size.width, y: (1 - vecPoint.y) * mainImage.size.height)
+                
+                
                 let filter = CIFilter.zoomBlur()
                 filter.inputImage = coreImage
-                filter.center = vecPoint
+                filter.center = center
                 filter.amount = slider1
                 
                 guard let output = filter.outputImage,

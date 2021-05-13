@@ -63,9 +63,17 @@ struct FXColorView: View {
                     
                 case .Monochrome:
                     // Color, and Intensity
-                    ColorPicker("", selection:$inputColor)
+                    HStack {
+                        Text("Color")
+                        Spacer()
+                        ColorPicker("", selection:$inputColor)
+                            .onChange(of: inputColor) { color in
+                                self.slider1 = max(0.5, slider1)
+                            }
+                    }
                     
-                    SliderInputView(value: 0.4, vRange: 0...1, title: "Intensity") { newValue in
+                    
+                    SliderInputView(value: 0.5, vRange: 0...1, title: "Intensity") { newValue in
                         self.slider1 = Float(newValue)
                     }
                     .padding(.bottom, 20)
@@ -74,13 +82,13 @@ struct FXColorView: View {
                 
                 case .ColorControls:
                     // Saturation 1.0 (0 - 2), Brightness 1.0 (0 - 2), Contrast 1.0 (0 - 2)
-                    SliderInputView(value: 0.5, vRange: -1...1, title: "Saturation") { saturation in
+                    SliderInputView(value: 0.0, vRange: -1...1, title: "Saturation") { saturation in
                         self.slider1 = Float(saturation)
                     }
-                    SliderInputView(value: 0.5, vRange: -1...1, title: "Brighness") { brightness in
+                    SliderInputView(value: 0.0, vRange: -1...1, title: "Brighness") { brightness in
                         self.slider2 = Float(brightness)
                     }
-                    SliderInputView(value: 0.5, vRange: -1...1, title: "Contrast") { contrast in
+                    SliderInputView(value: 0.0, vRange: -1...1, title: "Contrast") { contrast in
                         self.slider3 = Float(contrast)
                     }
                     

@@ -135,12 +135,20 @@ class ImageFXController:ObservableObject {
         } else {
             self.openingImage = new
         }
-        
     }
+    
+    /// Adds the openingImage to undoImages array. Called before the FX_ View updates
+    func backupImage() {
+        undoImages.append(openingImage)
+    }
+    
+    
+    
+    
     
     // MARK: - Efffects
     // [deprecate all below]
-    
+    /*
     func blurrImage(radius:Double = 10) {
         
         let inputImage = openingImage
@@ -394,4 +402,5 @@ class ImageFXController:ObservableObject {
             self.openingImage = nsImage
         }
     }
+    */
 }

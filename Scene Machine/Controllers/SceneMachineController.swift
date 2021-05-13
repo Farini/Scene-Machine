@@ -26,6 +26,7 @@ class SceneMachineController:ObservableObject {
     
     @Published var selectedNode:SCNNode?
     @Published var isNodeOptionSelected:Bool = false
+    @Published var selectedMaterial:SCNMaterial?
     
     @Published var rightView:MachineRightView = .Empty
     
@@ -211,8 +212,6 @@ class SceneMachineController:ObservableObject {
     }
     
     // MARK: - SCNProgram
-    
-    
     
     // Program
     func addProgram() {

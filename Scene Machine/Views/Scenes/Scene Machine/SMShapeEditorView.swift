@@ -27,6 +27,10 @@ struct SMShapeEditorView: View {
         VStack {
             // Toolbar
             HStack {
+                Text("Shape Editor")
+                    .font(.title2)
+                    .foregroundColor(.orange)
+                
                 Button("f") {
                     closePath()
                 }
@@ -52,137 +56,140 @@ struct SMShapeEditorView: View {
             
             Divider()
             
-            ZStack {
-                
-                // Canvas: NSView on bottom of the stack.
-                DrawingCanvas { location in
+            ScrollView([.vertical, .horizontal], showsIndicators: true) {
+                ZStack {
                     
-                    if isMoving {
-                        allPoints.removeLast()
+                    // Canvas: NSView on bottom of the stack.
+                    DrawingCanvas { location in
+                        
+                        if isMoving {
+                            allPoints.removeLast()
+                        }
+                        
+                        let adjPoint = CGPoint(x: location.x, y: 512 - location.y)
+                        allPoints.append(DPoint(adjPoint, curved: isCurve))
+                        endPoint = adjPoint
                     }
                     
-                    let adjPoint = CGPoint(x: location.x, y: 512 - location.y)
-                    allPoints.append(DPoint(adjPoint, curved: isCurve))
-                    endPoint = adjPoint
-                }
-                
-                // Currently drawing Path
-                Path { (path) in
-                    path.move(to: startPoint)
-                    // path.addLine(to: endPoint)
-                    for point in allPoints {
-                        if point.isCurve {
-                            path.addCurve(to: point.point, control1: point.control1!, control2: point.control2!)
-                        } else {
-                            path.addLine(to: point.point)
+                    // Currently drawing Path
+                    Path { (path) in
+                        path.move(to: startPoint)
+                        // path.addLine(to: endPoint)
+                        for point in allPoints {
+                            if point.isCurve {
+                                path.addCurve(to: point.point, control1: point.control1!, control2: point.control2!)
+                            } else {
+                                path.addLine(to: point.point)
+                            }
+                        }
+                        if isPathClosed {
+                            path.closeSubpath()
                         }
                     }
-                    if isPathClosed {
-                        path.closeSubpath()
-                    }
-                }
-                .strokedPath(StrokeStyle(lineWidth: 2, lineCap: .square, lineJoin: .round))
-                .foregroundColor(.white)
-                
-                //Circle 1
-                Circle()
-                    .frame(width: 16, height: 16)
-                    .position(startPoint)
-                    .foregroundColor(.blue.opacity(0.5))
-                    .gesture(DragGesture()
-                                .onChanged { (value) in
-                                    self.startPoint = CGPoint(x: value.location.x, y: value.location.y)
-                                })
-                
-                // Dragging
-                if let dp = draggingPoint {
-                    makePath(from: dp, to: allPoints.last!.point)
-                        .strokedPath(StrokeStyle(lineWidth: CGFloat(0.5), lineCap: .square, lineJoin: .round))
-                        .foregroundColor(.yellow.opacity(0.5))
-                }
-                //Circle 2
-                DrawingPointView(point: allPoints.last!)
-                    .frame(width: 16, height: 16)
-                    .position(endPoint)
-                    .foregroundColor(.accentColor.opacity(0.5))
-                    .gesture(DragGesture()
-                                .onChanged { (value) in
-                                    self.endPoint = CGPoint(x: value.location.x, y: value.location.y)
-                                    self.draggingPoint = value.location
-                                }
-                                .onEnded({ ended in
-                                    if isCurve {
-                                        let rPoint = DPoint((CGPoint(x: ended.location.x, y: ended.location.y)), curved: true)
-                                        allPoints.append(rPoint)
-                                        self.draggingPoint = nil
-                                    } else {
-                                        allPoints.append(DPoint(CGPoint(x: ended.location.x, y: ended.location.y)))
-                                    }
-                                    
-                                }))
-                    .contextMenu {
-                        Button("Other") {
-                            
-                        }
-                        Button("Curve") {
-                            self.isCurve.toggle()
-                            allPoints.last?.toggleCurve()
-                        }
-                        Button("Close") {
-                            closePath()
-                        }
-                    }
-                Color.clear
-                
-                if allPoints.last!.isCurve == true {
-                    makePath(from: allPoints.last!.point, to: allPoints.last!.control1!)
-                        .strokedPath(StrokeStyle(lineWidth: CGFloat(1), lineCap: .square, lineJoin: .round))
-                        .foregroundColor(.white.opacity(0.3))
-                    Circle().frame(width: 12, height: 12).position(allPoints.last!.control1!) // ?? allPoints.last!.point)
+                    .strokedPath(StrokeStyle(lineWidth: 2, lineCap: .square, lineJoin: .round))
+                    .foregroundColor(.white)
+                    
+                    //Circle 1
+                    Circle()
+                        .frame(width: 16, height: 16)
+                        .position(startPoint)
+                        .foregroundColor(.blue.opacity(0.5))
                         .gesture(DragGesture()
                                     .onChanged { (value) in
-                                        let newPoint = CGPoint(x: value.location.x, y: value.location.y)
-                                        let dPoint = DPoint(allPoints.last!.point, curved: true)
-                                        dPoint.control1 = newPoint
-                                        dPoint.control2 = allPoints.last!.control2
-                                        allPoints.removeLast()
-                                        allPoints.append(dPoint)
-                                    }
-                                    .onEnded({ ended in
-                                        let newPoint = CGPoint(x: ended.location.x, y: ended.location.y)
-                                        let dPoint = DPoint(allPoints.last!.point, curved: true)
-                                        dPoint.control1 = newPoint
-                                        dPoint.control2 = allPoints.last!.control2
-                                        allPoints.removeLast()
-                                        allPoints.append(dPoint)
-                                    }))
+                                        self.startPoint = CGPoint(x: value.location.x, y: value.location.y)
+                                    })
                     
-                    
-                    makePath(from: allPoints.last!.point, to: allPoints.last!.control2!)
-                        .strokedPath(StrokeStyle(lineWidth: CGFloat(1), lineCap: .square, lineJoin: .round))
-                        .foregroundColor(.white.opacity(0.3))
-                    Circle().frame(width: 12, height: 12).position(allPoints.last!.control2!) // ?? allPoints.last!.point)
+                    // Dragging
+                    if let dp = draggingPoint {
+                        makePath(from: dp, to: allPoints.last!.point)
+                            .strokedPath(StrokeStyle(lineWidth: CGFloat(0.5), lineCap: .square, lineJoin: .round))
+                            .foregroundColor(.yellow.opacity(0.5))
+                    }
+                    //Circle 2
+                    DrawingPointView(point: allPoints.last!)
+                        .frame(width: 16, height: 16)
+                        .position(endPoint)
+                        .foregroundColor(.accentColor.opacity(0.5))
                         .gesture(DragGesture()
                                     .onChanged { (value) in
-                                        let newPoint = CGPoint(x: value.location.x, y: value.location.y)
-                                        let dPoint = DPoint(allPoints.last!.point, curved: true)
-                                        dPoint.control1 = allPoints.last!.control1
-                                        dPoint.control2 = newPoint
-                                        allPoints.removeLast()
-                                        allPoints.append(dPoint)
+                                        self.endPoint = CGPoint(x: value.location.x, y: value.location.y)
+                                        self.draggingPoint = value.location
                                     }
                                     .onEnded({ ended in
-                                        let newPoint = CGPoint(x: ended.location.x, y: ended.location.y)
-                                        let dPoint = DPoint(allPoints.last!.point, curved: true)
-                                        dPoint.control1 = allPoints.last!.control1
-                                        dPoint.control2 = newPoint
-                                        allPoints.removeLast()
-                                        allPoints.append(dPoint)
+                                        if isCurve {
+                                            let rPoint = DPoint((CGPoint(x: ended.location.x, y: ended.location.y)), curved: true)
+                                            allPoints.append(rPoint)
+                                            self.draggingPoint = nil
+                                        } else {
+                                            allPoints.append(DPoint(CGPoint(x: ended.location.x, y: ended.location.y)))
+                                        }
+                                        
                                     }))
+                        .contextMenu {
+                            Button("Other") {
+                                
+                            }
+                            Button("Curve") {
+                                self.isCurve.toggle()
+                                allPoints.last?.toggleCurve()
+                            }
+                            Button("Close") {
+                                closePath()
+                            }
+                        }
+                    Color.clear
                     
+                    if allPoints.last!.isCurve == true {
+                        makePath(from: allPoints.last!.point, to: allPoints.last!.control1!)
+                            .strokedPath(StrokeStyle(lineWidth: CGFloat(1), lineCap: .square, lineJoin: .round))
+                            .foregroundColor(.white.opacity(0.3))
+                        Circle().frame(width: 12, height: 12).position(allPoints.last!.control1!) // ?? allPoints.last!.point)
+                            .gesture(DragGesture()
+                                        .onChanged { (value) in
+                                            let newPoint = CGPoint(x: value.location.x, y: value.location.y)
+                                            let dPoint = DPoint(allPoints.last!.point, curved: true)
+                                            dPoint.control1 = newPoint
+                                            dPoint.control2 = allPoints.last!.control2
+                                            allPoints.removeLast()
+                                            allPoints.append(dPoint)
+                                        }
+                                        .onEnded({ ended in
+                                            let newPoint = CGPoint(x: ended.location.x, y: ended.location.y)
+                                            let dPoint = DPoint(allPoints.last!.point, curved: true)
+                                            dPoint.control1 = newPoint
+                                            dPoint.control2 = allPoints.last!.control2
+                                            allPoints.removeLast()
+                                            allPoints.append(dPoint)
+                                        }))
+                        
+                        
+                        makePath(from: allPoints.last!.point, to: allPoints.last!.control2!)
+                            .strokedPath(StrokeStyle(lineWidth: CGFloat(1), lineCap: .square, lineJoin: .round))
+                            .foregroundColor(.white.opacity(0.3))
+                        Circle().frame(width: 12, height: 12).position(allPoints.last!.control2!) // ?? allPoints.last!.point)
+                            .gesture(DragGesture()
+                                        .onChanged { (value) in
+                                            let newPoint = CGPoint(x: value.location.x, y: value.location.y)
+                                            let dPoint = DPoint(allPoints.last!.point, curved: true)
+                                            dPoint.control1 = allPoints.last!.control1
+                                            dPoint.control2 = newPoint
+                                            allPoints.removeLast()
+                                            allPoints.append(dPoint)
+                                        }
+                                        .onEnded({ ended in
+                                            let newPoint = CGPoint(x: ended.location.x, y: ended.location.y)
+                                            let dPoint = DPoint(allPoints.last!.point, curved: true)
+                                            dPoint.control1 = allPoints.last!.control1
+                                            dPoint.control2 = newPoint
+                                            allPoints.removeLast()
+                                            allPoints.append(dPoint)
+                                        }))
+                        
+                    }
                 }
+                .frame(width: 512, height: 512, alignment: .center)
             }
-            .frame(width: 512, height: 512, alignment: .center)
+            Spacer()
         }
     }
     

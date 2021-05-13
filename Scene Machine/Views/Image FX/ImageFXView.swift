@@ -19,9 +19,11 @@ struct ImageFXView: View {
     
     @ObservedObject var controller:ImageFXController = ImageFXController(image: nil)
     
-    @State private var popover:Bool = false
+//    @State private var popover:Bool = false
+    
     @State private var state:FXState = .Blur
     @State private var zoomLevel:Double = 1.0
+    @State private var popUndoImages:Bool = false
     
     @State var sliderValue:Double = 0
     
@@ -88,8 +90,27 @@ struct ImageFXView: View {
                     
                     Divider().frame(height:32)
                     
-                    Spacer()
+                    Button("Previous") {
+                        popUndoImages.toggle()
+                    }
+                    .disabled(controller.undoImages.isEmpty)
+                    .popover(isPresented: $popUndoImages) {
+                        ScrollView() {
+                            VStack {
+                                ForEach(0..<controller.undoImages.count) { idx in
+                                    Image(nsImage: controller.undoImages[idx])
+                                        .resizable()
+                                        .frame(width: 100, height: 100, alignment: .center)
+                                        .onTapGesture {
+                                            controller.openingImage = controller.undoImages[idx]
+                                        }
+                                }
+                            }
+                            .padding(8)
+                        }
+                    }
                     
+                    Spacer()
                     
                     // Zoom -
                     Button(action: {
@@ -144,6 +165,7 @@ struct ImageFXView: View {
     /// Used When Filter views wants to Apply image
     func apply(image:NSImage) {
         // Set the image in the controller
+        controller.backupImage()
         controller.openingImage = image
     }
     

@@ -17,7 +17,7 @@ struct MetalTilesView: View {
     @State private var slider3:Float = 0
     
     @State private var stepCount1:Int = 1
-    @State private var stepCount2:Int = 10
+    @State private var stepCount2:Int = 4
     
     @State private var center:CGPoint = CGPoint.zero
     @State private var color0 = Color.black
