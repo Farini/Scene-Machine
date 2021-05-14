@@ -18,7 +18,7 @@ extension CGLineJoin:Codable {}
 extension CGLineCap:Codable {}
 
 /// One Layer that composes a whole image
-class DrawingLayer:Codable {
+class DrawingLayer:Codable, Identifiable {
     
     var id:UUID
     var name:String?
@@ -34,6 +34,7 @@ class DrawingLayer:Codable {
     var penPoints:[PenPoint] = []
     var shapeInfo:[ShapeInfo] = []
     
+    var isVisible:Bool = true
     var sublayers:[DrawingLayer] = []
     
     init(tool:DrawingTool, color:NSColor, lineWidth:CGFloat) {
@@ -47,6 +48,13 @@ class DrawingLayer:Codable {
     /// Gets the `NSColor` equivalent
     func color() -> NSColor {
         return colorData.makeNSColor()
+    }
+    
+    func hasModifications() -> Bool {
+        if penPoints.isEmpty && pencilStrokes.isEmpty && shapeInfo.isEmpty && sublayers.isEmpty {
+            return false
+        }
+        return true
     }
 }
 
@@ -116,4 +124,10 @@ struct ShapeInfo:Codable {
     var pointStarts:CGPoint
     var pointEnds:CGPoint
     var extraPoints:[CGPoint] = []
+}
+
+extension DrawingLayer: Equatable {
+    static func == (lhs: DrawingLayer, rhs: DrawingLayer) -> Bool {
+        return lhs.id == rhs.id
+    }
 }

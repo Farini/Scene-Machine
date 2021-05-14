@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-
-
 struct DrawingView: View {
     
     @State private var startPoint: CGPoint = CGPoint(x: 256, y: 256)

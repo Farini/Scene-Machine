@@ -9,6 +9,8 @@ import SwiftUI
 
 struct DrawingPadView: View {
     
+    @ObservedObject var controller = DrawingPadController()
+    
     @State private var currentDrawing: PencilStroke = PencilStroke()
     @State private var drawings: [PencilStroke] = [PencilStroke]()
     @State private var color: Color = Color(white: 0.95)
@@ -19,8 +21,9 @@ struct DrawingPadView: View {
     // Save Button
     // Image size
     // ---
-    @State private var imageSize:TextureSize = TextureSize.medSmall // 512
+    // @State private var imageSize:TextureSize = TextureSize.medSmall // 512
     @State private var madeImage:[NSImage] = []
+    @State private var tool:DrawingTool = .Pencil
     
     var body: some View {
         VStack {
@@ -29,7 +32,7 @@ struct DrawingPadView: View {
                 Text("Paint")
                     .font(.title2).foregroundColor(.orange)
                 
-                Picker(selection: $imageSize, label: Text("")) {
+                Picker(selection: $controller.textureSize, label: Text("")) {
                     ForEach(TextureSize.allCases, id:\.self) { texSize in
                         Text("\(texSize.fullLabel)")
                     }
@@ -51,7 +54,12 @@ struct DrawingPadView: View {
                 }
                 .help("Improves the image")
                 
-                
+                Picker("", selection: $tool) {
+                    ForEach(DrawingTool.allCases, id:\.self) { drawTool in
+                        Text(drawTool.rawValue)
+                    }
+                }
+                .pickerStyle(SegmentedPickerStyle())
             }
             .padding(.horizontal, 8)
             .padding(.top, 4)
@@ -69,14 +77,14 @@ struct DrawingPadView: View {
 //                    }
                     if let nsimage = madeImage.last {
                         Image(nsImage: nsimage)
-                            .frame(width: imageSize.size.width, height: imageSize.size.height)
+                            .frame(width: controller.textureSize.size.width, height: controller.textureSize.size.height)
                     }
                     
                     DrawingPad(currentDrawing: $currentDrawing,
                                drawings: $drawings,
                                color: $color,
                                lineWidth: $lineWidth,
-                               size: $imageSize)
+                               size: $controller.textureSize)
                 }
                 
             }
@@ -89,7 +97,7 @@ struct DrawingPadView: View {
                                            drawings: $drawings,
                                            color: $color,
                                            lineWidth: $lineWidth,
-                                           size: $imageSize).snapShot(uvSize: imageSize.size)
+                                           size: $controller.textureSize).snapShot(uvSize: controller.textureSize.size)
         
         
         // get image
@@ -126,7 +134,7 @@ struct DrawingPadView: View {
             return
         }
         
-        let filteredImage = NSImage(cgImage: cgOutput, size: imageSize.size)
+        let filteredImage = NSImage(cgImage: cgOutput, size: controller.textureSize.size)
         madeImage.append(filteredImage)
         
         
@@ -141,7 +149,7 @@ struct DrawingPadView: View {
                                   drawings: $drawings,
                                   color: $color,
                                   lineWidth: $lineWidth,
-                                  size: $imageSize).snapShot(uvSize: imageSize.size)
+                                  size: $controller.textureSize).snapShot(uvSize: controller.textureSize.size)
         if let image = snapShot {
             
             let data = image.tiffRepresentation
@@ -197,6 +205,15 @@ struct DrawingPadView: View {
         }
     }
 }
+
+// MARK: - Continue Here....
+// TODO: DrawingLayerView
+/**
+    How: There is enough info to draw both pen and pencil
+    Draw from `DrawingLayer` Object
+
+ */
+
 
 struct DrawingPad: View {
     
@@ -285,11 +302,18 @@ struct DrawingToolbar: View {
             }
             .help("Clear the drawings")
             
+            Button("+") {
+                print("Add new layer")
+            }
+            
             Divider()
             
             ColorPicker("Color", selection: $color)
             
             Text("Width \(Int(lineWidth))")
+            TextField("Width", value: $lineWidth, formatter: NumberFormatter.scnFormat)
+                .frame(width:50)
+            
             Slider(value: $lineWidth, in: 1.0...15.0, step: 1.0)
                 .padding(4)
         }

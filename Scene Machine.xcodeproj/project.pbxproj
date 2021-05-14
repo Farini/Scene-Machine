@@ -45,6 +45,8 @@
 		857C47382637370F006C6A32 /* MetalTilesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857C47372637370F006C6A32 /* MetalTilesView.swift */; };
 		857C5FE8263F73800095E3B4 /* DrawingPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857C5FE7263F73800095E3B4 /* DrawingPad.swift */; };
 		85941FB8264E3D6900A3CAF6 /* Drawing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85941FB7264E3D6900A3CAF6 /* Drawing.swift */; };
+		85941FBB264EEA3500A3CAF6 /* DrawingPadToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85941FBA264EEA3500A3CAF6 /* DrawingPadToolbar.swift */; };
+		85941FBD264EF85700A3CAF6 /* DrawingPadController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85941FBC264EF85700A3CAF6 /* DrawingPadController.swift */; };
 		85954043261C3144001D9040 /* SpriteKitNoiseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85954042261C3144001D9040 /* SpriteKitNoiseController.swift */; };
 		8597BB7E25BCA8B200C705A0 /* ImageFXController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8597BB7D25BCA8B200C705A0 /* ImageFXController.swift */; };
 		8597BB8425BCAEF600C705A0 /* Metal.metal in Sources */ = {isa = PBXBuildFile; fileRef = 8597BB8325BCAEF600C705A0 /* Metal.metal */; };
@@ -172,6 +174,8 @@
 		857C5FE7263F73800095E3B4 /* DrawingPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingPad.swift; sourceTree = "<group>"; };
 		85941FB7264E3D6900A3CAF6 /* Drawing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drawing.swift; sourceTree = "<group>"; };
 		85941FB9264E452D00A3CAF6 /* ModelReadme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ModelReadme.md; sourceTree = "<group>"; };
+		85941FBA264EEA3500A3CAF6 /* DrawingPadToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingPadToolbar.swift; sourceTree = "<group>"; };
+		85941FBC264EF85700A3CAF6 /* DrawingPadController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingPadController.swift; sourceTree = "<group>"; };
 		85954042261C3144001D9040 /* SpriteKitNoiseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteKitNoiseController.swift; sourceTree = "<group>"; };
 		8597BB7D25BCA8B200C705A0 /* ImageFXController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFXController.swift; sourceTree = "<group>"; };
 		8597BB8325BCAEF600C705A0 /* Metal.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Metal.metal; sourceTree = "<group>"; };
@@ -355,6 +359,7 @@
 				85A477622641B0B800F93AB3 /* Image FX */,
 				8515B341262554A700A886BD /* GradientController.swift */,
 				85D3E7CE26390FC500D693FA /* SceneMachineController.swift */,
+				85941FBC264EF85700A3CAF6 /* DrawingPadController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -406,6 +411,7 @@
 			isa = PBXGroup;
 			children = (
 				857C5FE7263F73800095E3B4 /* DrawingPad.swift */,
+				85941FBA264EEA3500A3CAF6 /* DrawingPadToolbar.swift */,
 			);
 			path = Drawing;
 			sourceTree = "<group>";
@@ -653,6 +659,8 @@
 				85FFB7362639C16F00E8FE0A /* MetalGenController.swift in Sources */,
 				857A93CD26124F3F004FFEBB /* QuickNoiseView.swift in Sources */,
 				85B9138226329DED0065D6D2 /* MetalGenView.swift in Sources */,
+				85941FBB264EEA3500A3CAF6 /* DrawingPadToolbar.swift in Sources */,
+				85941FBD264EF85700A3CAF6 /* DrawingPadController.swift in Sources */,
 				8515B46D262D3B3B00A886BD /* TopBar.swift in Sources */,
 				85FAF34C263C511300081ED8 /* FXDistortView.swift in Sources */,
 				8515B3D52628A58B00A886BD /* LocalDatabase.swift in Sources */,
