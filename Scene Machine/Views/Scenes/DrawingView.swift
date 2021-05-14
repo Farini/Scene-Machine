@@ -7,60 +7,17 @@
 
 import SwiftUI
 
-protocol PointMaker {
-    func makeMarks() -> [CGPoint]
-}
 
-class DPoint:Codable, Identifiable, PointMaker {
-    
-    var id:UUID
-    var point:CGPoint
-    var control1:CGPoint?
-    var control2:CGPoint?
-    var isCurve:Bool
-    
-    init(_ point:CGPoint, curved:Bool? = false) {
-        
-        self.point = point
-        self.id = UUID()
-        self.isCurve = curved!
-        if curved == true {
-            self.control1 = CGPoint(x: point.x + 5, y: point.x + 5)
-            self.control2 = CGPoint(x: point.x - 5, y: point.x - 5)
-        }
-    }
-    
-    func toggleCurve() {
-        isCurve.toggle()
-    }
-    
-    func move(to:CGPoint) {
-        self.point = to
-    }
-    
-    func moveControl(_ idx:Int, newPoint:CGPoint) {
-        if idx == 1 { self.control1 = newPoint }
-        if idx == 2 { self.control2 = newPoint }
-    }
-    
-    func makeMarks() -> [CGPoint] {
-        if !isCurve {
-            return [point]
-        } else {
-            return [point, control1!, control2!]
-        }
-    }
-}
 
 struct DrawingView: View {
     
     @State private var startPoint: CGPoint = CGPoint(x: 256, y: 256)
     @State private var endPoint: CGPoint = CGPoint(x: 240, y: 256)
     
-    @State var allPoints:[DPoint] = [DPoint(CGPoint(x: 256, y: 256))]
+    @State var allPoints:[PenPoint] = [PenPoint(CGPoint(x: 256, y: 256))]
     @State private var lineWidth:Int = 3
     
-    @State var drawnPaths:[DPoint] = []
+    @State var drawnPaths:[PenPoint] = []
     @State var isPathClosed:Bool = false
     @State var isCurve:Bool = false
     @State var isMoving:Bool = true
@@ -78,7 +35,7 @@ struct DrawingView: View {
                 Button("t") {
                     print("Terminate")
                     drawnPaths.append(contentsOf: allPoints)
-                    allPoints = [DPoint(CGPoint(x: 256, y: 256))]
+                    allPoints = [PenPoint(CGPoint(x: 256, y: 256))]
                 }
                 Divider()
                 Spacer()
@@ -106,7 +63,7 @@ struct DrawingView: View {
                     }
                     
                     let adjPoint = CGPoint(x: location.x, y: 512 - location.y)
-                    allPoints.append(DPoint(adjPoint, curved: isCurve))
+                    allPoints.append(PenPoint(adjPoint, curved: isCurve))
                     endPoint = adjPoint
                 }
                 
@@ -149,12 +106,12 @@ struct DrawingView: View {
                                 }
                                 .onEnded({ ended in
                                     if isCurve {
-                                        let rPoint = DPoint((CGPoint(x: ended.location.x, y: ended.location.y)), curved: true)
+                                        let rPoint = PenPoint((CGPoint(x: ended.location.x, y: ended.location.y)), curved: true)
                                         
                                         allPoints.append(rPoint)
                                         
                                     } else {
-                                        allPoints.append(DPoint(CGPoint(x: ended.location.x, y: ended.location.y)))
+                                        allPoints.append(PenPoint(CGPoint(x: ended.location.x, y: ended.location.y)))
                                     }
                                     
                                 }))
@@ -180,7 +137,7 @@ struct DrawingView: View {
                         .gesture(DragGesture()
                                     .onChanged { (value) in
                                         let newPoint = CGPoint(x: value.location.x, y: value.location.y)
-                                        let dPoint = DPoint(allPoints.last!.point, curved: true)
+                                        let dPoint = PenPoint(allPoints.last!.point, curved: true)
                                         dPoint.control1 = newPoint
                                         dPoint.control2 = allPoints.last!.control2
                                         allPoints.removeLast()
@@ -188,7 +145,7 @@ struct DrawingView: View {
                                     }
                                     .onEnded({ ended in
                                         let newPoint = CGPoint(x: ended.location.x, y: ended.location.y)
-                                        let dPoint = DPoint(allPoints.last!.point, curved: true)
+                                        let dPoint = PenPoint(allPoints.last!.point, curved: true)
                                         dPoint.control1 = newPoint
                                         dPoint.control2 = allPoints.last!.control2
                                         allPoints.removeLast()
@@ -203,7 +160,7 @@ struct DrawingView: View {
                         .gesture(DragGesture()
                                     .onChanged { (value) in
                                         let newPoint = CGPoint(x: value.location.x, y: value.location.y)
-                                        let dPoint = DPoint(allPoints.last!.point, curved: true)
+                                        let dPoint = PenPoint(allPoints.last!.point, curved: true)
                                         dPoint.control1 = allPoints.last!.control1
                                         dPoint.control2 = newPoint
                                         allPoints.removeLast()
@@ -211,7 +168,7 @@ struct DrawingView: View {
                                     }
                                     .onEnded({ ended in
                                         let newPoint = CGPoint(x: ended.location.x, y: ended.location.y)
-                                        let dPoint = DPoint(allPoints.last!.point, curved: true)
+                                        let dPoint = PenPoint(allPoints.last!.point, curved: true)
                                         dPoint.control1 = allPoints.last!.control1
                                         dPoint.control2 = newPoint
                                         allPoints.removeLast()
@@ -238,7 +195,7 @@ struct DrawingView: View {
 
 struct DrawingPointView: View {
     
-    var point:DPoint
+    var point:PenPoint
     
     var body: some View {
         if point.isCurve {

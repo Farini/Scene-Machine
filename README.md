@@ -57,7 +57,8 @@ Mix 2 images, using multiple `CoreImage` techniques
 - [X] Basic CIFilters
 
 ### Metal Kernel Shaders
-Image CIKernels built on Metal programming language
+Image CIKernels built on Metal programming language.
+More about Shaders: [Here](https://github.com/Farini/Scene-Machine/blob/main/Scene%20Machine/Shaders/ShadersReadme.md#about-shaders)
 
 - [X] GRBA -> Green to Red (and back) pixels 
 - [X] Caustic Noise improved
@@ -141,9 +142,11 @@ Create SceneKit Materials - `SCNMaterial`
 - [X] Better Voronoi
 - [X] Plasma Generator
 
+### New Features v 1.2
+- [X] NormalMap shader, to transform images in Normal Maps, or...
+
 - [ ] Draw textures on UVMaps
 - [ ] Ability to use .txt files that can contain code for fragment/vertex shaders
-- [ ] Make a NormalMap shader, to transform images in Normal Maps, or...
 - [ ] SpriteKit Normal map. `SKTexture.generatingNormalMap()` 
 - [ ] 💾 Save Materials Property `SceneMaterial`
 - [ ] Improve App Help: http://swiftrien.blogspot.com/2015/06/adding-apple-help-to-os-x-application.html

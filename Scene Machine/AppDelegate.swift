@@ -168,6 +168,24 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
+    var drawingWindow:NSWindow!
+    @IBAction func openDrawingView(_ sender: Any) {
+        
+        if nil == drawingWindow {
+            let drawingView = DrawingPadView()
+            drawingWindow = NSWindow(
+                contentRect: NSRect(x: 0, y: 0, width: 900, height: 700),
+                styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+                backing: .buffered, defer: false)
+            drawingWindow.center()
+            drawingWindow.setFrameAutosaveName("DrawingPadView")
+            drawingWindow.title = "Drawing Pad"
+            drawingWindow.isReleasedWhenClosed = false
+            drawingWindow.contentView = NSHostingView(rootView: drawingView)
+        }
+        drawingWindow.makeKeyAndOrderFront(nil)
+    }
+    
     /// Quick Noise
     var quickNoiseWindow:NSWindow!
     @IBAction func openNoiseMaker(_ sender: NSMenuItem) {
@@ -187,6 +205,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         quickNoiseWindow.makeKeyAndOrderFront(nil)
     }
+    
     
     
     @IBAction func openSpriteKitNoise(_ sender: NSMenuItem) {
@@ -379,6 +398,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         sceneMachineWindow.makeKeyAndOrderFront(nil)
     }
+    
+    
     
     
     // MARK: - Help

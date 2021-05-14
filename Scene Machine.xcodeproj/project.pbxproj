@@ -44,6 +44,7 @@
 		857C473426371D06006C6A32 /* MetalNoiseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857C473326371D06006C6A32 /* MetalNoiseView.swift */; };
 		857C47382637370F006C6A32 /* MetalTilesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857C47372637370F006C6A32 /* MetalTilesView.swift */; };
 		857C5FE8263F73800095E3B4 /* DrawingPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857C5FE7263F73800095E3B4 /* DrawingPad.swift */; };
+		85941FB8264E3D6900A3CAF6 /* Drawing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85941FB7264E3D6900A3CAF6 /* Drawing.swift */; };
 		85954043261C3144001D9040 /* SpriteKitNoiseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85954042261C3144001D9040 /* SpriteKitNoiseController.swift */; };
 		8597BB7E25BCA8B200C705A0 /* ImageFXController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8597BB7D25BCA8B200C705A0 /* ImageFXController.swift */; };
 		8597BB8425BCAEF600C705A0 /* Metal.metal in Sources */ = {isa = PBXBuildFile; fileRef = 8597BB8325BCAEF600C705A0 /* Metal.metal */; };
@@ -169,6 +170,8 @@
 		857C473326371D06006C6A32 /* MetalNoiseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalNoiseView.swift; sourceTree = "<group>"; };
 		857C47372637370F006C6A32 /* MetalTilesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalTilesView.swift; sourceTree = "<group>"; };
 		857C5FE7263F73800095E3B4 /* DrawingPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingPad.swift; sourceTree = "<group>"; };
+		85941FB7264E3D6900A3CAF6 /* Drawing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drawing.swift; sourceTree = "<group>"; };
+		85941FB9264E452D00A3CAF6 /* ModelReadme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ModelReadme.md; sourceTree = "<group>"; };
 		85954042261C3144001D9040 /* SpriteKitNoiseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteKitNoiseController.swift; sourceTree = "<group>"; };
 		8597BB7D25BCA8B200C705A0 /* ImageFXController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFXController.swift; sourceTree = "<group>"; };
 		8597BB8325BCAEF600C705A0 /* Metal.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Metal.metal; sourceTree = "<group>"; };
@@ -233,8 +236,10 @@
 		8515B32E2624E69800A886BD /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				85941FB9264E452D00A3CAF6 /* ModelReadme.md */,
 				8541531A2648680B007C926B /* AppConstants.swift */,
 				85A477672641CE3700F93AB3 /* CoreData */,
+				85941FB6264E3D3F00A3CAF6 /* Drawing */,
 				8515B3D42628A58B00A886BD /* LocalDatabase.swift */,
 				8515B32F2624E6EE00A886BD /* ImageBasics.swift */,
 				8515B36926263FFE00A886BD /* MaterialModel.swift */,
@@ -248,7 +253,6 @@
 				8515B371262743D000A886BD /* TerrainView.swift */,
 				855053712644F33500A577E2 /* Scene Machine */,
 				85CB4360263D0D9A006E4B10 /* DrawingView.swift */,
-				857C5FE7263F73800095E3B4 /* DrawingPad.swift */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -359,12 +363,13 @@
 			isa = PBXGroup;
 			children = (
 				8515B3462625EC6300A886BD /* FrontView.swift */,
+				85771BCB2633D019001A2B88 /* UI Components */,
 				857A93CB26124F1F004FFEBB /* NoiseMaker */,
 				8515B472262E121900A886BD /* Image FX */,
 				8515B3DA2628B12A00A886BD /* Composition */,
+				85941FB5264DE3C400A3CAF6 /* Drawing */,
 				8515B34E26262EB200A886BD /* Scenes */,
 				8515B36526263C6A00A886BD /* Materials */,
-				85771BCB2633D019001A2B88 /* UI Components */,
 				8515B3792627F3CE00A886BD /* SceneProgramView.swift */,
 				8515B46C262D3B3B00A886BD /* TopBar.swift */,
 				85A4775E26407D2900F93AB3 /* Help */,
@@ -395,6 +400,22 @@
 				85B9137F26329DA20065D6D2 /* Metal Generators */,
 			);
 			path = NoiseMaker;
+			sourceTree = "<group>";
+		};
+		85941FB5264DE3C400A3CAF6 /* Drawing */ = {
+			isa = PBXGroup;
+			children = (
+				857C5FE7263F73800095E3B4 /* DrawingPad.swift */,
+			);
+			path = Drawing;
+			sourceTree = "<group>";
+		};
+		85941FB6264E3D3F00A3CAF6 /* Drawing */ = {
+			isa = PBXGroup;
+			children = (
+				85941FB7264E3D6900A3CAF6 /* Drawing.swift */,
+			);
+			path = Drawing;
 			sourceTree = "<group>";
 		};
 		85A4775E26407D2900F93AB3 /* Help */ = {
@@ -657,6 +678,7 @@
 				8597BB8425BCAEF600C705A0 /* Metal.metal in Sources */,
 				8564922F25796F9C00D1FE00 /* TestImageDragDrop.swift in Sources */,
 				85FFB73E2639DA1700E8FE0A /* MetalOthersView.swift in Sources */,
+				85941FB8264E3D6900A3CAF6 /* Drawing.swift in Sources */,
 				8564922A25795F3C00D1FE00 /* DragDropView.swift in Sources */,
 				85649219257953A900D1FE00 /* ImageCompositionController.swift in Sources */,
 				856491D52578100B00D1FE00 /* Scene_Machine.xcdatamodeld in Sources */,
@@ -851,7 +873,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				MTL_ENABLE_INDEX_STORE = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "cfarini.Scene-Machine";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -879,7 +901,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				MTL_ENABLE_INDEX_STORE = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "cfarini.Scene-Machine";
 				PRODUCT_NAME = "$(TARGET_NAME)";

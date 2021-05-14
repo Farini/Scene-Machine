@@ -14,7 +14,8 @@ struct SMShapeEditorView: View {
     @State private var startPoint: CGPoint = CGPoint(x: 256, y: 256)
     @State private var endPoint: CGPoint = CGPoint(x: 226, y: 256)
     
-    @State var allPoints:[DPoint] = [DPoint(CGPoint(x: 256, y: 256))]
+    
+    @State var allPoints:[PenPoint] = [PenPoint(CGPoint(x: 256, y: 256))]
 
     @State var isPathClosed:Bool = false
     @State var isCurve:Bool = false
@@ -38,7 +39,7 @@ struct SMShapeEditorView: View {
                 .help("f is for 'face'. It closes the path, creating an edge from the last point to the initial point.")
                 
                 Button("Clear") {
-                    allPoints = [DPoint(CGPoint(x: 256, y: 256))]
+                    allPoints = [PenPoint(CGPoint(x: 256, y: 256))]
                 }
                 
                 Divider()
@@ -67,7 +68,7 @@ struct SMShapeEditorView: View {
                         }
                         
                         let adjPoint = CGPoint(x: location.x, y: 512 - location.y)
-                        allPoints.append(DPoint(adjPoint, curved: isCurve))
+                        allPoints.append(PenPoint(adjPoint, curved: isCurve))
                         endPoint = adjPoint
                     }
                     
@@ -117,11 +118,11 @@ struct SMShapeEditorView: View {
                                     }
                                     .onEnded({ ended in
                                         if isCurve {
-                                            let rPoint = DPoint((CGPoint(x: ended.location.x, y: ended.location.y)), curved: true)
+                                            let rPoint = PenPoint((CGPoint(x: ended.location.x, y: ended.location.y)), curved: true)
                                             allPoints.append(rPoint)
                                             self.draggingPoint = nil
                                         } else {
-                                            allPoints.append(DPoint(CGPoint(x: ended.location.x, y: ended.location.y)))
+                                            allPoints.append(PenPoint(CGPoint(x: ended.location.x, y: ended.location.y)))
                                         }
                                         
                                     }))
@@ -147,7 +148,7 @@ struct SMShapeEditorView: View {
                             .gesture(DragGesture()
                                         .onChanged { (value) in
                                             let newPoint = CGPoint(x: value.location.x, y: value.location.y)
-                                            let dPoint = DPoint(allPoints.last!.point, curved: true)
+                                            let dPoint = PenPoint(allPoints.last!.point, curved: true)
                                             dPoint.control1 = newPoint
                                             dPoint.control2 = allPoints.last!.control2
                                             allPoints.removeLast()
@@ -155,7 +156,7 @@ struct SMShapeEditorView: View {
                                         }
                                         .onEnded({ ended in
                                             let newPoint = CGPoint(x: ended.location.x, y: ended.location.y)
-                                            let dPoint = DPoint(allPoints.last!.point, curved: true)
+                                            let dPoint = PenPoint(allPoints.last!.point, curved: true)
                                             dPoint.control1 = newPoint
                                             dPoint.control2 = allPoints.last!.control2
                                             allPoints.removeLast()
@@ -170,7 +171,7 @@ struct SMShapeEditorView: View {
                             .gesture(DragGesture()
                                         .onChanged { (value) in
                                             let newPoint = CGPoint(x: value.location.x, y: value.location.y)
-                                            let dPoint = DPoint(allPoints.last!.point, curved: true)
+                                            let dPoint = PenPoint(allPoints.last!.point, curved: true)
                                             dPoint.control1 = allPoints.last!.control1
                                             dPoint.control2 = newPoint
                                             allPoints.removeLast()
@@ -178,7 +179,7 @@ struct SMShapeEditorView: View {
                                         }
                                         .onEnded({ ended in
                                             let newPoint = CGPoint(x: ended.location.x, y: ended.location.y)
-                                            let dPoint = DPoint(allPoints.last!.point, curved: true)
+                                            let dPoint = PenPoint(allPoints.last!.point, curved: true)
                                             dPoint.control1 = allPoints.last!.control1
                                             dPoint.control2 = newPoint
                                             allPoints.removeLast()

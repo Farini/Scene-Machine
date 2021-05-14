@@ -372,7 +372,7 @@ class NormalMapFilter:CIFilter {
     override init() {
         let url = Bundle.main.url(forResource: "Kernels2.ci", withExtension: "metallib")!
         guard let data = try? Data(contentsOf: url) else { fatalError() }
-        guard let kkk = try? CIKernel(functionName: "normalMap", fromMetalLibraryData: data) else { fatalError() } // myColor // hexagons // truchet
+        guard let kkk = try? CIKernel(functionName: "normalMapper", fromMetalLibraryData: data) else { fatalError() } // myColor // hexagons // truchet
         // float4 truchet(sample_t sample, float2 size, destination dest) {
         self.kernel = kkk
         super.init()
@@ -406,7 +406,7 @@ class NormalMapFilter:CIFilter {
         return kernel.apply(extent: inputImage.extent, roiCallback: {
             (index, rect) in
             return rect // .insetBy(dx: 0, dy: 0)
-        }, arguments: [src, vec])
+        }, arguments: [src]) // arguments: [src, vec])
     }
 }
 
