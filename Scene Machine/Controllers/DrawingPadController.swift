@@ -39,21 +39,9 @@ class DrawingPadController:ObservableObject {
         // Are there modifications currently?
         // If yes, then add a layer
         // if not, ignore
+        print("Current Layers: \(layers.count)")
         
         let newLayer = DrawingLayer(tool: selectedTool, color: NSColor(foreColor), lineWidth: lineWidth)
-        switch selectedTool {
-            case .Pencil:
-                newLayer.pencilStrokes = pencilArray + [pencilCurrent]
-            case .Pen:
-                newLayer.penPoints = penPoints
-            case .Shape:
-                print("Not sure yet")
-        }
-        layers.append(newLayer)
-        
-        self.pencilCurrent = PencilStroke()
-        self.pencilArray = []
-        self.penPoints = []
         
         if currentLayer == layers.last {
             currentLayer = newLayer
@@ -64,5 +52,105 @@ class DrawingPadController:ObservableObject {
             currentLayer = newLayer
         }
         
+        switch selectedTool {
+            case .Pencil:
+                newLayer.pencilStrokes = pencilArray + [pencilCurrent]
+            case .Pen:
+                newLayer.penPoints = penPoints
+            case .Shape:
+                print("Not sure yet")
+        }
+//        layers.append(newLayer)
+        
+        self.pencilCurrent = PencilStroke()
+        self.pencilArray = []
+        self.penPoints = []
+        
+    }
+    
+    func addPencil(stroke:PencilStroke) {
+        let layer = currentLayer ?? DrawingLayer(tool: selectedTool, color: NSColor(foreColor), lineWidth: lineWidth)
+        if currentLayer == nil { currentLayer = layer }
+        currentLayer?.pencilStrokes.append(stroke)
+        layers.append(currentLayer!)
+    }
+    
+    func improve() {
+        /*
+        // take snapshot
+        let snapShot:NSImage? = DrawingPad(currentDrawing: currentLayer,
+                                           drawings: currentLayer?.pencilStrokes,
+                                           color: $color,
+                                           lineWidth: $lineWidth,
+                                           size: $controller.textureSize).snapShot(uvSize: controller.textureSize.size)
+        
+        
+        // get image
+        guard let inputImage = snapShot,
+              let inputImgData = inputImage.tiffRepresentation,
+              let inputBitmap = NSBitmapImageRep(data:inputImgData),
+              let coreImage = CIImage(bitmapImageRep: inputBitmap) else {
+            print("⚠️ No Image")
+            return
+        }
+        
+        let context = CIContext()
+        let filter = CIFilter.boxBlur()
+        filter.inputImage = coreImage
+        filter.radius = Float(lineWidth / 2)
+        
+        guard let blurredCI = filter.outputImage else {
+            print("⚠️ No Blurred image")
+            return
+        }
+        
+        // Center, radius, refraction, width
+        let sharpen = CIFilter.unsharpMask()
+        sharpen.inputImage = blurredCI
+        sharpen.radius = Float(lineWidth)
+        //        sharpen.sharpness = 0.99
+        sharpen.intensity = 1
+        
+        
+        guard let output = sharpen.outputImage,
+              let cgOutput = context.createCGImage(output, from: output.extent)
+        else {
+            print("⚠️ No output image")
+            return
+        }
+        
+        let filteredImage = NSImage(cgImage: cgOutput, size: controller.textureSize.size)
+        madeImage.append(filteredImage)
+        
+        */
+        // run blur filter
+        // run de-noise filter
+        // get image
+        // update ui
+    }
+    
+    
+    
+    func loadImage() {
+        let dialog = NSOpenPanel()
+        
+        dialog.title                   = "Choose a scene file.";
+        dialog.showsResizeIndicator    = true;
+        dialog.showsHiddenFiles        = false;
+        dialog.canChooseFiles = true
+        dialog.canChooseDirectories = true
+        dialog.allowsMultipleSelection = false
+        dialog.isAccessoryViewDisclosed = true
+        dialog.allowedFileTypes = ["png", "jpg", "tiff"]
+        
+        if dialog.runModal() == NSApplication.ModalResponse.OK {
+            if let url = dialog.url, url.isFileURL {
+                print("Loaded: \(url.absoluteString)")
+                if let image = NSImage(contentsOf: url) {
+                    //                    if image.size != imageSize.size
+                    self.backImage = image
+                }
+            }
+        }
     }
 }

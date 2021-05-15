@@ -13,17 +13,11 @@ struct DrawingPadView: View {
     
     @State private var currentDrawing: PencilStroke = PencilStroke()
     @State private var drawings: [PencilStroke] = [PencilStroke]()
-    @State private var color: Color = Color(white: 0.95)
-    @State private var lineWidth: CGFloat = 3.0
+//    @State private var color: Color = Color(white: 0.95)
+//    @State private var lineWidth: CGFloat = 3.0
     
-    // To Add
-    // -----------------
-    // Save Button
-    // Image size
-    // ---
-    // @State private var imageSize:TextureSize = TextureSize.medSmall // 512
-    @State private var madeImage:[NSImage] = []
-    @State private var tool:DrawingTool = .Pencil
+//    @State private var madeImage:[NSImage] = []
+//    @State private var tool:DrawingTool = .Pencil
     
     var body: some View {
         VStack {
@@ -45,16 +39,16 @@ struct DrawingPadView: View {
                 .help("Saves the image")
                 
                 Button("Open") {
-                    loadImage()
+                    controller.loadImage()
                 }
                 .help("Improves the image")
                 
                 Button("⬆️") {
-                    improve()
+                    controller.improve()
                 }
                 .help("Improves the image")
                 
-                Picker("", selection: $tool) {
+                Picker("", selection: $controller.selectedTool) {
                     ForEach(DrawingTool.allCases, id:\.self) { drawTool in
                         Text(drawTool.rawValue)
                     }
@@ -64,178 +58,146 @@ struct DrawingPadView: View {
             .padding(.horizontal, 8)
             .padding(.top, 4)
             
-            DrawingToolbar(color: $color, drawings: $drawings, lineWidth: $lineWidth)
+            DrawingToolbar(controller: controller)
                 .padding(.horizontal, 8)
+            
             
             Divider()
             
             ScrollView([.horizontal, .vertical]) {
                 ZStack {
-//                    ForEach(0..<madeImage.count) { idx in
-//                        let image = madeImage[idx]
-//                        Image(nsImage: image)
-//                    }
-                    if let nsimage = madeImage.last {
+                    
+                    ForEach(controller.layers) { layer in
+                        if layer.isVisible {
+                            DrawingLayerView(controller: controller, layer: layer)
+                        }
+                    }
+                    
+                    if let nsimage = controller.backImage {
                         Image(nsImage: nsimage)
                             .frame(width: controller.textureSize.size.width, height: controller.textureSize.size.height)
                     }
                     
-                    DrawingPad(currentDrawing: $currentDrawing,
-                               drawings: $drawings,
-                               color: $color,
-                               lineWidth: $lineWidth,
-                               size: $controller.textureSize)
+//                    DrawingPad(currentDrawing: $currentDrawing,
+//                               drawings: $drawings,
+//                               color: $color,
+//                               lineWidth: $lineWidth,
+//                               size: $controller.textureSize)
+                    DrawingPad(controller: controller, currentDrawing: $currentDrawing, size: $controller.textureSize)
                 }
                 
             }
         }
-    }
-    
-    func improve() {
-        // take snapshot
-        let snapShot:NSImage? = DrawingPad(currentDrawing: $currentDrawing,
-                                           drawings: $drawings,
-                                           color: $color,
-                                           lineWidth: $lineWidth,
-                                           size: $controller.textureSize).snapShot(uvSize: controller.textureSize.size)
-        
-        
-        // get image
-        guard let inputImage = snapShot,
-              let inputImgData = inputImage.tiffRepresentation,
-              let inputBitmap = NSBitmapImageRep(data:inputImgData),
-              let coreImage = CIImage(bitmapImageRep: inputBitmap) else {
-            print("⚠️ No Image")
-            return
-        }
-        
-        let context = CIContext()
-        let filter = CIFilter.boxBlur()
-        filter.inputImage = coreImage
-        filter.radius = Float(lineWidth / 2)
-        
-        guard let blurredCI = filter.outputImage else {
-            print("⚠️ No Blurred image")
-            return
-        }
-        
-        // Center, radius, refraction, width
-        let sharpen = CIFilter.unsharpMask()
-        sharpen.inputImage = blurredCI
-        sharpen.radius = Float(lineWidth)
-//        sharpen.sharpness = 0.99
-        sharpen.intensity = 1
-        
-              
-        guard let output = sharpen.outputImage,
-              let cgOutput = context.createCGImage(output, from: output.extent)
-        else {
-            print("⚠️ No output image")
-            return
-        }
-        
-        let filteredImage = NSImage(cgImage: cgOutput, size: controller.textureSize.size)
-        madeImage.append(filteredImage)
-        
-        
-        // run blur filter
-        // run de-noise filter
-        // get image
-        // update ui
     }
     
     func save() {
-        let snapShot:NSImage? = DrawingPad(currentDrawing: $currentDrawing,
-                                  drawings: $drawings,
-                                  color: $color,
-                                  lineWidth: $lineWidth,
-                                  size: $controller.textureSize).snapShot(uvSize: controller.textureSize.size)
-        if let image = snapShot {
-            
-            let data = image.tiffRepresentation
-            
-            let dialog = NSSavePanel() //NSOpenPanel();
-            
-            dialog.title                   = "Save drawing image";
-            dialog.showsResizeIndicator    = true;
-            dialog.showsHiddenFiles        = false;
-            dialog.message = "Save the image. Choose 'png' is there is transparency"
-            dialog.allowedFileTypes = ["png", "jpg", "jpeg"]
-            
-            if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
-                let result = dialog.url // Pathname of the file
-                
-                if let result = result {
-                    
-                    do {
-                        try data?.write(to: result)
-                        print("File saved")
-                    } catch {
-                        print("ERROR: \(error.localizedDescription)")
-                    }
-                }
-            } else {
-                // User clicked on "Cancel"
-                return
-            }
-        }
+//        let snapShot:NSImage? = DrawingPad(currentDrawing: $currentDrawing,
+//                                           drawings: $drawings,
+//                                           color: $color,
+//                                           lineWidth: $lineWidth,
+//                                           size: $controller.textureSize).snapShot(uvSize: controller.textureSize.size)
+//        if let image = snapShot {
+//
+//            let data = image.tiffRepresentation
+//
+//            let dialog = NSSavePanel() //NSOpenPanel();
+//
+//            dialog.title                   = "Save drawing image";
+//            dialog.showsResizeIndicator    = true;
+//            dialog.showsHiddenFiles        = false;
+//            dialog.message = "Save the image. Choose 'png' is there is transparency"
+//            dialog.allowedFileTypes = ["png", "jpg", "jpeg"]
+//
+//            if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
+//                let result = dialog.url // Pathname of the file
+//
+//                if let result = result {
+//
+//                    do {
+//                        try data?.write(to: result)
+//                        print("File saved")
+//                    } catch {
+//                        print("ERROR: \(error.localizedDescription)")
+//                    }
+//                }
+//            } else {
+//                // User clicked on "Cancel"
+//                return
+//            }
+//        }
         
     }
+}
+
+/**
+    How: There is enough info to draw both pen and pencil
+    Draw from `DrawingLayer` Object
+ */
+struct DrawingLayerView: View {
     
-    func loadImage() {
-        let dialog = NSOpenPanel()
-        
-        dialog.title                   = "Choose a scene file.";
-        dialog.showsResizeIndicator    = true;
-        dialog.showsHiddenFiles        = false;
-        dialog.canChooseFiles = true
-        dialog.canChooseDirectories = true
-        dialog.allowsMultipleSelection = false
-        dialog.isAccessoryViewDisclosed = true
-        dialog.allowedFileTypes = ["png", "jpg", "tiff"]
-        
-        if dialog.runModal() == NSApplication.ModalResponse.OK {
-            if let url = dialog.url, url.isFileURL {
-                print("Loaded: \(url.absoluteString)")
-                if let image = NSImage(contentsOf: url) {
-//                    if image.size != imageSize.size
-                    madeImage = [image]
+    @ObservedObject var controller:DrawingPadController
+    var layer:DrawingLayer
+    
+    var body: some View {
+        GeometryReader { geometry in
+            
+            Path { path in
+                for drawing in layer.pencilStrokes {
+                    self.add(drawing: drawing, toPath: &path)
                 }
+                if let startPoint = layer.penPoints.first {
+                    path.move(to: startPoint.point)
+                    for penPoint in layer.penPoints {
+                        if penPoint.isCurve {
+                            path.addCurve(to: penPoint.point, control1: penPoint.control1!, control2: penPoint.control2!)
+                        } else {
+                            path.addLine(to: penPoint.point)
+                        }
+                    }
+                }
+            }
+            .stroke(layer.colorData.getColor(), style: StrokeStyle(lineWidth: layer.lineWidth, lineCap: .round, lineJoin: .bevel, miterLimit: .pi, dash: [], dashPhase: 0))
+            
+        }
+        .frame(width: controller.textureSize.size.width, height: controller.textureSize.size.height)
+    }
+    
+    private func add(drawing: PencilStroke, toPath path: inout Path) {
+        let points = drawing.points
+        if points.count > 1 {
+            for i in 0..<points.count-1 {
+                let current = points[i]
+                let next = points[i+1]
+                path.move(to: current)
+                path.addLine(to: next)
             }
         }
     }
 }
 
-// MARK: - Continue Here....
-// TODO: DrawingLayerView
-/**
-    How: There is enough info to draw both pen and pencil
-    Draw from `DrawingLayer` Object
-
- */
-
 
 struct DrawingPad: View {
     
+    @ObservedObject var controller:DrawingPadController
+//    @Binding var layer
     @Binding var currentDrawing: PencilStroke
-    @Binding var drawings: [PencilStroke]
-    @Binding var color: Color
-    @Binding var lineWidth: CGFloat
+//    @Binding var drawings: [PencilStroke]
+//    @Binding var color: Color
+//    @Binding var lineWidth: CGFloat
     
     @Binding var size:TextureSize // = TextureSize.medium.size
     
     var body: some View {
         GeometryReader { geometry in
             Path { path in
-                for drawing in self.drawings {
-                    self.add(drawing: drawing, toPath: &path)
-                }
+//                for drawing in self.drawings {
+//                    self.add(drawing: drawing, toPath: &path)
+//                }
                 self.add(drawing: self.currentDrawing, toPath: &path)
             }
-            .stroke(self.color, style: StrokeStyle(lineWidth: self.lineWidth, lineCap: .round, lineJoin: .bevel, miterLimit: .pi, dash: [], dashPhase: 0))
-//            .stroke(style: StrokeStyle(lineWidth: self.lineWidth, lineCap: .round, lineJoin: .round, miterLimit: .pi, dash: [], dashPhase: 0))
+            .stroke(controller.foreColor,
+                    style: StrokeStyle(lineWidth: controller.lineWidth, lineCap: .round, lineJoin: .bevel, miterLimit: .pi, dash: [], dashPhase: 0))
             
-//            .stroke(self.color, lineWidth: self.lineWidth)
             .background(Color(white: 0.01).opacity(0.05))
             .gesture(
                 DragGesture(minimumDistance: 0.1)
@@ -247,8 +209,10 @@ struct DrawingPad: View {
                         }
                     })
                     .onEnded({ (value) in
-                        self.drawings.append(self.currentDrawing)
-                        self.currentDrawing = PencilStroke()
+//                        self.drawings.append(self.currentDrawing)
+//                        self.currentDrawing = PencilStroke()
+                        controller.addPencil(stroke: currentDrawing)
+                        currentDrawing.points = []
                     })
             )
         }
@@ -270,51 +234,50 @@ struct DrawingPad: View {
 
 struct DrawingToolbar: View {
     
-    @Binding var color: Color
-    @Binding var drawings: [PencilStroke]
-    @Binding var lineWidth: CGFloat
+    @ObservedObject var controller:DrawingPadController
     
     @State private var colorPickerShown = false
-    
-    // To Add
-    // -----------------
-    // Save Button
-    // Image size
-    // ---
-    // Background Color
-    // Background Image
-    // Background Grid
-    // ---
-    // Stroke type
     
     var body: some View {
         HStack {
             
             Button("↩️") {
-                if self.drawings.count > 0 {
-                    self.drawings.removeLast()
+//                if self.drawings.count > 0 {
+//                    self.drawings.removeLast()
+//                }
+//                controller.currentLayer?.pencilStrokes.removeLast()
+                if controller.layers.isEmpty == false {
+                    controller.layers.removeLast()
                 }
             }
             .help("Removes the last Drawing")
             
             Button("❌") {
-                self.drawings = [PencilStroke]()
+//                self.drawings = [PencilStroke]()
+                controller.currentLayer?.pencilStrokes = []
             }
             .help("Clear the drawings")
             
             Button("+") {
-                print("Add new layer")
+                controller.addLayer()
             }
+            .help("Add new layer")
             
             Divider()
             
-            ColorPicker("Color", selection: $color)
+            ColorPicker("Color", selection: $controller.foreColor)
+                .onChange(of: controller.foreColor, perform: { value in
+                    controller.addLayer()
+                })
             
-            Text("Width \(Int(lineWidth))")
-            TextField("Width", value: $lineWidth, formatter: NumberFormatter.scnFormat)
+            Text("Width \(Int(controller.lineWidth))")
+                .onChange(of: controller.lineWidth, perform: { value in
+                    controller.addLayer()
+                })
+            TextField("Width", value: $controller.lineWidth, formatter: NumberFormatter.scnFormat)
                 .frame(width:50)
             
-            Slider(value: $lineWidth, in: 1.0...15.0, step: 1.0)
+            Slider(value: $controller.lineWidth, in: 1.0...15.0, step: 1.0)
                 .padding(4)
         }
         .frame(height:32, alignment: .center)
