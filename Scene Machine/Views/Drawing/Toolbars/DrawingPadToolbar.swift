@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+/*
 struct DrawingPadToolbar: View {
     
     @State private var imageSize:TextureSize = TextureSize.medSmall // 512
@@ -54,3 +54,4 @@ struct DrawingPadToolbar_Previews: PreviewProvider {
         DrawingPadToolbar()
     }
 }
+*/

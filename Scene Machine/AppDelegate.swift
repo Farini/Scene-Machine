@@ -186,19 +186,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             drawingWindow.setFrameAutosaveName("DrawingPadView")
             
             drawingWindow.title = "Drawing Pad"
-            drawingWindow.titleVisibility = .hidden
+//            drawingWindow.titleVisibility = .hidden
             
             // Enclosing code snipped
-            let toolbarButtons = NSHostingView(rootView: DrawingPadToolbar())
-            toolbarButtons.frame.size = toolbarButtons.fittingSize
+//            let toolbarButtons = NSHostingView(rootView: DrawingPadToolbar())
+//            toolbarButtons.frame.size = toolbarButtons.fittingSize
             
-            let titlebarAccessory = NSTitlebarAccessoryViewController()
-            titlebarAccessory.view = toolbarButtons
-            titlebarAccessory.layoutAttribute = .leading
+//            let titlebarAccessory = NSTitlebarAccessoryViewController()
+//            titlebarAccessory.view = toolbarButtons
+//            titlebarAccessory.layoutAttribute = .leading
             
             // Enclosing code snipped
-            drawingWindow.toolbar = NSToolbar()
-            drawingWindow.addTitlebarAccessoryViewController(titlebarAccessory)
+//            drawingWindow.toolbar = NSToolbar()
+//            drawingWindow.addTitlebarAccessoryViewController(titlebarAccessory)
             
             drawingWindow.isReleasedWhenClosed = false
             drawingWindow.contentView = NSHostingView(rootView: drawingView)

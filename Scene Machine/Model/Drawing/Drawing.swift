@@ -30,6 +30,7 @@ class DrawingLayer:Codable, Identifiable {
     var lineCap:CGLineCap?       // (Int): butt, round, square
     
     var tool:DrawingTool
+    
     var pencilStrokes:[PencilStroke] = []
     var penPoints:[PenPoint] = []
     var shapeInfo:[ShapeInfo] = []
@@ -53,8 +54,12 @@ class DrawingLayer:Codable, Identifiable {
     func hasModifications() -> Bool {
         if penPoints.isEmpty && pencilStrokes.isEmpty && shapeInfo.isEmpty && sublayers.isEmpty {
             return false
+        } else {
+            print("Pen, Pencil, Shape, Layers, \(penPoints.count), \(pencilStrokes.count), \(shapeInfo.count), \(sublayers.count)")
+            
+            return true
         }
-        return true
+        
     }
 }
 

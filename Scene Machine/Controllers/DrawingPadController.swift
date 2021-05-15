@@ -14,8 +14,9 @@ class DrawingPadController:ObservableObject {
     
     @Published var selectedTool:DrawingTool = .Pencil
     
-    @Published var layers:[DrawingLayer] = []
     @Published var currentLayer:DrawingLayer?
+    @Published var layers:[DrawingLayer] = []
+    @Published var selectedLayer:DrawingLayer?
     
     // Current Layer properties
     @Published var foreColor:Color = .white
@@ -33,9 +34,15 @@ class DrawingPadController:ObservableObject {
     @Published var pencilArray:[PencilStroke] = []
     
     // Pen
-    @Published var penPoints:[PenPoint] = [PenPoint(CGPoint(x: 20, y: 20))]
+    @Published var penPoints:[PenPoint] = [PenPoint(CGPoint(x: 20, y: 20)), PenPoint(CGPoint(x: 40, y: 20))]
+    @Published var isPenPathClosed:Bool = false
+    @Published var isPenPathCurved:Bool = false
     
-    func addLayer() {
+    // Shape
+    
+    
+    /// Creates a new layer. If the current layer has modifications, it adds to the array of layers.
+    func newLayer() {
         // Are there modifications currently?
         // If yes, then add a layer
         // if not, ignore
@@ -43,37 +50,137 @@ class DrawingPadController:ObservableObject {
         
         let newLayer = DrawingLayer(tool: selectedTool, color: NSColor(foreColor), lineWidth: lineWidth)
         
-        if currentLayer == layers.last {
-            currentLayer = newLayer
-        } else {
-            if currentLayer?.hasModifications() == true {
+        if currentLayer?.hasModifications() == true {
+            print("Current Layer has modifications")
+            
+            if currentLayer == layers.last {
+                print("Current layer = last")
+                layers.removeLast()
+                layers.append(currentLayer!)
+            } else {
                 layers.append(currentLayer!)
             }
-            currentLayer = newLayer
+            currentLayer = nil
+            
+        } else {
+            print("Current layer != last")
+            self.currentLayer = newLayer
         }
         
         switch selectedTool {
             case .Pencil:
                 newLayer.pencilStrokes = pencilArray + [pencilCurrent]
+                newLayer.penPoints = []
+                
             case .Pen:
+                newLayer.pencilStrokes = []
                 newLayer.penPoints = penPoints
+                
             case .Shape:
                 print("Not sure yet")
         }
-//        layers.append(newLayer)
         
         self.pencilCurrent = PencilStroke()
         self.pencilArray = []
-        self.penPoints = []
+        
+        if selectedTool == .Pen {
+            self.penPoints = [PenPoint(CGPoint(x: 20, y: 20)), PenPoint(CGPoint(x: 40, y: 20))]
+        } else {
+            self.penPoints = []
+        }
+    }
+    
+    // Updates colors and line Width
+    func updateTool() {
+        currentLayer?.colorData = ColorData(suiColor: foreColor)
+        currentLayer?.lineWidth = lineWidth
+    }
+    
+    // Selected a different tool
+    func didChangeTool(new:DrawingTool) {
+        
+        print("Changed Tool: \(new.rawValue)")
+        
+        if let drawingLayer = currentLayer, drawingLayer.hasModifications() {
+            
+            if !drawingLayer.penPoints.isEmpty {
+                drawingLayer.penPoints = self.penPoints
+            }
+            
+            if drawingLayer == layers.last {
+                layers.removeLast()
+            }
+            layers.append(drawingLayer)
+            self.currentLayer = nil
+        }
+        
+        self.currentLayer = DrawingLayer(tool: selectedTool, color: NSColor(foreColor), lineWidth: lineWidth)
+        
+        switch new {
+            case .Pen:
+                currentLayer?.penPoints = [PenPoint(CGPoint(x: 20, y: 20)), PenPoint(CGPoint(x: 40, y: 20))]
+                self.penPoints = [PenPoint(CGPoint(x: 20, y: 20)), PenPoint(CGPoint(x: 40, y: 20))]
+            case .Pencil:
+                currentLayer?.pencilStrokes = []
+            case .Shape:
+                print("Not sure")
+        }
         
     }
     
+    // MARK: - Pencil
+    
     func addPencil(stroke:PencilStroke) {
+        
+        print("Adding pencil stroke")
+        
+        if let drawingLayer = currentLayer {
+            
+            currentLayer!.pencilStrokes.append(stroke)
+            if drawingLayer == layers.last {
+                print("Current is last")
+                layers.removeLast()
+                layers.append(drawingLayer)
+            } else {
+                print("Current NOT last")
+                layers.append(drawingLayer)
+            }
+        } else {
+            
+            print("no current layer")
+            currentLayer = DrawingLayer(tool: selectedTool, color: NSColor(foreColor), lineWidth: lineWidth)
+            currentLayer?.pencilStrokes.append(stroke)
+            
+            layers.append(currentLayer!)
+        }
+        
+    }
+    
+    // MARK: - Pen
+    
+    func updatePen() {
         let layer = currentLayer ?? DrawingLayer(tool: selectedTool, color: NSColor(foreColor), lineWidth: lineWidth)
         if currentLayer == nil { currentLayer = layer }
-        currentLayer?.pencilStrokes.append(stroke)
+        currentLayer?.penPoints = penPoints
         layers.append(currentLayer!)
     }
+    
+    func closePenPath() {
+        
+        if isPenPathClosed == false {
+            let closing = PenPoint(penPoints.first!.point)
+            penPoints.append(closing)
+        } else {
+            if penPoints.count > 2 {
+                penPoints.removeLast()
+            } else {
+                print("Cannot close a path with 2 points or less")
+            }
+        }
+        isPenPathClosed.toggle()
+    }
+    
+    // MARK: - Others
     
     func improve() {
         /*
@@ -128,8 +235,6 @@ class DrawingPadController:ObservableObject {
         // get image
         // update ui
     }
-    
-    
     
     func loadImage() {
         let dialog = NSOpenPanel()
