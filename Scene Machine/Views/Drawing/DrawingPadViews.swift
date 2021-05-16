@@ -142,7 +142,7 @@ struct DrawingPadView: View {
                             case .Pen:
                                 PenDrawingPad(controller: controller, isPathClosed: $controller.isPenPathClosed, isCurve: $controller.isPenPathCurved)
                             case .Shape:
-                                ShapeDrawingPad(controller: controller)
+                                ShapeDrawingPad(controller: controller, position:$controller.shapeInfo.pointStarts, size:$controller.shapeInfo.pointEnds)
                         }
                         
                     }

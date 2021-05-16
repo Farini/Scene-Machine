@@ -20,7 +20,7 @@ class DrawingPadController:ObservableObject {
     
     // Current Layer properties
     @Published var foreColor:Color = .white
-    @Published var backColor:Color = Color(white: 0.01).opacity(0.1)
+    @Published var backColor:Color = Color(white: 0.1).opacity(0.1)
     @Published var lineWidth:CGFloat = 3
     
     @Published var images:[NSImage] = []
@@ -39,7 +39,7 @@ class DrawingPadController:ObservableObject {
     @Published var isPenPathCurved:Bool = false
     
     // Shape
-    
+    @Published var shapeInfo:ShapeInfo = ShapeInfo()
     
     /// Creates a new layer. If the current layer has modifications, it adds to the array of layers.
     func newLayer() {

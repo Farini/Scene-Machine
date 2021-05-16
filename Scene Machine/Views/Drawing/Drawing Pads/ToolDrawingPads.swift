@@ -233,14 +233,66 @@ struct ShapeDrawingPad: View {
     @ObservedObject var controller:DrawingPadController
     
     // Drawing anything we need a rectange
-    @State var rectangle:CGRect = CGRect(origin: CGPoint(x: 5, y: 5), size: CGSize(width: 80, height: 40))
+//    @State var rectangle:CGRect = CGRect(origin: CGPoint(x: 5, y: 5), size: CGSize(width: 80, height: 40))
+    @Binding var position:CGPoint
+    @Binding var size:CGSize
     
     var body: some View {
-        ZStack {
-            Rectangle()
-                .cornerRadius(8)
-                .position(rectangle.origin)
-                .frame(width: rectangle.size.width, height: rectangle.size.height, alignment: .center)
+        ZStack(alignment:.leading) {
+            switch controller.shapeInfo.shapeType {
+                case .Rectangle:
+                    Rectangle()
+                        .strokeBorder(controller.foreColor, lineWidth: controller.lineWidth, antialiased: /*@START_MENU_TOKEN@*/true/*@END_MENU_TOKEN@*/) //(controller.foreColor)
+                        
+//                        .foregroundColor(controller.backColor)
+                        .cornerRadius(8)
+                        .offset(CGSize(width: position.x, height: position.y))
+                        .frame(width: size.width, height: size.height)
+                        .gesture(DragGesture()
+                                    .onChanged { (value) in
+                                        print("Drag: \(value.location)")
+                                        position = CGPoint(x: value.location.x, y: value.location.y)
+                                        
+                                    })
+                case .Circle:
+                    
+                    Circle()
+                        .strokeBorder(controller.foreColor, lineWidth: controller.lineWidth, antialiased: /*@START_MENU_TOKEN@*/true/*@END_MENU_TOKEN@*/)
+                        .foregroundColor(controller.backColor)
+                        
+                        //.position(controller.shapeInfo.pointStarts)
+                        .offset(CGSize(width: position.x, height: position.y))
+                        .frame(width: size.width, height: size.height)
+                        
+                        .gesture(DragGesture()
+                                    .onChanged { (value) in
+                                        print("Drag: \(value.location)")
+                                        position = CGPoint(x: value.location.x, y: value.location.y)
+                                        
+                                    })
+                    
+                case .Ellipse:
+                    
+                    Ellipse()
+                        .strokeBorder(controller.foreColor, lineWidth: controller.lineWidth, antialiased: /*@START_MENU_TOKEN@*/true/*@END_MENU_TOKEN@*/)
+                        .foregroundColor(controller.backColor)
+                        .cornerRadius(8)
+                        
+                        //.position(controller.shapeInfo.pointStarts)
+                        .offset(CGSize(width: position.x, height: position.y))
+                        .frame(width: size.width, height: size.height)
+                        
+                        .gesture(DragGesture()
+                                    .onChanged { (value) in
+                                        print("Drag: \(value.location)")
+                                        position = CGPoint(x: value.location.x, y: value.location.y)
+                                        
+                                    })
+                    
+                default: Text("default")
+            }
         }
+        .frame(width: controller.textureSize.size.width, height: controller.textureSize.size.height, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+        .background(Color.white.opacity(0.05))
     }
 }

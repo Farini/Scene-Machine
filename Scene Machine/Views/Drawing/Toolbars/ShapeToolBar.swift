@@ -7,28 +7,53 @@
 
 import SwiftUI
 
-enum ShapeToolType:String, CaseIterable {
-    case Rectangle
-    case Circle
-}
+//enum ShapeToolType:String, CaseIterable {
+//    case Rectangle
+//    case Circle
+//}
 
 struct ShapeToolBar: View {
     
     @ObservedObject var controller:DrawingPadController
-    @State var shapeType:ShapeToolType = .Rectangle
     
     var body: some View {
         VStack {
             HStack {
                 
-                Picker("Shape type", selection: $shapeType) {
-                    ForEach(ShapeToolType.allCases, id:\.self) { shape in
+                Picker("Type", selection: $controller.shapeInfo.shapeType) {
+                    ForEach(ShapeType.allCases, id:\.self) { shape in
                         Text("\(shape.rawValue)")
                     }
                 }
-                .frame(maxWidth:180)
+                .frame(maxWidth:160)
+                
+                Text("Size")
+                TextField("SizeX", value: $controller.shapeInfo.pointEnds.width, formatter: NumberFormatter.scnFormat)
+                    .frame(width:50)
+                Text("x")
+                TextField("SizeY", value: $controller.shapeInfo.pointEnds.height, formatter: NumberFormatter.scnFormat)
+                    .frame(width:50)
                 
                 Spacer()
+                
+                // Stroke Color
+                // Fill Color?
+                // Color
+                ColorPicker("Color", selection: $controller.foreColor)
+                    .onChange(of: controller.foreColor, perform: { value in
+                        //                        controller.addLayer()
+                        controller.updateTool()
+                    })
+                
+                Text("Width:")
+                    
+                TextField("Width", value: $controller.lineWidth, formatter: NumberFormatter.scnFormat)
+                    .frame(width:50)
+                    .onChange(of: controller.lineWidth, perform: { value in
+                        //                        controller.addLayer()
+                        controller.updateTool()
+                    })
+                
                 Button("Make") {
                     print("make shape")
                 }

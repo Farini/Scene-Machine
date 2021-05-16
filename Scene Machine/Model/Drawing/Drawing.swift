@@ -115,7 +115,7 @@ class PenPoint:Codable, Identifiable {
 /// Defines some basic hape types
 enum ShapeType:String, Codable, CaseIterable {
     case Circle
-    case Ellise
+    case Ellipse
     case Capsule
     case Rectangle
     case RectRadius4
@@ -124,11 +124,18 @@ enum ShapeType:String, Codable, CaseIterable {
 }
 
 /// Data related to Shape
-struct ShapeInfo:Codable {
+class ShapeInfo:Codable {
+    
     var shapeType:ShapeType
     var pointStarts:CGPoint
-    var pointEnds:CGPoint
+    var pointEnds:CGSize
     var extraPoints:[CGPoint] = []
+    
+    init() {
+        shapeType = .Rectangle
+        pointStarts = CGPoint(x: 5, y: 5)
+        pointEnds = CGSize(width: 50, height: 50)
+    }
 }
 
 extension DrawingLayer: Equatable {
