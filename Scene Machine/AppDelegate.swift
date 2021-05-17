@@ -442,6 +442,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         helpWindow.makeKeyAndOrderFront(nil)
     }
     
+    var blenderShortcutsWindow:NSWindow!
+    @IBAction func openBlenderShortcuts(_ sender: Any) {
+        if nil == blenderShortcutsWindow {
+            let view = HelpCharacterModeling()
+            blenderShortcutsWindow = NSWindow(
+                contentRect: NSRect(x: 0, y: 0, width: 600, height: 500),
+                styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+                backing: .buffered, defer: false)
+            blenderShortcutsWindow.center()
+            blenderShortcutsWindow.setFrameAutosaveName("BlenderShortcuts")
+            blenderShortcutsWindow.title = "Blender tips"
+            blenderShortcutsWindow.isReleasedWhenClosed = false
+            blenderShortcutsWindow.contentView = NSHostingView(rootView: view)
+        }
+        blenderShortcutsWindow.makeKeyAndOrderFront(nil)
+    }
 }
 
 /*

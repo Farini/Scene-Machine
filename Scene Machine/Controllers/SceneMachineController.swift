@@ -33,6 +33,7 @@ class SceneMachineController:ObservableObject {
     // Alert
     @Published var presentingTempAlert:Bool = false
     @Published var tempAlertMessage:String = ""
+    @Published var popSaveDialogue:Bool = false
     
     var device: MTLDevice!
 //    var outputTexture: MTLTexture?
@@ -330,6 +331,16 @@ class SceneMachineController:ObservableObject {
     
     // MARK: - Saving
     
+    /// Save the scene in a <directoryname>.scnassets
+    func saveSceneWith(folder:String, sceneName:String) {
+        let folderName = folder
+        let sceneName = sceneName
+        LocalDatabase.shared.createSceneFolder(named: folderName, scene: self.scene, sceneName: sceneName)
+        self.popSaveDialogue = false
+        
+    }
+    
+    /// Save the scene as a file
     func saveScene() {
         
         let dialog = NSSavePanel() //NSOpenPanel();
@@ -354,7 +365,10 @@ class SceneMachineController:ObservableObject {
                             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
                                 self.presentingTempAlert.toggle()
                                 self.tempAlertMessage = ""
+                                
                             }
+                        } else {
+                            self.popSaveDialogue = false
                         }
                     }
                 } else {
@@ -367,7 +381,10 @@ class SceneMachineController:ObservableObject {
                             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
                                 self.presentingTempAlert.toggle()
                                 self.tempAlertMessage = ""
+                                
                             }
+                        } else {
+                            self.popSaveDialogue = false
                         }
                     }
                 }

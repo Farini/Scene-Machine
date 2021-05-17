@@ -5,18 +5,24 @@
 <img src="https://img.shields.io/github/followers/Farini?label=Follow" alt="Farini followers" />
 </p>
 
-Scene Machine is a tool for App Developers and Graphic Designers. You may use Scene Machine to generate textures, images and UVMaps.
+**Textures**
 
-Use textures generated on 3D objects. Export and import scenes in `.scn` format. Save the contours of a UVMap to later edit images for pixel-perfect scene materials.
+Scene Machine is a tool for App Developers and Graphic Designers. This app makes the generation of procedural textures extremely easy. Besides procedural and noise textures, there is a collection of tiled & tileable textures that can be generated with Scene Machine. These images are called textures because of the standart texture sizes the app can generate: 256x256, 512x512, 1024x1024, 2048x2048 and 4096x4096 (measures in pixels).
 
-Scene Machine focuses on generation of tile, noise, and pattern images. After images are generated, it is possible to further customize those images and apply filters to them.
-The objective is to provide an easy way to generate textures, especially ones that can be used in 3D geometries in `SceneKit` scenes.
+Some textures such as Asphalt, Wood, Wallpaper, and a UVGrid also comes in the app library. - These come with their respective counterparts in Diffuse, Normal, Roughness and Ambient Occlusion counterparts. Another type of texture generated in Scene Machine is the Overlay type of textures (Lens flare, Halo, Sunbeam, and Caustic refraction).
 
-Scene Machine uses Metal programming language to generate images and `SCNProgram` code snippets.
+**Effects**
 
-Although SpriteKit offers ways to generate noise textures, the options are limited. In Blender, for example, there are many options, and graphics operations that can be performed to generate a texture. Scene Machine seeks to bring that type of graphic settings, essential for building great 3D scenes. Furthermore, a few pre-made geometries and backgrounds were added, to expand the users options for those types of assets.
+Scene Machine comes with quite a few image effects. Blur, Color, Distort and Stylize. Each one of these types of effects offers at least 6 variations of itself.
+Besides the effects that can be used, it is also possible to mix images. When textures are more complex, one may need to mix two, or more images using options like Color burn, Color dodge, Darken, Divide and Screen modes.
 
-Mix images using Core Image blend modes. When textures are more complex, you may need to mix two, or more images using Blend options like Color burn, Color dodge, Darken, Divide and Screen modes are also supported.
+**SceneKit**
+
+Import and export scenes in .dae and .scn formats. 
+
+Scene Machine lets you play around with scene materials. The app can be used to preview materials before finally importing scenes into your project. It allows you to go back and forth between Scene Machine (to see if your scene is looking okay in .scn format) and Blender. This is a good way to work on details of a scene before adding it to your project.
+
+Although SpriteKit offers ways to generate noise textures, the options are limited. In Blender, for example, there are many options, and graphics operations that can be performed to generate a texture. Scene Machine seeks to bring that type of graphic settings, essential for building great 3D scenes. Furthermore, a few pre-made geometries and backgrounds were added, to expand the users options when building scenes.
 
 The objective of this app is to create a more user-friendly way to build a `.scn` file, or to facilitate the conversion of `.dae` files into `.scn` while maintaining high-quality meshes, with their textures. Besides these scenes, if your interest is in generating patterns and effects, this app can be very useful as well.
 
@@ -79,6 +85,7 @@ Test and export `SceneKit` scenes.
 - [X] App Geometries
 - [X] Add Geometry from `.dae`, or `.obj` files.
 - [X] Export Scenes in `.scn` or `.dae`
+- [X] Option to export scenes to `*.scnassets` folder.
 - [ ] Have some sample code + shaders written in `Metal`  - `SCNProgram`
 - [ ] Test animated characters - Bones(in blender) vs SCNSkinner(Swift)
 
@@ -94,6 +101,9 @@ Create SceneKit Materials - `SCNMaterial`
 - [X] Ambient Occlusion
 - [X] Save UVMap Image
 - [ ] Save Materials
+
+// Remove this
+Character: https://www.youtube.com/watch?v=sdE9q_784F0
 
 
 ### App Resources
@@ -144,6 +154,8 @@ Create SceneKit Materials - `SCNMaterial`
 
 ### New Features v 1.2
 - [X] NormalMap shader, to transform images in Normal Maps, or...
+- [X] Blender Shortcuts
+- [X] Export to `.scnassets` folder.
 
 - [ ] Draw textures on UVMaps
 - [ ] Ability to use .txt files that can contain code for fragment/vertex shaders

@@ -15,7 +15,6 @@
 		8515B35E26263C6100A886BD /* MaterialEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B35D26263C6100A886BD /* MaterialEditView.swift */; };
 		8515B36A26263FFE00A886BD /* MaterialModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B36926263FFE00A886BD /* MaterialModel.swift */; };
 		8515B372262743D000A886BD /* TerrainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B371262743D000A886BD /* TerrainView.swift */; };
-		8515B37A2627F3CE00A886BD /* SceneProgramView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B3792627F3CE00A886BD /* SceneProgramView.swift */; };
 		8515B3D52628A58B00A886BD /* LocalDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B3D42628A58B00A886BD /* LocalDatabase.swift */; };
 		8515B3DC2628B16600A886BD /* CompositionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B3DB2628B16600A886BD /* CompositionView.swift */; };
 		8515B46D262D3B3B00A886BD /* TopBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B46C262D3B3B00A886BD /* TopBar.swift */; };
@@ -44,6 +43,7 @@
 		857C473426371D06006C6A32 /* MetalNoiseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857C473326371D06006C6A32 /* MetalNoiseView.swift */; };
 		857C47382637370F006C6A32 /* MetalTilesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857C47372637370F006C6A32 /* MetalTilesView.swift */; };
 		857C5FE8263F73800095E3B4 /* DrawingPadViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857C5FE7263F73800095E3B4 /* DrawingPadViews.swift */; };
+		85885EF626520B1B00E98855 /* HelpCharacterModeling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85885EF526520B1B00E98855 /* HelpCharacterModeling.swift */; };
 		85941FB8264E3D6900A3CAF6 /* Drawing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85941FB7264E3D6900A3CAF6 /* Drawing.swift */; };
 		85941FBB264EEA3500A3CAF6 /* DrawingPadToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85941FBA264EEA3500A3CAF6 /* DrawingPadToolbar.swift */; };
 		85941FBD264EF85700A3CAF6 /* DrawingPadController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85941FBC264EF85700A3CAF6 /* DrawingPadController.swift */; };
@@ -140,7 +140,6 @@
 		8515B35D26263C6100A886BD /* MaterialEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialEditView.swift; sourceTree = "<group>"; };
 		8515B36926263FFE00A886BD /* MaterialModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialModel.swift; sourceTree = "<group>"; };
 		8515B371262743D000A886BD /* TerrainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerrainView.swift; sourceTree = "<group>"; };
-		8515B3792627F3CE00A886BD /* SceneProgramView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneProgramView.swift; sourceTree = "<group>"; };
 		8515B3D42628A58B00A886BD /* LocalDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDatabase.swift; sourceTree = "<group>"; };
 		8515B3DB2628B16600A886BD /* CompositionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositionView.swift; sourceTree = "<group>"; };
 		8515B46C262D3B3B00A886BD /* TopBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBar.swift; sourceTree = "<group>"; };
@@ -176,6 +175,7 @@
 		857C473326371D06006C6A32 /* MetalNoiseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalNoiseView.swift; sourceTree = "<group>"; };
 		857C47372637370F006C6A32 /* MetalTilesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalTilesView.swift; sourceTree = "<group>"; };
 		857C5FE7263F73800095E3B4 /* DrawingPadViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingPadViews.swift; sourceTree = "<group>"; };
+		85885EF526520B1B00E98855 /* HelpCharacterModeling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpCharacterModeling.swift; sourceTree = "<group>"; };
 		85941FB7264E3D6900A3CAF6 /* Drawing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drawing.swift; sourceTree = "<group>"; };
 		85941FB9264E452D00A3CAF6 /* ModelReadme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ModelReadme.md; sourceTree = "<group>"; };
 		85941FBA264EEA3500A3CAF6 /* DrawingPadToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingPadToolbar.swift; sourceTree = "<group>"; };
@@ -264,6 +264,7 @@
 			children = (
 				8515B371262743D000A886BD /* TerrainView.swift */,
 				855053712644F33500A577E2 /* Scene Machine */,
+				8515B36526263C6A00A886BD /* Materials */,
 				85CB4360263D0D9A006E4B10 /* DrawingView.swift */,
 			);
 			path = Scenes;
@@ -376,15 +377,13 @@
 			isa = PBXGroup;
 			children = (
 				8515B3462625EC6300A886BD /* FrontView.swift */,
+				8515B46C262D3B3B00A886BD /* TopBar.swift */,
 				85771BCB2633D019001A2B88 /* UI Components */,
 				857A93CB26124F1F004FFEBB /* NoiseMaker */,
 				8515B472262E121900A886BD /* Image FX */,
 				8515B3DA2628B12A00A886BD /* Composition */,
 				85941FB5264DE3C400A3CAF6 /* Drawing */,
 				8515B34E26262EB200A886BD /* Scenes */,
-				8515B36526263C6A00A886BD /* Materials */,
-				8515B3792627F3CE00A886BD /* SceneProgramView.swift */,
-				8515B46C262D3B3B00A886BD /* TopBar.swift */,
 				85A4775E26407D2900F93AB3 /* Help */,
 			);
 			path = Views;
@@ -456,6 +455,7 @@
 			isa = PBXGroup;
 			children = (
 				85A4775F26407D4800F93AB3 /* HelpMainView.swift */,
+				85885EF526520B1B00E98855 /* HelpCharacterModeling.swift */,
 			);
 			path = Help;
 			sourceTree = "<group>";
@@ -668,6 +668,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85885EF626520B1B00E98855 /* HelpCharacterModeling.swift in Sources */,
 				85DEFC682643AFC8003DEC36 /* MercurializeFilter.swift in Sources */,
 				856492222579547900D1FE00 /* ImageCompositionView.swift in Sources */,
 				8515B33D26254C8300A886BD /* GradientMakerView.swift in Sources */,
@@ -702,7 +703,6 @@
 				85B9137926329A3A0065D6D2 /* CoreImage+Extensions.swift in Sources */,
 				85771BD12633D3B7001A2B88 /* CIGenView.swift in Sources */,
 				85941FC126501B0600A3CAF6 /* PenToolbar.swift in Sources */,
-				8515B37A2627F3CE00A886BD /* SceneProgramView.swift in Sources */,
 				857C47382637370F006C6A32 /* MetalTilesView.swift in Sources */,
 				85941FC426506FA500A3CAF6 /* ToolDrawingPads.swift in Sources */,
 				85FAF350263C6B7600081ED8 /* PhongShader.metal in Sources */,

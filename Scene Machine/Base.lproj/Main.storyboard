@@ -64,6 +64,7 @@
                                                 <action selector="openFinder:" target="Voe-Tx-rLC" id="XbS-wi-7di"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="5Dm-YP-sRg"/>
                                         <menuItem title="Testing Features" id="Fdo-Sx-QkQ">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <menu key="submenu" title="Testing Features" id="Ipu-r9-bAz">
@@ -198,6 +199,13 @@
                                         <menuItem title="Scene Machine Help" keyEquivalent="?" id="FKE-Sm-Kum">
                                             <connections>
                                                 <action selector="openHelp:" target="Voe-Tx-rLC" id="UmG-bB-uBN"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="KbJ-df-vxk"/>
+                                        <menuItem title="Blender Tips" id="cug-7x-MGc">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="openBlenderShortcuts:" target="Voe-Tx-rLC" id="nba-vZ-PwX"/>
                                             </connections>
                                         </menuItem>
                                     </items>

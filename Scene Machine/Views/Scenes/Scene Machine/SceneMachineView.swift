@@ -17,6 +17,7 @@ struct SceneMachineView: View {
     @State private var popGeoImport:Bool = false
     @State private var popBackground:Bool = false
     
+    
     var body: some View {
         
         NavigationView {
@@ -119,10 +120,21 @@ struct SceneMachineView: View {
                         print("load")
                         controller.loadPanel()
                     }
+                    
                     Button("Save") {
                         print("save")
-                        controller.saveScene()
+                        //controller.saveScene()
+                        controller.popSaveDialogue.toggle()
                     }
+                    .popover(isPresented: $controller.popSaveDialogue) {
+                        VStack {
+                            SaveDialogue(controller: controller)
+                                .padding()
+                            
+                        }
+                    }
+//                    .anchorPreference(value: .init(Anchor.Source.bottom))
+                    
                     Spacer()
                     
                     if let theNode = controller.selectedNode {
@@ -148,32 +160,7 @@ struct SceneMachineView: View {
 
                     }
                     
-//                    else {
-//                        Button("+ Shape") {
-//                            controller.rightView = .Shape
-//                        }
-//                    }
-                    
-//                    Button("Program") {
-//                        controller.addProgram()
-//                    }
-//                    .help("Adds a glowing box, created in Metal")
-                    
-//                        Toggle("UVMap", isOn: $displayUVMap)
-//                            .onChange(of: displayUVMap, perform: { value in
-//                                if value == true { controller.rightView = .UVMap } else { controller.rightView = .Empty }
-//                            })
                     Spacer()
-//                    Button("Save UV") {
-//
-//                        print("saving UVMap")
-//                        if let image = uvView.snapShot(uvSize: CGSize(width: 1024, height: 1024)) {
-//                            controller.saveUVMap(image: image)
-//                        } else {
-//                            // Display an error message
-//                        }
-//                    }
-//                    .disabled(controller.selectedNode?.geometry == nil)
                     
                     // Segment
                     Picker(selection: $controller.rightView, label: Image(systemName: "rectangle.righthalf.inset.fill"), content: {
@@ -403,6 +390,83 @@ struct TempAlert: View {
             Text(message)
         }
         .padding()
+    }
+}
+
+struct SaveDialogue: View {
+    
+    @ObservedObject var controller:SceneMachineController
+    
+    enum SaveType {
+        case Folder
+        case File
+    }
+    
+    @State var method:SaveType = .File
+    
+    @State var folderName:String = "Scenes"
+    @State var sceneName:String = "MyScene"
+    
+    var body: some View {
+        
+        VStack(alignment:.leading) {
+            Text("Save Scene Method").font(.title2).foregroundColor(.blue)
+                //.padding(8)
+            Divider()
+            
+            Text("You may export this scene to a '.scnassets' folder. This folder can only be saved in the Application's document directory.")
+                .frame(minHeight: 80, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+            
+            Picker(selection: $method, label: Text("Method:")) {
+                Text("Folder").tag(SaveType.Folder)
+                    .frame(width:100, alignment:.leading)
+                Text("File").tag(SaveType.File)
+                    .frame(width:100, alignment:.leading)
+            }
+            .pickerStyle(RadioGroupPickerStyle())
+            .frame(width:250)
+            
+            Divider()
+            
+            switch method {
+                case .File:
+                    Text("As a file, you may save it in .dae, or .scn format.")
+                        .frame(height:40)
+                case .Folder:
+                    HStack {
+                        Text("Folder:")
+                        Spacer()
+                        TextField("Folder name", text: $folderName)
+                            .frame(width: 80)
+                    }
+                    .padding(.horizontal)
+                    HStack {
+                        Text("Scene name:")
+                        Spacer()
+                        TextField("Folder name", text: $sceneName)
+                            .frame(width: 80)
+                    }
+                    .padding(.horizontal)
+            }
+            
+            Divider()
+            
+            HStack {
+                Button("Save"){
+                    switch method {
+                        case .File: controller.saveScene()
+                        case .Folder: controller.saveSceneWith(folder: folderName, sceneName: sceneName)
+                    }
+                }
+                Spacer()
+                Button("Cancel") {
+                    controller.popSaveDialogue.toggle()
+                }
+            }.padding([.horizontal, .bottom], 8)
+            
+            
+        }
+        .frame(minWidth: 150, maxWidth: 250, minHeight: 250, maxHeight: .infinity, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
     }
 }
 

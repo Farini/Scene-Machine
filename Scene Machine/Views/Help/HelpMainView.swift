@@ -194,6 +194,16 @@ struct HelpSceneView:View {
                     
                 }
                 .padding(6)
+                
+                Group {
+                    Text("Saving a Scene").font(.title3).foregroundColor(.blue)
+                    
+                    Text("Scene files can be saved in '.dae', or '.scn' formats.")
+                    
+                    Text("In addition, it is possible to export a scene to a '.scnassets' folder. This is convenient when the objective is to have a large scene, with many characters. They can be organized into a folder. The images are also exported to the same folder. That way, the references (URL) to the material images, for example, will continue to work.")
+                    
+                }
+                .padding(6)
             }
         }
     }

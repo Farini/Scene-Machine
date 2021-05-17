@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SceneKit
 
 /**
  This is a class that persists the objects created in this app.
@@ -153,6 +154,28 @@ class LocalDatabase {
     // FIXME: - Persist Image References, and other work progress?
     // Data
     // Undo History?
+    
+    func createSceneFolder(named:String, scene:SCNScene, sceneName:String) {
+        
+        let baseFolder = LocalDatabase.folder
+        let sceneFolder = baseFolder.appendingPathComponent("\(named).scnassets")
+        let sceneFile = sceneFolder.appendingPathComponent("\(sceneName).scn")
+        let fileManager = FileManager.default
+        if fileManager.fileExists(atPath: sceneFolder.path) {
+            print("'File' exists at path")
+            scene.write(to: sceneFile, options:nil , delegate: nil) /// ["checkConsistency":NSNumber.init(booleanLiteral: true)]
+            print("Success ?")
+        } else {
+            // Create directory and save
+            do {
+                try fileManager.createDirectory(atPath: sceneFolder.path, withIntermediateDirectories: true, attributes: nil)
+                scene.write(to: sceneFile, options: ["checkConsistency":NSNumber.init(booleanLiteral: true)], delegate: nil)
+                
+            } catch {
+                NSLog("Couldn't create document directory")
+            }
+        }
+    }
     
     // MARK: - General
     
