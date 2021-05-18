@@ -43,6 +43,42 @@ extension SCNWrapMode:Codable, CaseIterable {
     }
 }
 
+extension SCNGeometryElement {
+    
+    /// Gets the `Element` vertices
+    func getVertices() -> [SCNVector3] {
+        
+        func vectorFromData<UInt: BinaryInteger>(_ float: UInt.Type, index: Int) -> SCNVector3 {
+            assert(bytesPerIndex == MemoryLayout<UInt>.size)
+            let vectorData = UnsafeMutablePointer<UInt>.allocate(capacity: bytesPerIndex)
+            let buffer = UnsafeMutableBufferPointer(start: vectorData, count: primitiveCount)
+            let stride = 3 * index
+//            let rangeStart = primitiveRange.lowerBound
+//            let rangeEnd = primitiveRange.upperBound
+            self.data.copyBytes(to: buffer, from: stride * bytesPerIndex..<(stride * bytesPerIndex) + 3)
+            return SCNVector3(
+                CGFloat.NativeType(vectorData[0]),
+                CGFloat.NativeType(vectorData[1]),
+                CGFloat.NativeType(vectorData[2])
+            )
+        }
+        
+        let vectors = [SCNVector3](repeating: SCNVector3Zero, count: self.primitiveCount)
+        return vectors.indices.map { index -> SCNVector3 in
+            switch bytesPerIndex {
+                case 2:
+                    return vectorFromData(Int16.self, index: index)
+                case 4:
+                    return vectorFromData(Int.self, index: index)
+                case 8:
+                    return SCNVector3Zero // vectorFromData(Float80.self, index: index)
+                default:
+                    return SCNVector3Zero
+            }
+        }
+    }
+}
+
 extension SCNGeometrySource {
     
     /// Use this if the source is `SCNGeometrySourceSemanticVertex` or `SCNGeometrySourceSemanticNormal`
@@ -79,6 +115,7 @@ extension SCNGeometrySource {
             }
         }
     }
+    
     
     /// Use this to get a `UVMap` from the Geometry source
     var uv: [CGPoint] {

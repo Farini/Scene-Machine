@@ -11,7 +11,7 @@ import SceneKit
 /**
  This is a class that persists the objects created in this app.
  */
-class LocalDatabase {
+class LocalDatabase:NSObject {
     
     static let shared = LocalDatabase()
     
@@ -154,16 +154,18 @@ class LocalDatabase {
     // FIXME: - Persist Image References, and other work progress?
     // Data
     // Undo History?
-    
+    var exportingFolder:URL?
     func createSceneFolder(named:String, scene:SCNScene, sceneName:String) {
         
         let baseFolder = LocalDatabase.folder
         let sceneFolder = baseFolder.appendingPathComponent("\(named).scnassets")
         let sceneFile = sceneFolder.appendingPathComponent("\(sceneName).scn")
         let fileManager = FileManager.default
+        self.exportingFolder = sceneFolder
+        
         if fileManager.fileExists(atPath: sceneFolder.path) {
             print("'File' exists at path")
-            scene.write(to: sceneFile, options:nil , delegate: nil) /// ["checkConsistency":NSNumber.init(booleanLiteral: true)]
+            scene.write(to: sceneFile, options:nil , delegate: self) /// ["checkConsistency":NSNumber.init(booleanLiteral: true)]
             print("Success ?")
         } else {
             // Create directory and save
@@ -186,10 +188,26 @@ class LocalDatabase {
         return url
     }
     
-    private init() {
+    private override init() {
         let materials = LocalDatabase.loadMaterials()
         self.materials = materials
         let sURLs = LocalDatabase.loadSavedURLs()
         self.savedURLS = sURLs
+        super.init()
     }
+}
+
+extension LocalDatabase:SCNSceneExportDelegate {
+    
+    func write(_ image: NSImage, withSceneDocumentURL documentURL: URL, originalImageURL: URL?) -> URL? {
+        
+        print("Exporting image: \(image.size), name: \(originalImageURL?.path ?? "unnamed")")
+        
+        if let filename = originalImageURL?.lastPathComponent, !filename.isEmpty {
+            return exportingFolder?.appendingPathComponent(filename)
+        } else {
+            return exportingFolder?.appendingPathComponent("\(UUID().uuidString.prefix(6)).png")
+        }
+    }
+    
 }

@@ -7,6 +7,8 @@
 
 import SwiftUI
 import SceneKit
+import Cocoa
+
 //import Simd
 
 struct MaterialEditView: View {
@@ -50,33 +52,35 @@ struct MaterialEditView: View {
             .padding(6)
             
             ZStack(alignment:.topLeading) {
-                SceneView(scene: self.scene, pointOfView: nil, options: .allowsCameraControl, preferredFramesPerSecond: 60, antialiasingMode: .multisampling4X, delegate: nil, technique: nil)
+//                SceneView(scene: self.scene, pointOfView: nil, options: .allowsCameraControl, preferredFramesPerSecond: 60, antialiasingMode: .multisampling4X, delegate: nil, technique: nil)
+                GeoSceneView(scene: scene, options: [])
+                
                 Text("Materials: \(materials.count)")
                     .padding()
                 
             }
             
-            if let geo = geometry {
-                VStack {
-                    HStack {
-                        Text("UV MAP").font(.title).foregroundColor(.accentColor)
-                        Button("Save") {
-                            let image = uvView.snapShot(uvSize: CGSize(width: 1024, height: 1024))
-                            self.openSavePanel(for: image!)
-                            
-                        }
-                        Spacer()
-                        Text("Sources:\(geo.sources.count), Vertices:\(geo.sources.last!.vectorCount)")
-                    }
-                    .padding(.horizontal)
-                    
-                    let uv = self.describeUV(source:geo.sources.last!, geo: geo)
-                    UVShape(uv:uv)
-                        .stroke(lineWidth: 0.5)
-                        .fill(Color.orange, style: FillStyle(eoFill: false, antialiased: true))
-                        .background(Color.gray.opacity(0.1))
-                }
-            }
+//            if let geo = geometry {
+//                VStack {
+//                    HStack {
+//                        Text("UV MAP").font(.title).foregroundColor(.accentColor)
+//                        Button("Save") {
+//                            let image = uvView.snapShot(uvSize: CGSize(width: 1024, height: 1024))
+//                            self.openSavePanel(for: image!)
+//
+//                        }
+//                        Spacer()
+//                        Text("Sources:\(geo.sources.count), Vertices:\(geo.sources.last!.vectorCount)")
+//                    }
+//                    .padding(.horizontal)
+//
+//                    let uv = self.describeUV(source:geo.sources.last!, geo: geo)
+//                    UVShape(uv:uv)
+//                        .stroke(lineWidth: 0.5)
+//                        .fill(Color.orange, style: FillStyle(eoFill: false, antialiased: true))
+//                        .background(Color.gray.opacity(0.1))
+//                }
+//            }
         }
         .onAppear {
             self.getSceneMaterials()
@@ -266,6 +270,8 @@ struct MaterialView: View {
                     }
                     if let image = diff as? NSImage {
                         Image(nsImage: image)
+                            .resizable()
+                            .frame(width:200, height:200)
                     } else if let number = diff as? Float {
                         Text("\(number)")
                     }
@@ -484,5 +490,116 @@ struct MaterialExample {
         newMat.diffuse.contents = NSImage(named:"Checkerboard")
         newMat.roughness.contents = 0.2
         self.material = newMat
+    }
+}
+
+struct GeoSceneView: NSViewRepresentable {
+    
+    var scene: SCNScene
+    var options: [Any]
+    
+    var view = SCNView()
+    
+    func makeNSView(context: Context) -> SCNView {
+        
+        // Instantiate the SCNView and setup the scene
+        view.scene = scene
+        view.pointOfView = scene.rootNode.childNode(withName: "camera", recursively: true)
+        view.allowsCameraControl = true
+        
+        // Add gesture recognizer
+        let tapGesture = NSClickGestureRecognizer(target: context.coordinator, action: #selector(context.coordinator.handleTap(_:)))
+        
+        view.addGestureRecognizer(tapGesture)
+        
+        return view
+    }
+    
+//    func updateUIView(_ view: SCNView, context: Context) {
+//        //
+//    }
+    
+    func updateNSView(_ nsView: SCNView, context: Context) {
+        // updates
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator(view)
+    }
+    
+    class Coordinator: NSObject {
+        private let view: SCNView
+        init(_ view: SCNView) {
+            self.view = view
+            super.init()
+        }
+        
+        @objc func handleTap(_ gestureRecognize: NSGestureRecognizer) {
+            // check what nodes are tapped
+            let p:NSPoint = gestureRecognize.location(in: view)
+            print("Touch point: \(p)")
+            
+            let hitResults = view.hitTest(p, options: [:])
+            
+            // check that we clicked on at least one object
+            if hitResults.count > 0 {
+                
+                // retrieved the first clicked object
+                let result = hitResults[0]
+                
+                // Face
+                let face:Int = result.faceIndex
+                print("Touch face index: \(face)")
+                
+                let c = result.localCoordinates
+                print("Local coordinates: \(c)")
+                
+                let d = result.localNormal
+                print("Local normal: \(d)")
+                
+//                let e = result.
+//                print("Local normal: \(d)")
+                
+                let g = result.geometryIndex
+                print("Geometry Index: \(g)")
+                
+                if let elements = result.node.geometry?.elements {
+                    print("Elements: \(elements.count)")
+                    var elindx:Int = 0
+                    for el in elements {
+                        print("*** Element #\(elindx)")
+//                        print("*** range \(el.primitiveRange) | count \(el.primitiveCount)")
+                        print("count \(el.primitiveCount)")
+                        print("Data: \(el.data)")
+                        let aa = el.getVertices()
+                        print("Vector 3's: \(aa.count)")
+                        print("--- --- ---")
+                        elindx += 1
+                    }
+                    
+                }
+                
+//                let gi = result.node.geometry!.sources.first(where: { $0.semantic == .vertex })?.uv
+                
+                // get material for selected geometry element
+                let material = result.node.geometry!.materials[(result.geometryIndex)]
+                
+                // highlight it
+                SCNTransaction.begin()
+                SCNTransaction.animationDuration = 0.5
+                
+                // on completion - unhighlight
+                SCNTransaction.completionBlock = {
+                    SCNTransaction.begin()
+                    SCNTransaction.animationDuration = 0.5
+                    
+                    material.emission.contents = NSColor.black
+                    
+                    SCNTransaction.commit()
+                }
+                material.emission.contents = NSColor.green
+                SCNTransaction.commit()
+            }
+        }
     }
 }

@@ -47,7 +47,7 @@ struct SMNodeRow: View {
                 if let geometry = node.geometry {
                     Image(systemName: "pyramid")
                     Text("\(geometry.sources.last?.vertices.count ?? 0)")
-                    Text("Src: \(geometry.sources.count)")
+                    Text("Src: \(geometry.sources.count)|\(geometry.elementCount)")
                 }
                 
                 if node.camera != nil {
