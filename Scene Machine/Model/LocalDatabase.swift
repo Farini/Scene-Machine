@@ -204,9 +204,9 @@ extension LocalDatabase:SCNSceneExportDelegate {
         print("Exporting image: \(image.size), name: \(originalImageURL?.path ?? "unnamed")")
         
         if let filename = originalImageURL?.lastPathComponent, !filename.isEmpty {
-            return exportingFolder?.appendingPathComponent(filename)
+            return exportingFolder?.appendingPathComponent("/images/\(filename)")
         } else {
-            return exportingFolder?.appendingPathComponent("\(UUID().uuidString.prefix(6)).png")
+            return exportingFolder?.appendingPathComponent("/images/\(UUID().uuidString.prefix(6)).png")
         }
     }
     

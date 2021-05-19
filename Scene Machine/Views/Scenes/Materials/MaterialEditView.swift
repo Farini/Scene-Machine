@@ -512,12 +512,11 @@ struct GeoSceneView: NSViewRepresentable {
         
         view.addGestureRecognizer(tapGesture)
         
+        let other = NSClickGestureRecognizer()
+        other.buttonMask = 2
+        
         return view
     }
-    
-//    func updateUIView(_ view: SCNView, context: Context) {
-//        //
-//    }
     
     func updateNSView(_ nsView: SCNView, context: Context) {
         // updates
@@ -601,5 +600,48 @@ struct GeoSceneView: NSViewRepresentable {
                 SCNTransaction.commit()
             }
         }
+        
+        
+    }
+}
+
+class GeoViewBack:SCNView {
+    
+    // Main mouse events
+    
+    override func mouseDown(with event: NSEvent) {
+        
+    }
+    
+    override func mouseUp(with event: NSEvent) {
+        
+    }
+    
+    override func rightMouseDown(with event: NSEvent) {
+        
+    }
+    
+    override func rightMouseUp(with event: NSEvent) {
+        
+    }
+    
+    // Touches
+    
+    override func touchesBegan(with event: NSEvent) {
+        
+    }
+    
+    override func touchesMoved(with event: NSEvent) {
+        
+    }
+    
+    override func touchesEnded(with event: NSEvent) {
+        
+    }
+    
+    // Keyboard
+    
+    override func keyUp(with event: NSEvent) {
+        
     }
 }
