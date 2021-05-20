@@ -60,6 +60,9 @@ class SceneMachineController:ObservableObject {
         }
         
         device = MTLCreateSystemDefaultDevice()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(hitTestResultNotification(_:)), name: .hitTestNotification, object: nil)
+        
     }
     
     /// Alternatively initialize `SceneMachine` with a given `SCNScene`
@@ -465,8 +468,42 @@ class SceneMachineController:ObservableObject {
         return scene
     }
     
-    func dealWithEvent(event:NSEvent) {
-        print("Dealing with event. \(event.description)")
+    
+    @Published var touchOptionsPoint:CGPoint = .zero
+    @Published var isTouchingOptions:Bool = false
+    
+    /// Notification for all mouse events in view
+    @objc func hitTestResultNotification(_ notification:Notification) {
+        if let result:SCNHitTestResult = notification.object as? SCNHitTestResult {
+            print("Notified !!!")
+            
+            let node = result.node
+            print("Node: \(node.name ?? "<untitled>")")
+            
+            let geo = result.geometryIndex
+            // index of geometry element whose surface the search ray intersects
+            // is this the material ?
+            print("Geoindex: \(geo)")
+            
+            // Face
+            let face:Int = result.faceIndex
+            print("Touch face index: \(face)")
+            
+            let c = result.localCoordinates
+            print("Local coordinates: \(c)")
+            
+            let d = result.localNormal
+            print("Local normal: \(d)")
+            
+            if nodes.contains(node) {
+                self.selectedNode = node
+            }
+            isTouchingOptions = false
+            
+        } else if let clickPoint = notification.object as? NSPoint {
+            touchOptionsPoint = clickPoint
+            isTouchingOptions = true
+        }
     }
     
     // Call a compute kernel function to create an instance of MTLTexture
@@ -510,6 +547,11 @@ class SceneMachineController:ObservableObject {
     //
     //        return outputTexture!
     //    }
+}
+
+
+extension Notification.Name {
+    static var hitTestNotification = Notification.Name("HitTestNotification")
 }
 
 

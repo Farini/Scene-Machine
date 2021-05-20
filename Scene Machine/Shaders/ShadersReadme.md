@@ -27,3 +27,13 @@ return x - y * trunc(x / y);
 ```
 
 ## Scene Shaders
+
+- [X] GRBA -> Green to Red (and back) pixels 
+- [X] Caustic Noise improved
+- [X] Black to Transparent
+- [X] Hexagons pattern
+- [X] Truchet tiling
+- [X] Epitrochoidal Waves
+- [X] Mercurialize
+- [X] Voronoi Noise improved
+- [ ] KIFS Fractals: https://www.youtube.com/watch?v=il_Qg9AqQkE&list=RDCMUCcAlTqd9zID6aNX3TzwxJXg&index=6

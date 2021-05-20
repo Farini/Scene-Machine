@@ -193,11 +193,49 @@ struct SceneMachineView: View {
                 
                 
                 HSplitView {
-                    // Scene
-                    SMEventBackView(scene: controller.scene) { event in
-                        print("event in")
-                        controller.dealWithEvent(event: event)
+                    
+                    ZStack {
+                        
+                        // Scene
+                        SMEventBackView(scene: controller.scene)
+                        
+                        if controller.isTouchingOptions {
+                            VStack {
+                                if let node = controller.selectedNode {
+                                    Text("Node").font(.title2).foregroundColor(.orange)
+                                    Button(node.isHidden ? "Show":"Hide") {
+                                        node.isHidden.toggle()
+                                        controller.selectedNode = nil
+                                        controller.isTouchingOptions = false
+                                    }
+                                    Button(node.isPaused ? "Play":"Pause") {
+                                        node.isPaused.toggle()
+                                        controller.selectedNode = nil
+                                        controller.isTouchingOptions = false
+                                    }
+                                    Button("De-Select") {
+                                        controller.selectedNode = nil
+                                    }
+                                    
+                                } else {
+                                    Text("Point: \(controller.touchOptionsPoint.debugDescription)")
+                                    // Drop node here?
+                                    // import?
+                                    // scene options?
+                                }
+                                
+                                Button("Close") {
+                                    controller.isTouchingOptions.toggle()
+                                }
+                            }
+                            
+                            .padding()
+                            .background(Color.black.opacity(0.4))
+                            .frame(minWidth: 100, maxWidth: 300, minHeight: 200, maxHeight: 400)
+                            .position(controller.touchOptionsPoint)
+                        }
                     }
+                    
 //                    SceneView(scene: controller.scene, pointOfView: nil, options: [.allowsCameraControl, .autoenablesDefaultLighting], preferredFramesPerSecond: 60, antialiasingMode: .multisampling4X, delegate: nil, technique: nil)
 //                        .frame(minWidth: 300, alignment: .trailing)
 //                        .sheet(isPresented: $controller.presentingTempAlert, content: {
@@ -247,39 +285,6 @@ struct SceneMachineView: View {
         return newScene
     }
 }
-/*
-struct SMGeometryRow: View {
-    
-    @ObservedObject var controller:SceneMachineController
-    var geometry:SCNGeometry
-    var isSelected:Bool
-    
-    var body: some View {
-        VStack {
-            HStack {
-                Image(systemName: "pyramid")
-                Text("\(geometry.name ?? "< untitled >")")
-                Spacer()
-                Text("● \(geometry.sources.compactMap({ $0.vectorCount }).reduce(0, +))")
-            }
-            HStack {
-                Text("Elements: \(geometry.elementCount)")
-                Text("Materials: \(geometry.materials.count)")
-                Spacer()
-                Button(action: {
-                    controller.removeGeometry(geo: geometry)
-                }, label: {
-                    Image(systemName: "trash")
-                })
-            }
-        }
-        .padding(4)
-        .background(isSelected ? Color.black:Color.clear)
-        .cornerRadius(isSelected ? 8:0)
-        .frame(width:200)
-    }
-}
-*/
 
 struct UVMapStack: View {
     
@@ -487,7 +492,7 @@ struct SMEventBackView: NSViewRepresentable {
     
     var scene:SCNScene
 //    var nsView:SMEventSceneView
-    var eventCallback:((NSEvent) -> Void)
+//    var eventCallback:((NSEvent) -> Void)
     
     func makeNSView(context: Context) -> SMEventSceneView {
         
@@ -510,20 +515,36 @@ class SMEventSceneView:SCNView {
     
     // Main mouse events
     
+    /// Detects where the mouse was down last, to not interfere with camera moves.
+    var lastDown:NSPoint = .zero
+    
     override func mouseDown(with event: NSEvent) {
         print("mouse down")
+        lastDown = event.locationInWindow
+    }
+    
+    override func mouseUp(with event: NSEvent) {
+        print("mouse up")
         
         // check what nodes are tapped
-        let p:NSPoint = event.locationInWindow//gestureRecognize.location(in: view)
-        print("Touch point: \(p)")
+        let windowPoint:NSPoint = event.locationInWindow //gestureRecognize.location(in: view)
+        let eventLocation = convert(windowPoint, from: nil)
         
-        let hitResults = hitTest(p, options: [:])
+        // Check if moving camera in scene
+        if windowPoint != lastDown {
+            print("dragged")
+            return
+        }
+        
+        print("Touch point: \(eventLocation)")
+        
+        let hitResults = hitTest(eventLocation, options: [:])
         
         // check that we clicked on at least one object
         if hitResults.count > 0 {
             
             // retrieved the first clicked object
-            let result = hitResults[0]
+            let result:SCNHitTestResult = hitResults.first!
             
             let node = result.node
             print("Node: \(node.name ?? "<untitled>")")
@@ -534,24 +555,53 @@ class SMEventSceneView:SCNView {
             print("Geoindex: \(geo)")
             
             // Face
-            let face:Int = result.faceIndex
-            print("Touch face index: \(face)")
+            //            let face:Int = result.faceIndex
+            //            print("Touch face index: \(face)")
+            //
+            //            let c = result.localCoordinates
+            //            print("Local coordinates: \(c)")
+            //
+            //            let d = result.localNormal
+            //            print("Local normal: \(d)")
             
-            let c = result.localCoordinates
-            print("Local coordinates: \(c)")
-            
-            let d = result.localNormal
-            print("Local normal: \(d)")
+            NotificationCenter.default.post(name: .hitTestNotification, object: result)
         }
-            
-    }
-    
-    override func mouseUp(with event: NSEvent) {
-        
     }
     
     override func rightMouseDown(with event: NSEvent) {
         print("right mouse down")
+        let windowPoint:NSPoint = event.locationInWindow //gestureRecognize.location(in: view)
+        let eventLocation = convert(windowPoint, from: nil)
+        
+        print("Touch point: \(eventLocation)")
+        let hitResults = hitTest(eventLocation, options: [:])
+        
+        // check that we clicked on at least one object
+        if hitResults.count > 0 {
+            
+            // retrieved the first clicked object
+            let result:SCNHitTestResult = hitResults.first!
+            
+            let node = result.node
+            print("Node: \(node.name ?? "<untitled>")")
+            
+            let geo = result.geometryIndex
+            // index of geometry element whose surface the search ray intersects
+            // is this the material ?
+            print("Geoindex: \(geo)")
+            
+            // Face
+            //            let face:Int = result.faceIndex
+            //            print("Touch face index: \(face)")
+            //
+            //            let c = result.localCoordinates
+            //            print("Local coordinates: \(c)")
+            //
+            //            let d = result.localNormal
+            //            print("Local normal: \(d)")
+            let convertedLocation = NSPoint(x: eventLocation.x, y: self.frame.size.height - eventLocation.y)
+            NotificationCenter.default.post(name: .hitTestNotification, object: convertedLocation)
+        }
     }
     
     override func rightMouseUp(with event: NSEvent) {

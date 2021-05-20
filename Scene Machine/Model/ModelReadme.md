@@ -13,7 +13,30 @@ Some challenges here includes:
 - `CGLineJoin` conforms to  `Codable`
 - `CGLineCap` conforms to `Codable`
 
-# SceneKit studies
+## Assets Included with the app
+Assets included with the app are located in `AppConstants.swift`
+
+### Geometries
+✅ Suzanne
+✅ Woman
+✅ Prototype car
+✅ Trees
+✅ Liberty Lady
+✅ Post + Lamp
+✅ Egg Tree
+✅ Square tree/lamp
+⭕️ House
+
+### HDRI Images
+✅ Lava1
+✅ Lava2
+✅ SMB1
+✅ SMB2
+✅ SMB3
+✅ NightSky
+✅ CityNight
+
+# 🍎 SceneKit
 You use geometry sources together with SCNGeometryElement objects to define custom SCNGeometry objects or to inspect the data that composes an existing geometry.
 
 ### GeometryElement
@@ -25,8 +48,6 @@ SCNGeometrySource objects containing vertex data. Each geometry source defines a
 ### Extensions
 The texture coordinates of a `SCNGeometry` can be obtained by getting the geometry's `SCNGeometrySource` and getting the var `uv`. It will return the **UV coordinates** of that geometry.
 To discover what materials goes into what faces of a geometry, see `SCNGeometryElement` extension, `getVertices()`
-
-# 🍎 SceneKit
 
 ## SCNGeometry
 https://developer.apple.com/documentation/scenekit/scngeometry#1655143

@@ -66,16 +66,6 @@ Mix 2 images, using multiple `CoreImage` techniques
 Image CIKernels built on Metal programming language.
 More about Shaders: [Here](https://github.com/Farini/Scene-Machine/blob/main/Scene%20Machine/Shaders/ShadersReadme.md#about-shaders)
 
-- [X] GRBA -> Green to Red (and back) pixels 
-- [X] Caustic Noise improved
-- [X] Black to Transparent
-- [X] Hexagons pattern
-- [X] Truchet tiling
-- [X] Epitrochoidal Waves
-- [X] Mercurialize
-- [ ] KIFS Fractals: https://www.youtube.com/watch?v=il_Qg9AqQkE&list=RDCMUCcAlTqd9zID6aNX3TzwxJXg&index=6
-- [ ] Voronoi Noise improved
-
 ### SceneKit
 Test and export `SceneKit` scenes.
 
@@ -101,29 +91,12 @@ Create SceneKit Materials - `SCNMaterial`
 - [X] Ambient Occlusion
 - [X] Save UVMap Image
 - [ ] Save Materials
+    
+### Model
+See this apps's model readme: [Here](https://github.com/Farini/Scene-Machine/blob/main/Scene%20Machine/Model/ModelReadme.md#scene-machine-data-model)
 
-// Remove this
-Character: https://www.youtube.com/watch?v=sdE9q_784F0
+> App Resources can be found on the readme file above, or on the `AppConstants.swift` file.
 
-
-### App Resources
-✅ = Added, ⭕️ = Buiding
-
-**Geometries**
-✅ Suzanne, 
-✅ Woman, 
-✅ Prototype car, 
-⭕️ Trees,
-⭕️ House
-
-**Textures**
-    ✅ Wall,
-    ✅ Asphalt,
-    ✅ Wood,
-    ✅ UVGrid,
-    ⭕️ Brushed Metal,
-    ⭕️ Dirt,
-    ⭕️ Skin
 
 ## To-Do list
 
@@ -153,13 +126,12 @@ Character: https://www.youtube.com/watch?v=sdE9q_784F0
 - [X] Plasma Generator
 
 ### New Features v 1.2
-- [X] NormalMap shader, to transform images in Normal Maps, or...
+- [X] NormalMap shader, to transform images in Normal Maps
 - [X] Blender Shortcuts
 - [X] Export to `.scnassets` folder.
 
 - [ ] Draw textures on UVMaps
 - [ ] Ability to use .txt files that can contain code for fragment/vertex shaders
-- [ ] SpriteKit Normal map. `SKTexture.generatingNormalMap()` 
 - [ ] 💾 Save Materials Property `SceneMaterial`
 - [ ] Improve App Help: http://swiftrien.blogspot.com/2015/06/adding-apple-help-to-os-x-application.html
 
