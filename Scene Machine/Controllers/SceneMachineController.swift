@@ -465,6 +465,10 @@ class SceneMachineController:ObservableObject {
         return scene
     }
     
+    func dealWithEvent(event:NSEvent) {
+        print("Dealing with event. \(event.description)")
+    }
+    
     // Call a compute kernel function to create an instance of MTLTexture
     //    func createTexture(device: MTLDevice) -> MTLTexture {
     //        // Instantiate a texture descriptor with the appropriate properties.

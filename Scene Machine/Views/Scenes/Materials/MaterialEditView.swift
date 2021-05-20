@@ -136,7 +136,7 @@ struct MaterialEditView: View {
         
     }
     
-    /// Funstion runs on appear
+    /// Function runs on appear
     func getSceneMaterials() {
         
         var mats:[SCNMaterial] = []
@@ -605,43 +605,4 @@ struct GeoSceneView: NSViewRepresentable {
     }
 }
 
-class GeoViewBack:SCNView {
-    
-    // Main mouse events
-    
-    override func mouseDown(with event: NSEvent) {
-        
-    }
-    
-    override func mouseUp(with event: NSEvent) {
-        
-    }
-    
-    override func rightMouseDown(with event: NSEvent) {
-        
-    }
-    
-    override func rightMouseUp(with event: NSEvent) {
-        
-    }
-    
-    // Touches
-    
-    override func touchesBegan(with event: NSEvent) {
-        
-    }
-    
-    override func touchesMoved(with event: NSEvent) {
-        
-    }
-    
-    override func touchesEnded(with event: NSEvent) {
-        
-    }
-    
-    // Keyboard
-    
-    override func keyUp(with event: NSEvent) {
-        
-    }
-}
+

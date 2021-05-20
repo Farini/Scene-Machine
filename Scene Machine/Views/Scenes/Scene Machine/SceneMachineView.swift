@@ -194,11 +194,15 @@ struct SceneMachineView: View {
                 
                 HSplitView {
                     // Scene
-                    SceneView(scene: controller.scene, pointOfView: nil, options: [.allowsCameraControl, .autoenablesDefaultLighting], preferredFramesPerSecond: 60, antialiasingMode: .multisampling4X, delegate: nil, technique: nil)
-                        .frame(minWidth: 300, alignment: .trailing)
-                        .sheet(isPresented: $controller.presentingTempAlert, content: {
-                            TempAlert(message: controller.tempAlertMessage)
-                        })
+                    SMEventBackView(scene: controller.scene) { event in
+                        print("event in")
+                        controller.dealWithEvent(event: event)
+                    }
+//                    SceneView(scene: controller.scene, pointOfView: nil, options: [.allowsCameraControl, .autoenablesDefaultLighting], preferredFramesPerSecond: 60, antialiasingMode: .multisampling4X, delegate: nil, technique: nil)
+//                        .frame(minWidth: 300, alignment: .trailing)
+//                        .sheet(isPresented: $controller.presentingTempAlert, content: {
+//                            TempAlert(message: controller.tempAlertMessage)
+//                        })
                     
                     switch controller.rightView {
                         case .Empty: EmptyView().frame(width: 0, height: 0, alignment: .center)
@@ -473,5 +477,104 @@ struct SaveDialogue: View {
 struct SceneMachineView_Previews: PreviewProvider {
     static var previews: some View {
         SceneMachineView()
+    }
+}
+
+// MARK: - Background NSView
+
+/// Handles Mouse and Keyboard events
+struct SMEventBackView: NSViewRepresentable {
+    
+    var scene:SCNScene
+//    var nsView:SMEventSceneView
+    var eventCallback:((NSEvent) -> Void)
+    
+    func makeNSView(context: Context) -> SMEventSceneView {
+        
+        // Instantiate the SCNView and setup the scene
+        let eventView = SMEventSceneView()
+        eventView.scene = scene
+        eventView.pointOfView = scene.rootNode.childNode(withName: "camera", recursively: true)
+        eventView.allowsCameraControl = true
+        
+        return eventView
+    }
+    
+    func updateNSView(_ nsView: SMEventSceneView, context: Context) {
+        print("updates")
+    }
+    
+}
+
+class SMEventSceneView:SCNView {
+    
+    // Main mouse events
+    
+    override func mouseDown(with event: NSEvent) {
+        print("mouse down")
+        
+        // check what nodes are tapped
+        let p:NSPoint = event.locationInWindow//gestureRecognize.location(in: view)
+        print("Touch point: \(p)")
+        
+        let hitResults = hitTest(p, options: [:])
+        
+        // check that we clicked on at least one object
+        if hitResults.count > 0 {
+            
+            // retrieved the first clicked object
+            let result = hitResults[0]
+            
+            let node = result.node
+            print("Node: \(node.name ?? "<untitled>")")
+            
+            let geo = result.geometryIndex
+            // index of geometry element whose surface the search ray intersects
+            // is this the material ?
+            print("Geoindex: \(geo)")
+            
+            // Face
+            let face:Int = result.faceIndex
+            print("Touch face index: \(face)")
+            
+            let c = result.localCoordinates
+            print("Local coordinates: \(c)")
+            
+            let d = result.localNormal
+            print("Local normal: \(d)")
+        }
+            
+    }
+    
+    override func mouseUp(with event: NSEvent) {
+        
+    }
+    
+    override func rightMouseDown(with event: NSEvent) {
+        print("right mouse down")
+    }
+    
+    override func rightMouseUp(with event: NSEvent) {
+        
+    }
+    
+    // Touches
+    
+    override func touchesBegan(with event: NSEvent) {
+        
+    }
+    
+    override func touchesMoved(with event: NSEvent) {
+        
+    }
+    
+    override func touchesEnded(with event: NSEvent) {
+        
+    }
+    
+    // Keyboard
+    
+    override func keyUp(with event: NSEvent) {
+        print("Key up: \(event.keyCode)")
     }
 }
