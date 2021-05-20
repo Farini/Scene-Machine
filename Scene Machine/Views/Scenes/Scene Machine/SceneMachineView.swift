@@ -176,6 +176,7 @@ struct SceneMachineView: View {
                     }
                     .popover(isPresented: $popBackground) {
                         VStack {
+                            Text("Backgrounds").font(.title2).foregroundColor(.blue)
                             ForEach(AppBackgrounds.allCases, id:\.self) { appBack in
                                 HStack {
                                     Text(appBack.rawValue)
@@ -184,9 +185,11 @@ struct SceneMachineView: View {
                                         controller.changeBackground(back: appBack)
                                     }
                                 }
-                                .frame(width:200)
+                                
                             }
                         }
+                        .frame(width:200)
+                        .padding()
                     }
                 }
                 .padding([.top, .leading, .trailing], 8)
