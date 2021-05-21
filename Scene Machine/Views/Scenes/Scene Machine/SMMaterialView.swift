@@ -383,15 +383,6 @@ struct SMMaterialView: View {
                 Divider()
             }
             
-            // Buttons
-            //            Group {
-            //                Divider()
-            //                HStack {
-            //                    Button("Save") {
-            //                        print("Save Material")
-            //                    }
-            //                }
-            //            }
         }
         .frame(width:200)
         .padding(.horizontal, 6)

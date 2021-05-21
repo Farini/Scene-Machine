@@ -17,6 +17,15 @@ extension SCNMaterial: Identifiable {
     static func ==(lhs:SCNMaterial, rhs:SCNMaterial) -> Bool {
         return lhs.isEqual(rhs)
     }
+    
+    static var example:SCNMaterial {
+        let m = SCNMaterial()
+        m.lightingModel = .physicallyBased
+        m.diffuse.contents = "Scenes.scnassets/UVMaps/CausticNoise.png"//(byReferencingFile:"Scenes.scnassets/UVMaps/CausticNoise.png")
+        m.roughness.contents = 0.3
+        m.emission.contents = 0.1
+        return m
+    }
 }
 
 extension SCNWrapMode:Equatable {

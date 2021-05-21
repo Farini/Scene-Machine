@@ -52,7 +52,6 @@ Create 6 common types of noises using `SpriteKit`.
 ### Pedal2DMetal
 Procedural Image generators with `Metal`
 
-- [X] Organize in Sections
 - [X] Noise { Voronoi, Caustic, Waves }
 - [X] Overlay { Lens flare, Halo, Sunbeams, Caustic Refraction }
 - [X] Tiles { Checkerboard, Hexagons, Truchet, Bricks, Diagonal Lines }
