@@ -175,7 +175,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             // Toolbar **needs** a delegate
 //            NSToolbar.drawingPadToolbar.delegate = self
             // View
-            let drawingView = DrawingPadView()
+            let drawingView = MaterialMachineView()
             drawingWindow = NSWindow(
                 contentRect: NSRect(x: 0, y: 0, width: 900, height: 700),
                 styleMask: [.titled, .closable, .miniaturizable,

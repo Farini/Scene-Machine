@@ -17,8 +17,8 @@ class SceneMaterial: Codable, Identifiable, Equatable {
     var name:String?
     
     var lightModel:MaterialShading?
-    var diffuse:SubMaterialData?
     
+    var diffuse:SubMaterialData?
     var metalness:SubMaterialData?
     var roughness:SubMaterialData?
     var normal:SubMaterialData?

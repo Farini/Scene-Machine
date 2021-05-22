@@ -18,8 +18,10 @@ extension SCNMaterial: Identifiable {
         return lhs.isEqual(rhs)
     }
     
+    /// An example material, diffuse, roughness and emission
     static var example:SCNMaterial {
         let m = SCNMaterial()
+        m.name = "Example M"
         m.lightingModel = .physicallyBased
         m.diffuse.contents = "Scenes.scnassets/UVMaps/CausticNoise.png"//(byReferencingFile:"Scenes.scnassets/UVMaps/CausticNoise.png")
         m.roughness.contents = 0.3
