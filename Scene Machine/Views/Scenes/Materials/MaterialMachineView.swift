@@ -11,7 +11,12 @@ import SceneKit
 struct MaterialMachineView: View {
     
     @ObservedObject var controller = MaterialMachineController()
+    @ObservedObject var drawController:DrawingPadController
 //    @State var material:SCNMaterial = SCNMaterial.example
+    
+    init() {
+        drawController = DrawingPadController()
+    }
     
     var body: some View {
         NavigationView {
@@ -32,10 +37,13 @@ struct MaterialMachineView: View {
                 // Library
                 // Images?
             }
+            .frame(minWidth: 0, maxWidth: 200, maxHeight: .infinity, alignment: .center)
             
             // Middle
             VSplitView {
                 VStack {
+                    
+                    // Tools
                     HStack {
                         
                         // Geometry Picker
@@ -70,13 +78,15 @@ struct MaterialMachineView: View {
                     }
                     .frame(height:30)
                     
-                    
+                    // Scene
                     SceneView(scene: controller.scene, pointOfView: nil, options: SceneView.Options.allowsCameraControl, preferredFramesPerSecond: 40, antialiasingMode: .multisampling4X, delegate: nil, technique: nil)
-                        .frame(minWidth: 400, maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                        .frame(minWidth: 400, maxWidth: .infinity, alignment: .top)
                     
                     Divider()
                 }
+                .frame(minWidth: 300, maxWidth: 900, maxHeight: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                 
+                // Nodes
                 MMMaterialNodeView(material: $controller.material)
                     .padding()
                     .onChange(of: controller.material, perform: { value in
@@ -361,6 +371,8 @@ struct MMMaterialNodeView:View {
                     
                 }
                 .padding()
+                
+                Spacer()
             }
         }
         .onAppear() {
@@ -502,6 +514,7 @@ struct MMNodeView:View {
 struct MaterialMachineView_Previews: PreviewProvider {
     static var previews: some View {
         MaterialMachineView()
+            .frame(width:900)
     }
 }
 

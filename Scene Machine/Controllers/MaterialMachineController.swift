@@ -38,6 +38,7 @@ class MaterialMachineController:ObservableObject {
     @Published var baseColor:Color = Color.blue
     
     init() {
+        
         let scene = SCNScene()
         self.scene = scene
         
@@ -53,6 +54,8 @@ class MaterialMachineController:ObservableObject {
         
         scene.rootNode.addChildNode(node)
     }
+    
+    // MARK: - Loading
     
     /// Loads a different Geometry
     func loadPanel() {
@@ -102,6 +105,11 @@ class MaterialMachineController:ObservableObject {
                     
                     self.scene.rootNode.childNodes.first(where: { $0.geometry != nil })?.removeFromParentNode()
                     self.scene.rootNode.addChildNode(node)
+                    
+                    // Post Notification
+                    print("Posting Notification")
+                    NotificationCenter.default.post(name: .changedGeometryNotification, object: self.geometry, userInfo: nil)
+                    
                     return
                 }
 //                stack.append(contentsOf: node.childNodes)
@@ -111,12 +119,21 @@ class MaterialMachineController:ObservableObject {
         }
     }
     
-    /// Changes the geometry displayed
+    // Continue here...
+    // + Get material image (background overlay) - if any
+    // + Get Geometry UV points
+    // + Convert to image (foreground overlay)
+    // + use as a cover on the drawingpad
+//    func postGeometryNotification() {
+//
+//    }
+    
+    /// Changes the geometry displayed to one of the default ones
     func updateNode() {
         
         scene.rootNode.childNodes.first?.removeFromParentNode()
         
-        if self.geometry == nil { self.geometry = geoOption.geometry }
+        self.geometry = geoOption.geometry
         
         self.geometry.insertMaterial(material, at: 0)
         

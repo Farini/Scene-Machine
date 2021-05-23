@@ -137,6 +137,7 @@ class SceneMaterial: Codable, Identifiable, Equatable {
      - CoatRoughness
      - Displacement
      */
+    
 }
 
 /// An object that stores `SCNMaterialProperty` variables

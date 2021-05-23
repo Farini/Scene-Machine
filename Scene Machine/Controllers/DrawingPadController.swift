@@ -7,7 +7,11 @@
 
 import Cocoa
 import SwiftUI
-
+import SceneKit
+enum DrawingPadOverlay {
+    case noImage
+    case image(img:NSImage)
+}
 class DrawingPadController:ObservableObject {
     
     @Published var textureSize:TextureSize = .medSmall // 512
@@ -26,7 +30,9 @@ class DrawingPadController:ObservableObject {
     @Published var images:[NSImage] = []
     
     // Background
-    @Published var backImage:NSImage?
+//    @Published var backImage:NSImage = NSImage()
+    @Published var drawOverlay:DrawingPadOverlay = .noImage
+    
     @Published var backGrid:Bool = false
     
     // Pencil
@@ -253,9 +259,40 @@ class DrawingPadController:ObservableObject {
                 print("Loaded: \(url.absoluteString)")
                 if let image = NSImage(contentsOf: url) {
                     //                    if image.size != imageSize.size
-                    self.backImage = image
+//                    self.backImage = image
+                    self.drawOverlay = .image(img: image)
                 }
             }
         }
+    }
+    
+    // Continue here...
+    // + add an obserrver, to setup the background Image (material image)
+    // + add observer to get geometry's uv points
+    @objc func newGeometryNotification(_ notification:Notification) {
+        if let geometry = notification.object as? SCNGeometry {
+            print("Geometry passed")
+            if let gSource = geometry.sources.first(where: { $0.semantic == .texcoord }) {
+                let uv = gSource.uv
+                // View
+                let ctrl = SceneMachineController()
+                
+                if let snapShot = UVMapStack(controller: ctrl, geometry: geometry, points: uv).snapShot(uvSize: CGSize(width: 2048, height: 2104)) {
+                    print("Updating back image")
+                    
+                    self.drawOverlay = .image(img: snapShot)
+                    
+//                    DispatchQueue.main.async {
+////                        self.backImage = snapShot
+//
+//                    }
+                }
+            }
+        }
+    }
+    
+    init() {
+        NotificationCenter.default.addObserver(self, selector: #selector(newGeometryNotification(_:)), name: .changedGeometryNotification, object: nil)
+        
     }
 }

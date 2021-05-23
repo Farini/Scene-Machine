@@ -552,6 +552,7 @@ class SceneMachineController:ObservableObject {
 
 extension Notification.Name {
     static var hitTestNotification = Notification.Name("HitTestNotification")
+    static var changedGeometryNotification = Notification.Name("changedGeometryNotification")
 }
 
 

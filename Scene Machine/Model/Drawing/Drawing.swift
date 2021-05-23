@@ -59,7 +59,6 @@ class DrawingLayer:Codable, Identifiable {
             
             return true
         }
-        
     }
 }
 

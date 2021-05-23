@@ -14,45 +14,10 @@ struct DrawingPadView: View {
     @State private var currentDrawing: PencilStroke = PencilStroke()
     @State private var drawings: [PencilStroke] = [PencilStroke]()
     @State private var isReordering = false
+    @State private var isShowingLayersList:Bool = false
     
     var body: some View {
-        NavigationView {
-            
-            List() {
-                Section(header: Text("Layers").foregroundColor(.orange), footer: Text("Footer")) {
-                    ForEach(controller.layers) { layer in
-                        HStack {
-                            Text("\(layer.name ?? "< Untitled >")")
-                                .foregroundColor(controller.selectedLayer == layer ? .orange:.white)
-                                
-                            Spacer()
-                            Button(action: {
-                                controller.layers.removeAll(where: {$0.id == layer.id})
-                            }, label: {
-                                Image(systemName: "trash")
-                            })
-                            Button(action: {
-                                controller.layers.first(where: { $0.id == layer.id })!.isVisible.toggle()
-                            }, label: {
-                                Image(systemName: layer.isVisible ? "eye":"eye.slash")
-                            })
-                            
-                        }
-                        .onTapGesture {
-                            controller.selectedLayer = layer
-                        }
-                        .onLongPressGesture {
-                            withAnimation {
-                                self.isReordering = true
-                            }
-                        }
-                    }
-                    .onMove(perform: { indices, newOffset in
-                        controller.layers.move(fromOffsets: indices, toOffset: newOffset)
-                    })
-                }
-            }
-            .frame(minWidth: 200, maxWidth: 300, alignment: .center)
+//        NavigationView {
             
             VStack {
                 
@@ -85,6 +50,47 @@ struct DrawingPadView: View {
                         controller.loadImage()
                     }
                     .help("Opens an Image")
+                    
+                    Button("Layers") {
+                        isShowingLayersList.toggle()
+                    }
+                    .popover(isPresented: $isShowingLayersList) {
+                        List() {
+                            Section(header: Text("Layers").foregroundColor(.orange), footer: Text("Footer")) {
+                                ForEach(controller.layers) { layer in
+                                    HStack {
+                                        Text("\(layer.name ?? "< Untitled >")")
+                                            .foregroundColor(controller.selectedLayer == layer ? .orange:.white)
+                                        
+                                        Spacer()
+                                        Button(action: {
+                                            controller.layers.removeAll(where: {$0.id == layer.id})
+                                        }, label: {
+                                            Image(systemName: "trash")
+                                        })
+                                        Button(action: {
+                                            controller.layers.first(where: { $0.id == layer.id })!.isVisible.toggle()
+                                        }, label: {
+                                            Image(systemName: layer.isVisible ? "eye":"eye.slash")
+                                        })
+                                        
+                                    }
+                                    .onTapGesture {
+                                        controller.selectedLayer = layer
+                                    }
+                                    .onLongPressGesture {
+                                        withAnimation {
+                                            self.isReordering = true
+                                        }
+                                    }
+                                }
+                                .onMove(perform: { indices, newOffset in
+                                    controller.layers.move(fromOffsets: indices, toOffset: newOffset)
+                                })
+                            }
+                        }
+                        .frame(minWidth: 200, maxWidth: 300, alignment: .center)
+                    }
                     
                     Button(action: {
                         controller.improve()
@@ -124,17 +130,26 @@ struct DrawingPadView: View {
                 ScrollView([.horizontal, .vertical]) {
                     ZStack {
                         
-                        ForEach(controller.layers) { layer in
-                            if layer.isVisible {
-                                DrawingLayerView(controller: controller, layer: layer)
-                            }
+//                        ForEach(controller.layers) { layer in
+//                            if layer.isVisible {
+//                                DrawingLayerView(controller: controller, layer: layer)
+//                            }
+//                        }
+                        
+                        switch controller.drawOverlay {
+                            case .noImage: Image("Checkerboard")
+                            case .image(let image):
+                                Image(nsImage: image)
+                                    .resizable()
+                                    .frame(width: 512, height: 512)
                         }
                         
-                        if let nsimage = controller.backImage {
-                            Image(nsImage: nsimage)
-                                .resizable()
-                                .frame(width: controller.textureSize.size.width, height: controller.textureSize.size.height)
-                        }
+//                        Image(nsImage: controller.backImage)
+//                            .resizable()
+//                            .frame(width: 512, height: 512)
+//                            .onChange(of: controller.backImage, perform: { value in
+//                                print("Back imae changin chanogin changing")
+//                            })
                         
                         switch controller.selectedTool {
                             case .Pencil:
@@ -145,16 +160,20 @@ struct DrawingPadView: View {
                                 ShapeDrawingPad(controller: controller, position:$controller.shapeInfo.pointStarts, size:$controller.shapeInfo.pointEnds)
                         }
                         
+                        
+                        
+                        
+                        
                     }
                 }
             }
-        }
+//        }
     }
     
     /// Convert to NSImage, and choose file to save
     func save() {
         
-        let snapShot = FlattenedDrawingView(controller: controller, layers: controller.layers, backImage: controller.backImage, foreImage: nil, backShape: nil, foreShape: nil).snapShot(uvSize: controller.textureSize.size)
+//        let snapShot = FlattenedDrawingView(controller: controller, layers: controller.layers, backImage: controller.backImage, foreImage: nil, backShape: nil, foreShape: nil).snapShot(uvSize: controller.textureSize.size)
         
         
         
@@ -163,35 +182,35 @@ struct DrawingPadView: View {
 //                                           color: $color,
 //                                           lineWidth: $lineWidth,
 //                                           size: $controller.textureSize).snapShot(uvSize: controller.textureSize.size)
-        if let image = snapShot {
-
-            let data = image.tiffRepresentation
-
-            let dialog = NSSavePanel() //NSOpenPanel();
-
-            dialog.title                   = "Save drawing image";
-            dialog.showsResizeIndicator    = true;
-            dialog.showsHiddenFiles        = false;
-            dialog.message = "Save the image. Choose 'png' is there is transparency"
-            dialog.allowedFileTypes = ["png", "jpg", "jpeg"]
-
-            if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
-                let result = dialog.url // Pathname of the file
-
-                if let result = result {
-
-                    do {
-                        try data?.write(to: result)
-                        print("File saved")
-                    } catch {
-                        print("ERROR: \(error.localizedDescription)")
-                    }
-                }
-            } else {
-                // User clicked on "Cancel"
-                return
-            }
-        }
+//        if let image = snapShot {
+//
+//            let data = image.tiffRepresentation
+//
+//            let dialog = NSSavePanel() //NSOpenPanel();
+//
+//            dialog.title                   = "Save drawing image";
+//            dialog.showsResizeIndicator    = true;
+//            dialog.showsHiddenFiles        = false;
+//            dialog.message = "Save the image. Choose 'png' is there is transparency"
+//            dialog.allowedFileTypes = ["png", "jpg", "jpeg"]
+//
+//            if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
+//                let result = dialog.url // Pathname of the file
+//
+//                if let result = result {
+//
+//                    do {
+//                        try data?.write(to: result)
+//                        print("File saved")
+//                    } catch {
+//                        print("ERROR: \(error.localizedDescription)")
+//                    }
+//                }
+//            } else {
+//                // User clicked on "Cancel"
+//                return
+//            }
+//        }
         
     }
     
@@ -202,6 +221,11 @@ struct DrawingPadView: View {
             isReordering = false
         }
     }
+    
+//    func requiredNSImage() -> NSImage {
+//        print("Requiring image")
+//        return controller.backImage ?? NSImage(size: controller.textureSize.size)
+//    }
 }
 
 // MARK: - Layers
@@ -300,7 +324,7 @@ struct DrawingLayerView: View {
 struct DrawingPad_Previews: PreviewProvider {
     static var previews: some View {
         DrawingPadView()
-            .frame(width: 900)
+            .frame(width: 600)
     }
 }
 
