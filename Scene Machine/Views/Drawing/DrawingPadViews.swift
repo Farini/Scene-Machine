@@ -12,12 +12,17 @@ struct DrawingPadView: View {
     @ObservedObject var controller = DrawingPadController()
     
     @State private var currentDrawing: PencilStroke = PencilStroke()
-    @State private var drawings: [PencilStroke] = [PencilStroke]()
+    
+    @State var imageOverlay:NSImage?
+    
+    /// The callback that updates the Material with the drawn image
+    var imageCallback:((NSImage) -> Void) = {_ in }
+    
+    // Layers
     @State private var isReordering = false
     @State private var isShowingLayersList:Bool = false
     
     var body: some View {
-//        NavigationView {
             
             VStack {
                 
@@ -56,7 +61,7 @@ struct DrawingPadView: View {
                     }
                     .popover(isPresented: $isShowingLayersList) {
                         List() {
-                            Section(header: Text("Layers").foregroundColor(.orange), footer: Text("Footer")) {
+                            Section(header: Text("Layers").foregroundColor(.orange)) {
                                 ForEach(controller.layers) { layer in
                                     HStack {
                                         Text("\(layer.name ?? "< Untitled >")")
@@ -98,6 +103,7 @@ struct DrawingPadView: View {
                         Image(systemName: "wand.and.stars")
                     })
                     .help("Improves the image")
+                    
                     Button(action: {
                         print("Grid")
                     }, label: {
@@ -130,26 +136,17 @@ struct DrawingPadView: View {
                 ScrollView([.horizontal, .vertical]) {
                     ZStack {
                         
-//                        ForEach(controller.layers) { layer in
-//                            if layer.isVisible {
-//                                DrawingLayerView(controller: controller, layer: layer)
-//                            }
-//                        }
-                        
-                        switch controller.drawOverlay {
-                            case .noImage: Image("Checkerboard")
-                            case .image(let image):
-                                Image(nsImage: image)
-                                    .resizable()
-                                    .frame(width: 512, height: 512)
+                        ForEach(controller.layers) { layer in
+                            if layer.isVisible {
+                                DrawingLayerView(controller: controller, layer: layer)
+                            }
                         }
                         
-//                        Image(nsImage: controller.backImage)
-//                            .resizable()
-//                            .frame(width: 512, height: 512)
-//                            .onChange(of: controller.backImage, perform: { value in
-//                                print("Back imae changin chanogin changing")
-//                            })
+                        if let image = controller.backImage {
+                            Image(nsImage:image)
+                                .resizable()
+                                .frame(width:controller.textureSize.size.width, height:controller.textureSize.size.height)
+                        }
                         
                         switch controller.selectedTool {
                             case .Pencil:
@@ -159,58 +156,57 @@ struct DrawingPadView: View {
                             case .Shape:
                                 ShapeDrawingPad(controller: controller, position:$controller.shapeInfo.pointStarts, size:$controller.shapeInfo.pointEnds)
                         }
-                        
-                        
-                        
-                        
+                    }
+                    
+                    // Image Update -> Callback
+                    .onChange(of: controller.images) { imageArray in
+//                        print("Updating image")
+                        if let lastImage = imageArray.last {
+                            print("DrawingPadView -> Image callback. \(lastImage.size)")
+                            self.imageCallback(lastImage)
+                        } else {
+                            print("No last image")
+                        }
                         
                     }
                 }
             }
-//        }
     }
     
     /// Convert to NSImage, and choose file to save
     func save() {
         
-//        let snapShot = FlattenedDrawingView(controller: controller, layers: controller.layers, backImage: controller.backImage, foreImage: nil, backShape: nil, foreShape: nil).snapShot(uvSize: controller.textureSize.size)
+        let snapShot = FlattenedDrawingView(controller: controller, layers: controller.layers, backImage: controller.backImage, foreImage: nil, backShape: nil, foreShape: nil).snapShot(uvSize: controller.textureSize.size)
         
-        
-        
-//        let snapShot:NSImage? = DrawingPad(currentDrawing: $currentDrawing,
-//                                           drawings: $drawings,
-//                                           color: $color,
-//                                           lineWidth: $lineWidth,
-//                                           size: $controller.textureSize).snapShot(uvSize: controller.textureSize.size)
-//        if let image = snapShot {
-//
-//            let data = image.tiffRepresentation
-//
-//            let dialog = NSSavePanel() //NSOpenPanel();
-//
-//            dialog.title                   = "Save drawing image";
-//            dialog.showsResizeIndicator    = true;
-//            dialog.showsHiddenFiles        = false;
-//            dialog.message = "Save the image. Choose 'png' is there is transparency"
-//            dialog.allowedFileTypes = ["png", "jpg", "jpeg"]
-//
-//            if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
-//                let result = dialog.url // Pathname of the file
-//
-//                if let result = result {
-//
-//                    do {
-//                        try data?.write(to: result)
-//                        print("File saved")
-//                    } catch {
-//                        print("ERROR: \(error.localizedDescription)")
-//                    }
-//                }
-//            } else {
-//                // User clicked on "Cancel"
-//                return
-//            }
-//        }
+        if let image = snapShot {
+
+            let data = image.tiffRepresentation
+
+            let dialog = NSSavePanel() //NSOpenPanel();
+
+            dialog.title                   = "Save drawing image";
+            dialog.showsResizeIndicator    = true;
+            dialog.showsHiddenFiles        = false;
+            dialog.message = "Save the image. Choose 'png' is there is transparency"
+            dialog.allowedFileTypes = ["png", "jpg", "jpeg"]
+
+            if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
+                let result = dialog.url // Pathname of the file
+
+                if let result = result {
+
+                    do {
+                        try data?.write(to: result)
+                        print("File saved")
+                    } catch {
+                        print("ERROR: \(error.localizedDescription)")
+                    }
+                }
+            } else {
+                // User clicked on "Cancel"
+                return
+            }
+        }
         
     }
     
@@ -222,10 +218,6 @@ struct DrawingPadView: View {
         }
     }
     
-//    func requiredNSImage() -> NSImage {
-//        print("Requiring image")
-//        return controller.backImage ?? NSImage(size: controller.textureSize.size)
-//    }
 }
 
 // MARK: - Layers
@@ -244,7 +236,7 @@ struct FlattenedDrawingView: View {
     var foreShape:Path?
     
     var body: some View {
-        ZStack {
+        ZStack(alignment: .center) {
             
             if let image = backImage {
                 Image(nsImage: image)
@@ -271,7 +263,7 @@ struct FlattenedDrawingView: View {
                     .frame(width: controller.textureSize.size.width, height: controller.textureSize.size.height, alignment: .center)
             }
         }
-        .frame(width: controller.textureSize.size.width, height: controller.textureSize.size.height, alignment: .center)
+        .frame(width: controller.textureSize.size.width, height: controller.textureSize.size.height)
     }
 }
 

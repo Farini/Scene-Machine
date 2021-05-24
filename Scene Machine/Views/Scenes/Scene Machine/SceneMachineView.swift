@@ -378,6 +378,7 @@ struct UVMapStack: View {
     
     var uvTexture: some View {
         ZStack {
+            
             // Background Image
             Image(nsImage: image ?? NSImage(size: imgSize))
                 .resizable()
@@ -390,6 +391,7 @@ struct UVMapStack: View {
                 .background(Color.gray.opacity(0.1))
                 .frame(width: imgSize.width, height: imgSize.height, alignment: .center)
         }
+        .frame(width: imgSize.width, height: imgSize.height, alignment: .center)
     }
 }
 

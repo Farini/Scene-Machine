@@ -8,10 +8,7 @@
 import Cocoa
 import SwiftUI
 import SceneKit
-enum DrawingPadOverlay {
-    case noImage
-    case image(img:NSImage)
-}
+
 class DrawingPadController:ObservableObject {
     
     @Published var textureSize:TextureSize = .medSmall // 512
@@ -27,17 +24,14 @@ class DrawingPadController:ObservableObject {
     @Published var backColor:Color = Color(white: 0.1).opacity(0.1)
     @Published var lineWidth:CGFloat = 3
     
-    @Published var images:[NSImage] = []
-    
     // Background
-//    @Published var backImage:NSImage = NSImage()
-    @Published var drawOverlay:DrawingPadOverlay = .noImage
-    
+    @Published var backImage:NSImage = NSImage()
     @Published var backGrid:Bool = false
     
     // Pencil
     @Published var pencilCurrent:PencilStroke = PencilStroke()
     @Published var pencilArray:[PencilStroke] = []
+    @Published var images:[NSImage] = []
     
     // Pen
     @Published var penPoints:[PenPoint] = [PenPoint(CGPoint(x: 20, y: 20)), PenPoint(CGPoint(x: 40, y: 20))]
@@ -138,27 +132,29 @@ class DrawingPadController:ObservableObject {
     
     func addPencil(stroke:PencilStroke) {
         
-        print("Adding pencil stroke")
+//        print("Adding pencil stroke")
         
         if let drawingLayer = currentLayer {
             
             currentLayer!.pencilStrokes.append(stroke)
             if drawingLayer == layers.last {
-                print("Current is last")
+                print("Pencil current = last")
                 layers.removeLast()
                 layers.append(drawingLayer)
             } else {
-                print("Current NOT last")
+                print("Pencil - New Layer")
                 layers.append(drawingLayer)
             }
         } else {
             
-            print("no current layer")
+            print("Pencil - Creating layer")
             currentLayer = DrawingLayer(tool: selectedTool, color: NSColor(foreColor), lineWidth: lineWidth)
             currentLayer?.pencilStrokes.append(stroke)
             
             layers.append(currentLayer!)
         }
+        
+        self.makeImage()
         
     }
     
@@ -242,6 +238,18 @@ class DrawingPadController:ObservableObject {
         // update ui
     }
     
+    /// Transforms this drawing to an Image
+    func makeImage() {
+        // print("making image")
+        
+        let snapShot = FlattenedDrawingView(controller: self, layers: layers, backImage: backImage, foreImage: nil, backShape: nil, foreShape: nil).snapShot(uvSize: textureSize.size)
+        
+        if let snapImage = snapShot {
+            print("Adding snapshot to images")
+            self.images.append(snapImage)
+        }
+    }
+    
     func loadImage() {
         let dialog = NSOpenPanel()
         
@@ -258,41 +266,16 @@ class DrawingPadController:ObservableObject {
             if let url = dialog.url, url.isFileURL {
                 print("Loaded: \(url.absoluteString)")
                 if let image = NSImage(contentsOf: url) {
-                    //                    if image.size != imageSize.size
-//                    self.backImage = image
-                    self.drawOverlay = .image(img: image)
+                    self.backImage = image
                 }
             }
         }
     }
     
-    // Continue here...
-    // + add an obserrver, to setup the background Image (material image)
-    // + add observer to get geometry's uv points
-    @objc func newGeometryNotification(_ notification:Notification) {
-        if let geometry = notification.object as? SCNGeometry {
-            print("Geometry passed")
-            if let gSource = geometry.sources.first(where: { $0.semantic == .texcoord }) {
-                let uv = gSource.uv
-                // View
-                let ctrl = SceneMachineController()
-                
-                if let snapShot = UVMapStack(controller: ctrl, geometry: geometry, points: uv).snapShot(uvSize: CGSize(width: 2048, height: 2104)) {
-                    print("Updating back image")
-                    
-                    self.drawOverlay = .image(img: snapShot)
-                    
-//                    DispatchQueue.main.async {
-////                        self.backImage = snapShot
-//
-//                    }
-                }
-            }
+    init(image:NSImage? = nil, size:CGSize? = nil) {
+        if let image = image {
+            self.backImage = image
         }
-    }
-    
-    init() {
-        NotificationCenter.default.addObserver(self, selector: #selector(newGeometryNotification(_:)), name: .changedGeometryNotification, object: nil)
-        
+
     }
 }

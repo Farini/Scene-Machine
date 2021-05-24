@@ -12,7 +12,6 @@ struct MaterialMachineView: View {
     
     @ObservedObject var controller = MaterialMachineController()
     @ObservedObject var drawController:DrawingPadController
-//    @State var material:SCNMaterial = SCNMaterial.example
     
     init() {
         drawController = DrawingPadController()
@@ -23,7 +22,6 @@ struct MaterialMachineView: View {
             
             // Left
             List() {
-//                Text("Materials")
                 Section(header: Text("Materials")){
                     ForEach(controller.materials) { material in
                         Text("M \(material.name ?? "untitled")")
@@ -39,7 +37,7 @@ struct MaterialMachineView: View {
             }
             .frame(minWidth: 0, maxWidth: 200, maxHeight: .infinity, alignment: .center)
             
-            // Middle
+            // Middle - Scene and Nodes
             VSplitView {
                 VStack {
                     
@@ -68,10 +66,7 @@ struct MaterialMachineView: View {
                             controller.changeBackground()
                         }
                         
-//                        ColorPicker("Color", selection: $controller.baseColor)
-//                            .onChange(of: controller.baseColor) { value in
-//                                controller.changedColor()
-//                            }
+
                         Button("Load") {
                             controller.loadPanel()
                         }
@@ -84,29 +79,40 @@ struct MaterialMachineView: View {
                     
                     Divider()
                 }
-                .frame(minWidth: 300, maxWidth: 900, maxHeight: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                .frame(minWidth: 300, maxWidth: 900, maxHeight: .infinity, alignment: .center)
                 
                 // Nodes
-                MMMaterialNodeView(material: $controller.material)
+                MMMaterialNodeView(material: $controller.material, matMode: $controller.materialMode)
                     .padding()
-                    .onChange(of: controller.material, perform: { value in
+                    .onChange(of: controller.material) { value in
                         controller.updateGeometryMaterial(material: value)
-                    })
+                    }
             }
             
-            DrawingPadView()
-            // Right
-            // UV + Paint + color
+            // Right View: UV Map
+            if controller.uvImage != nil {
+                ZStack {
+                    DrawingPadView(controller: DrawingPadController(image: controller.uvImage!), imageOverlay: controller.uvImage) { newImage in
+//                        controller.material.diffuse.contents = newImage
+                        controller.updateUVImage(image: newImage)
+                    }
+                    .onChange(of: controller.uvImage) { newUVImage in
+//                        self.drawController = DrawingPadController(image: newUVImage)
+                    }
+                }
+            } else {
+                EmptyView()
+            }
         }
     }
 }
-enum SubMatType:String, CaseIterable {
-    case Diffuse, Roughness, Emission, Normal, AO
-}
+
+
 
 struct MMMaterialNodeView:View {
     
     @Binding var material:SCNMaterial // = SCNMaterial.example
+    @Binding var matMode:MaterialMode // = .Diffuse
     
     @State var diffuseURL:URL?
     @State var diffuseColor:Color = .white
@@ -119,7 +125,6 @@ struct MMMaterialNodeView:View {
     @State var metalnesseIntensity:CGFloat = 1
     
     @State var roughnessURL:URL?
-//    @State var roughnessColor:Color = .white
     @State var roughnessImage:NSImage?
     @State var roughnessIntensity:CGFloat = 1
     @State var roughnessValue:CGFloat = 0.5
@@ -142,15 +147,13 @@ struct MMMaterialNodeView:View {
     
     @State var activeLink:Bool = false
     
-    @State var matType:SubMatType = .Diffuse
-    
     var body: some View {
         VStack {
             HStack(spacing:12) {
-                MMNodeView(matType: $matType)
+                MMNodeView(matType: $matMode)
                 
                 VStack {
-                    switch matType {
+                    switch matMode {
                         case .Diffuse:
                             Group {
                                 HStack {
@@ -379,12 +382,12 @@ struct MMMaterialNodeView:View {
             self.prepareUI()
         }
         .onChange(of: material) { value in
-//            self.material = value
+            print("*** material changed")
             self.prepareUI()
         }
     }
     
-    func droppedImage(_ data:Data, type:SubMatType) {
+    func droppedImage(_ data:Data, type:MaterialMode) {
         guard let url = URL(dataRepresentation: data, relativeTo: nil) else {
             print("Could not get url")
             return
@@ -422,8 +425,7 @@ struct MMMaterialNodeView:View {
            let difImage = NSImage(contentsOf: URL(fileURLWithPath: difString)) {
             self.diffuseImage = difImage
             self.diffuseURL = URL(fileURLWithPath: difString)
-        }
-        if let difImage = material.diffuse.contents as? NSImage {
+        } else if let difImage = material.diffuse.contents as? NSImage {
             self.diffuseImage = difImage
         } else if let difColor = material.diffuse.contents as? NSColor {
             self.diffuseColor = Color(difColor)
@@ -459,7 +461,7 @@ struct MMMaterialNodeView:View {
 
 struct MMNodeView:View {
     
-    @Binding var matType:SubMatType
+    @Binding var matType:MaterialMode
     
     var body: some View {
         VStack(alignment:.trailing) {
@@ -517,9 +519,3 @@ struct MaterialMachineView_Previews: PreviewProvider {
             .frame(width:900)
     }
 }
-
-//struct MMNode_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MMMaterialNodeView(material: SCNMaterial.example)
-//    }
-//}
