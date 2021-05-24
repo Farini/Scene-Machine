@@ -373,6 +373,7 @@ struct UVMapStack: View {
                     .frame(width: imgSize.width, height: imgSize.height, alignment: .center)
                 
             }
+            .frame(width: imgSize.width, height: imgSize.height, alignment: .center)
         }
     }
     

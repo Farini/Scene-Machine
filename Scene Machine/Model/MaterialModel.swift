@@ -83,8 +83,8 @@ class SceneMaterial: Codable, Identifiable, Equatable {
     
     /// Initialize from a SceneKit Material
     init(material:SCNMaterial) {
-        self.name = material.name
         
+        self.name = material.name
         self.lightModel = MaterialShading.fromMaterial(material: material)
         
         // Contents
@@ -92,32 +92,62 @@ class SceneMaterial: Codable, Identifiable, Equatable {
             self.diffuse = SubMaterialData()
             self.diffuse?.storeAnyProperty(property: diffuseContent)
             self.diffuse?.intensity = Double(material.diffuse.intensity)
+            if let image = diffuseContent as? NSImage {
+                if let url = LocalDatabase.shared.saveImage(image, material: self, mode: .Diffuse) {
+                    self.diffuse?.imageURL = url
+                }
+            }
         }
         
         if let metalnessContent = material.metalness.contents {
             self.metalness = SubMaterialData()
             self.metalness?.storeAnyProperty(property: metalnessContent)
             self.metalness?.intensity = Double(material.metalness.intensity)
+            if let image = metalnessContent as? NSImage {
+                if let url = LocalDatabase.shared.saveImage(image, material: self, mode: .Roughness) {
+                    self.metalness?.imageURL = url
+                }
+            }
         }
         if let roughContent = material.roughness.contents {
             self.roughness = SubMaterialData()
             self.roughness?.storeAnyProperty(property: roughContent)
             self.roughness?.intensity = Double(material.roughness.intensity)
+            if let image = roughContent as? NSImage {
+                if let url = LocalDatabase.shared.saveImage(image, material: self, mode: .Roughness) {
+                    self.roughness?.imageURL = url
+                }
+            }
         }
         if let normalContent = material.normal.contents {
             self.normal = SubMaterialData()
             self.normal?.storeAnyProperty(property: normalContent)
             self.normal?.intensity = Double(material.normal.intensity)
+            if let image = normalContent as? NSImage {
+                if let url = LocalDatabase.shared.saveImage(image, material: self, mode: .Normal) {
+                    self.normal?.imageURL = url
+                }
+            }
         }
         if let occlusionContents = material.ambientOcclusion.contents {
             self.occlusion = SubMaterialData()
             self.occlusion?.storeAnyProperty(property: occlusionContents)
             self.occlusion?.intensity = Double(material.ambientOcclusion.intensity)
+            if let image = occlusionContents as? NSImage {
+                if let url = LocalDatabase.shared.saveImage(image, material: self, mode: .AO) {
+                    self.occlusion?.imageURL = url
+                }
+            }
         }
         if let emissionContents = material.emission.contents {
             self.emission = SubMaterialData()
             self.emission?.storeAnyProperty(property: emissionContents)
             self.emission?.intensity = Double(material.emission.intensity)
+            if let image = emissionContents as? NSImage {
+                if let url = LocalDatabase.shared.saveImage(image, material: self, mode: .Emission) {
+                    self.emission?.imageURL = url
+                }
+            }
         }
     }
     

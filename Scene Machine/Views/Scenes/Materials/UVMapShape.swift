@@ -14,7 +14,6 @@ import SwiftUI
 struct UVShape: Shape {
     
     var uv:[CGPoint]
-    //    let multi:CGFloat = 10
     
     // MARK:- functions
     func path(in rect: CGRect) -> Path {

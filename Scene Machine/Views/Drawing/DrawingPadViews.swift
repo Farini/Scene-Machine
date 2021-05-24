@@ -134,11 +134,12 @@ struct DrawingPadView: View {
                 
                 // Drawing View
                 ScrollView([.horizontal, .vertical]) {
-                    ZStack {
+                    ZStack(alignment: .center) {
                         
                         ForEach(controller.layers) { layer in
                             if layer.isVisible {
                                 DrawingLayerView(controller: controller, layer: layer)
+                                    .frame(width:controller.textureSize.size.width, height:controller.textureSize.size.height)
                             }
                         }
                         
@@ -151,12 +152,14 @@ struct DrawingPadView: View {
                         switch controller.selectedTool {
                             case .Pencil:
                                 PencilDrawingPad(controller: controller, currentDrawing: $currentDrawing, size: $controller.textureSize)
+                                    .frame(width:controller.textureSize.size.width, height:controller.textureSize.size.height)
                             case .Pen:
                                 PenDrawingPad(controller: controller, isPathClosed: $controller.isPenPathClosed, isCurve: $controller.isPenPathCurved)
                             case .Shape:
                                 ShapeDrawingPad(controller: controller, position:$controller.shapeInfo.pointStarts, size:$controller.shapeInfo.pointEnds)
                         }
                     }
+                    .frame(width:controller.textureSize.size.width, height:controller.textureSize.size.height)
                     
                     // Image Update -> Callback
                     .onChange(of: controller.images) { imageArray in

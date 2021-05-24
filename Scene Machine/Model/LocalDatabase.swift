@@ -188,6 +188,30 @@ class LocalDatabase:NSObject {
         return url
     }
     
+    // Saving Images
+    func saveImage(_ image:NSImage, material:SceneMaterial, mode:MaterialMode) -> URL? {
+        let folder = LocalDatabase.folder
+        let imageName = "\(material.name ?? material.id.uuidString)_\(mode.rawValue).png"
+        let folderPath = folder.appendingPathComponent("Material Images", isDirectory: true)
+        if !FileManager.default.fileExists(atPath: folderPath.path) {
+            try? FileManager.default.createDirectory(at: folderPath, withIntermediateDirectories: true, attributes: nil)
+        }
+        
+        if let imgData = image.tiffRepresentation {
+            let fullPath = folderPath.appendingPathComponent(imageName, isDirectory: false)
+            do {
+                try imgData.write(to: fullPath)
+                print("Image saved at \(fullPath)")
+                return fullPath
+            }catch {
+                print("⚠️ Image could not be saved")
+                return nil
+            }
+        }
+        print("No tiff representation when saving image")
+        return nil
+    }
+    
     private override init() {
         let materials = LocalDatabase.loadMaterials()
         self.materials = materials

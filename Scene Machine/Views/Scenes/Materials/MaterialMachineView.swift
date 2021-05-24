@@ -31,9 +31,16 @@ struct MaterialMachineView: View {
                             }
                     }
                 }
-                // My materials
-                // Library
-                // Images?
+                
+                Section(header: Text("DB Materials")){
+                    ForEach(controller.dbMaterials) { material in
+                        Text("M \(material.name ?? "untitled")")
+                            .onTapGesture {
+                                print("tappy. Decide what to do with tap")
+//                                controller.updateGeometryMaterial(material: material)
+                            }
+                    }
+                }
             }
             .frame(minWidth: 0, maxWidth: 200, maxHeight: .infinity, alignment: .center)
             
@@ -50,7 +57,7 @@ struct MaterialMachineView: View {
                                 Text(geo.rawValue)
                             }
                         }
-                        .frame(width:150)
+                        .frame(width:120)
                         .onChange(of: controller.geoOption) { value in
                             controller.updateNode()
                         }
@@ -61,7 +68,7 @@ struct MaterialMachineView: View {
                                 Text(back.rawValue)
                             }
                         }
-                        .frame(width:150)
+                        .frame(width:120)
                         .onChange(of: controller.sceneBackground) { value in
                             controller.changeBackground()
                         }
@@ -69,6 +76,14 @@ struct MaterialMachineView: View {
 
                         Button("Load") {
                             controller.loadPanel()
+                        }
+                        
+                        Button("Save") {
+                            if let image = controller.material.diffuse.contents as? NSImage {
+                                print("Image in. Size: \(image.size)")
+                                let savingMaterial:SceneMaterial = SceneMaterial(material: controller.material)
+                                LocalDatabase.shared.saveMaterial(material: savingMaterial)
+                            }
                         }
                     }
                     .frame(height:30)
@@ -100,6 +115,7 @@ struct MaterialMachineView: View {
 //                        self.drawController = DrawingPadController(image: newUVImage)
                     }
                 }
+                
             } else {
                 EmptyView()
             }

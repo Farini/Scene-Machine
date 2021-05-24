@@ -43,6 +43,7 @@ class MaterialMachineController:ObservableObject {
     @Published var material:SCNMaterial = SCNMaterial.example
     
     @Published var materials:[SCNMaterial] = [SCNMaterial.example]
+    @Published var dbMaterials:[SceneMaterial] = []
     
     @Published var baseColor:Color = Color.blue
     @Published var uvImage:NSImage?
@@ -57,12 +58,13 @@ class MaterialMachineController:ObservableObject {
         scene.background.contents = "Scenes.scnassets/HDRI/\(sceneBackground.content)"
         scene.lightingEnvironment.contents = "Scenes.scnassets/HDRI/\(sceneBackground.content)"
         
-        // self.material = makeMaterial()
-        
         let node = SCNNode(geometry: geometry)
         geometry.insertMaterial(material, at: 0)
         
         scene.rootNode.addChildNode(node)
+        
+        let dbmat = LocalDatabase.shared.materials
+        self.dbMaterials = dbmat
     }
     
     // MARK: - Loading
