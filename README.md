@@ -128,10 +128,10 @@ See this apps's model readme: [Here](https://github.com/Farini/Scene-Machine/blo
 - [X] NormalMap shader, to transform images in Normal Maps
 - [X] Blender Shortcuts
 - [X] Export to `.scnassets` folder.
+- [X] Draw textures on UVMaps
+- [X] 💾 Save Materials Property `SceneMaterial`
 
-- [ ] Draw textures on UVMaps
 - [ ] Ability to use .txt files that can contain code for fragment/vertex shaders
-- [ ] 💾 Save Materials Property `SceneMaterial`
 - [ ] Improve App Help: http://swiftrien.blogspot.com/2015/06/adding-apple-help-to-os-x-application.html
 
 

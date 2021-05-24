@@ -153,6 +153,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     // MARK: - Menu
     
+    /// Opens the finder with the App's document folder.
     @IBAction func openFinder(_ sender: NSMenuItem) {
         
         print("Getting finder")
@@ -165,6 +166,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             //        }
         }else{
             print("Where is finder ??")
+        }
+    }
+    
+    /// Opens the finder at an alternative URL.
+    @objc func openFinderAt(_ sender:URL) {
+        if FileManager.default.fileExists(atPath: sender.path) {
+            NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: sender.path)
+        } else {
+            print("⚠️ Error: File doesn't exist: \(sender)")
         }
     }
     
@@ -206,6 +216,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         drawingWindow.makeKeyAndOrderFront(nil)
     }
     
+    // MARK: - App Windows
+    
+    @IBAction func openFrontWindow(_ sender: NSMenuItem) {
+        let newWindow = NSWindow(
+            contentRect: NSRect(x: 0, y: 0, width: 1200, height: 800),
+            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+            backing: .buffered, defer: false)
+        newWindow.center()
+        newWindow.setFrameAutosaveName("FrontView")
+        //        window.toolbarStyle = .unified
+        window = newWindow
+        window.contentView = NSHostingView(rootView: FrontView())
+        window.makeKeyAndOrderFront(nil)
+    }
+    
     /// Quick Noise
     var quickNoiseWindow:NSWindow!
     @IBAction func openNoiseMaker(_ sender: NSMenuItem) {
@@ -226,27 +251,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         quickNoiseWindow.makeKeyAndOrderFront(nil)
     }
     
-    
-    
     @IBAction func openSpriteKitNoise(_ sender: NSMenuItem) {
         openSpriteNoiseWindow()
     }
-    
-    @IBAction func openFrontWindow(_ sender: NSMenuItem) {
-        let newWindow = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 1200, height: 800),
-            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-            backing: .buffered, defer: false)
-        newWindow.center()
-        newWindow.setFrameAutosaveName("FrontView")
-        //        window.toolbarStyle = .unified
-        window = newWindow
-        window.contentView = NSHostingView(rootView: FrontView())
-        window.makeKeyAndOrderFront(nil)
-    }
-    
-    
-    // MARK: - App Windows
     
     /// Sprite Noise
     var spriteNoiseWindow: NSWindow!
@@ -286,7 +293,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         metalGenWindow.makeKeyAndOrderFront(nil)
     }
-    
     
     /// Composition
     var compositionWindow:NSWindow!
@@ -347,6 +353,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     // MARK: - Scenes
     
+    /// Terrain Scene
     var terrainWindow: NSWindow!
     @objc func openTerrainWindow() {
         if nil == terrainWindow {
@@ -366,6 +373,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         terrainWindow.makeKeyAndOrderFront(nil)
     }
     
+    /// Monkey (Material) Scene
     var monkeyWindow: NSWindow!
     @IBAction func displayMonkeyTest(_ sender: NSMenuItem) {
         if nil == monkeyWindow {
@@ -383,6 +391,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         monkeyWindow.makeKeyAndOrderFront(nil)
     }
     
+    /// Scene Machine
     var sceneMachineWindow: NSWindow!
     @objc func openSceneMachine() {
         if nil == sceneMachineWindow {
@@ -418,9 +427,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         sceneMachineWindow.makeKeyAndOrderFront(nil)
     }
-    
-    
-    
     
     // MARK: - Help
     

@@ -52,6 +52,8 @@ extension NSView {
 }
 
 extension NumberFormatter {
+    
+    /// Formatter with 4 decimal digits
     static var scnFormat: NumberFormatter {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal

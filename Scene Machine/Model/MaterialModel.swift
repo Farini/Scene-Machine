@@ -32,11 +32,7 @@ class SceneMaterial: Codable, Identifiable, Equatable {
         material.diffuse.contents =  diffuse?.makeAnyProperty()
         
 //        material.diffuse.wrapS = .repeat
-        material.diffuse.wrapT = .repeat
-        
-//        material.diffuse.intensity
-//        material.diffuse.magnificationFilter = .linear
-//        material.diffuse.
+//        material.diffuse.wrapT = .repeat
         
         material.metalness.contents = metalness?.makeAnyProperty() ?? 0.0
         material.roughness.contents = roughness?.makeAnyProperty() ?? 0.4

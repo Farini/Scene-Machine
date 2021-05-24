@@ -179,6 +179,24 @@ class LocalDatabase:NSObject {
         }
     }
     
+    /// Returns the folders under App's documents
+    func getSubdirectories() -> [URL] {
+        do {
+            let documentsDirectory =  try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+            let url = documentsDirectory.appendingPathComponent("pictures", isDirectory: true)
+            if !FileManager.default.fileExists(atPath: url.path) {
+                try FileManager.default.createDirectory(at: url, withIntermediateDirectories: false, attributes: nil)
+            }
+            let subDirs = try documentsDirectory.subDirectories()
+            print("sub directories", subDirs)
+            subDirs.forEach { print($0.lastPathComponent) }
+            return subDirs
+        } catch {
+            print("⚠️ Error: \(error.localizedDescription)")
+            return []
+        }
+    }
+    
     // MARK: - General
     
     static var folder:URL {

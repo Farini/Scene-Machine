@@ -82,6 +82,7 @@
 		85B9138326329DED0065D6D2 /* MetalGenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B9138126329DED0065D6D2 /* MetalGenView.swift */; };
 		85CB435F263CABC0006E4B10 /* Kernels2.ci.metal in Sources */ = {isa = PBXBuildFile; fileRef = 85CB435E263CABC0006E4B10 /* Kernels2.ci.metal */; };
 		85CB4361263D0D9A006E4B10 /* DrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CB4360263D0D9A006E4B10 /* DrawingView.swift */; };
+		85D1BC61265C2E7D009D70DC /* MacNotesTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D1BC60265C2E7D009D70DC /* MacNotesTextView.swift */; };
 		85D3E7CB26390FAF00D693FA /* SceneMachineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D3E7CA26390FAF00D693FA /* SceneMachineView.swift */; };
 		85D3E7CF26390FC500D693FA /* SceneMachineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D3E7CE26390FC500D693FA /* SceneMachineController.swift */; };
 		85DEFC682643AFC8003DEC36 /* MercurializeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DEFC672643AFC8003DEC36 /* MercurializeFilter.swift */; };
@@ -208,6 +209,7 @@
 		85B9138126329DED0065D6D2 /* MetalGenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalGenView.swift; sourceTree = "<group>"; };
 		85CB435E263CABC0006E4B10 /* Kernels2.ci.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Kernels2.ci.metal; sourceTree = "<group>"; };
 		85CB4360263D0D9A006E4B10 /* DrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingView.swift; sourceTree = "<group>"; };
+		85D1BC60265C2E7D009D70DC /* MacNotesTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MacNotesTextView.swift; sourceTree = "<group>"; };
 		85D3E7CA26390FAF00D693FA /* SceneMachineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneMachineView.swift; sourceTree = "<group>"; };
 		85D3E7CE26390FC500D693FA /* SceneMachineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneMachineController.swift; sourceTree = "<group>"; };
 		85DEFC672643AFC8003DEC36 /* MercurializeFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MercurializeFilter.swift; sourceTree = "<group>"; };
@@ -465,6 +467,7 @@
 			children = (
 				85A4775F26407D4800F93AB3 /* HelpMainView.swift */,
 				85885EF526520B1B00E98855 /* HelpCharacterModeling.swift */,
+				85D1BC60265C2E7D009D70DC /* MacNotesTextView.swift */,
 			);
 			path = Help;
 			sourceTree = "<group>";
@@ -714,6 +717,7 @@
 				85771BD12633D3B7001A2B88 /* CIGenView.swift in Sources */,
 				85941FC126501B0600A3CAF6 /* PenToolbar.swift in Sources */,
 				857C47382637370F006C6A32 /* MetalTilesView.swift in Sources */,
+				85D1BC61265C2E7D009D70DC /* MacNotesTextView.swift in Sources */,
 				85941FC426506FA500A3CAF6 /* ToolDrawingPads.swift in Sources */,
 				85FAF350263C6B7600081ED8 /* PhongShader.metal in Sources */,
 				85A4776D2642EE1C00F93AB3 /* FXOtherView.swift in Sources */,

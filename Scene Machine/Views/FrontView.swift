@@ -218,9 +218,9 @@ struct OpenFileView: View {
     @Environment(\.managedObjectContext) private var viewContext
     // CoreData Tutorial: https://blckbirds.com/post/core-data-and-swiftui/
     
-//    @State var materials = LocalDatabase.shared.materials
     @State var urls = LocalDatabase.shared.savedURLS
     @State var errorMessage:String = ""
+    @State var documentFolders:[URL] = LocalDatabase.shared.getSubdirectories()
     
     @FetchRequest(entity: SMMaterial.entity(), sortDescriptors: []) var materials: FetchedResults<SMMaterial>
     
@@ -241,8 +241,24 @@ struct OpenFileView: View {
                 
                 Group {
                     Text("Files").font(.title2).foregroundColor(.orange)
-                        .padding(6)
-                    Text("You may also go to File >> Open Finder to see what is there").foregroundColor(.gray)
+//                        .padding(6)
+                    
+                    Text("Note: You may also go to File >> 'Go to App Folder' to see the app's documents.").foregroundColor(.gray)
+                    Text("Folders").font(.title2).foregroundColor(.orange)
+                    ForEach(documentFolders, id:\.self) { folder in
+                        HStack {
+                            VStack(alignment:.leading) {
+                                Text(folder.lastPathComponent).font(.title3)
+                                Text(folder.path).foregroundColor(.gray).font(.footnote)
+                            }
+                            Spacer()
+                            Button(action: {
+                                NSApp.sendAction(#selector(AppDelegate.openFinderAt(_:)), to: nil, from: folder)
+                            }, label: {
+                                Image(systemName: "doc.text.viewfinder")
+                            })
+                        }
+                    }
                     Divider()
                 }
                 .padding(6)
@@ -369,6 +385,7 @@ struct OpenFileView: View {
             }
         }
     }
+    
 }
 
 struct OpenSceneView: View {
@@ -379,6 +396,7 @@ struct OpenSceneView: View {
             
             VStack {
                 
+                // Scenekit Icon (Header)
                 Group {
                     
                     Image("SceneKitIcon")
@@ -390,6 +408,65 @@ struct OpenSceneView: View {
                     Divider()
                 }
                 .padding(.top)
+                
+                // Scene Machine Editor
+                Group {
+                    HStack {
+                        VStack(alignment:.leading) {
+                            Text("Scene Machine").font(.title2).foregroundColor(.blue)
+                            Text("Import and export '.dae', or '.scn' files. Checkout the materials, and also print the UVMap borders, to easily visualize Texture Painting.").foregroundColor(.gray)
+                        }
+                        .padding(6)
+                        Spacer()
+                        VStack {
+                            Image(systemName:"square.stack.3d.up")
+                                .resizable()
+                                .frame(width: 42, height: 42, alignment: .center)
+                            //                                .padding(6)
+                            Text("Machine")
+                        }
+                        //                        .padding(8)
+                        .frame(width: 80, height: 80, alignment: .center)
+                        .background(Color.black.opacity(0.5))
+                        .cornerRadius(12)
+                        .shadow(color: .white.opacity(0.4), radius: 6, x: 0.0, y: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/)
+                        .onTapGesture {
+                            NSApp.sendAction(#selector(AppDelegate.openSceneMachine), to: nil, from: nil)
+                        }
+                    }
+                    .padding()
+                    
+                    Divider()
+                }
+                
+                // Material Editor
+                Group {
+                    HStack {
+                        VStack(alignment:.leading) {
+                            Text("Material Editor").font(.title2).foregroundColor(.blue)
+                            Text("Build materials from scratch. Paint UV Textures, and analyze each material property").foregroundColor(.gray)
+                        }
+                        .padding(6)
+                        Spacer()
+                        VStack {
+                            Image(systemName:"shield.checkerboard")
+                                .resizable()
+                                .frame(width: 38, height: 42, alignment: .center)
+                            //                                .padding(6)
+                            Text("Material")
+                        }
+                        //                        .padding(8)
+                        .frame(width: 80, height: 80, alignment: .center)
+                        .background(Color.black.opacity(0.5))
+                        .cornerRadius(12)
+                        .shadow(color: .white.opacity(0.4), radius: 6, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/)
+                        .onTapGesture {
+                            NSApp.sendAction(#selector(AppDelegate.openDrawingView(_:)), to: nil, from: nil)
+                        }
+                    }
+                    .padding()
+                    Divider()
+                }
                 
                 // Terrain Editor group
                 Group {
@@ -419,41 +496,6 @@ struct OpenSceneView: View {
                     }
                     .padding()
                     
-                    
-                    Divider()
-                }
-                
-                // Scene Machine Editor
-                Group {
-                    HStack {
-                        VStack(alignment:.leading) {
-                            Text("Scene Machine").font(.title2).foregroundColor(.blue)
-                            Text("Import and export '.dae', or '.scn' files. Checkout the materials, and also print the UVMap borders, to easily visualize Texture Painting.").foregroundColor(.gray)
-                        }
-                        .padding(6)
-                        Spacer()
-                        VStack {
-                            Image(systemName:"square.stack.3d.up")
-                                .resizable()
-                                .frame(width: 42, height: 42, alignment: .center)
-//                                .padding(6)
-                            Text("Machine")
-                        }
-//                        .padding(8)
-                        .frame(width: 80, height: 80, alignment: .center)
-                        .background(Color.black.opacity(0.5))
-                        .cornerRadius(12)
-                        .shadow(color: .white.opacity(0.4), radius: 6, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/)
-                        .onTapGesture {
-                            NSApp.sendAction(#selector(AppDelegate.openSceneMachine), to: nil, from: nil)
-                        }
-                    }
-                    .padding()
-                    
-                    //                Button("Open") {
-                    //                    NSApp.sendAction(#selector(AppDelegate.openSceneMachine), to: nil, from: nil)
-                    //                }
-                    //                Divider()
                 }
             }
         }

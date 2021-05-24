@@ -58,27 +58,13 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="File" id="bib-Uj-vzu">
                                     <items>
-                                        <menuItem title="Open Finder" id="CwC-vy-Ju4">
+                                        <menuItem title="Go to App Folder" id="CwC-vy-Ju4">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="openFinder:" target="Voe-Tx-rLC" id="XbS-wi-7di"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="5Dm-YP-sRg"/>
-                                        <menuItem title="Testing Features" id="Fdo-Sx-QkQ">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <menu key="submenu" title="Testing Features" id="Ipu-r9-bAz">
-                                                <items>
-                                                    <menuItem title="Drawing" id="jtt-8x-MON">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                                        <connections>
-                                                            <action selector="openDrawingView:" target="Voe-Tx-rLC" id="LBq-Vm-7da"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                </items>
-                                            </menu>
-                                        </menuItem>
-                                        <menuItem isSeparatorItem="YES" id="m54-Is-iLE"/>
                                         <menuItem title="Close" keyEquivalent="w" id="DVo-aG-piG">
                                             <connections>
                                                 <action selector="performClose:" target="Ady-hI-5gd" id="HmO-Ls-i7Q"/>
@@ -124,6 +110,12 @@
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="displayMonkeyTest:" target="Voe-Tx-rLC" id="szZ-9G-wIA"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Material Editor" id="XNz-Dv-qoM">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="openDrawingView:" target="Voe-Tx-rLC" id="ZV1-HV-4io"/>
                                             </connections>
                                         </menuItem>
                                     </items>
