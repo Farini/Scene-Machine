@@ -289,6 +289,8 @@ struct SceneMachineView: View {
     }
 }
 
+
+
 struct UVMapStack: View {
     
     @ObservedObject var controller:SceneMachineController

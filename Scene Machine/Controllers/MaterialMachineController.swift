@@ -105,9 +105,11 @@ class MaterialMachineController:ObservableObject {
         
         let uvPoints:[CGPoint] = geoSource.uv
         
-        let ctrl = SceneMachineController()
+//        let ctrl = SceneMachineController()
         
-        if let snapImage:NSImage = UVMapStack(controller: ctrl, geometry: geometry, points: uvPoints).uvTexture.snapShot(uvSize: CGSize(width: 2048, height: 2048)) {
+        if let snapImage:NSImage = UVMapView(size: TextureSize.medium.size, image: nil, uvPoints: uvPoints).snapShot(uvSize: CGSize(width: 1024, height: 1024)) {
+            
+            // UVMapStack(controller: ctrl, geometry: geometry, points: uvPoints).uvTexture.snapShot(uvSize: CGSize(width: 2048, height: 2048)) {
             // UVShape(uv: uvPoints).snapShot(uvSize: CGSize(width: 1024, height: 1024)) {
             // UVMapStack(controller: ctrl, geometry: geometry, points: uvPoints).uvTexture.snapShot(uvSize: CGSize(width: 2048, height: 2104)) {
             

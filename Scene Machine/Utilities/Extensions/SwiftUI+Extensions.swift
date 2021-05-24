@@ -15,7 +15,7 @@ extension View {
         
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: uvSize.width, height: uvSize.height),
-            styleMask: [.titled, .closable, .fullSizeContentView],
+            styleMask: [.fullSizeContentView],
             backing: .buffered, defer: false)
         
         window.center()

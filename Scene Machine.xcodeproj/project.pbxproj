@@ -46,6 +46,7 @@
 		85885EF626520B1B00E98855 /* HelpCharacterModeling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85885EF526520B1B00E98855 /* HelpCharacterModeling.swift */; };
 		85885EF82656B5E200E98855 /* MaterialMachineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85885EF72656B5E200E98855 /* MaterialMachineView.swift */; };
 		85885EFA2656BD3300E98855 /* MaterialMachineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85885EF92656BD3300E98855 /* MaterialMachineController.swift */; };
+		859241FF265B7FE9001D503D /* UVMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859241FE265B7FE9001D503D /* UVMapView.swift */; };
 		85941FB8264E3D6900A3CAF6 /* Drawing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85941FB7264E3D6900A3CAF6 /* Drawing.swift */; };
 		85941FBB264EEA3500A3CAF6 /* DrawingPadToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85941FBA264EEA3500A3CAF6 /* DrawingPadToolbar.swift */; };
 		85941FBD264EF85700A3CAF6 /* DrawingPadController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85941FBC264EF85700A3CAF6 /* DrawingPadController.swift */; };
@@ -180,6 +181,7 @@
 		85885EF526520B1B00E98855 /* HelpCharacterModeling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpCharacterModeling.swift; sourceTree = "<group>"; };
 		85885EF72656B5E200E98855 /* MaterialMachineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialMachineView.swift; sourceTree = "<group>"; };
 		85885EF92656BD3300E98855 /* MaterialMachineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialMachineController.swift; sourceTree = "<group>"; };
+		859241FE265B7FE9001D503D /* UVMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UVMapView.swift; sourceTree = "<group>"; };
 		85941FB7264E3D6900A3CAF6 /* Drawing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drawing.swift; sourceTree = "<group>"; };
 		85941FB9264E452D00A3CAF6 /* ModelReadme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ModelReadme.md; sourceTree = "<group>"; };
 		85941FBA264EEA3500A3CAF6 /* DrawingPadToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingPadToolbar.swift; sourceTree = "<group>"; };
@@ -270,6 +272,7 @@
 				855053712644F33500A577E2 /* Scene Machine */,
 				8515B36526263C6A00A886BD /* Materials */,
 				85CB4360263D0D9A006E4B10 /* DrawingView.swift */,
+				859241FE265B7FE9001D503D /* UVMapView.swift */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -742,6 +745,7 @@
 				85941FC72650730300A3CAF6 /* ShapeToolBar.swift in Sources */,
 				8597BB7E25BCA8B200C705A0 /* ImageFXController.swift in Sources */,
 				85FFB73A2639DA0100E8FE0A /* MetalOverlaysView.swift in Sources */,
+				859241FF265B7FE9001D503D /* UVMapView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
