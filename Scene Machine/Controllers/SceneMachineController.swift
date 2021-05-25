@@ -15,20 +15,27 @@ enum MachineRightView:String, CaseIterable {
     case Empty
     case UVMap
     case Shape
+    case Settings
 }
 
 class SceneMachineController:ObservableObject {
     
+    // State
     @Published var scene:SCNScene
     @Published var materials:[SCNMaterial] = []
     @Published var nodes:[SCNNode] = []
     @Published var geometries:[SCNGeometry] = []
+    @Published var rightView:MachineRightView = .Empty
     
+    // Selection
     @Published var selectedNode:SCNNode?
     @Published var isNodeOptionSelected:Bool = false
     @Published var selectedMaterial:SCNMaterial?
     
-    @Published var rightView:MachineRightView = .Empty
+    
+    
+    @Published var cameras:[SCNCamera] = []
+    @Published var lights:[SCNLight] = []
     
     // Alert
     @Published var presentingTempAlert:Bool = false
@@ -45,6 +52,7 @@ class SceneMachineController:ObservableObject {
         // Recursively get Materials
         let root = scene.rootNode
         var stack:[SCNNode] = [root]
+        
         while !stack.isEmpty {
             if let node = stack.first {
                 nodes.append(node)
@@ -54,6 +62,12 @@ class SceneMachineController:ObservableObject {
                         self.materials.append(material)
                     }
                 }
+                if let camera = node.camera {
+                    cameras.append(camera)
+                } else if let light = node.light {
+                    lights.append(light)
+                }
+                
                 stack.append(contentsOf: node.childNodes)
             }
             stack.removeFirst()
@@ -142,6 +156,7 @@ class SceneMachineController:ObservableObject {
     
     /// Get the points that compose the `UVMap`
     func inspectUVMap(geometry:SCNGeometry) -> [CGPoint]? {
+        
         let sources = geometry.sources
         for src in sources {
             if src.semantic == .texcoord {
@@ -172,6 +187,8 @@ class SceneMachineController:ObservableObject {
             // + color (vertex color)
             // + tangent
         }
+        
+        
         tempAlertMessage = "Could not find UV map."
         presentingTempAlert.toggle()
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
@@ -280,7 +297,9 @@ class SceneMachineController:ObservableObject {
         shapeNode.position = SCNVector3(0, bb, 0)
         print("Bounding box: Min:\(shape.boundingBox.min.y), Max:\(shape.boundingBox.max.y)")
         
-        shapeNode.look(at: scene.rootNode.childNode(withName: "camera", recursively: false)?.position ?? SCNVector3())
+        let positioner = SCNVector3(0, shape.boundingBox.min.y, -100)
+//        shapeNode.look(at: scene.rootNode.childNode(withName: "camera", recursively: false)?.position ?? SCNVector3())
+        shapeNode.look(at: positioner)
         
         let bc = abs(shape.boundingBox.min.y) * 0.025
         shapeNode.position = SCNVector3(0, bc, 0)
@@ -330,6 +349,22 @@ class SceneMachineController:ObservableObject {
     func changeBackground(back:AppBackgrounds) {
         scene.background.contents = "Scenes.scnassets/HDRI/\(back.content)"
         scene.lightingEnvironment.contents = "Scenes.scnassets/HDRI/\(back.content)"
+    }
+    
+    // MARK: - Messages
+    func displayTemporaryMessage(string:String) {
+        
+        guard !string.isEmpty else { return }
+        
+        print("Should display temporary message")
+        
+        self.tempAlertMessage = "⚠️ \(string)"
+        self.presentingTempAlert = true
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
+            self.presentingTempAlert = false
+            self.tempAlertMessage = ""
+        }
     }
     
     // MARK: - Saving

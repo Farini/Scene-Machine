@@ -182,8 +182,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBAction func openDrawingView(_ sender: Any) {
         
         if nil == drawingWindow {
-            // Toolbar **needs** a delegate
-//            NSToolbar.drawingPadToolbar.delegate = self
+            
             // View
             let drawingView = MaterialMachineView()
             drawingWindow = NSWindow(
@@ -193,26 +192,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                             .unifiedTitleAndToolbar],
                 backing: .buffered, defer: false)
             drawingWindow.center()
-            drawingWindow.setFrameAutosaveName("DrawingPadView")
+            drawingWindow.setFrameAutosaveName("MaterialEditorView")
             
-            drawingWindow.title = "Drawing Pad"
-//            drawingWindow.titleVisibility = .hidden
-            
-            // Enclosing code snipped
-//            let toolbarButtons = NSHostingView(rootView: DrawingPadToolbar())
-//            toolbarButtons.frame.size = toolbarButtons.fittingSize
-            
-//            let titlebarAccessory = NSTitlebarAccessoryViewController()
-//            titlebarAccessory.view = toolbarButtons
-//            titlebarAccessory.layoutAttribute = .leading
-            
-            // Enclosing code snipped
-//            drawingWindow.toolbar = NSToolbar()
-//            drawingWindow.addTitlebarAccessoryViewController(titlebarAccessory)
+            drawingWindow.title = "Material Editor"
             
             drawingWindow.isReleasedWhenClosed = false
             drawingWindow.contentView = NSHostingView(rootView: drawingView)
         }
+        
         drawingWindow.makeKeyAndOrderFront(nil)
     }
     
@@ -436,7 +423,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if nil == helpWindow {
             let view = HelpMainView()
             helpWindow = NSWindow(
-                contentRect: NSRect(x: 0, y: 0, width: 600, height: 500),
+                contentRect: NSRect(x: 0, y: 0, width: 500, height: 600),
                 styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
                 backing: .buffered, defer: false)
             helpWindow.center()

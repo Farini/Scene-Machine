@@ -137,6 +137,7 @@ struct SceneMachineView: View {
                     
                     Spacer()
                     
+                    // Node Button (Middle)
                     if let theNode = controller.selectedNode {
                         Button("\(theNode.name ?? "Node")") {
                             controller.isNodeOptionSelected.toggle()
@@ -162,35 +163,41 @@ struct SceneMachineView: View {
                     
                     Spacer()
                     
-                    // Segment
-                    Picker(selection: $controller.rightView, label: Image(systemName: "rectangle.righthalf.inset.fill"), content: {
+                    // Right View Picker
+                    Picker(selection: $controller.rightView, label: Image(systemName: "sidebar.right").font(.title2), content: {
                         ForEach(MachineRightView.allCases, id:\.self) { rightView in
                             Text(rightView.rawValue)
                         }
                     })
-                    .pickerStyle(SegmentedPickerStyle())
                     .frame(width:180)
-                    
-                    Button("+ Back") {
-                        popBackground.toggle()
-                    }
-                    .popover(isPresented: $popBackground) {
-                        VStack {
-                            Text("Backgrounds").font(.title2).foregroundColor(.blue)
-                            ForEach(AppBackgrounds.allCases, id:\.self) { appBack in
-                                HStack {
-                                    Text(appBack.rawValue)
-                                    Spacer()
-                                    Button("Change") {
-                                        controller.changeBackground(back: appBack)
-                                    }
-                                }
-                                
+                    .onChange(of: controller.rightView) { value in
+                        if value == .UVMap {
+                            if controller.selectedNode == nil {
+                                controller.displayTemporaryMessage(string: "Select a node to see the UVMap")
                             }
                         }
-                        .frame(width:200)
-                        .padding()
                     }
+                    
+//                    Button("+ Back") {
+//                        popBackground.toggle()
+//                    }
+//                    .popover(isPresented: $popBackground) {
+//                        VStack {
+//                            Text("Backgrounds").font(.title2).foregroundColor(.blue)
+//                            ForEach(AppBackgrounds.allCases, id:\.self) { appBack in
+//                                HStack {
+//                                    Text(appBack.rawValue)
+//                                    Spacer()
+//                                    Button("Change") {
+//                                        controller.changeBackground(back: appBack)
+//                                    }
+//                                }
+//
+//                            }
+//                        }
+//                        .frame(width:200)
+//                        .padding()
+//                    }
                 }
                 .padding([.top, .leading, .trailing], 8)
                 
@@ -201,6 +208,10 @@ struct SceneMachineView: View {
                         
                         // Scene
                         SMEventBackView(scene: controller.scene)
+                            .sheet(isPresented: $controller.presentingTempAlert) {
+                                TempAlert(message: controller.tempAlertMessage)
+                            }
+                        
                         
                         if controller.isTouchingOptions {
                             VStack {
@@ -245,15 +256,19 @@ struct SceneMachineView: View {
 //                            TempAlert(message: controller.tempAlertMessage)
 //                        })
                     
+                    // Right View
                     switch controller.rightView {
-                        case .Empty: EmptyView().frame(width: 0, height: 0, alignment: .center)
+                        case .Empty: EmptyView().frame(width: 1, height: 0, alignment: .trailing)
                         case .UVMap:
                             if let node = controller.selectedNode,
-                               let geometry:SCNGeometry = node.geometry,
-                               let uvMap:[CGPoint] = controller.inspectUVMap(geometry: geometry) {
+                               let geometry:SCNGeometry = node.geometry {
+//                               let uvMap:[CGPoint] = controller.inspectUVMap(geometry: geometry) {
                                 ScrollView([.vertical, .horizontal], showsIndicators:true) {
                                     HStack {
-                                        UVMapStack(controller: controller, geometry: geometry, points: uvMap)
+//                                        UVMapStack(controller: controller, geometry: geometry, points: uvMap)
+                                        SMUVMapView(geometry: geometry) { snapShot in
+                                            controller.saveUVMap(image: snapShot)
+                                        }
                                     }
                                     .padding(30)
                                 }
@@ -263,6 +278,10 @@ struct SceneMachineView: View {
                             
                             SMShapeEditorView(controller: controller)
                             .frame(minWidth: 300, alignment: .trailing)
+                            
+                        case .Settings:
+                            SMSceneConfigView(controller: controller)
+                                .frame(minWidth: 300, alignment: .trailing)
                             
                     }
                 }
@@ -288,8 +307,6 @@ struct SceneMachineView: View {
         return newScene
     }
 }
-
-
 
 struct UVMapStack: View {
     
@@ -401,12 +418,21 @@ struct UVMapStack: View {
 struct TempAlert: View {
     
     var message:String
+    var hasTitle:Bool = false
+    
     var body: some View {
         VStack {
-            Text("⚠️ Alert").font(.title).foregroundColor(.orange)
+            if hasTitle {
+                Text("⚠️ Alert").font(.title).foregroundColor(.orange)
+                Divider()
+            }
+            
             Text(message)
         }
-        .padding()
+        .padding(6)
+        .frame(minWidth: 100, maxWidth: 250, minHeight: 50, maxHeight: 200, alignment: .center)
+        .background(Color.black.opacity(0.45))
+        .cornerRadius(12)
     }
 }
 
@@ -487,9 +513,17 @@ struct SaveDialogue: View {
     }
 }
 
+// MARK: - Previews
+
 struct SceneMachineView_Previews: PreviewProvider {
     static var previews: some View {
         SceneMachineView()
+    }
+}
+
+struct SceneMachineAlert_Previews: PreviewProvider {
+    static var previews: some View {
+        TempAlert(message: "Hello")
     }
 }
 

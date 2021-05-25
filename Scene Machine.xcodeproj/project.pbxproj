@@ -83,6 +83,8 @@
 		85CB435F263CABC0006E4B10 /* Kernels2.ci.metal in Sources */ = {isa = PBXBuildFile; fileRef = 85CB435E263CABC0006E4B10 /* Kernels2.ci.metal */; };
 		85CB4361263D0D9A006E4B10 /* DrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CB4360263D0D9A006E4B10 /* DrawingView.swift */; };
 		85D1BC61265C2E7D009D70DC /* MacNotesTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D1BC60265C2E7D009D70DC /* MacNotesTextView.swift */; };
+		85D1BC64265D6896009D70DC /* SMUVMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D1BC63265D6896009D70DC /* SMUVMapView.swift */; };
+		85D1BC66265D734B009D70DC /* SMSceneConfigView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D1BC65265D734B009D70DC /* SMSceneConfigView.swift */; };
 		85D3E7CB26390FAF00D693FA /* SceneMachineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D3E7CA26390FAF00D693FA /* SceneMachineView.swift */; };
 		85D3E7CF26390FC500D693FA /* SceneMachineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D3E7CE26390FC500D693FA /* SceneMachineController.swift */; };
 		85DEFC682643AFC8003DEC36 /* MercurializeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DEFC672643AFC8003DEC36 /* MercurializeFilter.swift */; };
@@ -210,6 +212,8 @@
 		85CB435E263CABC0006E4B10 /* Kernels2.ci.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Kernels2.ci.metal; sourceTree = "<group>"; };
 		85CB4360263D0D9A006E4B10 /* DrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingView.swift; sourceTree = "<group>"; };
 		85D1BC60265C2E7D009D70DC /* MacNotesTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MacNotesTextView.swift; sourceTree = "<group>"; };
+		85D1BC63265D6896009D70DC /* SMUVMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMUVMapView.swift; sourceTree = "<group>"; };
+		85D1BC65265D734B009D70DC /* SMSceneConfigView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSceneConfigView.swift; sourceTree = "<group>"; };
 		85D3E7CA26390FAF00D693FA /* SceneMachineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneMachineView.swift; sourceTree = "<group>"; };
 		85D3E7CE26390FC500D693FA /* SceneMachineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneMachineController.swift; sourceTree = "<group>"; };
 		85DEFC672643AFC8003DEC36 /* MercurializeFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MercurializeFilter.swift; sourceTree = "<group>"; };
@@ -319,7 +323,7 @@
 				85D3E7CA26390FAF00D693FA /* SceneMachineView.swift */,
 				855053722644F38B00A577E2 /* SMNodeRow.swift */,
 				855053742646A50B00A577E2 /* SMMaterialView.swift */,
-				85F34A982649B5C2002F949E /* SMShapeEditorView.swift */,
+				85D1BC62265D6667009D70DC /* Right Views */,
 			);
 			path = "Scene Machine";
 			sourceTree = "<group>";
@@ -577,6 +581,16 @@
 			path = "SpriteKit Generators";
 			sourceTree = "<group>";
 		};
+		85D1BC62265D6667009D70DC /* Right Views */ = {
+			isa = PBXGroup;
+			children = (
+				85F34A982649B5C2002F949E /* SMShapeEditorView.swift */,
+				85D1BC63265D6896009D70DC /* SMUVMapView.swift */,
+				85D1BC65265D734B009D70DC /* SMSceneConfigView.swift */,
+			);
+			path = "Right Views";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -689,6 +703,7 @@
 				857A93D226124FE7004FFEBB /* QuickNoiseController.swift in Sources */,
 				85B913402631C00E0065D6D2 /* GraphicsImageRenderer.swift in Sources */,
 				85B913472631C0ED0065D6D2 /* UVMapShape.swift in Sources */,
+				85D1BC66265D734B009D70DC /* SMSceneConfigView.swift in Sources */,
 				855053732644F38B00A577E2 /* SMNodeRow.swift in Sources */,
 				85B9137426329A050065D6D2 /* BLKTransparent.swift in Sources */,
 				85D3E7CF26390FC500D693FA /* SceneMachineController.swift in Sources */,
@@ -742,6 +757,7 @@
 				8515B3DC2628B16600A886BD /* CompositionView.swift in Sources */,
 				8515B474262E124300A886BD /* ImageFXView.swift in Sources */,
 				85885EF82656B5E200E98855 /* MaterialMachineView.swift in Sources */,
+				85D1BC64265D6896009D70DC /* SMUVMapView.swift in Sources */,
 				8515B342262554A700A886BD /* GradientController.swift in Sources */,
 				8515B480262E7DDA00A886BD /* FXColorView.swift in Sources */,
 				856491D02578100B00D1FE00 /* AppDelegate.swift in Sources */,
