@@ -206,15 +206,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // MARK: - App Windows
     
     @IBAction func openFrontWindow(_ sender: NSMenuItem) {
-        let newWindow = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 1200, height: 800),
-            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-            backing: .buffered, defer: false)
-        newWindow.center()
-        newWindow.setFrameAutosaveName("FrontView")
-        //        window.toolbarStyle = .unified
-        window = newWindow
-        window.contentView = NSHostingView(rootView: FrontView())
+        
+//        if nil == window {
+//            window = NSWindow(
+//                contentRect: NSRect(x: 0, y: 0, width: 1200, height: 800),
+//                styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+//                backing: .buffered, defer: false)
+//            window.center()
+//            window.setFrameAutosaveName("FrontView")
+//            //        window.toolbarStyle = .unified
+//            window.contentView = NSHostingView(rootView: FrontView())
+//        }
+        
         window.makeKeyAndOrderFront(nil)
     }
     

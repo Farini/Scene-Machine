@@ -85,6 +85,7 @@
 		85D1BC61265C2E7D009D70DC /* MacNotesTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D1BC60265C2E7D009D70DC /* MacNotesTextView.swift */; };
 		85D1BC64265D6896009D70DC /* SMUVMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D1BC63265D6896009D70DC /* SMUVMapView.swift */; };
 		85D1BC66265D734B009D70DC /* SMSceneConfigView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D1BC65265D734B009D70DC /* SMSceneConfigView.swift */; };
+		85D1BC68265E03C4009D70DC /* MMNodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D1BC67265E03C4009D70DC /* MMNodeView.swift */; };
 		85D3E7CB26390FAF00D693FA /* SceneMachineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D3E7CA26390FAF00D693FA /* SceneMachineView.swift */; };
 		85D3E7CF26390FC500D693FA /* SceneMachineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D3E7CE26390FC500D693FA /* SceneMachineController.swift */; };
 		85DEFC682643AFC8003DEC36 /* MercurializeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DEFC672643AFC8003DEC36 /* MercurializeFilter.swift */; };
@@ -214,6 +215,7 @@
 		85D1BC60265C2E7D009D70DC /* MacNotesTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MacNotesTextView.swift; sourceTree = "<group>"; };
 		85D1BC63265D6896009D70DC /* SMUVMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMUVMapView.swift; sourceTree = "<group>"; };
 		85D1BC65265D734B009D70DC /* SMSceneConfigView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSceneConfigView.swift; sourceTree = "<group>"; };
+		85D1BC67265E03C4009D70DC /* MMNodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMNodeView.swift; sourceTree = "<group>"; };
 		85D3E7CA26390FAF00D693FA /* SceneMachineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneMachineView.swift; sourceTree = "<group>"; };
 		85D3E7CE26390FC500D693FA /* SceneMachineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneMachineController.swift; sourceTree = "<group>"; };
 		85DEFC672643AFC8003DEC36 /* MercurializeFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MercurializeFilter.swift; sourceTree = "<group>"; };
@@ -262,9 +264,9 @@
 			children = (
 				85941FB9264E452D00A3CAF6 /* ModelReadme.md */,
 				8541531A2648680B007C926B /* AppConstants.swift */,
+				8515B3D42628A58B00A886BD /* LocalDatabase.swift */,
 				85A477672641CE3700F93AB3 /* CoreData */,
 				85941FB6264E3D3F00A3CAF6 /* Drawing */,
-				8515B3D42628A58B00A886BD /* LocalDatabase.swift */,
 				8515B32F2624E6EE00A886BD /* ImageBasics.swift */,
 				8515B36926263FFE00A886BD /* MaterialModel.swift */,
 			);
@@ -286,9 +288,10 @@
 		8515B36526263C6A00A886BD /* Materials */ = {
 			isa = PBXGroup;
 			children = (
+				85885EF72656B5E200E98855 /* MaterialMachineView.swift */,
+				85D1BC67265E03C4009D70DC /* MMNodeView.swift */,
 				8515B35D26263C6100A886BD /* MaterialEditView.swift */,
 				85B913462631C0ED0065D6D2 /* UVMapShape.swift */,
-				85885EF72656B5E200E98855 /* MaterialMachineView.swift */,
 			);
 			path = Materials;
 			sourceTree = "<group>";
@@ -699,6 +702,7 @@
 				856492222579547900D1FE00 /* ImageCompositionView.swift in Sources */,
 				8515B33D26254C8300A886BD /* GradientMakerView.swift in Sources */,
 				85FAF34E263C512B00081ED8 /* FXStylizeView.swift in Sources */,
+				85D1BC68265E03C4009D70DC /* MMNodeView.swift in Sources */,
 				85A4776026407D4800F93AB3 /* HelpMainView.swift in Sources */,
 				857A93D226124FE7004FFEBB /* QuickNoiseController.swift in Sources */,
 				85B913402631C00E0065D6D2 /* GraphicsImageRenderer.swift in Sources */,

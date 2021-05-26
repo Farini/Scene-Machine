@@ -23,11 +23,41 @@ class LocalDatabase:NSObject {
         encoder.dateEncodingStrategy = .secondsSince1970
         encoder.outputFormatting = .prettyPrinted
         
-        var allMaterials:[SceneMaterial] = LocalDatabase.loadMaterials()
+        var allMaterials:[SceneMaterial] = materials
         if let idx = allMaterials.firstIndex(where: { $0.id == material.id}) {
             allMaterials.remove(at: idx)
         }
         allMaterials.append(material)
+        
+        guard let encodedData:Data = try? encoder.encode(allMaterials) else { fatalError() }
+        
+        let bcf = ByteCountFormatter()
+        bcf.allowedUnits = [.useKB]
+        bcf.countStyle = .file
+        let dataSize = bcf.string(fromByteCount: Int64(encodedData.count))
+        print("Saving Materials File Size: \(dataSize)")
+        
+        let fileUrl = LocalDatabase.folder.appendingPathComponent(LocalDatabase.materialsFile)
+        
+        // Create if doesn't exist
+        if !FileManager.default.fileExists(atPath: fileUrl.path) {
+            FileManager.default.createFile(atPath: fileUrl.path, contents: encodedData, attributes: nil)
+            print("File created")
+            return
+        }
+        
+        do{
+            try encodedData.write(to: fileUrl, options: .atomic)
+            print("Saved locally")
+        }catch{
+            print("Error writting data to local url: \(error)")
+        }
+    }
+    func saveMaterialsList() {
+        let allMaterials = materials
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .secondsSince1970
+        encoder.outputFormatting = .prettyPrinted
         
         guard let encodedData:Data = try? encoder.encode(allMaterials) else { fatalError() }
         

@@ -9,9 +9,9 @@ import SwiftUI
 
 struct DrawingPadView: View {
     
-    @ObservedObject var controller = DrawingPadController()
+    @ObservedObject var controller:DrawingPadController
     
-    @State private var currentDrawing: PencilStroke = PencilStroke()
+    @State private var currentDrawing:PencilStroke = PencilStroke()
     
     @State var imageOverlay:NSImage?
     
@@ -21,6 +21,12 @@ struct DrawingPadView: View {
     // Layers
     @State private var isReordering = false
     @State private var isShowingLayersList:Bool = false
+    
+    init(image:NSImage, mode:MaterialMode, callback:@escaping ((NSImage) -> Void)) {
+        controller = DrawingPadController(image: image, size: image.size)
+        controller.textureSize = .medium
+        imageCallback = callback
+    }
     
     var body: some View {
             
@@ -318,7 +324,9 @@ struct DrawingLayerView: View {
 
 struct DrawingPad_Previews: PreviewProvider {
     static var previews: some View {
-        DrawingPadView()
+        DrawingPadView(image: NSImage(), mode: .Diffuse, callback: { newImage in
+            print("new image: \(newImage.size)")
+        })
             .frame(width: 600)
     }
 }

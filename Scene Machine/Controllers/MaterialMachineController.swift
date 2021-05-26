@@ -41,11 +41,12 @@ class MaterialMachineController:ObservableObject {
     /// The mode map selected
     @Published var materialMode:MaterialMode = .Diffuse
     @Published var material:SCNMaterial = SCNMaterial.example
+    @Published var dbMaterial:SceneMaterial?
     
     @Published var materials:[SCNMaterial] = [SCNMaterial.example]
     @Published var dbMaterials:[SceneMaterial] = []
     
-    @Published var baseColor:Color = Color.blue
+//    @Published var baseColor:Color = Color.blue
     @Published var uvImage:NSImage?
     
     init() {
@@ -105,13 +106,7 @@ class MaterialMachineController:ObservableObject {
         
         let uvPoints:[CGPoint] = geoSource.uv
         
-//        let ctrl = SceneMachineController()
-        
         if let snapImage:NSImage = UVMapView(size: TextureSize.medium.size, image: nil, uvPoints: uvPoints).snapShot(uvSize: CGSize(width: 1024, height: 1024)) {
-            
-            // UVMapStack(controller: ctrl, geometry: geometry, points: uvPoints).uvTexture.snapShot(uvSize: CGSize(width: 2048, height: 2048)) {
-            // UVShape(uv: uvPoints).snapShot(uvSize: CGSize(width: 1024, height: 1024)) {
-            // UVMapStack(controller: ctrl, geometry: geometry, points: uvPoints).uvTexture.snapShot(uvSize: CGSize(width: 2048, height: 2104)) {
             
             print("Got Snapshot Image of UV. Size: \(snapImage.size)")
             self.uvImage = snapImage
@@ -136,6 +131,16 @@ class MaterialMachineController:ObservableObject {
         self.scene.rootNode.addChildNode(node)
     }
     
+    func didSelectDBMaterial(dbMaterial:SceneMaterial) {
+        let scnMaterial = dbMaterial.make()
+        self.material = scnMaterial
+        self.dbMaterial = dbMaterial
+        self.updateGeometryMaterial(material: scnMaterial)
+        
+    }
+    
+    // MARK: - Updating
+    
     /// Changes the geometry displayed to one of the default ones
     func updateNode() {
         
@@ -158,24 +163,46 @@ class MaterialMachineController:ObservableObject {
         self.geometry.firstMaterial = material
     }
     
+    /// Called after strokes on canvas
     func updateUVImage(image:NSImage) {
         print("Updating uv image")
         
-        // Draw the image on geometry
-        self.geometry.firstMaterial?.diffuse.contents = image
+        switch materialMode {
+            case .Diffuse:
+                // Draw the image on geometry
+                self.geometry.firstMaterial?.diffuse.contents = image
+                
+                // Update material with image
+                self.material.diffuse.contents = image
+                self.material.diffuse.wrapS = .clampToBorder
+                self.material.diffuse.wrapT = .clampToBorder
+            case .Roughness:
+                self.geometry.firstMaterial?.roughness.contents = image
+                self.material.roughness.contents = image
+            case .Normal:
+                self.geometry.firstMaterial?.normal.contents = image
+                self.material.normal.contents = image
+            case .AO:
+                self.geometry.firstMaterial?.ambientOcclusion.contents = image
+                self.material.ambientOcclusion.contents = image
+            case .Emission:
+                self.geometry.firstMaterial?.emission.contents = image
+                self.material.emission.contents = image
+        }
         
-        
-        
-        // Update material with image
-        self.material.diffuse.contents = image
-        self.material.diffuse.wrapS = .clampToBorder
-        self.material.diffuse.wrapT = .clampToBorder
-//        self.material.diffuse.borderColor
-        
-//        let matCopy = self.material.copy() as! SCNMaterial
-//        matCopy.diffuse.contents = image
-//        self.material = matCopy
-        
+        // Decide if save material
+        if let dbMaterial = dbMaterial {
+            
+        }
+    }
+    
+    
+    
+    // MARK: - Saving
+    
+    func saveMaterialToDatabase() {
+        let savingMaterial:SceneMaterial = SceneMaterial(material: material)
+        LocalDatabase.shared.saveMaterial(material: savingMaterial)
     }
     
     func changeBackground() {
@@ -183,15 +210,15 @@ class MaterialMachineController:ObservableObject {
         scene.lightingEnvironment.contents = "Scenes.scnassets/HDRI/\(sceneBackground.content)"
     }
     
-    func makeMaterial() -> SCNMaterial {
-        
-        let material = SCNMaterial()
-        
-        material.name = "BaseMaterial"
-        material.lightingModel = .physicallyBased
-        material.diffuse.contents = baseColor
-        material.roughness.contents = 0.4
-        
-        return material
-    }
+//    func makeMaterial() -> SCNMaterial {
+//
+//        let material = SCNMaterial()
+//
+//        material.name = "BaseMaterial"
+//        material.lightingModel = .physicallyBased
+//        material.diffuse.contents = baseColor
+//        material.roughness.contents = 0.4
+//
+//        return material
+//    }
 }

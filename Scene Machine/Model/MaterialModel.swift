@@ -27,6 +27,8 @@ class SceneMaterial: Codable, Identifiable, Equatable {
     
     func make() -> SCNMaterial {
         let material = SCNMaterial()
+        material.name = self.name ?? "untitled"
+        
         material.lightingModel = lightModel?.make() ?? .physicallyBased
         
         material.diffuse.contents =  diffuse?.makeAnyProperty()
@@ -74,6 +76,13 @@ class SceneMaterial: Codable, Identifiable, Equatable {
         if let idx = LocalDatabase.shared.materials.firstIndex(where: { $0.id == id }) {
             LocalDatabase.shared.materials[idx] = self
             LocalDatabase.shared.saveMaterial(material: self)
+        }
+    }
+    
+    func delete() {
+        if let idx = LocalDatabase.shared.materials.firstIndex(where: { $0.id == id }) {
+            LocalDatabase.shared.materials.remove(at: idx)
+            LocalDatabase.shared.saveMaterialsList()
         }
     }
     
