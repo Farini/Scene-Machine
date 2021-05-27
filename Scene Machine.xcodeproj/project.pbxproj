@@ -86,6 +86,7 @@
 		85D1BC64265D6896009D70DC /* SMUVMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D1BC63265D6896009D70DC /* SMUVMapView.swift */; };
 		85D1BC66265D734B009D70DC /* SMSceneConfigView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D1BC65265D734B009D70DC /* SMSceneConfigView.swift */; };
 		85D1BC68265E03C4009D70DC /* MMNodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D1BC67265E03C4009D70DC /* MMNodeView.swift */; };
+		85D1BC6B265F6C66009D70DC /* PencilKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D1BC6A265F6C66009D70DC /* PencilKitView.swift */; };
 		85D3E7CB26390FAF00D693FA /* SceneMachineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D3E7CA26390FAF00D693FA /* SceneMachineView.swift */; };
 		85D3E7CF26390FC500D693FA /* SceneMachineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D3E7CE26390FC500D693FA /* SceneMachineController.swift */; };
 		85DEFC682643AFC8003DEC36 /* MercurializeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DEFC672643AFC8003DEC36 /* MercurializeFilter.swift */; };
@@ -216,6 +217,7 @@
 		85D1BC63265D6896009D70DC /* SMUVMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMUVMapView.swift; sourceTree = "<group>"; };
 		85D1BC65265D734B009D70DC /* SMSceneConfigView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSceneConfigView.swift; sourceTree = "<group>"; };
 		85D1BC67265E03C4009D70DC /* MMNodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMNodeView.swift; sourceTree = "<group>"; };
+		85D1BC6A265F6C66009D70DC /* PencilKitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PencilKitView.swift; sourceTree = "<group>"; };
 		85D3E7CA26390FAF00D693FA /* SceneMachineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneMachineView.swift; sourceTree = "<group>"; };
 		85D3E7CE26390FC500D693FA /* SceneMachineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneMachineController.swift; sourceTree = "<group>"; };
 		85DEFC672643AFC8003DEC36 /* MercurializeFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MercurializeFilter.swift; sourceTree = "<group>"; };
@@ -438,6 +440,7 @@
 				857C5FE7263F73800095E3B4 /* DrawingPadViews.swift */,
 				85941FC226506F7100A3CAF6 /* Drawing Pads */,
 				85941FC52650706900A3CAF6 /* Toolbars */,
+				85D1BC69265F6C32009D70DC /* Pencil Kit */,
 			);
 			path = Drawing;
 			sourceTree = "<group>";
@@ -592,6 +595,14 @@
 				85D1BC65265D734B009D70DC /* SMSceneConfigView.swift */,
 			);
 			path = "Right Views";
+			sourceTree = "<group>";
+		};
+		85D1BC69265F6C32009D70DC /* Pencil Kit */ = {
+			isa = PBXGroup;
+			children = (
+				85D1BC6A265F6C66009D70DC /* PencilKitView.swift */,
+			);
+			path = "Pencil Kit";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -757,6 +768,7 @@
 				85954043261C3144001D9040 /* SpriteKitNoiseController.swift in Sources */,
 				857A93E526126613004FFEBB /* SpriteNoiseMaker.swift in Sources */,
 				85CB435F263CABC0006E4B10 /* Kernels2.ci.metal in Sources */,
+				85D1BC6B265F6C66009D70DC /* PencilKitView.swift in Sources */,
 				85941FBF265018FB00A3CAF6 /* PencilToolbar.swift in Sources */,
 				8515B3DC2628B16600A886BD /* CompositionView.swift in Sources */,
 				8515B474262E124300A886BD /* ImageFXView.swift in Sources */,

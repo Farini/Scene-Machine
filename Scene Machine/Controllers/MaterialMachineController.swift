@@ -136,7 +136,10 @@ class MaterialMachineController:ObservableObject {
         self.material = scnMaterial
         self.dbMaterial = dbMaterial
         self.updateGeometryMaterial(material: scnMaterial)
-        
+        self.materialMode = .Diffuse
+        if let url = dbMaterial.diffuse?.imageURL {
+            self.uvImage = NSImage(contentsOf: url)
+        }
     }
     
     // MARK: - Updating
@@ -191,18 +194,55 @@ class MaterialMachineController:ObservableObject {
         }
         
         // Decide if save material
-        if let dbMaterial = dbMaterial {
-            
-        }
+        saveMaterialToDatabase()
     }
-    
-    
     
     // MARK: - Saving
     
     func saveMaterialToDatabase() {
         let savingMaterial:SceneMaterial = SceneMaterial(material: material)
+        
+        switch materialMode {
+            case .Diffuse:
+                if let diffuse = material.diffuse.contents as? NSImage {
+                    if let url = LocalDatabase.shared.saveImage(diffuse, material: savingMaterial, mode: .Diffuse) {
+                        savingMaterial.diffuse!.imageURL = url
+                    }
+                }
+                
+            case .Roughness:
+                if let rough = material.roughness.contents as? NSImage {
+                    if let url = LocalDatabase.shared.saveImage(rough, material: savingMaterial, mode: .Roughness) {
+                        savingMaterial.roughness!.imageURL = url
+                    }
+                }
+            case .Normal:
+                if let norm = material.normal.contents as? NSImage {
+                    if let url = LocalDatabase.shared.saveImage(norm, material: savingMaterial, mode: .Normal) {
+                        savingMaterial.normal!.imageURL = url
+                    }
+                }
+            case .AO:
+                if let img = material.ambientOcclusion.contents as? NSImage {
+                    if let url = LocalDatabase.shared.saveImage(img, material: savingMaterial, mode: .AO) {
+                        savingMaterial.occlusion!.imageURL = url
+                    }
+                }
+            case .Emission:
+                if let img = material.emission.contents as? NSImage {
+                    if let url = LocalDatabase.shared.saveImage(img, material: savingMaterial, mode: .Emission) {
+                        savingMaterial.emission!.imageURL = url
+                    }
+                }
+        }
+        
         LocalDatabase.shared.saveMaterial(material: savingMaterial)
+    }
+    
+    func createNewCanvas(mode:MaterialMode) {
+        let image = NSImage(size: NSSize(width: 1024, height: 1024))
+        self.uvImage = image
+        self.materialMode = mode
     }
     
     func changeBackground() {

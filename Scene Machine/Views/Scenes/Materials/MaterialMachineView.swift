@@ -93,6 +93,7 @@ struct MaterialMachineView: View {
                         }
                     }
                     .frame(height:30)
+                    .padding(.horizontal, 8)
                     
                     // Scene
                     SceneView(scene: controller.scene, pointOfView: nil, options: SceneView.Options.allowsCameraControl, preferredFramesPerSecond: 40, antialiasingMode: .multisampling4X, delegate: nil, technique: nil)
@@ -103,7 +104,7 @@ struct MaterialMachineView: View {
                 .frame(minWidth: 300, maxWidth: 900, maxHeight: .infinity, alignment: .center)
                 
                 // Nodes
-                MMMaterialNodeView(material: $controller.material, matMode: $controller.materialMode)
+                MMMaterialNodeView(controller: controller, material: $controller.material, matMode: $controller.materialMode)
                     .padding()
                     .onChange(of: controller.material) { value in
                         controller.updateGeometryMaterial(material: value)
@@ -116,25 +117,13 @@ struct MaterialMachineView: View {
                     DrawingPadView(image: controller.uvImage!, mode: controller.materialMode) { newImage in
                         controller.updateUVImage(image: newImage)
                     }
-//                    DrawingPadView(controller: DrawingPadController(image: controller.uvImage!), imageOverlay: controller.uvImage) { newImage in
-//                        controller.material.diffuse.contents = newImage
-//                        controller.updateUVImage(image: newImage)
-//                    }
-                    .onChange(of: controller.uvImage) { newUVImage in
-//                        self.drawController = DrawingPadController(image: newUVImage)
-                    }
                 }
-                
             } else {
-                EmptyView().frame(width:0)
+                Text("No current Image").foregroundColor(.gray).frame(width: 80)
             }
         }
     }
 }
-
-
-
-
 
 struct MaterialMachineView_Previews: PreviewProvider {
     static var previews: some View {

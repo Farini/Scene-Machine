@@ -12,6 +12,7 @@ import Foundation
 
 struct MMMaterialNodeView:View {
     
+    @ObservedObject var controller:MaterialMachineController
     @Binding var material:SCNMaterial // = SCNMaterial.example
     @Binding var matMode:MaterialMode // = .Diffuse
     
@@ -75,6 +76,7 @@ struct MMMaterialNodeView:View {
                                         })
                                     Button(action: {
                                         print("Create new canvas")
+                                        controller.createNewCanvas(mode: controller.materialMode)
                                     }, label: {
                                         Image(systemName: "doc.badge.plus")
                                     })
@@ -333,6 +335,7 @@ struct MMMaterialNodeView:View {
             return
         }
         if let img = NSImage(contentsOf: url) {
+            controller.uvImage = img
             switch type {
                 case .Diffuse:
                     self.material.diffuse.contents = img
@@ -364,15 +367,27 @@ struct MMMaterialNodeView:View {
         self.materialName = material.name ?? "Untitled"
         
         // Diffuse
-        if let difString = material.diffuse.contents as? String,
-           let difImage = NSImage(contentsOf: URL(fileURLWithPath: difString)) {
+        if let difImage = material.diffuse.contents as? NSImage {
+            print("d: img")
+            self.diffuseImage = difImage
+        } else if let difString = material.diffuse.contents as? String,
+                  let difImage = NSImage(contentsOf: URL(fileURLWithPath: difString)) {
+            print("d: str")
             self.diffuseImage = difImage
             self.diffuseURL = URL(fileURLWithPath: difString)
-        } else if let difImage = material.diffuse.contents as? NSImage {
-            self.diffuseImage = difImage
         } else if let difColor = material.diffuse.contents as? NSColor {
+            print("d: col")
             self.diffuseColor = Color(difColor)
+        } else {
+            if let url = material.diffuse.contents as? URL {
+                print("d: URL \(url)")
+            }
+            if let str = material.diffuse.contents as? String {
+                print("d: STR \(str)")
+            }
+            print("d: else")
         }
+        
         // Metalness
         if let metalImage = material.metalness.contents as? NSImage {
             self.metalnessImage = metalImage
@@ -419,41 +434,81 @@ struct MMNodeView:View {
             Divider()
             HStack {
                 Text("Diffuse")
+                Spacer()
                 Text(matType == .Diffuse ? "●":"○")
             }
+            .background(matType == .Diffuse ? Color.orange.opacity(0.15):Color.clear)
+            .cornerRadius(4, antialiased: true)
             .onTapGesture {
                 matType = .Diffuse
             }
+            
             HStack {
                 Text("Roughness")
+                Spacer()
                 Text(matType == .Roughness ? "●":"○")
             }
+            .background(matType == .Roughness ? Color.orange.opacity(0.15):Color.clear)
+            .cornerRadius(4, antialiased: true)
             .onTapGesture {
                 matType = .Roughness
             }
+            
             HStack {
                 Text("AO")
+                Spacer()
                 Text(matType == .AO ? "●":"○")
             }
+            .background(matType == .AO ? Color.orange.opacity(0.15):Color.clear)
+            .cornerRadius(4, antialiased: true)
+            .help("Ambient Occlusion")
             .onTapGesture {
                 matType = .AO
             }
+            
             HStack {
                 Text("Emission")
+                Spacer()
                 Text(matType == .Emission ? "●":"○")
             }
+            .background(matType == .Emission ? Color.orange.opacity(0.15):Color.clear)
+            .cornerRadius(4, antialiased: true)
             .onTapGesture {
                 matType = .Emission
             }
+            
             HStack {
                 Text("Normal")
+                Spacer()
                 Text(matType == .Normal ? "●":"○")
             }
+            .background(matType == .Normal ? Color.orange.opacity(0.15):Color.clear)
+            .cornerRadius(4, antialiased: true)
             .onTapGesture {
                 matType = .Normal
             }
         }
         .frame(width:120)
         .padding(6)
+    }
+}
+
+struct MMNodeFXView:View {
+    
+    // Apply the effect to the material property only.
+    // That way, it will only save when the user saves the material.
+    // or.....
+    // Have an "apply" button, with an image view.
+    // if you like the image, apply to the material and change the image
+    
+    var body: some View {
+        VStack {
+            Text("Effects")
+            // Blur (disk, box)
+            // Colorize
+            // Contrast
+            // Invert Colors
+            // Normal shader
+        }
     }
 }

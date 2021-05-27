@@ -215,10 +215,15 @@ class SubMaterialData:Codable {
         
         // Any must be an Image, a Color, or a Float
         
-        if let url = imageURL, let data = try? Data(contentsOf: url) {
-            if let nsimage = NSImage(data: data) {
-                let image = Image(nsImage: nsimage)
-                return image
+        if let url = imageURL {
+            print("Submaterial URL: \(url)")
+            if let data = try? Data(contentsOf: url) {
+                print("Submaterial DATA")
+                if let nsimage = NSImage(data: data) {
+                    print("Submaterial image")
+                    // let image = Image(nsImage: nsimage)
+                    return nsimage
+                }
             }
         }
         
