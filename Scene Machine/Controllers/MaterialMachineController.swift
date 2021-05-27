@@ -109,7 +109,7 @@ class MaterialMachineController:ObservableObject {
         if let snapImage:NSImage = UVMapView(size: TextureSize.medium.size, image: nil, uvPoints: uvPoints).snapShot(uvSize: CGSize(width: 1024, height: 1024)) {
             
             print("Got Snapshot Image of UV. Size: \(snapImage.size)")
-            self.uvImage = snapImage
+//            self.uvImage = snapImage
             
             if let bmat = geometry.materials.first {
                 print("Updating Materials")
@@ -117,14 +117,12 @@ class MaterialMachineController:ObservableObject {
                     bmat.lightingModel = .physicallyBased
                 }
                 bmat.diffuse.contents = snapImage
-                self.material = bmat
+//                self.material = bmat
             }
         }
         
         self.geometry = geometry
         self.materials = geometry.materials
-        
-        
         
         print("Updating Geometry in View")
         self.scene.rootNode.childNodes.first(where: { $0.geometry != nil })?.removeFromParentNode()

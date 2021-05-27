@@ -456,7 +456,7 @@ struct OpenSceneView: View {
                             Text("Material")
                         }
                         //                        .padding(8)
-                        .frame(width: 80, height: 80, alignment: .center)
+                        .frame(width: 70, height: 80, alignment: .center)
                         .background(Color.black.opacity(0.5))
                         .cornerRadius(12)
                         .shadow(color: .white.opacity(0.4), radius: 6, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/)

@@ -14,6 +14,7 @@ struct HelpMainView: View {
         case Noise
         case ImageFX
         case Scenes
+        case Pencil
     }
     
     @State var selection:HelpSection? = .Base
@@ -54,6 +55,16 @@ struct HelpMainView: View {
                     Label("Scenes", systemImage: "heart")
                 }
                 .tag(HelpSection.Scenes)
+                
+                Divider()
+                
+                NavigationLink(
+                    destination: HelpPencilKitView(),
+                    tag: HelpSection.Pencil,
+                    selection: $selection) {
+                    Label("Pencil Kit", systemImage: "pencil")
+                }
+                .tag(HelpSection.Pencil)
             }
             .frame(minWidth: 100, maxWidth: 200, alignment: .center)
         }

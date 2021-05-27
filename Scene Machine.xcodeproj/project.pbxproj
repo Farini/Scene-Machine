@@ -87,6 +87,8 @@
 		85D1BC66265D734B009D70DC /* SMSceneConfigView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D1BC65265D734B009D70DC /* SMSceneConfigView.swift */; };
 		85D1BC68265E03C4009D70DC /* MMNodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D1BC67265E03C4009D70DC /* MMNodeView.swift */; };
 		85D1BC6B265F6C66009D70DC /* PencilKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D1BC6A265F6C66009D70DC /* PencilKitView.swift */; };
+		85D1BC6E26600C30009D70DC /* MMNodeFXView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D1BC6D26600C30009D70DC /* MMNodeFXView.swift */; };
+		85D1BC702660244B009D70DC /* HelpPencilKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D1BC6F2660244B009D70DC /* HelpPencilKitView.swift */; };
 		85D3E7CB26390FAF00D693FA /* SceneMachineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D3E7CA26390FAF00D693FA /* SceneMachineView.swift */; };
 		85D3E7CF26390FC500D693FA /* SceneMachineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D3E7CE26390FC500D693FA /* SceneMachineController.swift */; };
 		85DEFC682643AFC8003DEC36 /* MercurializeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DEFC672643AFC8003DEC36 /* MercurializeFilter.swift */; };
@@ -218,6 +220,8 @@
 		85D1BC65265D734B009D70DC /* SMSceneConfigView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSceneConfigView.swift; sourceTree = "<group>"; };
 		85D1BC67265E03C4009D70DC /* MMNodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMNodeView.swift; sourceTree = "<group>"; };
 		85D1BC6A265F6C66009D70DC /* PencilKitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PencilKitView.swift; sourceTree = "<group>"; };
+		85D1BC6D26600C30009D70DC /* MMNodeFXView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMNodeFXView.swift; sourceTree = "<group>"; };
+		85D1BC6F2660244B009D70DC /* HelpPencilKitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpPencilKitView.swift; sourceTree = "<group>"; };
 		85D3E7CA26390FAF00D693FA /* SceneMachineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneMachineView.swift; sourceTree = "<group>"; };
 		85D3E7CE26390FC500D693FA /* SceneMachineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneMachineController.swift; sourceTree = "<group>"; };
 		85DEFC672643AFC8003DEC36 /* MercurializeFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MercurializeFilter.swift; sourceTree = "<group>"; };
@@ -291,7 +295,7 @@
 			isa = PBXGroup;
 			children = (
 				85885EF72656B5E200E98855 /* MaterialMachineView.swift */,
-				85D1BC67265E03C4009D70DC /* MMNodeView.swift */,
+				85D1BC6C26600BD3009D70DC /* Nodes */,
 				8515B35D26263C6100A886BD /* MaterialEditView.swift */,
 				85B913462631C0ED0065D6D2 /* UVMapShape.swift */,
 			);
@@ -478,6 +482,7 @@
 				85A4775F26407D4800F93AB3 /* HelpMainView.swift */,
 				85885EF526520B1B00E98855 /* HelpCharacterModeling.swift */,
 				85D1BC60265C2E7D009D70DC /* MacNotesTextView.swift */,
+				85D1BC6F2660244B009D70DC /* HelpPencilKitView.swift */,
 			);
 			path = Help;
 			sourceTree = "<group>";
@@ -605,6 +610,15 @@
 			path = "Pencil Kit";
 			sourceTree = "<group>";
 		};
+		85D1BC6C26600BD3009D70DC /* Nodes */ = {
+			isa = PBXGroup;
+			children = (
+				85D1BC67265E03C4009D70DC /* MMNodeView.swift */,
+				85D1BC6D26600C30009D70DC /* MMNodeFXView.swift */,
+			);
+			path = Nodes;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -709,6 +723,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				85885EF626520B1B00E98855 /* HelpCharacterModeling.swift in Sources */,
+				85D1BC702660244B009D70DC /* HelpPencilKitView.swift in Sources */,
 				85DEFC682643AFC8003DEC36 /* MercurializeFilter.swift in Sources */,
 				856492222579547900D1FE00 /* ImageCompositionView.swift in Sources */,
 				8515B33D26254C8300A886BD /* GradientMakerView.swift in Sources */,
@@ -763,6 +778,7 @@
 				85941FB8264E3D6900A3CAF6 /* Drawing.swift in Sources */,
 				8564922A25795F3C00D1FE00 /* DragDropView.swift in Sources */,
 				85649219257953A900D1FE00 /* ImageCompositionController.swift in Sources */,
+				85D1BC6E26600C30009D70DC /* MMNodeFXView.swift in Sources */,
 				856491D52578100B00D1FE00 /* Scene_Machine.xcdatamodeld in Sources */,
 				85D3E7CB26390FAF00D693FA /* SceneMachineView.swift in Sources */,
 				85954043261C3144001D9040 /* SpriteKitNoiseController.swift in Sources */,

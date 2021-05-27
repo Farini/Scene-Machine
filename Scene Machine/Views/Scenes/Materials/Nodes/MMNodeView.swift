@@ -15,8 +15,16 @@ struct MMMaterialNodeView:View {
     @ObservedObject var controller:MaterialMachineController
     @Binding var material:SCNMaterial // = SCNMaterial.example
     @Binding var matMode:MaterialMode // = .Diffuse
+    @State var currentImage:NSImage?
     
     @State var materialName:String = "Untitled"
+    
+    // Get the mode, and make 1 view for that mode
+    // Sub all by...
+    // mode.url
+    // mode.color
+    // mode.img
+    // mode.intensity
     
     @State var diffuseURL:URL?
     @State var diffuseColor:Color = .white
@@ -62,8 +70,15 @@ struct MMMaterialNodeView:View {
                         self.material.name = newMaterialName
                     }
                 
+                Divider()
+                    .frame(height:200)
+                
                 // Middle
                 VStack {
+//                    MMPropertyView(material: material, mode: matMode)
+                    MMPropertyView(controller: controller)
+                    
+                    /*
                     switch matMode {
                         case .Diffuse:
                             Group {
@@ -313,9 +328,16 @@ struct MMMaterialNodeView:View {
                                 }
                             }
                     }
+                    */
                     
                 }
                 .padding()
+                
+                Divider()
+                    .frame(height:200)
+                
+                // Right
+                MMNodeFXView(controller: controller, original: imageForMode(mode: self.matMode), effectImage: nil)
                 
                 Spacer()
             }
@@ -326,6 +348,21 @@ struct MMMaterialNodeView:View {
         .onChange(of: material) { value in
             print("*** material changed")
             self.prepareUI()
+        }
+    }
+    
+    func imageForMode(mode:MaterialMode) -> NSImage? {
+        switch mode {
+            case .Diffuse:
+                return material.diffuse.contents as? NSImage
+            case .AO:
+                return material.ambientOcclusion.contents as? NSImage
+            case .Roughness:
+                return material.roughness.contents as? NSImage
+            case .Emission:
+                return material.emission.contents as? NSImage
+            case .Normal:
+                return material.normal.contents as? NSImage
         }
     }
     
@@ -417,6 +454,169 @@ struct MMMaterialNodeView:View {
     }
 }
 
+struct MMPropertyView:View {
+    
+    @ObservedObject var controller:MaterialMachineController
+    
+    @State private var url:URL? = nil
+    @State private var string:String = ""
+    @State private var color:Color = .white
+    @State private var image:NSImage? = nil
+    @State private var scalar:CGFloat? = nil
+    @State private var intensity:CGFloat = 1
+    
+    var body: some View {
+        VStack {
+            
+            // Mode & Color
+            HStack {
+                Text(controller.materialMode.rawValue)
+                Spacer()
+                if displayColorPicker() {
+                    ColorPicker("", selection: $color)
+                }
+                Button(action: {
+                    print("Create new canvas")
+                    controller.createNewCanvas(mode: controller.materialMode)
+                }, label: {
+                    Image(systemName: "doc.badge.plus")
+                })
+            }
+            
+            // Intensity
+            HStack {
+                Text("Intensity")
+                Spacer()
+                TextField("", value: $intensity, formatter: NumberFormatter.scnFormat)
+                    .frame(width:100)
+                    .onChange(of: intensity, perform: { value in
+                        if value > 1 { self.intensity = 1.0 }
+                        if value < 0 { self.intensity = 0.0 }
+                    })
+            }
+            
+            /// Image + Drop Area
+            ZStack(alignment:.top) {
+                if let image = self.image {
+                    Image(nsImage: image)
+                        .resizable()
+                        .frame(width: 200, height: 200, alignment: .center)
+                }
+                if let url = self.url {
+                    Text(url.absoluteURL.path)
+                } else if let uStr = self.string {
+                    Text(uStr)
+                }
+            }
+            .frame(width: 200, height: 200, alignment: .center)
+        }
+        .frame(width:200)
+        .onChange(of: controller.materialMode) { newMode in
+            self.updateUI()
+        }
+        .onChange(of:controller.material) { newMaterial in
+            self.updateUI()
+        }
+        .onAppear() {
+            updateUI()
+        }
+        
+    }
+    
+    func updateUI() {
+        self.url = nil
+        self.string = ""
+        self.scalar = nil
+        self.image = nil
+        
+        switch controller.materialMode {
+            case .Diffuse:
+                
+                if let image = controller.material.diffuse.contents as? NSImage {
+                    self.image = image
+                } else
+                if let url = controller.material.diffuse.contents as? URL {
+                    self.url = url
+                    if let image = NSImage(contentsOf: url) {
+                        self.image = image
+                    }
+                } else if let string = controller.material.diffuse.contents as? String {
+                    self.string = string
+                    if let image = NSImage(contentsOfFile: string) {
+                        self.image = image
+                    }
+                } else if let color = controller.material.diffuse.contents as? NSColor {
+                    self.color = Color(color)
+                }
+            case .Roughness:
+                if let url = controller.material.roughness.contents as? URL {
+                    self.url = url
+                    if let image = NSImage(contentsOf: url) {
+                        self.image = image
+                    }
+                } else if let string = controller.material.roughness.contents as? String {
+                    self.string = string
+                    if let image = NSImage(contentsOfFile: string) {
+                        self.image = image
+                    }
+                } else if let number = controller.material.roughness.contents as? CGFloat {
+                    self.scalar = number
+                }
+            case .AO:
+                if let url = controller.material.ambientOcclusion.contents as? URL {
+                    self.url = url
+                    if let image = NSImage(contentsOf: url) {
+                        self.image = image
+                    }
+                } else if let string = controller.material.ambientOcclusion.contents as? String {
+                    self.string = string
+                    if let image = NSImage(contentsOfFile: string) {
+                        self.image = image
+                    }
+                } else if let number = controller.material.ambientOcclusion.contents as? CGFloat {
+                    self.scalar = number
+                }
+            case .Emission:
+                if let url = controller.material.emission.contents as? URL {
+                    self.url = url
+                    if let image = NSImage(contentsOf: url) {
+                        self.image = image
+                    }
+                } else if let string = controller.material.emission.contents as? String {
+                    self.string = string
+                    if let image = NSImage(contentsOfFile: string) {
+                        self.image = image
+                    }
+                }
+//                else if let color = material.emission.contents as? NSColor {
+//                    self.color = color
+//                } else if let number = material.emission.contents as? CGFloat {
+//                    self.scalar = number
+//                }
+            case .Normal:
+                if let url = controller.material.normal.contents as? URL {
+                    self.url = url
+                    if let image = NSImage(contentsOf: url) {
+                        self.image = image
+                    }
+                } else if let string = controller.material.normal.contents as? String {
+                    self.string = string
+                    if let image = NSImage(contentsOfFile: string) {
+                        self.image = image
+                    }
+                }
+//            default: print("other")
+        }
+    }
+    
+    /// Material modes that display a Color Picker.
+    func displayColorPicker() -> Bool {
+        let allowedModes:[MaterialMode] = [.Diffuse, .Emission]
+        return allowedModes.contains(controller.materialMode)
+    }
+    
+}
+
 struct MMNodeView:View {
     
     @Binding var matType:MaterialMode
@@ -493,22 +693,9 @@ struct MMNodeView:View {
     }
 }
 
-struct MMNodeFXView:View {
-    
-    // Apply the effect to the material property only.
-    // That way, it will only save when the user saves the material.
-    // or.....
-    // Have an "apply" button, with an image view.
-    // if you like the image, apply to the material and change the image
-    
-    var body: some View {
-        VStack {
-            Text("Effects")
-            // Blur (disk, box)
-            // Colorize
-            // Contrast
-            // Invert Colors
-            // Normal shader
-        }
+
+struct MMNode_Previews: PreviewProvider {
+    static var previews: some View {
+        MMNodeView(matType: .constant(.Diffuse), matName: .constant("Material"))
     }
 }
