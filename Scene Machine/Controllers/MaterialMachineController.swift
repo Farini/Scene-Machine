@@ -109,7 +109,7 @@ class MaterialMachineController:ObservableObject {
         if let snapImage:NSImage = UVMapView(size: TextureSize.medium.size, image: nil, uvPoints: uvPoints).snapShot(uvSize: CGSize(width: 1024, height: 1024)) {
             
             print("Got Snapshot Image of UV. Size: \(snapImage.size)")
-//            self.uvImage = snapImage
+            self.uvImage = snapImage
             
             if let bmat = geometry.materials.first {
                 print("Updating Materials")
@@ -117,11 +117,13 @@ class MaterialMachineController:ObservableObject {
                     bmat.lightingModel = .physicallyBased
                 }
                 bmat.diffuse.contents = snapImage
-//                self.material = bmat
+                self.material = bmat
             }
         }
         
         self.geometry = geometry
+        let delta = node.boundingBox.max.y - node.boundingBox.min.y
+        node.scale = SCNVector3(4/delta, 4/delta, 4/delta)
         self.materials = geometry.materials
         
         print("Updating Geometry in View")
@@ -237,10 +239,10 @@ class MaterialMachineController:ObservableObject {
         LocalDatabase.shared.saveMaterial(material: savingMaterial)
     }
     
-    func createNewCanvas(mode:MaterialMode) {
-        let image = NSImage(size: NSSize(width: 1024, height: 1024))
+    func createNewCanvas(image:NSImage) {
+//        let image = NSImage(size: NSSize(width: 1024, height: 1024))
         self.uvImage = image
-        self.materialMode = mode
+//        self.materialMode = mode
     }
     
     func changeBackground() {

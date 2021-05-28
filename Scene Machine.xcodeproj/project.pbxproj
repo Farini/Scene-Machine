@@ -89,6 +89,7 @@
 		85D1BC6B265F6C66009D70DC /* PencilKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D1BC6A265F6C66009D70DC /* PencilKitView.swift */; };
 		85D1BC6E26600C30009D70DC /* MMNodeFXView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D1BC6D26600C30009D70DC /* MMNodeFXView.swift */; };
 		85D1BC702660244B009D70DC /* HelpPencilKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D1BC6F2660244B009D70DC /* HelpPencilKitView.swift */; };
+		85D1BC722660347D009D70DC /* MMModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D1BC712660347D009D70DC /* MMModeView.swift */; };
 		85D3E7CB26390FAF00D693FA /* SceneMachineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D3E7CA26390FAF00D693FA /* SceneMachineView.swift */; };
 		85D3E7CF26390FC500D693FA /* SceneMachineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D3E7CE26390FC500D693FA /* SceneMachineController.swift */; };
 		85DEFC682643AFC8003DEC36 /* MercurializeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DEFC672643AFC8003DEC36 /* MercurializeFilter.swift */; };
@@ -222,6 +223,7 @@
 		85D1BC6A265F6C66009D70DC /* PencilKitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PencilKitView.swift; sourceTree = "<group>"; };
 		85D1BC6D26600C30009D70DC /* MMNodeFXView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMNodeFXView.swift; sourceTree = "<group>"; };
 		85D1BC6F2660244B009D70DC /* HelpPencilKitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpPencilKitView.swift; sourceTree = "<group>"; };
+		85D1BC712660347D009D70DC /* MMModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMModeView.swift; sourceTree = "<group>"; };
 		85D3E7CA26390FAF00D693FA /* SceneMachineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneMachineView.swift; sourceTree = "<group>"; };
 		85D3E7CE26390FC500D693FA /* SceneMachineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneMachineController.swift; sourceTree = "<group>"; };
 		85DEFC672643AFC8003DEC36 /* MercurializeFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MercurializeFilter.swift; sourceTree = "<group>"; };
@@ -614,6 +616,7 @@
 			isa = PBXGroup;
 			children = (
 				85D1BC67265E03C4009D70DC /* MMNodeView.swift */,
+				85D1BC712660347D009D70DC /* MMModeView.swift */,
 				85D1BC6D26600C30009D70DC /* MMNodeFXView.swift */,
 			);
 			path = Nodes;
@@ -754,6 +757,7 @@
 				855053752646A50B00A577E2 /* SMMaterialView.swift in Sources */,
 				8515B372262743D000A886BD /* TerrainView.swift in Sources */,
 				85771BCD2633D08F001A2B88 /* InputViews.swift in Sources */,
+				85D1BC722660347D009D70DC /* MMModeView.swift in Sources */,
 				8515B3302624E6EE00A886BD /* ImageBasics.swift in Sources */,
 				85B913682632998D0065D6D2 /* SwapGreenRed.swift in Sources */,
 				8515B47C262E4B5F00A886BD /* FXBlurrView.swift in Sources */,

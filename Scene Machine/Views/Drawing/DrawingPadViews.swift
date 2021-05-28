@@ -21,10 +21,16 @@ struct DrawingPadView: View {
     // Layers
     @State private var isReordering = false
     @State private var isShowingLayersList:Bool = false
+    @State private var popGrid:Bool = false
+    @State private var gridConfig:DrawingGridConfig = DrawingGridConfig(rows: 8, columns: 8)
     
     init(image:NSImage, mode:MaterialMode, callback:@escaping ((NSImage) -> Void)) {
         controller = DrawingPadController(image: image, size: image.size)
-        controller.textureSize = .medium
+        if let ts = TextureSize(rawValue: Double(image.size.width)) {
+            controller.textureSize = ts
+        } else {
+            controller.textureSize = .medium
+        }
         imageCallback = callback
     }
     
@@ -34,17 +40,16 @@ struct DrawingPadView: View {
                 
                 // Top Bar
                 HStack {
-                    Text("Paint")
-                        .font(.title2).foregroundColor(.orange)
+                    Text("x \(Int(controller.textureSize.rawValue))").font(.title2).foregroundColor(.orange)
                     
-                    Picker(selection: $controller.textureSize, label: Text("")) {
-                        ForEach(TextureSize.allCases, id:\.self) { texSize in
-                            Text("\(texSize.fullLabel)")
-                        }
-                    }
-                    .frame(maxWidth:100)
+//                    Picker(selection: $controller.textureSize, label: Text("")) {
+//                        ForEach(TextureSize.allCases, id:\.self) { texSize in
+//                            Text("\(texSize.fullLabel)")
+//                        }
+//                    }
+//                    .frame(maxWidth:100)
                     
-                    Picker("", selection: $controller.selectedTool) {
+                    Picker("Tool", selection: $controller.selectedTool) {
                         ForEach(DrawingTool.allCases, id:\.self) { drawTool in
                             Text(drawTool.rawValue)
                         }
@@ -57,10 +62,10 @@ struct DrawingPadView: View {
                     
                     Spacer()
                     
-                    Button("Open") {
-                        controller.loadImage()
-                    }
-                    .help("Opens an Image")
+//                    Button("Open") {
+//                        controller.loadImage()
+//                    }
+//                    .help("Opens an Image")
                     
                     Button("Layers") {
                         isShowingLayersList.toggle()
@@ -103,17 +108,37 @@ struct DrawingPadView: View {
                         .frame(minWidth: 200, maxWidth: 300, alignment: .center)
                     }
                     
-                    Button(action: {
-                        controller.improve()
-                    }, label: {
-                        Image(systemName: "wand.and.stars")
-                    })
-                    .help("Improves the image")
+//                    Button(action: {
+//                        controller.improve()
+//                    }, label: {
+//                        Image(systemName: "wand.and.stars")
+//                    })
+//                    .help("Improves the image")
                     
+                    // Grid View
                     Button(action: {
-                        print("Grid")
+//                        print("Grid")
+                        popGrid.toggle()
                     }, label: {
                         Image(systemName: "rectangle.split.3x3.fill")
+                    })
+                    .popover(isPresented: $popGrid, content: {
+                        VStack {
+                            Text("Grid").font(.title2).foregroundColor(.orange)
+                            Divider()
+                            Text("Rows \(Int(gridConfig.rows))")
+                            Slider(value: $gridConfig.rows, in: 2...20, step: 1)
+                                .padding(4)
+                            
+                            Text("Columns \(Int(gridConfig.columns))")
+                            Slider(value: $gridConfig.columns, in: 2...20, step: 1)
+                                .padding(4)
+                            Divider()
+                            ColorPicker("Color", selection: $gridConfig.color)
+                            Toggle("Display Grid", isOn: $gridConfig.display)
+                        }
+                        .frame(width:180)
+                        .padding()
                     })
                     
                     Button("💾") {
@@ -153,6 +178,12 @@ struct DrawingPadView: View {
                             Image(nsImage:image)
                                 .resizable()
                                 .frame(width:controller.textureSize.size.width, height:controller.textureSize.size.height)
+                        }
+                        if gridConfig.display {
+                            DrawingGridShape(rows: Int(gridConfig.rows), columns: Int(gridConfig.columns))
+                                .stroke(gridConfig.color, lineWidth: 0.5)
+                                .frame(width: controller.textureSize.size.width, height: controller.textureSize.size.height)
+                            
                         }
                         
                         switch controller.selectedTool {
@@ -331,3 +362,50 @@ struct DrawingPad_Previews: PreviewProvider {
     }
 }
 
+// MARK: - Grid Overlay
+
+struct DrawingGridShape: Shape {
+    
+    let rows: Int
+    let columns: Int
+    
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        
+        // figure out how big each row/column needs to be
+        let rowSize = rect.height / CGFloat(rows)
+        let columnSize = rect.width / CGFloat(columns)
+        
+        // loop over all rows and columns, making alternating squares colored
+        for row in 0 ..< rows {
+            for column in 0 ..< columns {
+                // this square should be colored; add a rectangle here
+                let startX = columnSize * CGFloat(column)
+                let startY = rowSize * CGFloat(row)
+                
+                let rect = CGRect(x: startX, y: startY, width: columnSize, height: rowSize)
+                path.addRect(rect)
+            }
+        }
+        
+        return path
+    }
+}
+
+struct DrawingGridConfig {
+    var rows:CGFloat
+    var columns:CGFloat
+    var color:Color = .white.opacity(0.3)
+    var display:Bool = false
+}
+
+// Create a checkerboard in a view
+struct DrawingGrid_Previews: PreviewProvider {
+    
+    static var previews: some View {
+        DrawingGridShape(rows: 10, columns: 10)
+            .stroke(Color.white.opacity(0.2), lineWidth: 0.5)
+            .frame(width: 400, height: 400)
+    }
+    
+}

@@ -29,14 +29,12 @@ The objective of this app is to create a more user-friendly way to build a `.scn
 ![Alt text](https://user-images.githubusercontent.com/5069713/115817657-40738a80-a3c9-11eb-8f5c-9c586c1ff0af.png)
 
 
-## Expected Features
+## Features
 
 ### Noise & Generators
 - SpriteKit Noise
 - Pedal2DMetal
 - Quick Noise
-
-**Common Features** 
 
 - [X] Choose Image Size: 256x256, 512x512, 1024x1024, 2048x2048, 4096x4096
 - [X] Zoom in and out of images - Scale 0.2 to 8.0
@@ -44,10 +42,10 @@ The objective of this app is to create a more user-friendly way to build a `.scn
 - [X] Undo Changes
 
 ### SpriteKit Noise Maker
-Create 6 common types of noises using `SpriteKit`.
+Create common types of noises using `SpriteKit`.
 
 - [X] Generate any noise in SpriteKit: Perlin, Voronoi, Ridged, Billow, Checker, Cylinder
-- [X] Color Gradients
+- [X] Color Gradients - Adds step colors to the otherwise black and white noise.
 
 ### Pedal2DMetal
 Procedural Image generators with `Metal`
@@ -59,8 +57,6 @@ Procedural Image generators with `Metal`
 ### Image Composition
 Mix 2 images, using multiple `CoreImage` techniques
 
-- [X] Basic CIFilters
-
 ### Metal Kernel Shaders
 Image CIKernels built on Metal programming language.
 More about Shaders: [Here](https://github.com/Farini/Scene-Machine/blob/main/Scene%20Machine/Shaders/ShadersReadme.md#about-shaders)
@@ -69,12 +65,10 @@ More about Shaders: [Here](https://github.com/Farini/Scene-Machine/blob/main/Sce
 Test and export `SceneKit` scenes.
 
 - [X] Show a Geometry's `UVMap`
-- [X] Save and export scene `.scn` files
+- [X] Save and export scene `.scn`, and `.dae` files or `*.scnassets` folder.
 - [X] Background `HDRI` Images
 - [X] App Geometries
-- [X] Add Geometry from `.dae`, or `.obj` files.
-- [X] Export Scenes in `.scn` or `.dae`
-- [X] Option to export scenes to `*.scnassets` folder.
+- [X] Add Geometry from `.dae`, `.scn` and `.obj` files.
 - [ ] Have some sample code + shaders written in `Metal`  - `SCNProgram`
 - [ ] Test animated characters - Bones(in blender) vs SCNSkinner(Swift)
 
@@ -89,7 +83,7 @@ Create SceneKit Materials - `SCNMaterial`
 - [X] UVMap
 - [X] Ambient Occlusion
 - [X] Save UVMap Image
-- [ ] Save Materials
+- [X] Save Materials
     
 ### Model
 See this apps's model readme: [Here](https://github.com/Farini/Scene-Machine/blob/main/Scene%20Machine/Model/ModelReadme.md#scene-machine-data-model)
@@ -129,6 +123,7 @@ See this apps's model readme: [Here](https://github.com/Farini/Scene-Machine/blo
 - [X] Blender Shortcuts
 - [X] Export to `.scnassets` folder.
 - [X] Draw textures on UVMaps
+- [X] Use Apple Pencil
 - [X] 💾 Save Materials Property `SceneMaterial`
 
 - [ ] Ability to use .txt files that can contain code for fragment/vertex shaders

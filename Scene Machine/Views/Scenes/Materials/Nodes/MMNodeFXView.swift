@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SceneKit
 
 struct MMNodeFXView:View {
     
@@ -20,6 +21,9 @@ struct MMNodeFXView:View {
     @State var effectImage:NSImage?
     
     @State private var popFX:Bool = false
+    
+    @State var wrapS:SCNWrapMode = SCNWrapMode.clamp
+    @State var wrapT:SCNWrapMode = SCNWrapMode.clamp
     
     var body: some View {
         VStack {
@@ -45,6 +49,28 @@ struct MMNodeFXView:View {
                     controller.updateUVImage(image: image)
                 }
                 .disabled(effectImage == nil)
+            }
+            
+            
+            HStack {
+                Text("Wrap")
+                Picker("S", selection: $wrapS) {
+                    ForEach(SCNWrapMode.allCases, id:\.self) { wrapMode in
+                        Text(wrapMode.toString())
+                    }
+                }
+                .onChange(of: wrapS, perform: { value in
+                    self.updateMaterialWrapping()
+                })
+                
+                Picker("T", selection: $wrapT) {
+                    ForEach(SCNWrapMode.allCases, id:\.self) { wrapMode in
+                        Text(wrapMode.toString())
+                    }
+                }
+                .onChange(of: wrapT, perform: { value in
+                    self.updateMaterialWrapping()
+                })
             }
             
             if let image = effectImage {
@@ -90,6 +116,27 @@ struct MMNodeFXView:View {
         
         self.effectImage = filteredImage
         
+    }
+    
+    /// Updates `WrapS` and `wrapT` properties of material
+    func updateMaterialWrapping() {
+        switch controller.materialMode {
+            case .Diffuse:
+                controller.material.diffuse.wrapS = wrapS
+                controller.material.diffuse.wrapT = wrapT
+            case .Roughness:
+                controller.material.roughness.wrapS = wrapS
+                controller.material.roughness.wrapT = wrapT
+            case .AO:
+                controller.material.ambientOcclusion.wrapS = wrapS
+                controller.material.ambientOcclusion.wrapT = wrapT
+            case .Emission:
+                controller.material.emission.wrapS = wrapS
+                controller.material.emission.wrapT = wrapT
+            case .Normal:
+                controller.material.normal.wrapS = wrapS
+                controller.material.normal.wrapT = wrapT
+        }
     }
 }
 

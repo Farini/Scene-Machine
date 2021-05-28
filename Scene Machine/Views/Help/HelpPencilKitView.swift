@@ -61,6 +61,7 @@ struct HelpPencilKitView: View {
                     }
                     Text("Select Move to [person's name] iPad")
                         .padding(.vertical, 4)
+                    Image("HelpPencilImage")
                 }
                 
                 Group {
