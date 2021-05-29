@@ -237,6 +237,7 @@ class MaterialMachineController:ObservableObject {
         }
         
         LocalDatabase.shared.saveMaterial(material: savingMaterial)
+        self.dbMaterials = LocalDatabase.shared.materials
     }
     
     func createNewCanvas(image:NSImage) {

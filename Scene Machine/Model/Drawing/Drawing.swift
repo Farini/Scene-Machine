@@ -14,8 +14,8 @@ enum DrawingTool:String, Codable, CaseIterable {
     case Shape
 }
 
-extension CGLineJoin:Codable {}
-extension CGLineCap:Codable {}
+//extension CGLineJoin:Codable {}
+//extension CGLineCap:Codable {}
 
 /// One Layer that composes a whole image
 class DrawingLayer:Codable, Identifiable {
@@ -74,10 +74,19 @@ struct PencilStroke:Codable {
 /// A point marked with a pen. Can be curved (with control points) or straight.
 class PenPoint:Codable, Identifiable {
     
+    /// The standart identifier for SwiftUI Views
     var id:UUID
+    
+    /// The (main) point of this object
     var point:CGPoint
+    
+    /// Optional control point, if object s curve
     var control1:CGPoint?
+    
+    /// Optional control point, if object is curve
     var control2:CGPoint?
+    
+    /// Informs if this point is a curve. Defaults to false.
     var isCurve:Bool
     
     init(_ point:CGPoint, curved:Bool? = false) {

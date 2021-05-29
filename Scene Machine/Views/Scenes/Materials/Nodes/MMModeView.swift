@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// The main Node View (Center) that displays image + info of a Material
 struct MMModeView:View {
     
     @ObservedObject var controller:MaterialMachineController
@@ -77,7 +78,7 @@ struct MMModeView:View {
             .onDrop(of: ["public.file-url"], isTargeted: $activeLink) { providers -> Bool in
                 providers.first?.loadDataRepresentation(forTypeIdentifier: "public.file-url", completionHandler: { (data, error) in
                     if let data = data {
-                        self.droppedImage(data, type: .Diffuse)
+                        self.droppedImage(data, type: controller.materialMode)
                     }
                 })
                 return true
@@ -232,6 +233,9 @@ struct MMMode_Previews: PreviewProvider {
     }
 }
 
+// MARK: - Create Canvas
+
+/// When ccreating a new canvas, select size, color, edges, etc. to setup the image for a `MaterialMode`
 struct CreateCanvasView:View {
     
     @ObservedObject var controller:MaterialMachineController
@@ -366,6 +370,7 @@ struct CreateCanvasView:View {
 //           }
     }
 }
+
 struct CreateCanvas_Previews:PreviewProvider {
     static var previews: some View {
         CreateCanvasView(controller: MaterialMachineController())

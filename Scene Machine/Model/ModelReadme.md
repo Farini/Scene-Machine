@@ -36,6 +36,65 @@ Assets included with the app are located in `AppConstants.swift`
 ✅ NightSky
 ✅ CityNight
 
+# Drawing Model
+## DrawingLayer
+```
+var id:UUID
+var name:String?
+
+var colorData:ColorData
+var lineWidth:CGFloat
+
+var lineJoin:CGLineJoin?     // (Int): miter(0), round(1), bevel(2)
+var lineCap:CGLineCap?       // (Int): butt(0), round(1), square(2)
+
+var tool:DrawingTool
+
+var pencilStrokes:[PencilStroke] = []
+var penPoints:[PenPoint] = []
+var shapeInfo:[ShapeInfo] = []
+
+var isVisible:Bool = true
+var sublayers:[DrawingLayer] = []
+```
+
+## PencilStroke
+```
+var points: [CGPoint] = [CGPoint]()
+```
+
+## PenPoint
+```
+/// The standart identifier for SwiftUI Views
+var id:UUID
+
+/// The (main) point of this object
+var point:CGPoint
+
+/// Optional control point, if object s curve
+var control1:CGPoint?
+
+/// Optional control point, if object is curve
+var control2:CGPoint?
+
+/// Informs if this point is a curve. Defaults to false.
+var isCurve:Bool
+```
+
+# Material Model
+## SCNMaterial
+## SceneMaterial
+## SubMaterialData
+
+# Geometries
+
+## Collada .dae file specs
+[Khronos.org](https://www.khronos.org/files/collada_spec_1_5.pdf)
+
+## Wavefront .obj file specs
+[File Specification Wikipedia](https://en.wikipedia.org/wiki/Wavefront_.obj_file)
+[FileFormat.info](https://www.fileformat.info/format/wavefrontobj/egff.htm)
+
 # 🍎 SceneKit
 You use geometry sources together with SCNGeometryElement objects to define custom SCNGeometry objects or to inspect the data that composes an existing geometry.
 

@@ -8,9 +8,7 @@
 import Foundation
 import SceneKit
 
-/**
- This is a class that persists the objects created in this app.
- */
+/** This is a class that persists the objects created in this app. */
 class LocalDatabase:NSObject {
     
     static let shared = LocalDatabase()
@@ -49,6 +47,7 @@ class LocalDatabase:NSObject {
         do{
             try encodedData.write(to: fileUrl, options: .atomic)
             print("Saved locally")
+            self.materials = LocalDatabase.loadMaterials()
         }catch{
             print("Error writting data to local url: \(error)")
         }

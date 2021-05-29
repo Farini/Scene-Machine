@@ -8,51 +8,7 @@
 import Foundation
 import SceneKit
 
-extension SCNGeometry: Identifiable {
-    static func ==(lhs:SCNGeometry, rhs:SCNGeometry) -> Bool {
-        return lhs.isEqual(rhs)
-    }
-}
-extension SCNMaterial: Identifiable {
-    static func ==(lhs:SCNMaterial, rhs:SCNMaterial) -> Bool {
-        return lhs.isEqual(rhs)
-    }
-    
-    /// An example material, diffuse, roughness and emission
-    static var example:SCNMaterial {
-        let m = SCNMaterial()
-        m.name = "Example M"
-        m.lightingModel = .physicallyBased
-        m.diffuse.contents = "Scenes.scnassets/UVMaps/CausticNoise.png"//(byReferencingFile:"Scenes.scnassets/UVMaps/CausticNoise.png")
-        m.roughness.contents = 0.3
-        m.emission.contents = 0.1
-        return m
-    }
-}
-
-extension SCNWrapMode:Equatable {
-    
-    public static func ==(lhs:SCNWrapMode, rhs:SCNWrapMode) -> Bool {
-        return lhs.rawValue == rhs.rawValue
-    }
-    
-    func toString() -> String {
-        switch self.rawValue {
-            case 1: return "Clamp"
-            case 2: return "`Repeat`"
-            case 3: return "Clamp border"
-            case 4: return "Mirror"
-            default: return "N/A"
-        }
-    }
-}
-
-extension SCNWrapMode:Codable, CaseIterable {
-    
-    public static var allCases: [SCNWrapMode] {
-        return [SCNWrapMode.clamp, SCNWrapMode.clampToBorder, SCNWrapMode.mirror, SCNWrapMode.repeat]
-    }
-}
+// MARK: - Geometry Element
 
 extension SCNGeometryElement {
     
@@ -89,6 +45,8 @@ extension SCNGeometryElement {
         }
     }
 }
+
+// MARK: - Geometry Source
 
 extension SCNGeometrySource {
     
@@ -164,4 +122,55 @@ extension SCNGeometrySource {
     }
 }
 
+// MARK: - Conforming
 
+/**
+ To conform to enums, and Views that need `identifiable` objects
+ */
+
+extension SCNGeometry: Identifiable {
+    static func ==(lhs:SCNGeometry, rhs:SCNGeometry) -> Bool {
+        return lhs.isEqual(rhs)
+    }
+}
+
+extension SCNMaterial: Identifiable {
+    static func ==(lhs:SCNMaterial, rhs:SCNMaterial) -> Bool {
+        return lhs.isEqual(rhs)
+    }
+    
+    /// An example material, diffuse, roughness and emission
+    static var example:SCNMaterial {
+        let m = SCNMaterial()
+        m.name = "Example M"
+        m.lightingModel = .physicallyBased
+        m.diffuse.contents = "Scenes.scnassets/UVMaps/CausticNoise.png"//(byReferencingFile:"Scenes.scnassets/UVMaps/CausticNoise.png")
+        m.roughness.contents = 0.3
+        m.emission.contents = 0.1
+        return m
+    }
+}
+
+extension SCNWrapMode:Equatable {
+    
+    public static func ==(lhs:SCNWrapMode, rhs:SCNWrapMode) -> Bool {
+        return lhs.rawValue == rhs.rawValue
+    }
+    
+    func toString() -> String {
+        switch self.rawValue {
+            case 1: return "Clamp"
+            case 2: return "`Repeat`"
+            case 3: return "Clamp border"
+            case 4: return "Mirror"
+            default: return "N/A"
+        }
+    }
+}
+
+extension SCNWrapMode:Codable, CaseIterable {
+    
+    public static var allCases: [SCNWrapMode] {
+        return [SCNWrapMode.clamp, SCNWrapMode.clampToBorder, SCNWrapMode.mirror, SCNWrapMode.repeat]
+    }
+}

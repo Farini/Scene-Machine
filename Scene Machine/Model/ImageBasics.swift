@@ -26,10 +26,22 @@ enum TextureSize:Double, CaseIterable {
     /// 4096 x 4096
     case large = 4096
     
+    /// The size of this texture
     var size:CGSize {
         return CGSize(width: self.rawValue, height: self.rawValue)
     }
     
+    /// Convenience to get the `width` without the size
+    var width:CGFloat {
+        return CGFloat(self.rawValue)
+    }
+    
+    /// Convenience to get the `height` without the size
+    var height:CGFloat {
+        return CGFloat(self.rawValue)
+    }
+    
+    /// The label (name)
     var label:String {
         switch self {
             case .small: return "small \(self.rawValue)"
@@ -40,6 +52,7 @@ enum TextureSize:Double, CaseIterable {
         }
     }
     
+    /// The description of the size of this texture
     var fullLabel:String {
         switch self {
             case .small: return "256 x 256"

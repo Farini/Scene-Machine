@@ -10,6 +10,7 @@ import SceneKit
 
 /// Additional Geometries offered by the App
 enum AppGeometries:String, CaseIterable {
+    
     case Suzanne
     case Woman
     case Prototype
@@ -54,6 +55,7 @@ enum AppGeometries:String, CaseIterable {
 
 /// Additional HDRI Images offered by the App
 enum AppBackgrounds: String, CaseIterable {
+    
     case Lava1
     case Lava2
     case SMB1
@@ -61,6 +63,7 @@ enum AppBackgrounds: String, CaseIterable {
     case SMB3
     case NightSky
     case CityNight
+    
     var content:String {
         switch self {
             case .Lava1: return "LavaWorldBlur.hdr"
@@ -74,7 +77,10 @@ enum AppBackgrounds: String, CaseIterable {
     }
 }
 
+/// Texture Images included in the App.
 enum AppTextures: String, CaseIterable {
+    
+    // Note: Keep the rawValue of this enum equal to the name of the image in Assets.xcassets
     
     case AsphaltDiffuse
     case AsphaltNormal

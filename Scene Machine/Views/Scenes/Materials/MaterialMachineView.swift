@@ -24,7 +24,7 @@ struct MaterialMachineView: View {
             List() {
                 Section(header: Text("Materials")){
                     ForEach(controller.materials) { material in
-                        Text("M \(material.name ?? "untitled")")
+                        Text("\(material.name ?? "untitled")")
                             .onTapGesture {
                                 print("tappy")
                                 controller.updateGeometryMaterial(material: material)
@@ -34,10 +34,8 @@ struct MaterialMachineView: View {
                 
                 Section(header: Text("DB Materials")){
                     ForEach(controller.dbMaterials) { material in
-                        Text("M \(material.name ?? "untitled")")
+                        Text("\(material.name ?? "untitled")")
                             .onTapGesture {
-                                print("tappy. Decide what to do with tap")
-//                                controller.updateGeometryMaterial(material: material)
                                 controller.didSelectDBMaterial(dbMaterial: material)
                             }
                             .contextMenu(ContextMenu(menuItems: {
@@ -88,12 +86,15 @@ struct MaterialMachineView: View {
                             controller.changeBackground()
                         }
                         
-                        Button("Save") {
+                        Button("💾") {
                             controller.saveMaterialToDatabase()
                         }
+                        .help("saves the material")
+                        
                     }
                     .frame(height:30)
                     .padding(.horizontal, 8)
+                    .background(Color.black.opacity(0.25))
                     
                     // Scene
                     SceneView(scene: controller.scene, pointOfView: nil, options: SceneView.Options.allowsCameraControl, preferredFramesPerSecond: 40, antialiasingMode: .multisampling4X, delegate: nil, technique: nil)
@@ -101,15 +102,19 @@ struct MaterialMachineView: View {
                     
                     Divider()
                 }
-                .frame(minWidth: 300, maxWidth: 900, maxHeight: .infinity, alignment: .center)
+                .frame(minWidth: 400)
                 
                 // Nodes
-                MMMaterialNodeView(controller: controller, material: $controller.material, matMode: $controller.materialMode)
-                    .padding()
-                    .onChange(of: controller.material) { value in
-                        controller.updateGeometryMaterial(material: value)
-                    }
+                ScrollView(.horizontal, showsIndicators: true) {
+                    
+                    MMMaterialNodeView(controller: controller, material: $controller.material, matMode: $controller.materialMode)
+                        .padding()
+                        .onChange(of: controller.material) { value in
+                            controller.updateGeometryMaterial(material: value)
+                        }
+                }
             }
+            .frame(minWidth: 400, maxWidth: .infinity)
             
             // Right View: UV Map
             if controller.uvImage != nil {
@@ -119,7 +124,8 @@ struct MaterialMachineView: View {
                     }
                 }
             } else {
-                Text("No current Image").foregroundColor(.gray).frame(width: 80)
+                Text("No current Image").foregroundColor(.gray)
+                .frame(maxWidth:200)
             }
         }
     }
@@ -128,6 +134,6 @@ struct MaterialMachineView: View {
 struct MaterialMachineView_Previews: PreviewProvider {
     static var previews: some View {
         MaterialMachineView()
-            .frame(width:900)
+            .frame(width:900, height:600)
     }
 }

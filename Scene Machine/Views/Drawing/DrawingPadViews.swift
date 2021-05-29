@@ -167,6 +167,14 @@ struct DrawingPadView: View {
                 ScrollView([.horizontal, .vertical]) {
                     ZStack(alignment: .center) {
                         
+                        
+                        
+                        if let image = controller.backImage {
+                            Image(nsImage:image)
+                                .resizable()
+                                .frame(width:controller.textureSize.size.width, height:controller.textureSize.size.height)
+                        }
+                        
                         ForEach(controller.layers) { layer in
                             if layer.isVisible {
                                 DrawingLayerView(controller: controller, layer: layer)
@@ -174,11 +182,6 @@ struct DrawingPadView: View {
                             }
                         }
                         
-                        if let image = controller.backImage {
-                            Image(nsImage:image)
-                                .resizable()
-                                .frame(width:controller.textureSize.size.width, height:controller.textureSize.size.height)
-                        }
                         if gridConfig.display {
                             DrawingGridShape(rows: Int(gridConfig.rows), columns: Int(gridConfig.columns))
                                 .stroke(gridConfig.color, lineWidth: 0.5)
@@ -262,8 +265,7 @@ struct DrawingPadView: View {
 
 // MARK: - Layers
 
-/**
- Suitable for screenshots. Can convert to image */
+/** Suitable for screenshots. Can convert to image */
 struct FlattenedDrawingView: View {
     
     @ObservedObject var controller:DrawingPadController
@@ -307,9 +309,7 @@ struct FlattenedDrawingView: View {
     }
 }
 
-/**
-    How: There is enough info to draw both pen and pencil
-    Draw from `DrawingLayer` Object */
+/** A Layer that represents a group of drawings */
 struct DrawingLayerView: View {
     
     @ObservedObject var controller:DrawingPadController
@@ -392,6 +392,7 @@ struct DrawingGridShape: Shape {
     }
 }
 
+/// An Object that configures how a DrawingViewShape is drawn
 struct DrawingGridConfig {
     var rows:CGFloat
     var columns:CGFloat

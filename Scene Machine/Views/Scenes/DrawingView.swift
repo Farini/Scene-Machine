@@ -215,7 +215,7 @@ struct DrawingPointView: View {
             .foregroundColor(.green)
     }
 }
-import SceneKit
+
 struct DrawingCanvas:NSViewRepresentable {
     
     var tapCallback:((CGPoint) -> Void)

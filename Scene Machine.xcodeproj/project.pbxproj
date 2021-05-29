@@ -62,8 +62,6 @@
 		85B913352631057E0065D6D2 /* SceneKit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B913342631057E0065D6D2 /* SceneKit+Extensions.swift */; };
 		85B913402631C00E0065D6D2 /* GraphicsImageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B9133F2631C00E0065D6D2 /* GraphicsImageRenderer.swift */; };
 		85B913412631C00E0065D6D2 /* GraphicsImageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B9133F2631C00E0065D6D2 /* GraphicsImageRenderer.swift */; };
-		85B913472631C0ED0065D6D2 /* UVMapShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B913462631C0ED0065D6D2 /* UVMapShape.swift */; };
-		85B913482631C0ED0065D6D2 /* UVMapShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B913462631C0ED0065D6D2 /* UVMapShape.swift */; };
 		85B9134C2631C13B0065D6D2 /* SwiftUI+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B9134B2631C13B0065D6D2 /* SwiftUI+Extensions.swift */; };
 		85B9134D2631C13B0065D6D2 /* SwiftUI+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B9134B2631C13B0065D6D2 /* SwiftUI+Extensions.swift */; };
 		85B9135B263298790065D6D2 /* CausticNoise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B9135A263298790065D6D2 /* CausticNoise.swift */; };
@@ -205,7 +203,6 @@
 		85A4776C2642EE1C00F93AB3 /* FXOtherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FXOtherView.swift; sourceTree = "<group>"; };
 		85B913342631057E0065D6D2 /* SceneKit+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SceneKit+Extensions.swift"; sourceTree = "<group>"; };
 		85B9133F2631C00E0065D6D2 /* GraphicsImageRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicsImageRenderer.swift; sourceTree = "<group>"; };
-		85B913462631C0ED0065D6D2 /* UVMapShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UVMapShape.swift; sourceTree = "<group>"; };
 		85B9134B2631C13B0065D6D2 /* SwiftUI+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUI+Extensions.swift"; sourceTree = "<group>"; };
 		85B9135A263298790065D6D2 /* CausticNoise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CausticNoise.swift; sourceTree = "<group>"; };
 		85B91361263298D20065D6D2 /* LensFlare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LensFlare.swift; sourceTree = "<group>"; };
@@ -299,7 +296,6 @@
 				85885EF72656B5E200E98855 /* MaterialMachineView.swift */,
 				85D1BC6C26600BD3009D70DC /* Nodes */,
 				8515B35D26263C6100A886BD /* MaterialEditView.swift */,
-				85B913462631C0ED0065D6D2 /* UVMapShape.swift */,
 			);
 			path = Materials;
 			sourceTree = "<group>";
@@ -735,7 +731,6 @@
 				85A4776026407D4800F93AB3 /* HelpMainView.swift in Sources */,
 				857A93D226124FE7004FFEBB /* QuickNoiseController.swift in Sources */,
 				85B913402631C00E0065D6D2 /* GraphicsImageRenderer.swift in Sources */,
-				85B913472631C0ED0065D6D2 /* UVMapShape.swift in Sources */,
 				85D1BC66265D734B009D70DC /* SMSceneConfigView.swift in Sources */,
 				855053732644F38B00A577E2 /* SMNodeRow.swift in Sources */,
 				85B9137426329A050065D6D2 /* BLKTransparent.swift in Sources */,
@@ -815,7 +810,6 @@
 				85B91370263299CB0065D6D2 /* HexagonFilter.swift in Sources */,
 				85B9138326329DED0065D6D2 /* MetalGenView.swift in Sources */,
 				85B913412631C00E0065D6D2 /* GraphicsImageRenderer.swift in Sources */,
-				85B913482631C0ED0065D6D2 /* UVMapShape.swift in Sources */,
 				856491E92578100D00D1FE00 /* Scene_MachineTests.swift in Sources */,
 				85B9137A26329A3A0065D6D2 /* CoreImage+Extensions.swift in Sources */,
 				85B91363263298D20065D6D2 /* LensFlare.swift in Sources */,

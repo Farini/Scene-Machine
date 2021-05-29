@@ -32,16 +32,13 @@ The objective of this app is to create a more user-friendly way to build a `.scn
 ## Features
 
 ### Noise & Generators
-- SpriteKit Noise
-- Pedal2DMetal
-- Quick Noise
 
 - [X] Choose Image Size: 256x256, 512x512, 1024x1024, 2048x2048, 4096x4096
 - [X] Zoom in and out of images - Scale 0.2 to 8.0
 - [X] Save Image
 - [X] Undo Changes
 
-### SpriteKit Noise Maker
+### SpriteKit Noise
 Create common types of noises using `SpriteKit`.
 
 - [X] Generate any noise in SpriteKit: Perlin, Voronoi, Ridged, Billow, Checker, Cylinder
@@ -61,7 +58,7 @@ Mix 2 images, using multiple `CoreImage` techniques
 Image CIKernels built on Metal programming language.
 More about Shaders: [Here](https://github.com/Farini/Scene-Machine/blob/main/Scene%20Machine/Shaders/ShadersReadme.md#about-shaders)
 
-### SceneKit
+### Scene Machine
 Test and export `SceneKit` scenes.
 
 - [X] Show a Geometry's `UVMap`
@@ -81,9 +78,9 @@ Create SceneKit Materials - `SCNMaterial`
 - [X] SceneMaterial, and SubMaterialData: Codable -> Persist `SCNMaterial`
 - [X] Material Editor (may need improvements)
 - [X] UVMap
-- [X] Ambient Occlusion
 - [X] Save UVMap Image
 - [X] Save Materials
+- [X] Allow use of **Apple Pencil** to draw images.
     
 ### Model
 See this apps's model readme: [Here](https://github.com/Farini/Scene-Machine/blob/main/Scene%20Machine/Model/ModelReadme.md#scene-machine-data-model)

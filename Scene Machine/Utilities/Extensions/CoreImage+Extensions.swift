@@ -8,6 +8,7 @@
 import Cocoa
 import CoreImage
 
+/// Useful Dictionary function to sum 2 dictionaries
 func + <T, U>(left: Dictionary<T, U>, right: Dictionary<T, U>) -> Dictionary<T, U> {
     
     var target = Dictionary<T, U>()
@@ -83,7 +84,6 @@ extension CIVector {
     
 }
 
-
 extension NSBezierPath {
     
     func interpolatePointsWithHermite(interpolationPoints : [CGPoint]) {
@@ -144,6 +144,8 @@ extension NSBezierPath {
     }
     
 }
+
+// MARK: - Image
 
 extension NSImage {
     
@@ -349,9 +351,26 @@ extension NSImage {
     }
 }
 
+// MARK: - Core Graphics
+
+extension CGLineJoin:Codable {}
+extension CGLineCap:Codable {}
+
+// MARK: - Foundation
+
 extension URL {
+    
+    /// Returns the directories inside the ccurrent directory.
     func subDirectories() throws -> [URL] {
         guard hasDirectoryPath else { return [] }
         return try FileManager.default.contentsOfDirectory(at: self, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles]).filter(\.hasDirectoryPath)
     }
+    
+    static var appFolder:URL {
+        guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else{
+            fatalError("Default folder for ap not found")
+        }
+        return url
+    }
 }
+

@@ -8,6 +8,7 @@
 import SwiftUI
 import SceneKit
 
+/// Right Node View - Displays Effects applied to image of `MaterialMode`
 struct MMNodeFXView:View {
     
     // Apply the effect to the material property only.

@@ -8,6 +8,8 @@
 import Foundation
 import SwiftUI
 
+// MARK: - Screenshots
+
 extension View {
     
     /// Takes a snapshot of the current view, and outputs an `NSImage`
@@ -53,7 +55,7 @@ extension NSView {
 
 extension NumberFormatter {
     
-    /// Formatter with 4 decimal digits
+    /// Formatter with 4 decimal and integer digits
     static var scnFormat: NumberFormatter {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
@@ -63,4 +65,15 @@ extension NumberFormatter {
         formatter.maximumFractionDigits = 4
         return formatter
     }
+    
+    /// Two fraction digits
+    static var doubleDigit: NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.minimumIntegerDigits = 1
+        formatter.minimumFractionDigits = 1
+        formatter.maximumFractionDigits = 2
+        return formatter
+    }
+    
 }

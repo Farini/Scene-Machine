@@ -10,6 +10,7 @@ import SceneKit
 import Cocoa
 import Foundation
 
+/// General View for all Nodes of a Material
 struct MMMaterialNodeView:View {
     
     @ObservedObject var controller:MaterialMachineController
@@ -69,12 +70,14 @@ struct MMMaterialNodeView:View {
     
 }
 
+/// The Left most Node, to Edit name and select MaterialMode
 struct MMNodeView:View {
     
     @Binding var matType:MaterialMode
     @Binding var matName:String
     
     var body: some View {
+        
         VStack(alignment:.trailing) {
             ZStack {
                 Rectangle()

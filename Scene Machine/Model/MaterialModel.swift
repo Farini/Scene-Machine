@@ -25,6 +25,25 @@ class SceneMaterial: Codable, Identifiable, Equatable {
     var occlusion:SubMaterialData?
     var emission:SubMaterialData?
     
+    /**
+     Material Modes
+     - Diffuse
+     - Metalness
+     - Roughness
+     - Normal
+     - Transparent
+     - Occlusion
+     - Illumination
+     - Emission
+     - Multiply
+     - Coat
+     - CoatNormal
+     - CoatRoughness
+     - Displacement
+     */
+    
+    // MARK: - Methods
+    
     func make() -> SCNMaterial {
         let material = SCNMaterial()
         material.name = self.name ?? "untitled"
@@ -156,23 +175,6 @@ class SceneMaterial: Codable, Identifiable, Equatable {
         }
     }
     
-    /**
-        Materials
-     - Diffuse
-     - Metalness
-     - Roughness
-     - Normal
-     - Transparent
-     - Occlusion
-     - Illumination
-     - Emission
-     - Multiply
-     - Coat
-     - CoatNormal
-     - CoatRoughness
-     - Displacement
-     */
-    
 }
 
 /// An object that stores `SCNMaterialProperty` variables
@@ -254,6 +256,7 @@ class SubMaterialData:Codable {
 
 /// An object that stores `Color`
 struct ColorData: Codable {
+    
     var r: Double
     var g: Double
     var b: Double
@@ -325,8 +328,10 @@ enum MaterialShading:String, Codable, CaseIterable {
     }
 }
 
+// MARK: - To Do
+// TODO: - Renaming
+
 // Names
 // SMMaterial
 // SMMaterialProperty
-
-
+// SMMaterialFX

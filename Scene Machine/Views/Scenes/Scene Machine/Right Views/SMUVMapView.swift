@@ -177,9 +177,3 @@ struct SMUVMapView: View {
         }
     }
 }
-
-//struct SMUVMapView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SMUVMapView()
-//    }
-//}
