@@ -434,7 +434,7 @@ struct SMMaterialView_Previews: PreviewProvider {
     
     
     static var previews: some View {
-        var control = SceneMachineController()
+        let control = SceneMachineController()
         control.selectedMaterial = MaterialExample().material
         return SMMaterialView(controller:control, material: control.selectedMaterial!)
     }

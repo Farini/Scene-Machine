@@ -37,13 +37,12 @@ struct MMNodeFXView:View {
                     }
                     .popover(isPresented: $popFX, content: {
                         VStack {
-                            Text("Poppity pop !!!")
-                            Text("Properties")
-                            Text("Poppity pop !!!")
                             Button("Blur") {
                                 self.applyBlur()
                             }
+                            Text("More effects coming soon.")
                         }
+                        .padding()
                     })
                 Button("✅") {
                     guard let image = effectImage else { return }

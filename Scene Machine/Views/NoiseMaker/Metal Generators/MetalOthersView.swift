@@ -54,6 +54,6 @@ struct MetalOthersView: View {
 
 struct MetalOthersView_Previews: PreviewProvider {
     static var previews: some View {
-        MetalOthersView(controller: MetalGenController(select: .Other))
+        MetalOthersView(controller: MetalGenController(select: .Tiles))
     }
 }

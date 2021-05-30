@@ -36,7 +36,6 @@
 		85649239257976C700D1FE00 /* Scenes.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 85649238257976C700D1FE00 /* Scenes.scnassets */; };
 		8564923E2579828100D1FE00 /* dissolve.fragment.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8564923D2579828100D1FE00 /* dissolve.fragment.txt */; };
 		85771BCD2633D08F001A2B88 /* InputViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85771BCC2633D08F001A2B88 /* InputViews.swift */; };
-		85771BD12633D3B7001A2B88 /* CIGenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85771BD02633D3B7001A2B88 /* CIGenView.swift */; };
 		857A93CD26124F3F004FFEBB /* QuickNoiseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857A93CC26124F3F004FFEBB /* QuickNoiseView.swift */; };
 		857A93D226124FE7004FFEBB /* QuickNoiseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857A93D126124FE7004FFEBB /* QuickNoiseController.swift */; };
 		857A93E526126613004FFEBB /* SpriteNoiseMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857A93E426126613004FFEBB /* SpriteNoiseMaker.swift */; };
@@ -177,7 +176,6 @@
 		85649238257976C700D1FE00 /* Scenes.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Scenes.scnassets; sourceTree = "<group>"; };
 		8564923D2579828100D1FE00 /* dissolve.fragment.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dissolve.fragment.txt; sourceTree = "<group>"; };
 		85771BCC2633D08F001A2B88 /* InputViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputViews.swift; sourceTree = "<group>"; };
-		85771BD02633D3B7001A2B88 /* CIGenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CIGenView.swift; sourceTree = "<group>"; };
 		857A93CC26124F3F004FFEBB /* QuickNoiseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickNoiseView.swift; sourceTree = "<group>"; };
 		857A93D126124FE7004FFEBB /* QuickNoiseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickNoiseController.swift; sourceTree = "<group>"; };
 		857A93E426126613004FFEBB /* SpriteNoiseMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteNoiseMaker.swift; sourceTree = "<group>"; };
@@ -572,7 +570,6 @@
 			isa = PBXGroup;
 			children = (
 				85B9138126329DED0065D6D2 /* MetalGenView.swift */,
-				85771BD02633D3B7001A2B88 /* CIGenView.swift */,
 				857C473326371D06006C6A32 /* MetalNoiseView.swift */,
 				857C47372637370F006C6A32 /* MetalTilesView.swift */,
 				85FFB7392639DA0100E8FE0A /* MetalOverlaysView.swift */,
@@ -758,7 +755,6 @@
 				8515B47C262E4B5F00A886BD /* FXBlurrView.swift in Sources */,
 				857C473426371D06006C6A32 /* MetalNoiseView.swift in Sources */,
 				85B9137926329A3A0065D6D2 /* CoreImage+Extensions.swift in Sources */,
-				85771BD12633D3B7001A2B88 /* CIGenView.swift in Sources */,
 				85941FC126501B0600A3CAF6 /* PenToolbar.swift in Sources */,
 				857C47382637370F006C6A32 /* MetalTilesView.swift in Sources */,
 				85D1BC61265C2E7D009D70DC /* MacNotesTextView.swift in Sources */,
@@ -964,7 +960,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"Scene Machine/Preview Content\"";
 				DEVELOPMENT_TEAM = FXF7BJD3VH;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -992,7 +988,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"Scene Machine/Preview Content\"";
 				DEVELOPMENT_TEAM = FXF7BJD3VH;
 				ENABLE_HARDENED_RUNTIME = YES;

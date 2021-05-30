@@ -113,10 +113,6 @@ struct MetalGenView: View {
             ScrollView {
                 VStack {
                     switch controller.selection {
-//                        case .CIGenerators:
-//                            CIGenView(applied: { (newImage) in
-//                                controller.image = newImage
-//                            }, generatorType: .Checkerboard, image: image)
                         case .Noise:
                             MetalNoiseView(controller: controller, applied: { newImage in
                                 controller.image = newImage
@@ -129,10 +125,10 @@ struct MetalGenView: View {
                             MetalOverlaysView(controller: controller, applied: { newImage in
                                 controller.image = newImage
                             })
-                        case .Other:
-                            MetalOthersView(controller: controller, applied: { newImage in
-                                controller.image = newImage
-                            })
+//                        case .Other:
+//                            MetalOthersView(controller: controller, applied: { newImage in
+//                                controller.image = newImage
+//                            })
 //                        default: Text("Not Implemented").foregroundColor(.gray)
                     }
                 }

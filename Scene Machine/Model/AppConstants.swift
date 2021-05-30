@@ -24,7 +24,7 @@ enum AppGeometries:String, CaseIterable {
         var node:SCNNode?
         switch self {
             case .Suzanne:
-                let scene = SCNScene(named: "Scenes.scnassets/Monkey5.scn")
+                let scene = SCNScene(named: "Scenes.scnassets/Monkey4.scn")
                 node = scene?.rootNode.childNode(withName: "Armature", recursively: false)?.clone()
                 node?.position.y += 1
                 node?.scale = SCNVector3(0.25, 0.25, 0.25)
@@ -58,20 +58,18 @@ enum AppBackgrounds: String, CaseIterable {
     
     case Lava1
     case Lava2
-    case SMB1
-    case SMB2
-    case SMB3
+    case Mountains
     case NightSky
+    case CityDay
     case CityNight
     
     var content:String {
         switch self {
             case .Lava1: return "LavaWorldBlur.hdr"
             case .Lava2: return "LavaWorldBlur2.hdr"
-            case .SMB1: return "SMB_1.hdr"
-            case .SMB2: return "SMB_2.hdr"
-            case .SMB3: return "SMB_3.hdr"
+            case .Mountains: return "SMB_3.hdr"
             case .NightSky: return "NightSky.hdr"
+            case .CityDay: return "CityDay.hdr"
             case .CityNight: return "CityNight.hdr"
         }
     }

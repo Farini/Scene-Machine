@@ -14,7 +14,7 @@ enum MetalGenType:String, CaseIterable {
     case Noise
     case Tiles
     case Overlay
-    case Other
+//    case Other
 }
 
 

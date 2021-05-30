@@ -398,7 +398,7 @@ class NormalMapFilter:CIFilter {
         guard let inputImage = inputImage else {return nil}
         
         let src = CISampler(image: inputImage)
-        let vec = CIVector(cgPoint: CGPoint(x: CGFloat(tileSize), y: CGFloat(tileSize)))
+//        let vec = CIVector(cgPoint: CGPoint(x: CGFloat(tileSize), y: CGFloat(tileSize)))
 //        let fTile = Float(tileCount)
 //        let fTime = Float(time)
         

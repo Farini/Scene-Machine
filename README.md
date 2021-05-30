@@ -5,26 +5,13 @@
 <img src="https://img.shields.io/github/followers/Farini?label=Follow" alt="Farini followers" />
 </p>
 
-**Textures**
+Scene Machine is a tool for app developers and graphic designers that makes procedural generation of textures and Scene Materials easy. 
 
-Scene Machine is a tool for App Developers and Graphic Designers. This app makes the generation of procedural textures extremely easy. Besides procedural and noise textures, there is a collection of tiled & tileable textures that can be generated with Scene Machine. These images are called textures because of the standart texture sizes the app can generate: 256x256, 512x512, 1024x1024, 2048x2048 and 4096x4096 (measures in pixels).
+Textures can be generated as stand-alone images or tiles, and in standard sizes (256x256, 512x512, 1024x1024, 2048x2048 and 4096x4096). Image effects may also be applied to textures.
 
-Some textures such as Asphalt, Wood, Wallpaper, and a UVGrid also comes in the app library. - These come with their respective counterparts in Diffuse, Normal, Roughness and Ambient Occlusion counterparts. Another type of texture generated in Scene Machine is the Overlay type of textures (Lens flare, Halo, Sunbeam, and Caustic refraction).
+Scene Materials can be generated, stored and retrieved for other scenes. You may paint materials with Apple Pencil
 
-**Effects**
-
-Scene Machine comes with quite a few image effects. Blur, Color, Distort and Stylize. Each one of these types of effects offers at least 6 variations of itself.
-Besides the effects that can be used, it is also possible to mix images. When textures are more complex, one may need to mix two, or more images using options like Color burn, Color dodge, Darken, Divide and Screen modes.
-
-**SceneKit**
-
-Import and export scenes in .dae and .scn formats. 
-
-Scene Machine lets you play around with scene materials. The app can be used to preview materials before finally importing scenes into your project. It allows you to go back and forth between Scene Machine (to see if your scene is looking okay in .scn format) and Blender. This is a good way to work on details of a scene before adding it to your project.
-
-Although SpriteKit offers ways to generate noise textures, the options are limited. In Blender, for example, there are many options, and graphics operations that can be performed to generate a texture. Scene Machine seeks to bring that type of graphic settings, essential for building great 3D scenes. Furthermore, a few pre-made geometries and backgrounds were added, to expand the users options when building scenes.
-
-The objective of this app is to create a more user-friendly way to build a `.scn` file, or to facilitate the conversion of `.dae` files into `.scn` while maintaining high-quality meshes, with their textures. Besides these scenes, if your interest is in generating patterns and effects, this app can be very useful as well.
+Scene Machine supports import and export of .obj, .dae and .scn files for easy interchange with Blender. You may draw a shape, and convert to a Geometry.
 
 ![Alt text](https://user-images.githubusercontent.com/5069713/115817657-40738a80-a3c9-11eb-8f5c-9c586c1ff0af.png)
 
