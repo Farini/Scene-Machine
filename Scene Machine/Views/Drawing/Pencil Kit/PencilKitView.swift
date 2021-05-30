@@ -24,10 +24,14 @@ struct PencilKitView: View {
             Text("Pencil \(cursorString)")
             if let image = image {
                 Image(nsImage: image)
-                    .padding()
                     .gesture(DragGesture()
                                 .onChanged { (value) in
                                     NSCursor.crosshair.set()
+                                    if strokePoints.isEmpty {
+                                        let p = value.startLocation
+                                        let strike = PKStrokePoint(location: p, timeOffset: 0, size: strokeSize, opacity: 1, force: 1, azimuth: 0, altitude: 0)
+                                        strokePoints.append(strike)
+                                    }
                                     
                                     let strike = PKStrokePoint(location: value.location, timeOffset: 0.1, size: strokeSize, opacity: 1, force: 1, azimuth: 0, altitude: 0)
                                     strokePoints.append(strike)
@@ -38,7 +42,7 @@ struct PencilKitView: View {
                                     let cursor = NSCursor.current.image.size
                                     // print("Cursor size: \(cursor)")
                                     self.cursorString = "\(cursor)"
-                                    let trans = CGAffineTransform(translationX: -25, y: -15)
+                                    let trans = CGAffineTransform(translationX: 0, y: 0)
                                     
                                     // let ink = PKInk(.pen, color: .yellow)
                                     
@@ -63,6 +67,7 @@ struct PencilKitView: View {
         
     }
     
+    /// Creates a blob of drawing (mostly for testing)
     func createDrawing() {
         // To create a stroke, we need:
         // ink, path, transform, mask
@@ -74,12 +79,9 @@ struct PencilKitView: View {
         let path = PKStrokePath(controlPoints: [strike1, strike2, strike3, strike4], creationDate: Date())
         let transform = CGAffineTransform(rotationAngle: 1)
         
-        
-        
         let stroke = PKStroke(ink: ink, path: path, transform: transform, mask: nil)
         self.drawing = PKDrawing(strokes: [stroke])
         self.image = self.drawing.image(from: CGRect(origin: .zero, size: CGSize(width: 256, height: 256)), scale: 2)
-        
     }
 }
 

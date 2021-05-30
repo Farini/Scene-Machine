@@ -999,5 +999,44 @@ extern "C" { namespace coreimage {
         float4 finale = float4(col, 1.0);
         return finale;
     }
+    
+    
+    // MARK: - Tiling Engine
+    float4 tilingEngine(sampler image, float2 size, float margin, destination dest) {
+        
+        
+        // float2 d = dest.coord();
+        float2 iCoord = float2(dest.coord().x, size.y - dest.coord().y);
+        float4 original = sample(image, iCoord);
+        
+        // X
+        float measure = size.x - dest.coord().x;
+        if (measure <= margin) {
+            float2 compCoord = float2(0, iCoord.y);
+            float3 origcolor = sample(image, compCoord).rgb;
+            float3 actualcol = sample(image, dest.coord().xy).rgb;
+            float percentual = measure / margin; // * 0.1; // the closer to the edge,
+            
+            // mix (firstColor, secondColor, percentageFirstColor)
+            float3 resultcol = mix(origcolor, actualcol, percentual);
+            
+            original.rgb = resultcol;
+        }
+        
+        // Y
+        float measureY = size.y - dest.coord().y;
+        if (measureY <= margin) {
+            float2 compCoord = float2(dest.coord().x, 0);
+            float3 compcolor = sample(image, compCoord).rgb;
+            float3 actualcol = sample(image, dest.coord().xy).rgb;
+            float percentual = measureY / margin;
+            // mix (firstColor, secondColor, percentageFirstColor)
+            float3 resultcol = mix(compcolor, actualcol, percentual);
+            
+            original.rgb = resultcol;
+        }
+        
+        return original;
+    }
 }}
 

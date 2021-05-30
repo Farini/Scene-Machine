@@ -87,6 +87,7 @@
 		85D1BC6E26600C30009D70DC /* MMNodeFXView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D1BC6D26600C30009D70DC /* MMNodeFXView.swift */; };
 		85D1BC702660244B009D70DC /* HelpPencilKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D1BC6F2660244B009D70DC /* HelpPencilKitView.swift */; };
 		85D1BC722660347D009D70DC /* MMModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D1BC712660347D009D70DC /* MMModeView.swift */; };
+		85D1BC742663418F009D70DC /* TileComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D1BC732663418F009D70DC /* TileComposerView.swift */; };
 		85D3E7CB26390FAF00D693FA /* SceneMachineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D3E7CA26390FAF00D693FA /* SceneMachineView.swift */; };
 		85D3E7CF26390FC500D693FA /* SceneMachineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D3E7CE26390FC500D693FA /* SceneMachineController.swift */; };
 		85DEFC682643AFC8003DEC36 /* MercurializeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DEFC672643AFC8003DEC36 /* MercurializeFilter.swift */; };
@@ -219,6 +220,7 @@
 		85D1BC6D26600C30009D70DC /* MMNodeFXView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMNodeFXView.swift; sourceTree = "<group>"; };
 		85D1BC6F2660244B009D70DC /* HelpPencilKitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpPencilKitView.swift; sourceTree = "<group>"; };
 		85D1BC712660347D009D70DC /* MMModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMModeView.swift; sourceTree = "<group>"; };
+		85D1BC732663418F009D70DC /* TileComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileComposerView.swift; sourceTree = "<group>"; };
 		85D3E7CA26390FAF00D693FA /* SceneMachineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneMachineView.swift; sourceTree = "<group>"; };
 		85D3E7CE26390FC500D693FA /* SceneMachineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneMachineController.swift; sourceTree = "<group>"; };
 		85DEFC672643AFC8003DEC36 /* MercurializeFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MercurializeFilter.swift; sourceTree = "<group>"; };
@@ -305,6 +307,7 @@
 				8564922E25796F9C00D1FE00 /* TestImageDragDrop.swift */,
 				8564922925795F3C00D1FE00 /* DragDropView.swift */,
 				856492212579547900D1FE00 /* ImageCompositionView.swift */,
+				85D1BC732663418F009D70DC /* TileComposerView.swift */,
 			);
 			path = Composition;
 			sourceTree = "<group>";
@@ -728,6 +731,7 @@
 				85A4776026407D4800F93AB3 /* HelpMainView.swift in Sources */,
 				857A93D226124FE7004FFEBB /* QuickNoiseController.swift in Sources */,
 				85B913402631C00E0065D6D2 /* GraphicsImageRenderer.swift in Sources */,
+				85D1BC742663418F009D70DC /* TileComposerView.swift in Sources */,
 				85D1BC66265D734B009D70DC /* SMSceneConfigView.swift in Sources */,
 				855053732644F38B00A577E2 /* SMNodeRow.swift in Sources */,
 				85B9137426329A050065D6D2 /* BLKTransparent.swift in Sources */,
@@ -960,7 +964,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_ASSET_PATHS = "\"Scene Machine/Preview Content\"";
 				DEVELOPMENT_TEAM = FXF7BJD3VH;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -988,7 +992,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_ASSET_PATHS = "\"Scene Machine/Preview Content\"";
 				DEVELOPMENT_TEAM = FXF7BJD3VH;
 				ENABLE_HARDENED_RUNTIME = YES;

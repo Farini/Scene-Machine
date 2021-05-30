@@ -82,6 +82,7 @@ var isCurve:Bool
 ```
 
 # Material Model
+
 ## SCNMaterial
 ## SceneMaterial
 ## SubMaterialData
@@ -94,6 +95,7 @@ var isCurve:Bool
 ## Wavefront .obj file specs
 [File Specification Wikipedia](https://en.wikipedia.org/wiki/Wavefront_.obj_file)
 [FileFormat.info](https://www.fileformat.info/format/wavefrontobj/egff.htm)
+[MTL Format](https://people.math.sc.edu/Burkardt/data/mtl/mtl.html)
 
 # 🍎 SceneKit
 You use geometry sources together with SCNGeometryElement objects to define custom SCNGeometry objects or to inspect the data that composes an existing geometry.
