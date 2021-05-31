@@ -32,7 +32,7 @@ enum MaterialMode:String, CaseIterable {
 class MaterialMachineController:ObservableObject {
     
     @Published var scene:SCNScene
-    @Published var sceneBackground:AppBackgrounds = AppBackgrounds.Lava2
+    @Published var sceneBackground:AppBackgrounds = AppBackgrounds.CityDay
     
     @Published var node:SCNNode
     @Published var geometry:SCNGeometry = SCNSphere(radius: 1)
@@ -46,7 +46,6 @@ class MaterialMachineController:ObservableObject {
     @Published var materials:[SCNMaterial] = [SCNMaterial.example]
     @Published var dbMaterials:[SceneMaterial] = []
     
-//    @Published var baseColor:Color = Color.blue
     @Published var uvImage:NSImage?
     
     init() {

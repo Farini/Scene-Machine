@@ -56,22 +56,30 @@ struct MaterialMachineView: View {
                     // Tools
                     HStack {
                         
+                        // Load another Geometry
+                        Button(action: {
+                            controller.loadPanel()
+                        }, label: {
+                            Image(systemName: "square.and.arrow.down.fill")
+                        })
+                        .help("Load geometry from file")
+                        
+                        // Save
+                        Button("💾") {
+                            controller.saveMaterialToDatabase()
+                        }
+                        .help("saves the material")
+                        
                         // Geometry Picker
-                        Picker("Geo", selection: $controller.geoOption) {
+                        Picker("Geometry", selection: $controller.geoOption) {
                             ForEach(MMGeometryOption.allCases, id:\.self) { geo in
                                 Text(geo.rawValue)
                             }
                         }
-                        .frame(width:120)
+                        .frame(width:160)
                         .onChange(of: controller.geoOption) { value in
                             controller.updateNode()
                         }
-                        
-                        // Load another Geometry
-                        Button("Load") {
-                            controller.loadPanel()
-                        }
-                        .help("Loads another geometry from a file")
                         
                         Spacer()
                         
@@ -85,12 +93,6 @@ struct MaterialMachineView: View {
                         .onChange(of: controller.sceneBackground) { value in
                             controller.changeBackground()
                         }
-                        
-                        Button("💾") {
-                            controller.saveMaterialToDatabase()
-                        }
-                        .help("saves the material")
-                        
                     }
                     .frame(height:30)
                     .padding(.horizontal, 8)

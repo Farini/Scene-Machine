@@ -8,6 +8,103 @@
 import Foundation
 import SceneKit
 
+// MARK: - Images
+
+/// A helper to identify the sizes of a texture
+enum TextureSize:Double, CaseIterable {
+    
+    /// 256 x 256
+    case small = 256
+    
+    /// 512 x 512
+    case medSmall = 512
+    
+    /// 1024 x 1024
+    case medium = 1024
+    
+    /// 2048 x 2048
+    case medLarge = 2048
+    
+    /// 4096 x 4096
+    case large = 4096
+    
+    /// The size of this texture
+    var size:CGSize {
+        return CGSize(width: self.rawValue, height: self.rawValue)
+    }
+    
+    /// Convenience to get the `width` without the size
+    var width:CGFloat {
+        return CGFloat(self.rawValue)
+    }
+    
+    /// Convenience to get the `height` without the size
+    var height:CGFloat {
+        return CGFloat(self.rawValue)
+    }
+    
+    /// The label (name)
+    var label:String {
+        switch self {
+            case .small: return "small \(self.rawValue)"
+            case .medSmall: return "medSmall \(self.rawValue)"
+            case .medium: return "medium \(self.rawValue)"
+            case .medLarge: return "medLarge \(self.rawValue)"
+            case .large: return "large \(self.rawValue)"
+        }
+    }
+    
+    /// The description of the size of this texture
+    var fullLabel:String {
+        switch self {
+            case .small: return "256 x 256"
+            case .medSmall: return "512 x 512"
+            case .medium: return "1024 x 1024"
+            case .medLarge: return "2048 x 2048"
+            case .large: return "4096 x 4096"
+        }
+    }
+}
+
+/// Texture Images included in the App.
+enum AppTextures: String, CaseIterable {
+    
+    // Note: Keep the rawValue of this enum equal to the name of the image in Assets.xcassets
+    
+    case AsphaltDiffuse
+    case AsphaltNormal
+    case AsphaltRoughness
+    
+    case WallDiffuse
+    case WallNormal
+    
+    case WoodDiffuse
+    case WoodNormal
+    
+    case UVGrid
+    case UVLabels
+    
+    var image:NSImage? {
+        return NSImage(named: self.rawValue)
+    }
+    
+    var labelName:String {
+        switch self  {
+            case .AsphaltDiffuse: return "Asphalt Diffuse"
+            case .AsphaltNormal: return "Asphalt Normal"
+            case .AsphaltRoughness: return "Asphalt Roughness"
+            case .WallDiffuse: return "Wall Diffuse"
+            case .WallNormal: return "Wall Normal"
+            case .WoodDiffuse: return "Wood Diffuse"
+            case .WoodNormal: return "Wood Normal"
+            case .UVGrid: return "UV Grid"
+            case .UVLabels: return "UV Labels"
+        }
+    }
+}
+
+// MARK: - Scenes
+
 /// Additional Geometries offered by the App
 enum AppGeometries:String, CaseIterable {
     
@@ -71,43 +168,6 @@ enum AppBackgrounds: String, CaseIterable {
             case .NightSky: return "NightSky.hdr"
             case .CityDay: return "CityDay.hdr"
             case .CityNight: return "CityNight.hdr"
-        }
-    }
-}
-
-/// Texture Images included in the App.
-enum AppTextures: String, CaseIterable {
-    
-    // Note: Keep the rawValue of this enum equal to the name of the image in Assets.xcassets
-    
-    case AsphaltDiffuse
-    case AsphaltNormal
-    case AsphaltRoughness
-    
-    case WallDiffuse
-    case WallNormal
-    
-    case WoodDiffuse
-    case WoodNormal
-    
-    case UVGrid
-    case UVLabels
-    
-    var image:NSImage? {
-        return NSImage(named: self.rawValue)
-    }
-    
-    var labelName:String {
-        switch self  {
-            case .AsphaltDiffuse: return "Asphalt Diffuse"
-            case .AsphaltNormal: return "Asphalt Normal"
-            case .AsphaltRoughness: return "Asphalt Roughness"
-            case .WallDiffuse: return "Wall Diffuse"
-            case .WallNormal: return "Wall Normal"
-            case .WoodDiffuse: return "Wood Diffuse"
-            case .WoodNormal: return "Wood Normal"
-            case .UVGrid: return "UV Grid"
-            case .UVLabels: return "UV Labels"
         }
     }
 }

@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8515B3302624E6EE00A886BD /* ImageBasics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B32F2624E6EE00A886BD /* ImageBasics.swift */; };
-		8515B3312624E6EE00A886BD /* ImageBasics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B32F2624E6EE00A886BD /* ImageBasics.swift */; };
 		8515B33D26254C8300A886BD /* GradientMakerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B33C26254C8300A886BD /* GradientMakerView.swift */; };
 		8515B342262554A700A886BD /* GradientController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B341262554A700A886BD /* GradientController.swift */; };
 		8515B3472625EC6300A886BD /* FrontView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B3462625EC6300A886BD /* FrontView.swift */; };
@@ -142,7 +140,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		8515B32F2624E6EE00A886BD /* ImageBasics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageBasics.swift; sourceTree = "<group>"; };
 		8515B33C26254C8300A886BD /* GradientMakerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientMakerView.swift; sourceTree = "<group>"; };
 		8515B341262554A700A886BD /* GradientController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientController.swift; sourceTree = "<group>"; };
 		8515B3462625EC6300A886BD /* FrontView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrontView.swift; sourceTree = "<group>"; };
@@ -272,7 +269,6 @@
 				8515B3D42628A58B00A886BD /* LocalDatabase.swift */,
 				85A477672641CE3700F93AB3 /* CoreData */,
 				85941FB6264E3D3F00A3CAF6 /* Drawing */,
-				8515B32F2624E6EE00A886BD /* ImageBasics.swift */,
 				8515B36926263FFE00A886BD /* MaterialModel.swift */,
 			);
 			path = Model;
@@ -754,7 +750,6 @@
 				8515B372262743D000A886BD /* TerrainView.swift in Sources */,
 				85771BCD2633D08F001A2B88 /* InputViews.swift in Sources */,
 				85D1BC722660347D009D70DC /* MMModeView.swift in Sources */,
-				8515B3302624E6EE00A886BD /* ImageBasics.swift in Sources */,
 				85B913682632998D0065D6D2 /* SwapGreenRed.swift in Sources */,
 				8515B47C262E4B5F00A886BD /* FXBlurrView.swift in Sources */,
 				857C473426371D06006C6A32 /* MetalNoiseView.swift in Sources */,
@@ -805,7 +800,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				85B9137526329A050065D6D2 /* BLKTransparent.swift in Sources */,
-				8515B3312624E6EE00A886BD /* ImageBasics.swift in Sources */,
 				85B9134D2631C13B0065D6D2 /* SwiftUI+Extensions.swift in Sources */,
 				85B91370263299CB0065D6D2 /* HexagonFilter.swift in Sources */,
 				85B9138326329DED0065D6D2 /* MetalGenView.swift in Sources */,

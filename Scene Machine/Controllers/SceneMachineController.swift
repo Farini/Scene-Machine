@@ -12,7 +12,7 @@ import QuartzCore
 
 /// The View on the Right side of the SplitView Scene Machine View
 enum MachineRightView:String, CaseIterable {
-    case Empty
+    case FullView
     case UVMap
     case Shape
     case Settings
@@ -25,7 +25,7 @@ class SceneMachineController:ObservableObject {
     @Published var materials:[SCNMaterial] = []
     @Published var nodes:[SCNNode] = []
     @Published var geometries:[SCNGeometry] = []
-    @Published var rightView:MachineRightView = .Empty
+    @Published var rightView:MachineRightView = .FullView
     
     // Selection
     @Published var selectedNode:SCNNode?

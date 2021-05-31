@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreImage
+import Cocoa
 
 class MetalFilter: CIFilter {
     
@@ -31,3 +32,4 @@ class MetalFilter: CIFilter {
         return kernel.apply(extent: inputImage.extent, arguments: [inputImage])
     }
 }
+

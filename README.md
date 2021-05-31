@@ -36,7 +36,7 @@ Procedural Image generators with `Metal`
 
 - [X] Noise { Voronoi, Caustic, Waves }
 - [X] Overlay { Lens flare, Halo, Sunbeams, Caustic Refraction }
-- [X] Tiles { Checkerboard, Hexagons, Truchet, Bricks, Diagonal Lines }
+- [X] Tiles { Checkerboard, Hexagons, Truchet, Bricks, Diagonal Lines, Interlaced }
 
 ### Image Composition
 Mix 2 images, using multiple `CoreImage` techniques

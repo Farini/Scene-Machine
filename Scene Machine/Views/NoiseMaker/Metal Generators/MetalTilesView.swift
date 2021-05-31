@@ -37,6 +37,7 @@ struct MetalTilesView: View {
         // case Voronoi
         case RandomMaze
         case Truchet
+        case Interlaced
         case Bricks
     }
     
@@ -98,6 +99,17 @@ struct MetalTilesView: View {
                         self.slider1 = Float(value)
                         updatePreview()
                     }
+                case .Interlaced:
+                    CounterInput(value: $stepCount1, range: 1...20, title: "Tile Count")
+                        .onChange(of: stepCount1) { value in
+                            updatePreview()
+                        }
+//                    SliderInputView(value: 0.5, vRange: 0.5...1.5, title: "Normal / Color") { value in
+//                        self.slider1 = Float(value)
+//                        updatePreview()
+//                    }
+                    ColorPicker("Color 1", selection: $color0)
+                    ColorPicker("Color 2", selection: $color1)
                     
 //                default: Text("Not Implemented").foregroundColor(.gray)
             }
@@ -199,6 +211,28 @@ struct MetalTilesView: View {
         let context = CIContext()
         
         switch tileType {
+            case .Interlaced:
+                
+                let filter = InterlacedTiles()
+                filter.inputImage = coreImage
+                filter.size = coreImage.extent.size
+                filter.color1 = NSColor(color0)
+                filter.color2 = NSColor(color1)
+                filter.tileSize = CGFloat(stepCount1)
+                
+                guard let output = filter.outputImage(),
+                      let cgOutput = context.createCGImage(output, from: output.extent)
+                else {
+                    print("⚠️ No output image")
+                    return
+                }
+                
+                let filteredImage = NSImage(cgImage: cgOutput, size: controller.textureSize.size)
+                
+                self.image = filteredImage
+                
+                controller.updateImage(new: filteredImage, isPreview: isPreviewing)
+                
             case .Hexagons:
                 print("Hexagons")
                 
@@ -218,11 +252,6 @@ struct MetalTilesView: View {
                 
                 self.image = filteredImage
                 
-//                if isPreviewing {
-//                    controller.previewImage = filteredImage
-//                } else {
-//                    controller.image = filteredImage
-//                }
                 controller.updateImage(new: filteredImage, isPreview: isPreviewing)
                 
             case .Checkerboard:

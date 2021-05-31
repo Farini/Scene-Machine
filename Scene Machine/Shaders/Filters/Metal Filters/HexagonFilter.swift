@@ -364,6 +364,55 @@ class BricksFilter:CIFilter {
     }
 }
 
+class InterlacedTiles: CIFilter {
+    
+    private var kernel: CIColorKernel
+    
+    var inputImage: CIImage?
+    
+    var color1:NSColor = .red
+    var color2:NSColor = .blue
+    var size:CGSize = CGSize(width: 1024, height: 1024)
+    var tileSize:CGFloat = 10
+    
+    override init() {
+        let url = Bundle.main.url(forResource: "Kernels2.ci", withExtension: "metallib")!
+        guard let data = try? Data(contentsOf: url) else { fatalError() }
+        guard let kkk = try? CIColorKernel(functionName: "interlace", fromMetalLibraryData: data) else { fatalError() } // myColor // hexagons
+        self.kernel = kkk
+        super.init()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func outputImage() -> CIImage? {
+        if inputImage == nil {
+            let baseImage = NSImage(size: NSSize(width: size.width, height: size.height))
+            guard let inputData = baseImage.tiffRepresentation,
+                  let bitmap = NSBitmapImageRep(data: inputData),
+                  let inputCIImage = CIImage(bitmapImageRep: bitmap) else {
+                print("Missing something")
+                return nil
+            }
+            self.inputImage = inputCIImage
+        }
+        
+        guard let inputImage = inputImage else {return nil}
+        
+        let src = CISampler(image: inputImage)
+        let vec = CIVector(cgPoint: CGPoint(x: size.width, y: size.height))
+        let fColor1 = CIVector(values: [color1.redComponent, color1.greenComponent, color1.blueComponent], count: 3)
+        let fColor2 = CIVector(values: [color2.redComponent, color2.greenComponent, color2.blueComponent], count: 3)
+        let fTileSize = Float(tileSize)
+        
+        // float4 truchet(sample_t sample, float2 size, destination dest) {
+        return kernel.apply(extent: inputImage.extent, arguments: [src, fColor1, fColor2, vec, fTileSize])
+    }
+}
+
+
 class NormalMapFilter:CIFilter {
     private var kernel:CIKernel
     var inputImage:CIImage?

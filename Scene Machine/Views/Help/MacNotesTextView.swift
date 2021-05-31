@@ -14,10 +14,11 @@ import Cocoa
 import SwiftUI
 
 struct SimplerView:View {
+    @State var text:String = "{ \n    planets { \n        name \n    }\n}"
     var body: some View {
 //        VStack {
             MacEditorTextView(
-                text: .constant("{ \n    planets { \n        name \n    }\n}"),
+                text: $text,
                 isEditable: true,
                 font: .systemFont(ofSize: 14)
                 //font: .userFixedPitchFont(ofSize: 14)

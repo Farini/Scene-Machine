@@ -96,13 +96,25 @@ struct SceneMachineView: View {
                 // Top Toolbar
                 HStack {
                     
-                    Button("+ Geometry") {
+                    // Import
+                    Button(action: {
                         popGeoImport.toggle()
-                    }
+                    }, label: {
+                        Image(systemName:"square.and.arrow.down.fill")
+                    })
+                    .help("Import geometry")
                     .popover(isPresented: $popGeoImport) {
                         VStack {
                             Text("Add Geometry").font(.title2).foregroundColor(.orange)
                             Divider()
+                            HStack {
+                                Text("Import")
+                                Spacer()
+                                Button("Load file") {
+                                    controller.loadPanel()
+                                }
+                            }
+                            
                             ForEach(AppGeometries.allCases, id:\.self) { appGeo in
                                 HStack {
                                     Text(appGeo.rawValue)
@@ -116,16 +128,13 @@ struct SceneMachineView: View {
                         .frame(width:200)
                         .padding()
                     }
-                    Button("Load") {
-                        print("load")
-                        controller.loadPanel()
-                    }
                     
-                    Button("Save") {
-                        print("save")
-                        //controller.saveScene()
+                    
+                    
+                    Button("💾") {
                         controller.popSaveDialogue.toggle()
                     }
+                    .help("Save Scene")
                     .popover(isPresented: $controller.popSaveDialogue) {
                         VStack {
                             SaveDialogue(controller: controller)
@@ -258,7 +267,7 @@ struct SceneMachineView: View {
                     
                     // Right View
                     switch controller.rightView {
-                        case .Empty: EmptyView().frame(width: 1, height: 0, alignment: .trailing)
+                        case .FullView: EmptyView().frame(width: 1, height: 0, alignment: .trailing)
                         case .UVMap:
                             if let node = controller.selectedNode,
                                let geometry:SCNGeometry = node.geometry {

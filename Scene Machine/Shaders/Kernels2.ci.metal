@@ -14,6 +14,7 @@ using namespace metal;
 //https://en.wikipedia.org/wiki/Grayscale
 constant float3 kRec709Luma  = float3(0.2126, 0.7152, 0.0722);
 constant float3 kRec601Luma  = float3(0.299 , 0.587 , 0.114);
+constant float pi = 3.141592653589;
 //constant float3 kRec2100Luma = float3(0.2627, 0.6780, 0.0593);
 
 #include <CoreImage/CoreImage.h> // includes CIKernelMetalLib.h
@@ -106,6 +107,45 @@ extern "C" { namespace coreimage {
     }
     
     // MARK: - Tiled Noise
+    
+    float mod(float x, float y) {
+        return x - y * floor(x / y);
+    }
+    
+    float4 interlace(sample_t sample, float3 color1, float3 color2, float2 resolution, float tileSize, destination dest) {
+        // float pi = 3.141592653589;
+        
+        float2 uv = (dest.coord() - .5 * resolution.xy) / resolution.y;
+        
+        float ca = cos(pi * .25);
+        float sa = sin(pi * .25);
+        float2x2 rot = float2x2(ca, -sa, sa, ca);
+        uv *= rot;
+        
+        uv *= tileSize;
+        float2 id = floor(uv);
+        uv = fract(uv) - 0.5;
+        
+        float d1 = step(abs(uv.x), .25);
+        float d1s = smoothstep(.5, .10, abs(uv.x));
+        float d2 = step(abs(uv.y), .25);
+        float d2s = smoothstep(.5, .10, abs(uv.y));
+        
+        float3 col = float3(0.);
+        
+        if(mod(id.x + id.y, 2.) == 0.){
+            col = mix(col, color1, d1);
+            col = mix(col, float3(0), d2s);
+            col = mix(col, color2, d2);
+        } else {
+            col = mix(col, color2, d2);
+            col = mix(col, float3(0), d1s);
+            col = mix(col, color1, d1);
+        }
+        
+        
+        return float4(col,1.0);
+    }
     
     // Truchet
     float4 truchet(sample_t sample, float tileCount, float2 size, destination dest) {
