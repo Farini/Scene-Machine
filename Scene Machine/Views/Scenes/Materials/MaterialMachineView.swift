@@ -70,6 +70,8 @@ struct MaterialMachineView: View {
                         }
                         .help("saves the material")
                         
+                        Spacer()
+                        
                         // Geometry Picker
                         Picker("Geometry", selection: $controller.geoOption) {
                             ForEach(MMGeometryOption.allCases, id:\.self) { geo in
@@ -80,8 +82,6 @@ struct MaterialMachineView: View {
                         .onChange(of: controller.geoOption) { value in
                             controller.updateNode()
                         }
-                        
-                        Spacer()
                         
                         // Background Picker
                         Picker("Back", selection:$controller.sceneBackground) {

@@ -129,8 +129,7 @@ struct SceneMachineView: View {
                         .padding()
                     }
                     
-                    
-                    
+                    // Save
                     Button("💾") {
                         controller.popSaveDialogue.toggle()
                     }
@@ -142,7 +141,6 @@ struct SceneMachineView: View {
                             
                         }
                     }
-//                    .anchorPreference(value: .init(Anchor.Source.bottom))
                     
                     Spacer()
                     
@@ -186,27 +184,6 @@ struct SceneMachineView: View {
                             }
                         }
                     }
-                    
-//                    Button("+ Back") {
-//                        popBackground.toggle()
-//                    }
-//                    .popover(isPresented: $popBackground) {
-//                        VStack {
-//                            Text("Backgrounds").font(.title2).foregroundColor(.blue)
-//                            ForEach(AppBackgrounds.allCases, id:\.self) { appBack in
-//                                HStack {
-//                                    Text(appBack.rawValue)
-//                                    Spacer()
-//                                    Button("Change") {
-//                                        controller.changeBackground(back: appBack)
-//                                    }
-//                                }
-//
-//                            }
-//                        }
-//                        .frame(width:200)
-//                        .padding()
-//                    }
                 }
                 .padding([.top, .leading, .trailing], 8)
                 
