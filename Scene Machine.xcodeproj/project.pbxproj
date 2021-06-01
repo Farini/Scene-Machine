@@ -43,6 +43,8 @@
 		85885EF626520B1B00E98855 /* HelpCharacterModeling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85885EF526520B1B00E98855 /* HelpCharacterModeling.swift */; };
 		85885EF82656B5E200E98855 /* MaterialMachineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85885EF72656B5E200E98855 /* MaterialMachineView.swift */; };
 		85885EFA2656BD3300E98855 /* MaterialMachineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85885EF92656BD3300E98855 /* MaterialMachineController.swift */; };
+		858C459F26658F8B00AB830B /* ExplorerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 858C459E26658F8B00AB830B /* ExplorerTest.swift */; };
+		858C45A226667F0B00AB830B /* ExplorerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 858C45A126667F0B00AB830B /* ExplorerController.swift */; };
 		859241FF265B7FE9001D503D /* UVMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859241FE265B7FE9001D503D /* UVMapView.swift */; };
 		85941FB8264E3D6900A3CAF6 /* Drawing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85941FB7264E3D6900A3CAF6 /* Drawing.swift */; };
 		85941FBB264EEA3500A3CAF6 /* DrawingPadToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85941FBA264EEA3500A3CAF6 /* DrawingPadToolbar.swift */; };
@@ -183,6 +185,8 @@
 		85885EF526520B1B00E98855 /* HelpCharacterModeling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpCharacterModeling.swift; sourceTree = "<group>"; };
 		85885EF72656B5E200E98855 /* MaterialMachineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialMachineView.swift; sourceTree = "<group>"; };
 		85885EF92656BD3300E98855 /* MaterialMachineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialMachineController.swift; sourceTree = "<group>"; };
+		858C459E26658F8B00AB830B /* ExplorerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplorerTest.swift; sourceTree = "<group>"; };
+		858C45A126667F0B00AB830B /* ExplorerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplorerController.swift; sourceTree = "<group>"; };
 		859241FE265B7FE9001D503D /* UVMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UVMapView.swift; sourceTree = "<group>"; };
 		85941FB7264E3D6900A3CAF6 /* Drawing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drawing.swift; sourceTree = "<group>"; };
 		85941FB9264E452D00A3CAF6 /* ModelReadme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ModelReadme.md; sourceTree = "<group>"; };
@@ -282,6 +286,7 @@
 				8515B36526263C6A00A886BD /* Materials */,
 				85CB4360263D0D9A006E4B10 /* DrawingView.swift */,
 				859241FE265B7FE9001D503D /* UVMapView.swift */,
+				858C459E26658F8B00AB830B /* ExplorerTest.swift */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -384,9 +389,7 @@
 			children = (
 				85A477612641B08900F93AB3 /* Generators */,
 				85A477622641B0B800F93AB3 /* Image FX */,
-				8515B341262554A700A886BD /* GradientController.swift */,
-				85D3E7CE26390FC500D693FA /* SceneMachineController.swift */,
-				85885EF92656BD3300E98855 /* MaterialMachineController.swift */,
+				858C45A02666086700AB830B /* Scenes */,
 				85941FBC264EF85700A3CAF6 /* DrawingPadController.swift */,
 			);
 			path = Controllers;
@@ -431,6 +434,16 @@
 				85B9137F26329DA20065D6D2 /* Metal Generators */,
 			);
 			path = NoiseMaker;
+			sourceTree = "<group>";
+		};
+		858C45A02666086700AB830B /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				85D3E7CE26390FC500D693FA /* SceneMachineController.swift */,
+				85885EF92656BD3300E98855 /* MaterialMachineController.swift */,
+				858C45A126667F0B00AB830B /* ExplorerController.swift */,
+			);
+			path = Scenes;
 			sourceTree = "<group>";
 		};
 		85941FB5264DE3C400A3CAF6 /* Drawing */ = {
@@ -486,6 +499,7 @@
 			isa = PBXGroup;
 			children = (
 				85954042261C3144001D9040 /* SpriteKitNoiseController.swift */,
+				8515B341262554A700A886BD /* GradientController.swift */,
 				85FFB7352639C16F00E8FE0A /* MetalGenController.swift */,
 				857A93D126124FE7004FFEBB /* QuickNoiseController.swift */,
 			);
@@ -735,6 +749,7 @@
 				85B91362263298D20065D6D2 /* LensFlare.swift in Sources */,
 				8515B36A26263FFE00A886BD /* MaterialModel.swift in Sources */,
 				85B913352631057E0065D6D2 /* SceneKit+Extensions.swift in Sources */,
+				858C459F26658F8B00AB830B /* ExplorerTest.swift in Sources */,
 				85B9136F263299CB0065D6D2 /* HexagonFilter.swift in Sources */,
 				8515B3472625EC6300A886BD /* FrontView.swift in Sources */,
 				85FFB7362639C16F00E8FE0A /* MetalGenController.swift in Sources */,
@@ -746,6 +761,7 @@
 				8515B46D262D3B3B00A886BD /* TopBar.swift in Sources */,
 				85FAF34C263C511300081ED8 /* FXDistortView.swift in Sources */,
 				8515B3D52628A58B00A886BD /* LocalDatabase.swift in Sources */,
+				858C45A226667F0B00AB830B /* ExplorerController.swift in Sources */,
 				855053752646A50B00A577E2 /* SMMaterialView.swift in Sources */,
 				8515B372262743D000A886BD /* TerrainView.swift in Sources */,
 				85771BCD2633D08F001A2B88 /* InputViews.swift in Sources */,

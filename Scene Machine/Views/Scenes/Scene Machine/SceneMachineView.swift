@@ -198,6 +198,20 @@ struct SceneMachineView: View {
                                 TempAlert(message: controller.tempAlertMessage)
                             }
                         
+                        if let scene = controller.topDownScene,
+                           let cam = scene.rootNode.childNode(withName: "topdowncam", recursively: false) {
+                            VStack {
+                                Spacer()
+                                HStack {
+                                    Spacer()
+                                    SceneView(scene: scene, pointOfView: cam, options: [], preferredFramesPerSecond: 60, antialiasingMode: .multisampling2X, delegate: nil, technique: nil)
+                                        .frame(width: 256, height: 256, alignment: .trailing)
+                                }
+                            }
+                            
+                                
+                        }
+                        
                         
                         if controller.isTouchingOptions {
                             VStack {

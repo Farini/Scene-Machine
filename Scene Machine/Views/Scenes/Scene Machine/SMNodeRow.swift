@@ -8,21 +8,7 @@
 import SwiftUI
 import SceneKit
 
-extension SCNVector3 {
-    func toString() -> String {
-        let nf = NumberFormatter()
-        nf.numberStyle = .decimal
-        nf.maximumFractionDigits = 4
-        nf.maximumIntegerDigits = 4
-        nf.minimumFractionDigits = 1
-        
-        let xNum = NSNumber(value: Float(x)),
-        yNum = NSNumber(value: Float(y)),
-        zNum = NSNumber(value: Float(z))
-        
-        return "X:\(nf.string(from: xNum) ?? "-") Y:\(nf.string(from:yNum) ?? "-") Z:\(nf.string(from:zNum) ?? "-")"
-    }
-}
+
 
 struct SMNodeRow: View {
     

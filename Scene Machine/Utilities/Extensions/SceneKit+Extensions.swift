@@ -122,6 +122,22 @@ extension SCNGeometrySource {
     }
 }
 
+extension SCNVector3 {
+    func toString() -> String {
+        let nf = NumberFormatter()
+        nf.numberStyle = .decimal
+        nf.maximumFractionDigits = 4
+        nf.maximumIntegerDigits = 4
+        nf.minimumFractionDigits = 1
+        
+        let xNum = NSNumber(value: Float(x)),
+            yNum = NSNumber(value: Float(y)),
+            zNum = NSNumber(value: Float(z))
+        
+        return "X:\(nf.string(from: xNum) ?? "-") Y:\(nf.string(from:yNum) ?? "-") Z:\(nf.string(from:zNum) ?? "-")"
+    }
+}
+
 // MARK: - Conforming
 
 /**
@@ -174,3 +190,20 @@ extension SCNWrapMode:Codable, CaseIterable {
         return [SCNWrapMode.clamp, SCNWrapMode.clampToBorder, SCNWrapMode.mirror, SCNWrapMode.repeat]
     }
 }
+
+// MARK: - Math Helpers
+
+extension CGFloat {
+    
+    /// Returns the value of this angle converted to Radians
+    func toRadians() -> CGFloat {
+        return self * .pi / 180.0
+    }
+    
+    /// Returns the value of this angle converted to Degrees
+    func toDegrees() -> CGFloat {
+        return self * 180 / .pi
+    }
+}
+
+

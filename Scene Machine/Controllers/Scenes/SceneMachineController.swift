@@ -26,6 +26,7 @@ class SceneMachineController:ObservableObject {
     @Published var nodes:[SCNNode] = []
     @Published var geometries:[SCNGeometry] = []
     @Published var rightView:MachineRightView = .FullView
+    @Published var topDownScene:SCNScene?
     
     // Selection
     @Published var selectedNode:SCNNode?
@@ -74,6 +75,15 @@ class SceneMachineController:ObservableObject {
         }
         
         device = MTLCreateSystemDefaultDevice()
+        self.topDownScene = self.scene
+        let topDownCam = SCNNode()
+        topDownCam.name = "topdowncam"
+        let camera = SCNCamera()
+        topDownCam.camera = camera
+        topDownCam.position = SCNVector3(0, 50, 0)
+        let cons = SCNLookAtConstraint(target: self.topDownScene!.rootNode)
+        topDownCam.constraints = [cons]
+        self.topDownScene?.rootNode.addChildNode(topDownCam)
         
         NotificationCenter.default.addObserver(self, selector: #selector(hitTestResultNotification(_:)), name: .hitTestNotification, object: nil)
         
