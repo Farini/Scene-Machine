@@ -17,14 +17,7 @@ struct ExplorerTest: View {
             HStack {
                 Text("Explorer")
                 Button("Go") {
-                    if let b = controller.scene.rootNode.childNode(withName: "protagonist", recursively: false), let bp = b.physicsBody {
-                        
-                        let force = simd_make_float4(0, 0, -2, 0)
-                        let ccc = controller.scene.rootNode.childNode(withName: "protagonist", recursively: false)!
-                        let rotatedForce = simd_mul(ccc.simdTransform, force)
-                        let vectorForce = SCNVector3(x:CGFloat(rotatedForce.x), y:CGFloat(rotatedForce.y), z:CGFloat(rotatedForce.z))
-                        bp.applyForce(vectorForce, asImpulse: true)
-                    }
+                    controller.goForward()
                 }
                 .keyboardShortcut("w", modifiers: [])
                 
@@ -48,10 +41,18 @@ struct ExplorerTest: View {
             
             ZStack(alignment: .topLeading) {
                 ExplorerSceneView(scene: controller.scene, controller: controller)
-                Text(controller.renderData)
-                    .frame(width: 128, height:150)
-                    .padding()
-                    .background(Color.black.opacity(0.2))
+                HStack {
+                    Text(controller.renderData)
+                        .frame(width: 128, height:150)
+                        .padding()
+                        .background(Color.black.opacity(0.2))
+                    Spacer()
+                    Text("Position: \(controller.posData)")
+                        .frame(width: 128, height:150)
+                        .padding()
+                        .background(Color.black.opacity(0.2))
+                }
+                
                 
             }
             
@@ -244,13 +245,14 @@ class ExplorerNSView:SCNView, SCNSceneRendererDelegate {
             return
         }
         
-        protagonist.presentation.physicsBody?.resetTransform()
+//        protagonist.presentation.physicsBody?.resetTransform()
+        protagonist.transform = protagonist.presentation.transform
         
         let angleY = protagonist.presentation.eulerAngles.z.toDegrees()
-        renderString += String(format: "Pres: %.2f, r %.2f\n", arguments: [Double(angleY)])
+        renderString += String(format: "Pres: %.2f\n", arguments: [Double(angleY)])
         
         let curangleY = protagonist.eulerAngles.z.toDegrees()
-        renderString += String(format: "Curr: %.2f, r %.2f\n", arguments: [Double(curangleY)])
+        renderString += String(format: "Curr: %.2f\n", arguments: [Double(curangleY)])
         
         let body = protagonist.physicsBody!
         
@@ -261,6 +263,8 @@ class ExplorerNSView:SCNView, SCNSceneRendererDelegate {
         renderString += "\n"
         renderString += veloX.prefix(8)
         // renderString += "\n \(body.velocity.toString())"
+        let position = protagonist.presentation.position.toString()
+        controller?.reportPosition(string: position)
         
         controller?.reportRenderer(string: renderString)
     }

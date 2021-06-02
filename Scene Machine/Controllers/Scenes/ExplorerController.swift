@@ -8,6 +8,7 @@
 import SceneKit
 import Cocoa
 import SwiftUI
+import GameController
 
 class ExplorerController:ObservableObject {
     
@@ -16,6 +17,7 @@ class ExplorerController:ObservableObject {
     
     @Published var turnData:String = "♦︎"
     @Published var renderData:String = "0"
+    @Published var posData:String = ""
     
     func reportStatus(string:String) {
         self.turnData = string
@@ -25,46 +27,61 @@ class ExplorerController:ObservableObject {
         self.renderData = string
     }
     
-    // methods
-    func turnRight() {
-        var turnDescriptor:String = "→ "
+    func reportPosition(string:String) {
+        self.posData = string
+    }
+    
+    // MARK: - Moving
+    
+    func goForward() {
+        let force = simd_make_float4(0, 0, 2, 0)
+        let rotatedForce = simd_mul(hero.simdTransform, force)
+        let vectorForce = SCNVector3(x:CGFloat(rotatedForce.x), y:CGFloat(rotatedForce.y), z:CGFloat(rotatedForce.z))
         
-        hero.transform = hero.presentation.transform
-        
-        let degrees = hero.eulerAngles.y.toDegrees()
-        turnDescriptor += String(format: "Deg.: %.2f", arguments: [Double(degrees)])
-        
-        let rotate = SCNAction.rotateBy(x: 0, y: -0.1, z: 0, duration: 0.1)
-        hero.runAction(rotate)
-        
-//        degrees -= 5
-        hero.eulerAngles.y = degrees.toRadians()
-        turnDescriptor += String(format: "Deg.: %.2f R.: %.2f", arguments: [Double(degrees), Double(degrees.toRadians())])
-        turnData = turnDescriptor
+        hero.physicsBody!.applyForce(vectorForce, asImpulse: true)
     }
     
     func turnLeft() {
         var turnDescriptor:String = "← "
         
-        hero.transform = hero.presentation.transform
-        var degrees = hero.eulerAngles.y.toDegrees()
+        let force = simd_make_float4(0, 0, 1, 0)
+        
+        let rotatedForce = simd_mul(hero.simdTransform, force)
+        let vectorForce = SCNVector3(x:CGFloat(rotatedForce.x), y:CGFloat(rotatedForce.y), z:CGFloat(rotatedForce.z))
+        
+        let degrees = hero.presentation.eulerAngles.y.toDegrees()
+        
         turnDescriptor += String(format: "Deg.: %.2f", arguments: [Double(degrees)])
         
-        var rd:CGFloat = 0
-        if (85...90).contains(hero.presentation.eulerAngles.y.toDegrees()) {
-            rd = hero.eulerAngles.y - CGFloat(5).toRadians()
-        } else {
-            rd = hero.eulerAngles.y + CGFloat(5).toRadians()
-        }
-         
+        let pt = hero.convertVector(SCNVector3(-1, 0, 0), to: hero.parent!)
+        hero.physicsBody!.applyForce(vectorForce, at: pt, asImpulse: true) //applyForce(vectorForce, asImpulse: true)
         
-        degrees += 5
-        
-    
-        hero.eulerAngles.y = rd //degrees.toRadians()
-        turnDescriptor += String(format: "Deg.: %.2f R.: %.2f", arguments: [Double(degrees), Double(degrees.toRadians())])
+        hero.transform = hero.presentation.transform
         turnData = turnDescriptor
     }
+    
+    // methods
+    func turnRight() {
+        var turnDescriptor:String = "→ "
+        
+        let force = simd_make_float4(0, 0, 1, 0)
+        
+        let rotatedForce = simd_mul(hero.simdTransform, force)
+        let vectorForce = SCNVector3(x:CGFloat(rotatedForce.x), y:CGFloat(rotatedForce.y), z:CGFloat(rotatedForce.z))
+        
+        // let angle = hero.presentation.eulerAngles
+        let degrees = hero.presentation.eulerAngles.y.toDegrees()
+        
+        turnDescriptor += String(format: "Deg.: %.2f", arguments: [Double(degrees)])
+        
+        let pt = hero.convertVector(SCNVector3(1, 0, 0), to: hero.parent!)
+        hero.physicsBody!.applyForce(vectorForce, at: pt, asImpulse: true) //applyForce(vectorForce, asImpulse: true)
+        
+        hero.transform = hero.presentation.transform
+        
+    }
+    
+    
     
     // Init
     
@@ -72,6 +89,93 @@ class ExplorerController:ObservableObject {
         let mainScene = ExplorerController.makeScene()
         self.scene = mainScene
         self.hero = mainScene.rootNode.childNode(withName: "protagonist", recursively: false)!
+        
+        GCController.startWirelessControllerDiscovery {
+            self.turnData = "Controller ???"
+        }
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(self.handleControllerDidConnect),
+            name: NSNotification.Name.GCControllerDidBecomeCurrent, object: nil)
+        
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(self.handleControllerDidDisconnect),
+            name: NSNotification.Name.GCControllerDidStopBeingCurrent, object: nil)
+    }
+    
+    // MARK: - Controller
+    
+    @objc
+    func handleControllerDidConnect(_ notification: Notification) {
+        guard let gameController = notification.object as? GCController else {
+            return
+        }
+//        unregisterGameController()
+        self.turnData = "Controller ?connected?"
+        registerGameController(gameController)
+//        HapticUtility.initHapticsFor(controller: gameController)
+        
+//        self.overlay?.showHints()
+    }
+    @objc
+    func handleControllerDidDisconnect(_ notification: Notification) {
+//        unregisterGameController()
+//
+//        guard let gameController = notification.object as? GCController else {
+//            return
+//        }
+//        HapticUtility.deinitHapticsFor(controller: gameController)
+    }
+    // Game controller
+    private var gamePadCurrent: GCController?
+    private var gamePadLeft: GCControllerDirectionPad?
+    private var gamePadRight: GCControllerDirectionPad?
+    
+    func registerGameController(_ gameController: GCController) {
+        
+        var buttonA: GCControllerButtonInput?
+        var buttonB: GCControllerButtonInput?
+        var rightTrigger: GCControllerButtonInput?
+        
+        weak var weakController = self
+        
+        if let gamepad = gameController.extendedGamepad {
+            self.gamePadLeft = gamepad.leftThumbstick
+            self.gamePadRight = gamepad.rightThumbstick
+            buttonA = gamepad.buttonA
+            buttonB = gamepad.buttonB
+            rightTrigger = gamepad.rightTrigger
+        } else if let gamepad = gameController.microGamepad {
+            self.gamePadLeft = gamepad.dpad
+            buttonA = gamepad.buttonA
+            buttonB = gamepad.buttonX
+        }
+        
+        buttonA?.valueChangedHandler = {(_ button: GCControllerButtonInput, _ value: Float, _ pressed: Bool) -> Void in
+            guard let strongController = weakController else {
+                return
+            }
+            strongController.goForward()
+        }
+        
+        gamePadLeft?.valueChangedHandler = { (_ controllerDirection:GCControllerDirectionPad, xValue:Float, yValue:Float) -> Void in
+            if xValue > 0 && xValue > yValue {
+                self.turnRight()
+            } else if xValue < 0 && xValue < yValue {
+                self.turnLeft()
+            }
+        }
+        
+        buttonB?.valueChangedHandler = {(_ button: GCControllerButtonInput, _ value: Float, _ pressed: Bool) -> Void in
+            guard let strongController = weakController else {
+                return
+            }
+            // breaks
+//            strongController.controllerAttack()
+        }
+        
+        rightTrigger?.pressedChangedHandler = buttonB?.valueChangedHandler
+        
+        
     }
     
     class func makeScene() -> SCNScene {
@@ -91,7 +195,7 @@ class ExplorerController:ObservableObject {
         camera.zFar = 200
         
         camNode.camera = camera
-        camNode.position = SCNVector3(0, 0.2, 2)
+        camNode.position = SCNVector3(0, 3, -4)
         
         // --- Constraints
         
@@ -101,7 +205,7 @@ class ExplorerController:ObservableObject {
         
         let replicatorConstraint = SCNReplicatorConstraint(target: mainCharacter)
         // Replicates the position, scale and rotation
-        replicatorConstraint.positionOffset = SCNVector3(0, 0.25, 3)
+        replicatorConstraint.positionOffset = SCNVector3(0, 2.75, -4)
         replicatorConstraint.replicatesOrientation = false
         replicatorConstraint.influenceFactor = 0.05
         
@@ -139,6 +243,7 @@ class ExplorerController:ObservableObject {
     // Main Character
     class func makeMainCharacter() -> SCNNode {
         
+        /*
         // Geometry
         let geometry = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0.1)
         
@@ -171,66 +276,101 @@ class ExplorerController:ObservableObject {
         boxChild.geometry = bcg
         boxChild.position = SCNVector3(0, 0.5, -1)
         boxNode.addChildNode(boxChild)
+        */
+        let proScene:SCNNode = SCNScene(named: "Scenes.scnassets/Ship.scn")!.rootNode.childNode(withName: "protagonist", recursively: false)!
         
-        return boxNode
+        return proScene//boxNode
     }
     
     // Scene deco
     class func createSceneDeco(input:SCNScene) {
         
-        for idx in 0...30 {
-            let materialColor = idx % 2 == 0 ? NSColor.orange:NSColor.red
-            let material = SCNMaterial()
-            material.lightingModel = .physicallyBased
-            material.diffuse.contents = materialColor
+        for orangeX in 0...30 {
             
-            let sphere = SCNSphere(radius: 0.2)
-            sphere.firstMaterial = material
-            let sNode = SCNNode(geometry: sphere)
-            // sNode.position = SCNVector3(0, 1, -5)
-            
-            
-            let spherePos = SCNVector3(idx % 2 == 0 ? 0.5:-0.5, 1.5, Float(idx * -4))
-            sNode.position = spherePos
-            
-            input.rootNode.addChildNode(sNode)
+            for orangeZ in 0...30 {
+                
+                let position = SCNVector3(5 * orangeX, 2, 5 * orangeZ)
+                let materialColor = NSColor.orange
+                
+                let material = SCNMaterial()
+                material.lightingModel = .physicallyBased
+                material.diffuse.contents = materialColor
+                
+                let sphere = SCNSphere(radius: 0.2)
+                sphere.firstMaterial = material
+                
+                let sNode = SCNNode(geometry: sphere)
+                
+                sNode.position = position
+                
+                input.rootNode.addChildNode(sNode)
+            }
         }
         
-        for idx in 0...30 {
-            let materialColor = idx % 2 == 0 ? NSColor.blue:NSColor.systemBlue
-            let material = SCNMaterial()
-            material.lightingModel = .physicallyBased
-            material.diffuse.contents = materialColor
+        for redX in -30...0 {
             
-            let sphere = SCNSphere(radius: 0.2)
-            sphere.firstMaterial = material
-            let sNode = SCNNode(geometry: sphere)
-            // sNode.position = SCNVector3(0, 1, -5)
-            
-            
-            let spherePos = SCNVector3(idx % 2 == 0 ? 1:3, 1.5, Float(idx * -5))
-            sNode.position = spherePos
-            
-            input.rootNode.addChildNode(sNode)
+            for redZ in 0...30 {
+                
+                let position = SCNVector3(5 * redX, 2, 5 * redZ)
+                let materialColor = NSColor.red
+                
+                let material = SCNMaterial()
+                material.lightingModel = .physicallyBased
+                material.diffuse.contents = materialColor
+                
+                let sphere = SCNSphere(radius: 0.2)
+                sphere.firstMaterial = material
+                
+                let sNode = SCNNode(geometry: sphere)
+                
+                sNode.position = position
+                
+                input.rootNode.addChildNode(sNode)
+            }
         }
         
-        for idx in -15...15 {
-            let materialColor = idx % 2 == 0 ? NSColor.green:NSColor.yellow
+        for bluX in -30...0 {
             
-            let material = SCNMaterial()
-            material.lightingModel = .physicallyBased
-            material.diffuse.contents = materialColor
+            for bluZ in -30...0 {
+                
+                let position = SCNVector3(5 * bluX, 2, 5 * bluZ)
+                let materialColor = NSColor.blue
+                
+                let material = SCNMaterial()
+                material.lightingModel = .physicallyBased
+                material.diffuse.contents = materialColor
+                
+                let sphere = SCNSphere(radius: 0.2)
+                sphere.firstMaterial = material
+                
+                let sNode = SCNNode(geometry: sphere)
+                
+                sNode.position = position
+                
+                input.rootNode.addChildNode(sNode)
+            }
+        }
+        
+        for greenX in 0...30 {
             
-            let sphere = SCNSphere(radius: 0.2)
-            sphere.firstMaterial = material
-            let sNode = SCNNode(geometry: sphere)
-            // sNode.position = SCNVector3(0, 1, -5)
-            
-            
-            let spherePos = SCNVector3(Float(idx * 5),  1.5, idx % 2 == 0 ? 1:3)
-            sNode.position = spherePos
-            
-            input.rootNode.addChildNode(sNode)
+            for greenZ in -30...0 {
+                
+                let position = SCNVector3(5 * greenX, 2, 5 * greenZ)
+                let materialColor = NSColor.green
+                
+                let material = SCNMaterial()
+                material.lightingModel = .physicallyBased
+                material.diffuse.contents = materialColor
+                
+                let sphere = SCNSphere(radius: 0.2)
+                sphere.firstMaterial = material
+                
+                let sNode = SCNNode(geometry: sphere)
+                
+                sNode.position = position
+                
+                input.rootNode.addChildNode(sNode)
+            }
         }
         
     }
