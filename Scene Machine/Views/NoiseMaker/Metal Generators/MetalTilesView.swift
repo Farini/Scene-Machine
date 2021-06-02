@@ -39,6 +39,7 @@ struct MetalTilesView: View {
         case Truchet
         case Interlaced
         case Bricks
+        case Circuitboard
     }
     
     @State var tileType:MetalTileType = .Hexagons
@@ -110,6 +111,10 @@ struct MetalTilesView: View {
 //                    }
                     ColorPicker("Color 1", selection: $color0)
                     ColorPicker("Color 2", selection: $color1)
+                    
+                case .Circuitboard:
+                    Text("Circuitboard")
+                    Text("No parameters").foregroundColor(.gray)
                     
 //                default: Text("Not Implemented").foregroundColor(.gray)
             }
@@ -211,14 +216,15 @@ struct MetalTilesView: View {
         let context = CIContext()
         
         switch tileType {
-            case .Interlaced:
+            
+            case .Circuitboard:
+                let noiseImageT = NSImage(named:"Example")!.tiffRepresentation
+                let noiseBitmap = NSBitmapImageRep(data:noiseImageT!)
+                //                let cgNoise = context.createCGImage(coreImage, from: CGRect(origin: .zero, size: TextureSize.medium.size))
+                let ciimage = CIImage(bitmapImageRep: noiseBitmap!)
                 
-                let filter = InterlacedTiles()
-                filter.inputImage = coreImage
-                filter.size = coreImage.extent.size
-                filter.color1 = NSColor(color0)
-                filter.color2 = NSColor(color1)
-                filter.tileSize = CGFloat(stepCount1)
+                let filter = CircuitMaker()
+                filter.inputImage = ciimage
                 
                 guard let output = filter.outputImage(),
                       let cgOutput = context.createCGImage(output, from: output.extent)
@@ -227,10 +233,32 @@ struct MetalTilesView: View {
                     return
                 }
                 
-                let filteredImage = NSImage(cgImage: cgOutput, size: controller.textureSize.size)
+                let filteredImage = NSImage(cgImage: cgOutput, size: TextureSize.medium.size)
                 
                 self.image = filteredImage
                 
+                controller.updateImage(new: filteredImage, isPreview: isPreviewing)
+                
+            case .Interlaced:
+                
+                let filter = InterlacedTiles()
+                filter.inputImage = coreImage
+                filter.size = coreImage.extent.size
+                filter.color1 = NSColor(color0)
+                filter.color2 = NSColor(color1)
+                filter.tileSize = CGFloat(stepCount1)
+
+                guard let output = filter.outputImage(),
+                      let cgOutput = context.createCGImage(output, from: output.extent)
+                else {
+                    print("⚠️ No output image")
+                    return
+                }
+
+                let filteredImage = NSImage(cgImage: cgOutput, size: controller.textureSize.size)
+
+                self.image = filteredImage
+
                 controller.updateImage(new: filteredImage, isPreview: isPreviewing)
                 
             case .Hexagons:

@@ -215,3 +215,53 @@ class TileMaker: CIFilter {
         }, arguments: [src, size, fMargin])
     }
 }
+
+// Circuit
+class CircuitMaker: CIFilter {
+    
+    private var kernel:CIKernel
+    var inputImage:CIImage?
+//    var margin:Int = 10
+    var imageSize:Float = 1024
+    
+    override init() {
+        let url = Bundle.main.url(forResource: "Generators.ci", withExtension: "metallib")!
+        guard let data = try? Data(contentsOf: url) else { fatalError() }
+        guard let kkk = try? CIKernel(functionName: "circuit", fromMetalLibraryData: data) else { fatalError() } // myColor // hexagons // truchet
+        // float4 truchet(sample_t sample, float2 size, destination dest) {
+        self.kernel = kkk
+        super.init()
+    }
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
+    func outputImage() -> CIImage? {
+        
+        if inputImage == nil {
+            let baseImage = NSImage(size: NSSize(width: CGFloat(1024), height: CGFloat(1024)))
+            guard let inputData = baseImage.tiffRepresentation,
+                  let bitmap = NSBitmapImageRep(data: inputData),
+                  let inputCIImage = CIImage(bitmapImageRep: bitmap) else {
+                print("Missing something")
+                return nil
+            }
+            self.inputImage = inputCIImage
+        }
+        
+        guard let inputImage = inputImage else {return nil}
+        
+        // sketch(sampler src, float texelWidth, float texelHeight, float intensity40)
+        
+        let src = CISampler(image: inputImage)
+        let imsize = inputImage.extent.size
+        let size = CIVector(cgPoint: CGPoint(x: imsize.width, y: imsize.height))
+//        let fMargin = Float(margin)
+        
+        return kernel.apply(extent: inputImage.extent, roiCallback: {
+            (index, rect) in
+            return rect // .insetBy(dx: 0, dy: 0)
+        }, arguments: [src, size])
+    }
+}

@@ -91,6 +91,7 @@
 		85D3E7CB26390FAF00D693FA /* SceneMachineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D3E7CA26390FAF00D693FA /* SceneMachineView.swift */; };
 		85D3E7CF26390FC500D693FA /* SceneMachineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D3E7CE26390FC500D693FA /* SceneMachineController.swift */; };
 		85DEFC682643AFC8003DEC36 /* MercurializeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DEFC672643AFC8003DEC36 /* MercurializeFilter.swift */; };
+		85E840972667FD6F00CFD8ED /* Generators.ci.metal in Sources */ = {isa = PBXBuildFile; fileRef = 85E840962667FD6F00CFD8ED /* Generators.ci.metal */; };
 		85F34A992649B5C2002F949E /* SMShapeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F34A982649B5C2002F949E /* SMShapeEditorView.swift */; };
 		85FAF34C263C511300081ED8 /* FXDistortView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85FAF34B263C511300081ED8 /* FXDistortView.swift */; };
 		85FAF34E263C512B00081ED8 /* FXStylizeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85FAF34D263C512B00081ED8 /* FXStylizeView.swift */; };
@@ -225,6 +226,7 @@
 		85D3E7CA26390FAF00D693FA /* SceneMachineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneMachineView.swift; sourceTree = "<group>"; };
 		85D3E7CE26390FC500D693FA /* SceneMachineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneMachineController.swift; sourceTree = "<group>"; };
 		85DEFC672643AFC8003DEC36 /* MercurializeFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MercurializeFilter.swift; sourceTree = "<group>"; };
+		85E840962667FD6F00CFD8ED /* Generators.ci.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Generators.ci.metal; sourceTree = "<group>"; };
 		85F34A982649B5C2002F949E /* SMShapeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMShapeEditorView.swift; sourceTree = "<group>"; };
 		85FAF34B263C511300081ED8 /* FXDistortView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FXDistortView.swift; sourceTree = "<group>"; };
 		85FAF34D263C512B00081ED8 /* FXStylizeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FXStylizeView.swift; sourceTree = "<group>"; };
@@ -261,6 +263,7 @@
 				8597BB8325BCAEF600C705A0 /* Metal.metal */,
 				85FAF34F263C6B7600081ED8 /* PhongShader.metal */,
 				85CB435E263CABC0006E4B10 /* Kernels2.ci.metal */,
+				85E840962667FD6F00CFD8ED /* Generators.ci.metal */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -797,6 +800,7 @@
 				85D1BC6B265F6C66009D70DC /* PencilKitView.swift in Sources */,
 				85941FBF265018FB00A3CAF6 /* PencilToolbar.swift in Sources */,
 				8515B3DC2628B16600A886BD /* CompositionView.swift in Sources */,
+				85E840972667FD6F00CFD8ED /* Generators.ci.metal in Sources */,
 				8515B474262E124300A886BD /* ImageFXView.swift in Sources */,
 				85885EF82656B5E200E98855 /* MaterialMachineView.swift in Sources */,
 				85D1BC64265D6896009D70DC /* SMUVMapView.swift in Sources */,
