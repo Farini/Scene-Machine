@@ -555,3 +555,79 @@ class PlasmaFilter:CIFilter {
         return kernel.apply(extent: inputImage.extent, arguments: [src, time, iterations, sharpness, tileSize])
     }
 }
+
+class TriangledGrid: CIFilter {
+    
+    private var kernel:CIKernel
+    var inputImage:CIImage?
+    var tileSize:CGSize = TextureSize.medium.size
+    var time:Float = 1
+    
+    override init() {
+        let url = Bundle.main.url(forResource: "Generators.ci", withExtension: "metallib")!
+        guard let data = try? Data(contentsOf: url) else { fatalError() }
+        guard let kern = try? CIKernel(functionName: "triangleGridMain", fromMetalLibraryData: data) else { fatalError() } // myColor // hexagons
+        self.kernel = kern
+        super.init()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func outputImage() -> CIImage? {
+        
+        if inputImage == nil {
+            let baseImage = NSImage(size: NSSize(width: CGFloat(tileSize.width), height: CGFloat(tileSize.height)))
+            guard let inputData = baseImage.tiffRepresentation,
+                  let bitmap = NSBitmapImageRep(data: inputData),
+                  let inputCIImage = CIImage(bitmapImageRep: bitmap) else {
+                print("Missing something")
+                return nil
+            }
+            self.inputImage = inputCIImage
+        }
+        
+        guard let inputImage = inputImage else {return nil}
+        
+        let src = CISampler(image: inputImage)
+        //        let iterations:Float = 5
+        //        let sharpness:Float = 1
+        let vec = CIVector(cgPoint: CGPoint(x: CGFloat(tileSize.width), y: CGFloat(tileSize.height)))
+//        let time:Float = 1
+        
+        // plasma(sample_t sample, float time, float iterations, float sharpness, float scale, destination dest) {
+        return kernel.apply(extent: inputImage.extent, roiCallback: {
+            (index, rect) in
+            return rect // .insetBy(dx: 0, dy: 0)
+        }, arguments: [src, vec, time])
+    }
+    /*
+     func outputImage() -> CIImage? {
+     
+     if inputImage == nil {
+     let baseImage = NSImage(size: NSSize(width: CGFloat(tileSize), height: CGFloat(tileSize)))
+     guard let inputData = baseImage.tiffRepresentation,
+     let bitmap = NSBitmapImageRep(data: inputData),
+     let inputCIImage = CIImage(bitmapImageRep: bitmap) else {
+     print("Missing something")
+     return nil
+     }
+     self.inputImage = inputCIImage
+     }
+     
+     guard let inputImage = inputImage else {return nil}
+     
+     let src = CISampler(image: inputImage)
+     //        let vec = CIVector(cgPoint: CGPoint(x: CGFloat(tileSize), y: CGFloat(tileSize)))
+     //        let fTile = Float(tileCount)
+     //        let fTime = Float(time)
+     
+     // float4 truchet(sample_t sample, float2 size, destination dest) {
+     return kernel.apply(extent: inputImage.extent, roiCallback: {
+     (index, rect) in
+     return rect // .insetBy(dx: 0, dy: 0)
+     }, arguments: [src]) // arguments: [src, vec])
+     }
+     */
+}

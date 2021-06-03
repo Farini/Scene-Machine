@@ -40,6 +40,7 @@ struct MetalTilesView: View {
         case Interlaced
         case Bricks
         case Circuitboard
+        case TriangleGrid
     }
     
     @State var tileType:MetalTileType = .Hexagons
@@ -116,6 +117,13 @@ struct MetalTilesView: View {
                     Text("Circuitboard")
                     Text("No parameters").foregroundColor(.gray)
                     
+                case .TriangleGrid:
+                    Text("Triangle Grid")
+                    
+                    SliderInputView(value: 1, vRange: 1...2, title: "Time") { value in
+                        self.slider1 = Float(value)
+                        updatePreview()
+                    }
 //                default: Text("Not Implemented").foregroundColor(.gray)
             }
             
@@ -239,7 +247,29 @@ struct MetalTilesView: View {
                 
                 controller.updateImage(new: filteredImage, isPreview: isPreviewing)
                 
+            case .TriangleGrid:
+                
+                let filter = TriangledGrid()
+                filter.inputImage = coreImage
+                filter.tileSize = coreImage.extent.size
+                filter.time = max(1, slider1)
+                
+                guard let output = filter.outputImage(),
+                      let cgOutput = context.createCGImage(output, from: output.extent)
+                else {
+                    print("⚠️ No output image")
+                    return
+                }
+                
+                let filteredImage = NSImage(cgImage: cgOutput, size: controller.textureSize.size)
+                
+                self.image = filteredImage
+                
+                controller.updateImage(new: filteredImage, isPreview: isPreviewing)
+                
             case .Interlaced:
+                
+                
                 
                 let filter = InterlacedTiles()
                 filter.inputImage = coreImage
