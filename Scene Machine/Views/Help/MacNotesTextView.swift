@@ -16,14 +16,11 @@ import SwiftUI
 struct SimplerView:View {
     @State var text:String = "{ \n    planets { \n        name \n    }\n}"
     var body: some View {
-//        VStack {
-            MacEditorTextView(
-                text: $text,
-                isEditable: true,
-                font: .systemFont(ofSize: 14)
-                //font: .userFixedPitchFont(ofSize: 14)
-            )
-//        }
+        MacEditorTextView(
+            text: $text,
+            isEditable: true,
+            font: .systemFont(ofSize: 14)
+        )
     }
 }
 
@@ -32,6 +29,7 @@ struct MacEditorTextView: NSViewRepresentable {
     @Binding var text: String
     var isEditable: Bool = true
     var font: NSFont?    = .systemFont(ofSize: 14, weight: .regular)
+    var fontColor: NSColor = NSColor.labelColor
     
     var onEditingChanged: () -> Void       = {}
     var onCommit        : () -> Void       = {}
@@ -45,7 +43,8 @@ struct MacEditorTextView: NSViewRepresentable {
         let textView = CustomTextView(
             text: text,
             isEditable: isEditable,
-            font: font
+            font: font,
+            foreColor: fontColor
         )
         textView.tDelegate = context.coordinator
         
@@ -126,7 +125,7 @@ class CustomTextView: NSView {
     
     var isEditable: Bool
     var font: NSFont?
-    
+    var foreColor:NSColor?
     var tDelegate: NSTextViewDelegate?
     
     var text: String {
@@ -187,18 +186,18 @@ class CustomTextView: NSView {
         textView.isVerticallyResizable   = true
         textView.maxSize                 = NSSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
         textView.minSize                 = NSSize(width: 0, height: contentSize.height)
-        textView.textColor               = NSColor.labelColor
+        textView.textColor               = foreColor ?? NSColor.labelColor
         textView.allowsUndo              = true
         
         return textView
     }()
     
     // MARK: - Init
-    init(text: String, isEditable: Bool, font: NSFont?) {
+    init(text: String, isEditable: Bool, font: NSFont?, foreColor:NSColor? = NSColor.labelColor) {
         self.font       = font
         self.isEditable = isEditable
         self.text       = text
-        
+        self.foreColor = foreColor
         super.init(frame: .zero)
     }
     

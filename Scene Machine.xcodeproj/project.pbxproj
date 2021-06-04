@@ -92,6 +92,7 @@
 		85D3E7CF26390FC500D693FA /* SceneMachineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D3E7CE26390FC500D693FA /* SceneMachineController.swift */; };
 		85DEFC682643AFC8003DEC36 /* MercurializeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DEFC672643AFC8003DEC36 /* MercurializeFilter.swift */; };
 		85E840972667FD6F00CFD8ED /* Generators.ci.metal in Sources */ = {isa = PBXBuildFile; fileRef = 85E840962667FD6F00CFD8ED /* Generators.ci.metal */; };
+		85E840992669E51E00CFD8ED /* SMShaderEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85E840982669E51E00CFD8ED /* SMShaderEditView.swift */; };
 		85F34A992649B5C2002F949E /* SMShapeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F34A982649B5C2002F949E /* SMShapeEditorView.swift */; };
 		85FAF34C263C511300081ED8 /* FXDistortView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85FAF34B263C511300081ED8 /* FXDistortView.swift */; };
 		85FAF34E263C512B00081ED8 /* FXStylizeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85FAF34D263C512B00081ED8 /* FXStylizeView.swift */; };
@@ -227,6 +228,7 @@
 		85D3E7CE26390FC500D693FA /* SceneMachineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneMachineController.swift; sourceTree = "<group>"; };
 		85DEFC672643AFC8003DEC36 /* MercurializeFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MercurializeFilter.swift; sourceTree = "<group>"; };
 		85E840962667FD6F00CFD8ED /* Generators.ci.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Generators.ci.metal; sourceTree = "<group>"; };
+		85E840982669E51E00CFD8ED /* SMShaderEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMShaderEditView.swift; sourceTree = "<group>"; };
 		85F34A982649B5C2002F949E /* SMShapeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMShapeEditorView.swift; sourceTree = "<group>"; };
 		85FAF34B263C511300081ED8 /* FXDistortView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FXDistortView.swift; sourceTree = "<group>"; };
 		85FAF34D263C512B00081ED8 /* FXStylizeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FXStylizeView.swift; sourceTree = "<group>"; };
@@ -609,6 +611,7 @@
 				85F34A982649B5C2002F949E /* SMShapeEditorView.swift */,
 				85D1BC63265D6896009D70DC /* SMUVMapView.swift */,
 				85D1BC65265D734B009D70DC /* SMSceneConfigView.swift */,
+				85E840982669E51E00CFD8ED /* SMShaderEditView.swift */,
 			);
 			path = "Right Views";
 			sourceTree = "<group>";
@@ -744,6 +747,7 @@
 				85A4776026407D4800F93AB3 /* HelpMainView.swift in Sources */,
 				857A93D226124FE7004FFEBB /* QuickNoiseController.swift in Sources */,
 				85B913402631C00E0065D6D2 /* GraphicsImageRenderer.swift in Sources */,
+				85E840992669E51E00CFD8ED /* SMShaderEditView.swift in Sources */,
 				85D1BC742663418F009D70DC /* TileComposerView.swift in Sources */,
 				85D1BC66265D734B009D70DC /* SMSceneConfigView.swift in Sources */,
 				855053732644F38B00A577E2 /* SMNodeRow.swift in Sources */,

@@ -16,6 +16,7 @@ enum MachineRightView:String, CaseIterable {
     case UVMap
     case Shape
     case Settings
+    case Shaders
 }
 
 class SceneMachineController:ObservableObject {

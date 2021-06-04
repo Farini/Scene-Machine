@@ -283,6 +283,23 @@ struct SceneMachineView: View {
                             SMSceneConfigView(controller: controller)
                                 .frame(minWidth: 300, alignment: .trailing)
                             
+                        case .Shaders:
+                            if let node = controller.selectedNode,
+                               let geometry = node.geometry {
+                                SMShaderEditView(controller: controller, geometry: geometry)
+                                    .frame(minWidth: 350, idealWidth: 400)
+//                                VStack {
+//                                    Text("Shaders !! \(geometry.description)")
+//                                    Spacer()
+//                                }
+                            } else {
+                                VStack {
+                                    Text("No node selected")
+                                    Text("Select a node with a Geometry to add a shader snippet").foregroundColor(.gray)
+                                    Spacer()
+                                }
+                            }
+                            
                     }
                 }
                 
