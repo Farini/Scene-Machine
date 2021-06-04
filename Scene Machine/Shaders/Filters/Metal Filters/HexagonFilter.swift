@@ -602,32 +602,5 @@ class TriangledGrid: CIFilter {
             return rect // .insetBy(dx: 0, dy: 0)
         }, arguments: [src, vec, time])
     }
-    /*
-     func outputImage() -> CIImage? {
-     
-     if inputImage == nil {
-     let baseImage = NSImage(size: NSSize(width: CGFloat(tileSize), height: CGFloat(tileSize)))
-     guard let inputData = baseImage.tiffRepresentation,
-     let bitmap = NSBitmapImageRep(data: inputData),
-     let inputCIImage = CIImage(bitmapImageRep: bitmap) else {
-     print("Missing something")
-     return nil
-     }
-     self.inputImage = inputCIImage
-     }
-     
-     guard let inputImage = inputImage else {return nil}
-     
-     let src = CISampler(image: inputImage)
-     //        let vec = CIVector(cgPoint: CGPoint(x: CGFloat(tileSize), y: CGFloat(tileSize)))
-     //        let fTile = Float(tileCount)
-     //        let fTime = Float(time)
-     
-     // float4 truchet(sample_t sample, float2 size, destination dest) {
-     return kernel.apply(extent: inputImage.extent, roiCallback: {
-     (index, rect) in
-     return rect // .insetBy(dx: 0, dy: 0)
-     }, arguments: [src]) // arguments: [src, vec])
-     }
-     */
+    
 }

@@ -228,7 +228,7 @@ extern "C" { namespace coreimage {
     float4 voronoiGems(sampler sample, float2 size, float time, destination dest) {
         
         // Moving screen coordinates.
-        float2 uv = dest.coord()/size.y + float2(-.2, .05); //*iTime;
+        float2 uv = dest.coord()/size.y + float2(-.2, .05); 
         
         // Obtain the height map (rounded Voronoi border) value, then another nearby.
         float2 c = hMap(uv);
@@ -319,6 +319,114 @@ extern "C" { namespace coreimage {
         float3 color = triGrid(uv2, stepSize, vertSize, lineSize) * lineColor;
         
         // output
+        return float4(color, 1.0);
+    }
+    
+    float4 petals(sample_t sample, float2 size, int method, destination dest) {
+        
+        
+        float2 st = dest.coord()/size;
+        //st *= 4.;
+        
+        float3 color = float3(0.0);
+        
+        // Position of center
+        float2 pos = float2(0.5)-st;
+        
+        float r = length(pos)*2.0;
+        float a = atan(pos.y/pos.x)+0.5; // +0.5 here makes it such as the paralel petal points to the bottom of the image
+        
+        // in case method doesnt match, we get 3 leaves
+        float f = cos(a*3.);
+        
+        if (method == 0) {
+            f = cos(a*3.);                        // 3 leaves
+        } else if (method == 1) {
+            f = abs(cos(a*3.));                         // 6 leaves
+        } else if (method == 2) {
+            f = abs(cos(a*2.5))*.5+.3;                  // 5 thick leaves
+        } else if (method == 3) {
+            f = abs(cos(a*12.)*sin(a*3.))*.8+.1;        // Splash like
+        } else if (method == 4) {
+            f = smoothstep(-.5,1., cos(a*10.))*0.2+0.5; // Cog
+        }
+        
+        color = float3( 1.-smoothstep(f, f+0.02, r));
+        
+        return float4(color, 1.0);
+    }
+    
+    float4 nGon(sample_t sample, float2 size, int sides, destination dest) {
+        
+        float2 uv = (dest.coord() - .5 * size.xy) / size.y;
+        // float3 col = float3(0);
+        
+        // size
+        uv *= 5;
+        float2 gv = fract(uv) - 0.5;
+        
+        //vec2 st = dest.coord()/size;
+        // gv.x *= size.x/size.y;
+        float3 color = float3(0.0);
+        float d = 0.0;
+        
+        // Remap the space to -1. to 1.
+        gv = gv *2.-1.;
+        
+        // Number of sides of your shape
+        int N = sides;
+        
+        // Angle and radius from the current pixel
+        float a = atan(gv.x/gv.y)+pi;
+        float r = pi*2/float(N);
+        
+        // Shaping function that modulate the distance
+        d = cos(floor(.5+a/r)*r-a)*length(gv);
+        
+        color = float3(1.0-smoothstep(.4,.41,d));
+        // color = vec3(d);
+        
+        return float4(color,1.0);
+    }
+    
+    // corner holes
+    
+    float2 rotate2D(float2 st, float angle){
+        st -= 0.5;
+        st =  float2x2(cos(angle),-sin(angle),
+                    sin(angle),cos(angle)) * st;
+        st += 0.5;
+        return st;
+    }
+    
+    float2 tile(float2 st, float zoom){
+        st *= zoom;
+        return fract(st);
+    }
+    
+    float box(float2 st, float2 size, float smoothEdges){
+        size = float2(0.250,0.65)-size*0.5;
+        float2 aa = float2(smoothEdges*0.5);
+        float2 uv = smoothstep(size, size+aa, st);
+        uv *= smoothstep(size, size+aa, float2(1.0)- st);
+        return uv.x*uv.y;
+    }
+    
+    float4 cornerHoles(sample_t sample, float2 size, int method, destination dest) {
+        
+        float2 st = dest.coord()/size;
+        float3 color = float3(0.0);
+        
+        // Divide the space in 4
+        st = tile(st,4.);
+        
+        // Use a matrix to rotate the space 45 degrees
+        st = rotate2D(st, pi*0.75);
+        
+        // Draw a square
+        color = float3(box(st, float2(0.680,0.680), 0.01));
+        // color = vec3(st,0.0);
+        
         return float4(color, 1.0);
     }
     

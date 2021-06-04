@@ -478,6 +478,12 @@ class SceneMachineController:ObservableObject {
                     if let geometry = node.geometry {
                         self.geometries.append(geometry)
                         for material in geometry.materials {
+                            if let code:[SCNShaderModifierEntryPoint:String] = material.shaderModifiers {
+                                for shader in code {
+                                    // Print the shader code (for now)
+                                    print("Shader: \(shader)")
+                                }
+                            }
                             self.materials.append(material)
                         }
                         self.scene.rootNode.addChildNode(node)
