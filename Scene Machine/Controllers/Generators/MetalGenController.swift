@@ -9,14 +9,12 @@ import Foundation
 import Cocoa
 import CoreImage
 
+/// A type, or group of Metal Generators.
 enum MetalGenType:String, CaseIterable {
-//    case CIGenerators
     case Noise
     case Tiles
     case Overlay
-//    case Other
 }
-
 
 class MetalGenController:ObservableObject {
     
@@ -45,14 +43,7 @@ class MetalGenController:ObservableObject {
         }
     }
     
-    
-//    func updatePreview(image:NSImage) {
-//
-//        let oldImage = previewImage ?? image
-//        undoImages.append(oldImage)
-//        self.previewImage = image
-//    }
-    
+    /// Updates the main Image
     func updateImage(new:NSImage, isPreview:Bool) {
         
         print("Context preview: \(previewImage == nil ? "No Preview":"Preview Image")")
@@ -70,6 +61,7 @@ class MetalGenController:ObservableObject {
         
     }
     
+    /// Saving
     func saveImage() {
         
         let data = image.tiffRepresentation
@@ -100,8 +92,6 @@ class MetalGenController:ObservableObject {
         }
     }
     
-    
-    
     /// Colored Noise Image
     class func noiseImage(size:CGSize) -> NSImage {
         
@@ -118,28 +108,16 @@ class MetalGenController:ObservableObject {
         return nsImage
     }
     
+    // MARK: - Initializers
+    
     init() {
         
         // Random Noise
-        let noise = CIFilter.randomGenerator()
-        let noiseImage = noise.outputImage!
-        let context = CIContext()
+        self.image = AppTextures.colorNoiseTexture()
         
+        // Default Size
         let tSize:TextureSize = .medium
-        let imageSize:CGSize = tSize.size
         
-        // Build Main Image
-        var mainImage:NSImage!
-        if let cgimg = context.createCGImage(noiseImage, from: CGRect(origin: .zero, size: imageSize)) {
-            // convert that to a UIImage
-            let nsImage = NSImage(cgImage: cgimg, size:imageSize)
-            mainImage = nsImage
-        } else {
-            mainImage = NSImage(size: imageSize)
-        }
-        
-        // Image and Size
-        self.image = mainImage
         self.textureSize = tSize
     }
     

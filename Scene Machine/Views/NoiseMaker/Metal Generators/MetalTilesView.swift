@@ -41,6 +41,13 @@ struct MetalTilesView: View {
         case Bricks
         case Circuitboard
         case TriangleGrid
+        
+        
+        case Test
+        
+        case Tricapsule
+        case CornerHole
+        case CheckerScale
     }
     
     @State var tileType:MetalTileType = .Hexagons
@@ -60,6 +67,40 @@ struct MetalTilesView: View {
             }
             
             switch tileType {
+                
+                // new
+                case .Tricapsule:
+                    Text("Tricapsules")
+                    CounterInput(value: $stepCount1, range: 4...20, title: "Tile Count")
+                        .onChange(of: stepCount1) { value in
+                            updatePreview()
+                        }
+                    
+                case .CornerHole:
+                    
+                    Text("Corner Holes")
+                    
+                    CounterInput(value: $stepCount1, range: 4...20, title: "Tile Count")
+                        .onChange(of: stepCount1) { value in
+                            updatePreview()
+                        }
+                    
+                case .CheckerScale:
+                    
+                    Text("Checker Scale")
+                    
+                    CounterInput(value: $stepCount1, range: 4...20, title: "Tile Count")
+                        .onChange(of: stepCount1) { value in
+                            updatePreview()
+                        }
+                    
+                    SliderInputView(value: 1.0, vRange: 1.0...2.0, title: "Time") { value in
+                        self.slider1 = Float(value)
+                        updatePreview()
+                    }
+                
+                // end new
+                    
                 case .Hexagons:
                     Text("Hexagons")
                     // Number of tiles, Color inside?, Color outside?
@@ -124,7 +165,12 @@ struct MetalTilesView: View {
                         self.slider1 = Float(value)
                         updatePreview()
                     }
+                    
+                case .Test:
+                    Text("Testing new features").foregroundColor(.gray)
+                    
 //                default: Text("Not Implemented").foregroundColor(.gray)
+                
             }
             
             Divider()
@@ -224,6 +270,96 @@ struct MetalTilesView: View {
         let context = CIContext()
         
         switch tileType {
+            
+            case .Tricapsule:
+                
+                let filter = TricapsuleGrid()
+                filter.inputImage = coreImage
+                filter.tileCount = 4
+                filter.time = CGFloat(max(1, slider1))
+                
+                guard let output = filter.outputImage(),
+                      let cgOutput = context.createCGImage(output, from: output.extent)
+                else {
+                    print("⚠️ No output image")
+                    return
+                }
+                
+                let filteredImage = NSImage(cgImage: cgOutput, size: controller.textureSize.size)
+                
+                self.image = filteredImage
+                
+                controller.updateImage(new: filteredImage, isPreview: isPreviewing)
+                
+            case .CornerHole:
+                
+                // Corner Holes
+                let filter = CornerHoles()
+                filter.inputImage = coreImage
+                filter.tileCount = 4
+                filter.time = max(1, slider1)
+                
+                guard let output = filter.outputImage(),
+                      let cgOutput = context.createCGImage(output, from: output.extent)
+                else {
+                    print("⚠️ No output image")
+                    return
+                }
+                
+                let filteredImage = NSImage(cgImage: cgOutput, size: controller.textureSize.size)
+                
+                self.image = filteredImage
+                
+                controller.updateImage(new: filteredImage, isPreview: isPreviewing)
+                
+            case .CheckerScale:
+                
+                // Scaling Checkerboard
+                
+                let filter = ScalingCheckerboard()
+                filter.inputImage = coreImage
+                filter.tileCount = 4
+                filter.time = max(1, slider1)
+                
+                guard let output = filter.outputImage(),
+                      let cgOutput = context.createCGImage(output, from: output.extent)
+                else {
+                    print("⚠️ No output image")
+                    return
+                }
+                
+                let filteredImage = NSImage(cgImage: cgOutput, size: controller.textureSize.size)
+                
+                self.image = filteredImage
+                
+                controller.updateImage(new: filteredImage, isPreview: isPreviewing)
+                
+            case .Test:
+                
+               print("test")
+            
+            
+                // Camera Raindrops
+                /*
+                let filter = CameraRainDrops()
+                filter.inputImage = coreImage
+                filter.tileCount = 4
+                filter.time = CGFloat(max(1, slider1))
+                
+                guard let output = filter.outputImage(),
+                      let cgOutput = context.createCGImage(output, from: output.extent)
+                else {
+                    print("⚠️ No output image")
+                    return
+                }
+                
+                let filteredImage = NSImage(cgImage: cgOutput, size: controller.textureSize.size)
+                
+                self.image = filteredImage
+                
+                controller.updateImage(new: filteredImage, isPreview: isPreviewing)
+                */
+               
             
             case .Circuitboard:
                 let noiseImageT = NSImage(named:"Example")!.tiffRepresentation
@@ -333,11 +469,6 @@ struct MetalTilesView: View {
                 
                 let filteredImage = NSImage(cgImage: cgOutput, size: controller.textureSize.size)
                 
-//                if isPreviewing {
-//                    controller.previewImage = filteredImage
-//                } else {
-//                    controller.image = filteredImage
-//                }
                 controller.updateImage(new: filteredImage, isPreview: isPreviewing)
                 
             case .RandomMaze:
@@ -345,7 +476,7 @@ struct MetalTilesView: View {
                 
                 let filter = RandomMaze()
                 filter.inputImage = coreImage
-                filter.tileSize = Float(controller.textureSize.size.width)
+                filter.imageSize = Float(controller.textureSize.size.width)
                 filter.tileCount = stepCount1
                 
                 guard let output = filter.outputImage(),
@@ -357,11 +488,6 @@ struct MetalTilesView: View {
                 
                 let filteredImage = NSImage(cgImage: cgOutput, size: controller.textureSize.size)
                 
-//                if isPreviewing {
-//                    controller.previewImage = filteredImage
-//                } else {
-//                    controller.image = filteredImage
-//                }
                 controller.updateImage(new: filteredImage, isPreview: isPreviewing)
                 
             case .Truchet:

@@ -675,22 +675,22 @@ extern "C" { namespace coreimage {
     }
     
     /*
-     "float lumaAtOffset(sampler source, vec2 origin, vec2 offset)" +
+     "float lumaAtOffset(sampler source, float2 origin, float2 offset)" +
      "{" +
-     " vec3 pixel = sample(source, samplerTransform(source, origin + offset)).rgb;" +
-     " float luma = dot(pixel, vec3(0.2126, 0.7152, 0.0722));" +
+     " float3 pixel = sample(source, samplerTransform(source, origin + offset)).rgb;" +
+     " float luma = dot(pixel, float3(0.2126, 0.7152, 0.0722));" +
      " return luma;" +
      "}" +
      
      
      "kernel vec4 normalMap(sampler image) \n" +
      "{ " +
-     " vec2 d = destCoord();" +
+     " float2 d = destCoord();" +
      
-     " float northLuma = lumaAtOffset(image, d, vec2(0.0, -1.0));" +
-     " float southLuma = lumaAtOffset(image, d, vec2(0.0, 1.0));" +
-     " float westLuma = lumaAtOffset(image, d, vec2(-1.0, 0.0));" +
-     " float eastLuma = lumaAtOffset(image, d, vec2(1.0, 0.0));" +
+     " float northLuma = lumaAtOffset(image, d, float2(0.0, -1.0));" +
+     " float southLuma = lumaAtOffset(image, d, float2(0.0, 1.0));" +
+     " float westLuma = lumaAtOffset(image, d, float2(-1.0, 0.0));" +
+     " float eastLuma = lumaAtOffset(image, d, float2(1.0, 0.0));" +
      
      " float horizontalSlope = ((westLuma - eastLuma) + 1.0) * 0.5;" +
      " float verticalSlope = ((northLuma - southLuma) + 1.0) * 0.5;" +
@@ -705,7 +705,7 @@ extern "C" { namespace coreimage {
     
     // Ambient Occlusion
     // https://www.shadertoy.com/view/Ms23Wm
-//    void mainImage( out vec4 fragColor, in vec2 fragCoord )
+//    void mainImage( out vec4 fragColor, in float2 fragCoord )
 //    {
 //
 //        // sample zbuffer (in linear eye space) at the current shading point
@@ -716,7 +716,7 @@ extern "C" { namespace coreimage {
 //        for( int i=0; i<8; i++ )
 //        {
 //            // get a random 2D offset vector
-//            vec2 off = -1.0 + 2.0*texture( iChannel1, (fragCoord.xy + 23.71*float(i))/iChannelResolution[1].xy ).xz;
+//            float2 off = -1.0 + 2.0*texture( iChannel1, (fragCoord.xy + 23.71*float(i))/iChannelResolution[1].xy ).xz;
 //            // sample the zbuffer at a neightbor pixel (in a 16 pixel radious)
 //            float z = 1.0-texture( iChannel0, (fragCoord.xy + floor(off*16.0))/iResolution.xy ).x;
 //            // accumulate occlusion if difference is less than 0.1 units
@@ -725,7 +725,7 @@ extern "C" { namespace coreimage {
 //        // average down the occlusion
 //        ao = clamp( 1.0 - ao/8.0, 0.0, 1.0 );
 //
-//        vec3 col = vec3(ao);
+//        float3 col = float3(ao);
 //
 //        // uncomment this one out for seeing AO with actual image/zbuffer
 //        //col *= texture( iChannel0, fragCoord.xy / iResolution.xy ).xyz;
@@ -1077,6 +1077,160 @@ extern "C" { namespace coreimage {
         }
         
         return original;
+    }
+    
+    // MARK: - Rain Drops
+    
+    float3 n13(float p) {
+        //  from DAVE HOSKINS
+        float3 p3 = fract(float3(p) * float3(.1031,.11369,.13787));
+        p3 += dot(p3, p3.yzx + 19.19);
+        return fract(float3((p3.x + p3.y) * p3.z, (p3.x+p3.z) * p3.y, (p3.y+p3.z) * p3.x));
+    }
+    
+    float4 n14(float t) {
+        return fract(sin(t * float4(123., 1024., 1456., 264.)) * float4(6547., 345., 8799., 1564.));
+    }
+    
+    float n11(float t) {
+        return fract(sin(t*12345.564)*7658.76);
+    }
+    
+    float saw(float b, float t) {
+        return smoothstep(0, b, t) * smoothstep(1, b, t); //S(0., b, t)*S(1., b, t);
+    }
+    
+    float2 DropLayer2(float2 uv, float t) {
+        float2 UV = uv;
+        
+        uv.y += t*0.75;
+        float2 a = float2(6., 1.);
+        float2 grid = a*2.;
+        float2 id = floor(uv*grid);
+        
+        float colShift = n11(id.x);
+        uv.y += colShift;
+        
+        id = floor(uv*grid);
+        float3 n = n13(id.x*35.2+id.y*2376.1);
+        float2 st = fract(uv*grid)-float2(.5, 0);
+        
+        float x = n.x-.5;
+        
+        float y = UV.y*20.;
+        float wiggle = sin(y+sin(y));
+        x += wiggle*(.5-abs(x))*(n.z-.5);
+        x *= .7;
+        float ti = fract(t+n.z);
+        y = (saw(.85, ti)-.5)*.9+.5;
+        float2 p = float2(x, y);
+        
+        float d = length((st-p)*a.yx);
+        
+        float mainDrop = smoothstep(.4, .0, d);
+        
+        float r = sqrt(smoothstep(1., y, st.y));
+        float cd = abs(st.x-x);
+        float trail = smoothstep(.23*r, .15*r*r, cd);
+        float trailFront = smoothstep(-.02, .02, st.y-y);
+        trail *= trailFront*r*r;
+        
+        y = UV.y;
+        float trail2 = smoothstep(.2*r, .0, cd);
+        float droplets = max(0., (sin(y*(1.-y)*120.)-st.y))*trail2*trailFront*n.z;
+        y = fract(y*10.)+(st.y-.5);
+        float dd = length(st - float2(x, y));
+        droplets = smoothstep(.3, 0., dd);
+        float m = mainDrop+droplets*r*trailFront;
+        
+        //m += st.x>a.y*.45 || st.y>a.x*.165 ? 1.2 : 0.;
+        return float2(m, trail);
+    }
+    
+    float StaticDrops(float2 uv, float t) {
+        uv *= 40.;
+        
+        float2 id = floor(uv);
+        uv = fract(uv)-.5;
+        float3 n = n13(id.x*107.45+id.y*3543.654);
+        float2 p = (n.xy-.5)*.7;
+        float d = length(uv-p);
+        
+        float fade = saw(.025, fract(t+n.z));
+        float c = smoothstep(.3, 0., d)*fract(n.z*10.)*fade;
+        return c;
+    }
+    
+    float2 Drops(float2 uv, float t, float l0, float l1, float l2) {
+        float s = StaticDrops(uv, t)*l0;
+        float2 m1 = DropLayer2(uv, t)*l1;
+        float2 m2 = DropLayer2(uv*1.85, t)*l2;
+        
+        float c = s+m1.x+m2.x;
+        c = smoothstep(.3, 1., c);
+        
+        return float2(c, max(m1.y*l0, m2.y*l1));
+    }
+    
+    float4 rainDrops(sampler image, float2 size, float tileCount, float time, destination dest) {
+        
+        float2 uv = (dest.coord().xy -.5 * size.xy) / size.y;
+        
+        float2 UV = dest.coord().xy/size.xy;
+        
+        float3 M = time;
+        float T = time + M.x * 2.;
+        
+        float t = T*.2;
+        
+        float rainAmount = sin(T*.05)*.3+.7;
+        
+        // float maxBlur = mix(3., 6., rainAmount);
+        // float minBlur = 2.;
+        
+        float story = 0.;
+        // float heart = 0.;
+        
+
+        float zoom = -cos(T*.2);
+        uv *= .7+zoom*.3;
+
+        UV = (UV-.5)*(.9+zoom*.1)+.5;
+        
+        float staticDrops = smoothstep(-.5, 1., rainAmount)*2.;
+        float layer1 = smoothstep(.25, .75, rainAmount);
+        float layer2 = smoothstep(.0, .5, rainAmount);
+        
+        
+        float2 c = Drops(uv, t, staticDrops, layer1, layer2);
+
+        float2 e = float2(.001, 0.);
+        float cx = Drops(uv+e, t, staticDrops, layer1, layer2).x;
+        float cy = Drops(uv+e.yx, t, staticDrops, layer1, layer2).x;
+        float2 n = float2(cx-c.x, cy-c.x);        // expensive normals
+        
+  
+        // float focus = mix(maxBlur-c.y, minBlur, smoothstep(.1, .2, c.x));
+        float3 col = image.sample(UV+n).rgb; //textureLod(iChannel0, UV+n, focus).rgb;
+        
+        
+// post process
+        t = (T+3.)*.5;                                        // make time sync with first lightnoing
+        float colFade = sin(t*.2)*.5+.5+story;
+        col *= mix(float3(1.), float3(.8, .9, 1.3), colFade);    // subtle color shift
+        float fade = smoothstep(0., 10., T);                            // fade in at the start
+        
+        float lightning = sin(t*sin(t*10.));                // lighting flicker
+        lightning *= pow(max(0., sin(t+sin(t))), 10.);        // lightning flash
+        
+        col *= 1.+lightning*fade*mix(1., .1, story*story);    // composite lightning
+        float2 uvh = UV - .5;
+        col *= 1.-dot(uvh, UV);                            // vignette
+        
+        col *= fade;                                        // composite start and end fade
+// end post process
+        
+        return float4(col, 1.);
     }
 }}
 

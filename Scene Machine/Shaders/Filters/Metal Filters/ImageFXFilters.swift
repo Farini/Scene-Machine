@@ -1,22 +1,92 @@
 //
-//  BLKTransparent.swift
+//  ImageFXFilters.swift
 //  Scene Machine
 //
-//  Created by Carlos Farini on 4/23/21.
+//  Created by Carlos Farini on 6/4/21.
 //
 
-import Foundation
-import CoreImage
 import Cocoa
+import CoreGraphics
 
-/**
- A CIFilter that uses a Metal function that converts a black pixel (or almost black) to a transparent pixel.
- */
+// MARK: - Special FX + Image Processing
+
+/// Makes a Normal Map from the input image
+class NormalMapFilter:CIFilter {
+    
+    private var kernel:CIKernel
+    var inputImage:CIImage?
+    var tileSize:Float = 1024
+    
+    override init() {
+        let url = Bundle.main.url(forResource: "Kernels2.ci", withExtension: "metallib")!
+        guard let data = try? Data(contentsOf: url) else { fatalError() }
+        guard let kkk = try? CIKernel(functionName: "normalMapper", fromMetalLibraryData: data) else { fatalError() } // myColor // hexagons // truchet
+        // float4 truchet(sample_t sample, float2 size, destination dest) {
+        self.kernel = kkk
+        super.init()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func outputImage() -> CIImage? {
+        
+        if inputImage == nil {
+            let baseImage = NSImage(size: NSSize(width: CGFloat(tileSize), height: CGFloat(tileSize)))
+            guard let inputData = baseImage.tiffRepresentation,
+                  let bitmap = NSBitmapImageRep(data: inputData),
+                  let inputCIImage = CIImage(bitmapImageRep: bitmap) else {
+                print("Missing something")
+                return nil
+            }
+            self.inputImage = inputCIImage
+        }
+        
+        guard let inputImage = inputImage else {return nil}
+        
+        let src = CISampler(image: inputImage)
+        
+        return kernel.apply(extent: inputImage.extent, roiCallback: {
+            (index, rect) in
+            return rect // .insetBy(dx: 0, dy: 0)
+        }, arguments: [src]) // arguments: [src, vec])
+    }
+}
+
+/// A filter that Swaps Red and Green components of an image.
+class SwapRGFilter: CIFilter {
+    
+    private var kernel: CIColorKernel
+    
+    var inputImage: CIImage?
+    
+    override init() {
+        let url = Bundle.main.url(forResource: "Kernels2.ci", withExtension: "metallib")!
+        guard let data = try? Data(contentsOf: url) else { fatalError() }
+        guard let kkk = try? CIColorKernel(functionName: "myColor", fromMetalLibraryData: data) else { fatalError() } // myColor // hexagons
+        self.kernel = kkk
+        super.init()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func outputImage() -> CIImage? {
+        guard let inputImage = inputImage else {return nil}
+        return kernel.apply(extent: inputImage.extent, arguments: [inputImage])
+    }
+}
+
+/// Turns a black pixel into a transparent pixel, with a threshold
 class BLKTransparent: CIFilter {
     
     private var kernel: CIColorKernel
     
     var inputImage: CIImage?
+    
+    /// The limit, at which to transform black pixels into transparent
     var threshold: Float?
     
     override init() {
@@ -39,6 +109,7 @@ class BLKTransparent: CIFilter {
     }
 }
 
+/// Turns a white pixel into a transparent pixel, with a threshold
 class WHITransparent: CIFilter {
     private var kernel: CIColorKernel
     
@@ -65,7 +136,7 @@ class WHITransparent: CIFilter {
     }
 }
 
-// Laplatian
+/// Standart Laplatian Filter
 class LaplatianFilter: CIFilter {
     
     private var kernel:CIKernel
@@ -101,7 +172,7 @@ class LaplatianFilter: CIFilter {
         guard let inputImage = inputImage else {return nil}
         
         let src = CISampler(image: inputImage)
-//        let vec = CIVector(cgPoint: CGPoint(x: CGFloat(tileSize), y: CGFloat(tileSize)))
+        //        let vec = CIVector(cgPoint: CGPoint(x: CGFloat(tileSize), y: CGFloat(tileSize)))
         //        let fTile = Float(tileCount)
         //        let fTime = Float(time)
         
@@ -113,9 +184,9 @@ class LaplatianFilter: CIFilter {
     }
 }
 
-// Sketch
+/// Makes Sketches from outlines in the original image.
 class SketchFilter: CIFilter {
-
+    
     private var kernel:CIKernel
     var inputImage:CIImage?
     var tileSize:Float = 1024
@@ -155,7 +226,7 @@ class SketchFilter: CIFilter {
         // sketch(sampler src, float texelWidth, float texelHeight, float intensity40)
         
         let src = CISampler(image: inputImage)
-//        let vec = CIVector(cgPoint: CGPoint(x: CGFloat(tileSize), y: CGFloat(tileSize)))
+        //        let vec = CIVector(cgPoint: CGPoint(x: CGFloat(tileSize), y: CGFloat(tileSize)))
         let fWidth = tWidth
         let fHeight = tHeight
         let fIntense = intensity
@@ -167,7 +238,7 @@ class SketchFilter: CIFilter {
     }
 }
 
-// Tiling
+/// Tiling engine (Blurs the edges to match beginning of tile)
 class TileMaker: CIFilter {
     
     private var kernel:CIKernel
@@ -182,10 +253,10 @@ class TileMaker: CIFilter {
         self.kernel = kkk
         super.init()
     }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     
     func outputImage() -> CIImage? {
         
@@ -216,31 +287,32 @@ class TileMaker: CIFilter {
     }
 }
 
-// Circuit
-class CircuitMaker: CIFilter {
+// MARK: - New
+
+class CameraRainDrops: CIFilter {
     
     private var kernel:CIKernel
     var inputImage:CIImage?
-//    var margin:Int = 10
-    var imageSize:Float = 1024
+    var imgSize:CGFloat = 1024
+    var tileCount:CGFloat = 4
+    var time:CGFloat = 38.5
     
     override init() {
-        let url = Bundle.main.url(forResource: "Generators.ci", withExtension: "metallib")!
+        let url = Bundle.main.url(forResource: "Kernels2.ci", withExtension: "metallib")!
         guard let data = try? Data(contentsOf: url) else { fatalError() }
-        guard let kkk = try? CIKernel(functionName: "circuit", fromMetalLibraryData: data) else { fatalError() } // myColor // hexagons // truchet
-        // float4 truchet(sample_t sample, float2 size, destination dest) {
-        self.kernel = kkk
+        guard let kern = try? CIKernel(functionName: "rainDrops", fromMetalLibraryData: data) else { fatalError() } // myColor // hexagons // truchet
+        self.kernel = kern
         super.init()
     }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     func outputImage() -> CIImage? {
         
         if inputImage == nil {
-            let baseImage = NSImage(size: NSSize(width: CGFloat(1024), height: CGFloat(1024)))
+            let baseImage = AppTextures.monocolorNoiseTexture(tSize: TextureSize(rawValue: Double(imgSize)) ?? .medium, smooth: 0.5)
             guard let inputData = baseImage.tiffRepresentation,
                   let bitmap = NSBitmapImageRep(data: inputData),
                   let inputCIImage = CIImage(bitmapImageRep: bitmap) else {
@@ -252,18 +324,15 @@ class CircuitMaker: CIFilter {
         
         guard let inputImage = inputImage else {return nil}
         
-        // sketch(sampler src, float texelWidth, float texelHeight, float intensity40)
-        
+        // Collectt Data
+        // rainDrops(sampler image, float2 size, float tileCount, float time, destination dest)
         let src = CISampler(image: inputImage)
-        let imsize = inputImage.extent.size
-        let size = CIVector(cgPoint: CGPoint(x: imsize.width, y: imsize.height))
-//        let fMargin = Float(margin)
+        let vec = CIVector(cgPoint: CGPoint(x: imgSize, y: imgSize))
         
+        // rainDrops(sampler image, float2 size, float tileCount, float time, destination dest)
         return kernel.apply(extent: inputImage.extent, roiCallback: {
             (index, rect) in
             return rect // .insetBy(dx: 0, dy: 0)
-        }, arguments: [src, size])
+        }, arguments: [src, vec, tileCount, time])
     }
 }
-
-

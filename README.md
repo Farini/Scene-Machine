@@ -43,7 +43,7 @@ Mix 2 images, using multiple `CoreImage` techniques
 
 ### Metal Kernel Shaders
 Image CIKernels built on Metal programming language.
-More about Shaders: [Here](https://github.com/Farini/Scene-Machine/blob/main/Scene%20Machine/Shaders/ShadersReadme.md#about-shaders)
+More about: [Shaders](https://github.com/Farini/Scene-Machine/blob/main/Scene%20Machine/Shaders/ShadersReadme.md#about-shaders)
 
 ### Scene Machine
 Test and export `SceneKit` scenes.
@@ -93,8 +93,7 @@ See this apps's model readme: [Here](https://github.com/Farini/Scene-Machine/blo
 - [X] Cleanup SceneMachineController
 - [X] Remove CIGenerators from Pedal2DMetal
 - [X] Under UVMap (ZStack), add image of the UV (if any)
-
-### New Features v 1.1
+*New Features v 1.1*
 - [X] Export .dae format
 - [X] App Textures
 - [X] Terrain Editor - Displace intensity
@@ -110,7 +109,13 @@ See this apps's model readme: [Here](https://github.com/Farini/Scene-Machine/blo
 - [X] Use Apple Pencil
 - [X] 💾 Save Materials Property `SceneMaterial`
 
-- [ ] Ability to use .txt files that can contain code for fragment/vertex shaders
+### New Features v 1.3
+- [X] At least 5 New Generators
+- [X] Better Drawing
+- [X] Scene Explorer
+- [X] Interface Improvements
+- [X] Write Shader Snippets on SceneMachine
+
 - [ ] Improve App Help: http://swiftrien.blogspot.com/2015/06/adding-apple-help-to-os-x-application.html
 
 

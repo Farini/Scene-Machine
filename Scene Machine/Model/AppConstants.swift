@@ -7,6 +7,7 @@
 
 import Foundation
 import SceneKit
+import SpriteKit
 
 // MARK: - Images
 
@@ -100,6 +101,41 @@ enum AppTextures: String, CaseIterable {
             case .UVGrid: return "UV Grid"
             case .UVLabels: return "UV Labels"
         }
+    }
+    
+    // MARK: - Basic Noise
+    
+    /// Generates a default Color Noise
+    static func colorNoiseTexture(tSize:TextureSize = .medium) -> NSImage {
+        
+        let imageSize:CGSize = tSize.size
+        
+        // Random Noise
+        let noise = CIFilter.randomGenerator()
+        let noiseImage = noise.outputImage!
+        let context = CIContext()
+        
+        // Build Main Image
+        var mainImage:NSImage!
+        if let cgimg = context.createCGImage(noiseImage, from: CGRect(origin: .zero, size: imageSize)) {
+            // convert that to a UIImage
+            let nsImage = NSImage(cgImage: cgimg, size:imageSize)
+            mainImage = nsImage
+        } else {
+            mainImage = NSImage(size: imageSize)
+        }
+        return mainImage
+    }
+    
+    /// Generates a default `Perlin` Black and White noise with smoothness
+    static func monocolorNoiseTexture(tSize:TextureSize = .medium, smooth:CGFloat = 0.5) -> NSImage {
+        
+        let texture = SKTexture.init(noiseWithSmoothness: smooth, size: tSize.size, grayscale: true)
+        
+        let img = texture.cgImage()
+        let image = NSImage(cgImage: img, size: texture.size())
+        return image
+        
     }
 }
 

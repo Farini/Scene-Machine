@@ -22,6 +22,8 @@ struct FXOtherView: View {
     @State private var slider3:Float = 0
     //    @State private var slider4:Float = 0
     
+    @State private var stepCount1:Int = 4
+    
     // CGPoint, or Vector
     @State private var vecPoint:CGPoint = .zero
     @State private var vecPoint2:CGPoint = .zero
@@ -80,6 +82,7 @@ struct FXOtherView: View {
         case Laplatian
         case Sketch
         case Mercurialize
+        case Raindrops
     }
     
     var body: some View {
@@ -106,6 +109,12 @@ struct FXOtherView: View {
             
             
             switch otherType {
+                case .Raindrops:
+                    CounterInput(value: $stepCount1, range: 4...20, title: "Tile Count")
+                        .onChange(of: stepCount1) { value in
+                            updatePreview()
+                        }
+                    
                 case .GreenRed:
                     Text("Swap Green and Red channel pixels")
                 case .BlackTransp:
@@ -205,9 +214,32 @@ struct FXOtherView: View {
         let context = CIContext()
         
         switch otherType {
+            
+            case .Raindrops:
+                // Camera Raindrops
+                
+                let filter = CameraRainDrops()
+                filter.imgSize = CGFloat(mainImage.size.width)
+                filter.inputImage = coreImage
+                //filter.tileCount = 4
+                //filter.time = 1//CGFloat(max(1, slider1))
+                
+                guard let output = filter.outputImage(),
+                      let cgOutput = context.createCGImage(output, from: output.extent)
+                else {
+                    print("⚠️ No output image")
+                    return
+                }
+                
+                let filteredImage = NSImage(cgImage: cgOutput, size: output.extent.size)
+                
+                self.image = filteredImage
+                
+                controller.updateImage(new: filteredImage, isPreview: isPreviewing)
+                
             case .GreenRed:
                 
-                let filter = MetalFilter()
+                let filter = SwapRGFilter()
                 filter.inputImage = coreImage
 
                 if let output = filter.outputImage(),

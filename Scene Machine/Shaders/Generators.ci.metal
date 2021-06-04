@@ -16,11 +16,37 @@ extern "C" { namespace coreimage {
     
     // Common Funcs
     
+    // Matrix rotation
+    float2x2 rotate2d(float _angle) {
+        return float2x2(cos(_angle),-sin(_angle),
+                    sin(_angle),cos(_angle));
+    }
+    
+    float cro(float2 a, float2 b ) { return a.x*b.y - a.y*b.x; }
     
     float SDFHorizLine(float2 coords ) {
         float v = 0.5-coords.y;
         float2  g = float2(0.0,-1.0);
         return abs(v)/length(g);
+    }
+    
+    // A Circle
+    float sdCircle(float2 p, float r ) {
+        return length(p) - r;
+    }
+    
+    float sdUnevenCapsuleY(float2 p, float ra, float rb, float h ) {
+        p.x = abs(p.x);
+        
+        float b = (ra-rb)/h;
+        float2  c = float2(sqrt(1.0-b*b),b);
+        float k = cro(c,p);
+        float m = dot(c,p);
+        float n = dot(p,p);
+        
+        if( k < 0.0   ) return sqrt(n)               - ra;
+        else if( k > c.x*h ) return sqrt(n+h*h-2.0*h*p.y) - rb;
+        return m                     - ra;
     }
     
     float SDFVertLine(float2 coords ) {
@@ -391,7 +417,7 @@ extern "C" { namespace coreimage {
     
     // corner holes
     
-    float2 rotate2D(float2 st, float angle){
+    float2 rotate2D(float2 st, float angle) {
         st -= 0.5;
         st =  float2x2(cos(angle),-sin(angle),
                     sin(angle),cos(angle)) * st;
@@ -399,12 +425,12 @@ extern "C" { namespace coreimage {
         return st;
     }
     
-    float2 tile(float2 st, float zoom){
+    float2 tile(float2 st, float zoom) {
         st *= zoom;
         return fract(st);
     }
     
-    float box(float2 st, float2 size, float smoothEdges){
+    float box(float2 st, float2 size, float smoothEdges) {
         size = float2(0.250,0.65)-size*0.5;
         float2 aa = float2(smoothEdges*0.5);
         float2 uv = smoothstep(size, size+aa, st);
@@ -412,13 +438,13 @@ extern "C" { namespace coreimage {
         return uv.x*uv.y;
     }
     
-    float4 cornerHoles(sample_t sample, float2 size, int method, destination dest) {
+    float4 cornerHoles(sample_t sample, float2 size, float tileCount, destination dest) {
         
         float2 st = dest.coord()/size;
         float3 color = float3(0.0);
         
         // Divide the space in 4
-        st = tile(st,4.);
+        st = tile(st, tileCount);
         
         // Use a matrix to rotate the space 45 degrees
         st = rotate2D(st, pi*0.75);
@@ -430,5 +456,78 @@ extern "C" { namespace coreimage {
         return float4(color, 1.0);
     }
     
+    // Scaled Checkerboard
+    
+    float4 scaledCheckerboard(sample_t sample, float2 size, float tileCount, float time, destination dest) {
+        
+        float2 uv = dest.coord() / size;
+        uv *= tileCount;
+        
+        float2 d = floor(uv);
+        float2 f = uv - d;
+        
+        float3 col = float3(0.0);
+        
+        float value = cos((d.x + 0.5) * pi * 0.25) * sin((d.y + 0.5 + (time * 4.0)) * pi * 0.25);
+        
+        float sz = (value * 0.25) + 0.25; // 0.0 ... 0.5
+        float msize = 1.0 - sz; // 1.0 ... 0.5
+        
+        col += step(f.x, msize) * step(sz, f.x) * step(f.y, msize) * step(sz, f.y);
+        
+        return float4(col, 1.0);
+    }
+    
+    // TriCapsule grid
+    
+    float4 tricapsuleGrid(sample_t sample, float2 size, float tileCount, float time, destination dest) {
+        
+        float2 uv = (dest.coord() - 0.5 * size.xy)/size.y;
+        
+        // Number of tiles
+        uv *= 4.;
+        
+        // Tile them up
+        float2 p = fract(uv) - 0.5;
+        
+        // Inverse Scale of individual tile
+        p *= 2.38;
+        
+        // Radius of capsule
+        float r1 = 0.3;
+        float r2 = 0.3;
+        
+        // Rotation of capsule
+        float2x2 third1 = rotate2d(2. * 3.1415926535897/3.);
+        float2x2 third2 = rotate2d(2. * 3.1415926535897/3. * 2.);
+        float2x2 third3 = rotate2d(2. * 3.1415926535897/3. * 3.);
+        
+        // Capsules
+        float cap1 = sdUnevenCapsuleY(third1*p, r1, r2, 0.9);
+        float cap2 = sdUnevenCapsuleY(third2*p, r1, r2, 0.9);
+        float cap3 = sdUnevenCapsuleY(third3*p, r1, r2, 0.9);
+        
+        // Circle in middle
+        float circle = sdCircle(p, 0.5);
+        
+        // Coloring
+        float3 col = float3(0.0);
+        col += sign(circle)*float3(1.,1.,1.);
+        col += sign(cap1)*col;
+        col += sign(cap2)*col;
+        col += sign(cap3)*col;
+        
+        // Adjustments
+        
+        // uncomment to invert color
+        // col = 1.-col;
+        
+        // float outline = sdCircle(p, 1.3);
+        
+        // Uncomment to show border
+        // col = mix( col, vec3(0.5), 1.0-smoothstep(0.0,0.015,abs(outline)) );
+        
+        return float4(col,1.0);
+    }
 
 }}

@@ -21,8 +21,10 @@ struct MetalGenView: View {
     var topBar: some View {
         HStack {
             
+            // Left Group (Generator, Size, Save
             Group {
                 
+                // Generator Type
                 Picker("Generator", selection: $controller.selection) {
                     ForEach(MetalGenType.allCases, id:\.self) { genn in
                         Text("\(genn.rawValue)")
@@ -30,20 +32,40 @@ struct MetalGenView: View {
                 }
                 .frame(width: 150)
                 
+                // Size Picker
+                Picker("Size", selection: $controller.textureSize) {
+                    ForEach(TextureSize.allCases, id:\.self) { tSize in
+                        Text(tSize.fullLabel)
+                    }
+                    .onChange(of: controller.textureSize, perform: { value in
+                        //                            self.image = NSImage(size: value.size)
+                        let imSize:CGSize = value.size
+                        let image = MetalGenController.noiseImage(size: imSize)
+                        controller.image = image
+                    })
+                }
+                .frame(width: 150)
+                
+                // Save
                 Button(action: {
                     controller.saveImage()
                 }, label: {
-                    Image(systemName: "opticaldisc")
-                    Text("Save")
+                    // Image(systemName: "opticaldisc")
+                    Text("💾")
                 })
+                .help("Saves the main image shown below")
             }
             
             Spacer()
             
-            Button("+ Image") {
+            // Right: Library
+            Button(action: {
                 popAppImages.toggle()
-            }
-            .help("Other images in app")
+            }, label: {
+                Image(systemName: "books.vertical")
+                Text("Library")
+            })
+            .help("Images in App's Library")
             .popover(isPresented: $popAppImages) {
                 VStack {
                     ForEach(AppTextures.allCases, id:\.self) { texture in
@@ -61,20 +83,6 @@ struct MetalGenView: View {
                 }
                 .padding()
             }
-            
-            
-            Picker("Size", selection: $controller.textureSize) {
-                ForEach(TextureSize.allCases, id:\.self) { tSize in
-                    Text(tSize.fullLabel)
-                }
-                .onChange(of: controller.textureSize, perform: { value in
-                    //                            self.image = NSImage(size: value.size)
-                    let imSize:CGSize = value.size
-                    let image = MetalGenController.noiseImage(size: imSize)
-                    controller.image = image
-                })
-            }
-            .frame(width: 150)
             
             // Zoom
             Group {
@@ -110,6 +118,8 @@ struct MetalGenView: View {
     
     var body: some View {
         NavigationView {
+            
+            // Left: Method
             ScrollView {
                 VStack {
                     switch controller.selection {
@@ -125,21 +135,18 @@ struct MetalGenView: View {
                             MetalOverlaysView(controller: controller, applied: { newImage in
                                 controller.image = newImage
                             })
-//                        case .Other:
-//                            MetalOthersView(controller: controller, applied: { newImage in
-//                                controller.image = newImage
-//                            })
-//                        default: Text("Not Implemented").foregroundColor(.gray)
                     }
                 }
             }
             .frame(width: 250)
             
+            // Big Image + bar
             VStack {
                 
                 // Toolbar
                 topBar
-
+                
+                // Main Image
                 ScrollView([.vertical, .horizontal], showsIndicators: true) {
                     HStack(alignment:.top) {
                         Spacer()
@@ -165,7 +172,6 @@ struct MetalGenView: View {
                 }
                 .frame(minWidth: 400, maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
             }
-            
         }
     }
 }

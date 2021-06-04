@@ -1,60 +1,26 @@
 //
-//  HexagonFilter.swift
+//  NoiseFilters.swift
 //  Scene Machine
 //
-//  Created by Carlos Farini on 4/23/21.
+//  Created by Carlos Farini on 6/4/21.
 //
 
+import CoreGraphics
 import Cocoa
-import CoreImage
 
-// MARK: - Hexagons
-
-class HexagonFilter: CIFilter {
+/// Standart `Voronoi` Shader
+class VoronoiFilter: CIFilter {
     
     private var kernel:CIColorKernel
     var inputImage:CIImage?
-    
-    /// The size of the image
     var tileSize:Float = 512.0
-    
-    /// Number of tiles in each direction
-    var tilecount:Int = 5
+    var tileCount:Int = 10
+    var time:Int = 3
     
     override init() {
         let url = Bundle.main.url(forResource: "Kernels2.ci", withExtension: "metallib")!
         guard let data = try? Data(contentsOf: url) else { fatalError() }
-        guard let kkk = try? CIColorKernel(functionName: "hexagons", fromMetalLibraryData: data) else { fatalError() } // myColor // hexagons // caustic
-        self.kernel = kkk
-        super.init()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func outputImage() -> CIImage? {
-        guard let inputImage = inputImage else {return nil}
-        let src = CISampler(image: inputImage)
-        let vec = CIVector(cgPoint: CGPoint(x: CGFloat(tileSize), y: CGFloat(tileSize)))
-        let fTile = Float(tilecount)
-        
-        return kernel.apply(extent: inputImage.extent, arguments: [src, fTile, vec])
-    }
-}
-
-// MARK: - Mixed Tiles + Noise
-
-class TruchetFilter: CIFilter {
-    private var kernel:CIColorKernel
-    var inputImage:CIImage?
-    var tileSize:Float = 512.0
-    var tileCount:Int = 8
-    
-    override init() {
-        let url = Bundle.main.url(forResource: "Kernels2.ci", withExtension: "metallib")!
-        guard let data = try? Data(contentsOf: url) else { fatalError() }
-        guard let kkk = try? CIColorKernel(functionName: "truchet", fromMetalLibraryData: data) else { fatalError() } // myColor // hexagons // truchet
+        guard let kkk = try? CIColorKernel(functionName: "voronoi", fromMetalLibraryData: data) else { fatalError() } // myColor // hexagons // truchet
         // float4 truchet(sample_t sample, float2 size, destination dest) {
         self.kernel = kkk
         super.init()
@@ -81,25 +47,29 @@ class TruchetFilter: CIFilter {
         
         let src = CISampler(image: inputImage)
         let vec = CIVector(cgPoint: CGPoint(x: CGFloat(tileSize), y: CGFloat(tileSize)))
-        let count = Float(tileCount)
-        // float4 truchet(sample_t sample, float2 size, destination dest) {
-        return kernel.apply(extent: inputImage.extent, arguments: [src, count, vec])
+        let tileCT = Float(tileCount)
+        let timeN = Float(time)
+        
+        return kernel.apply(extent: inputImage.extent, arguments: [src, vec, tileCT, timeN])
     }
 }
 
-class WavesFilter: CIFilter {
+/// Caustic (Electric/Cloud) Noise
+class CausticNoiseMetal: CIFilter {
     
     private var kernel:CIColorKernel
     var inputImage:CIImage?
+    
+    /// Size of the image
     var tileSize:Float = 512.0
-    var tileCount:Int = 8
-    var time:Double = 1.0
+    
+    /// Random factor
+    var time:Int = 1
     
     override init() {
         let url = Bundle.main.url(forResource: "Kernels2.ci", withExtension: "metallib")!
         guard let data = try? Data(contentsOf: url) else { fatalError() }
-        guard let kkk = try? CIColorKernel(functionName: "waves", fromMetalLibraryData: data) else { fatalError() } // myColor // hexagons // truchet
-        // float4 truchet(sample_t sample, float2 size, destination dest) {
+        guard let kkk = try? CIColorKernel(functionName: "caustic", fromMetalLibraryData: data) else { fatalError() } // myColor // hexagons
         self.kernel = kkk
         super.init()
     }
@@ -124,36 +94,27 @@ class WavesFilter: CIFilter {
         guard let inputImage = inputImage else {return nil}
         
         let src = CISampler(image: inputImage)
-        let vec = CIVector(cgPoint: CGPoint(x: CGFloat(tileSize), y: CGFloat(tileSize)))
-        let fTile = Float(tileCount)
-        let fTime = Float(time)
+        let nTime:Float = Float(time)
         
-        // float4 truchet(sample_t sample, float2 size, destination dest) {
-        return kernel.apply(extent: inputImage.extent, arguments: [src, vec, fTile, fTime])
+        return kernel.apply(extent: inputImage.extent, arguments: [src, nTime, tileSize])
     }
 }
 
-class EpitrochoidalWaves:CIFilter {
-    // epitrochoidal_taps
+/// A Random Color Warping Shader
+class PlasmaFilter: CIFilter {
+    
     private var kernel:CIColorKernel
-    
     var inputImage:CIImage?
-    
-    /// Size of output image (retuired)
     var tileSize:Float = 512.0
-    
-    /// Zoom. Defaults to 4
-    var zoom:Int = 4
-    
-    /// Time. defaults to 1
     var time:Float = 1
+    var iterations:Float = 5
+    var sharpness:Float = 1
     
     override init() {
         let url = Bundle.main.url(forResource: "Kernels2.ci", withExtension: "metallib")!
         guard let data = try? Data(contentsOf: url) else { fatalError() }
-        guard let kkk = try? CIColorKernel(functionName: "epitrochoidal_taps", fromMetalLibraryData: data) else { fatalError() } // myColor // hexagons // truchet
-        // float4 truchet(sample_t sample, float2 size, destination dest) {
-        self.kernel = kkk
+        guard let kern = try? CIColorKernel(functionName: "plasma", fromMetalLibraryData: data) else { fatalError() } // myColor // hexagons
+        self.kernel = kern
         super.init()
     }
     
@@ -177,12 +138,10 @@ class EpitrochoidalWaves:CIFilter {
         guard let inputImage = inputImage else {return nil}
         
         let src = CISampler(image: inputImage)
-        let vec = CIVector(cgPoint: CGPoint(x: CGFloat(tileSize), y: CGFloat(tileSize)))
-        let fZoom = Float(zoom)
+        //        let iterations:Float = 5
+        //        let sharpness:Float = 1
         
-        // float2 size, float zoom, float time, destination dest
-        return kernel.apply(extent: inputImage.extent, arguments: [src, vec, fZoom, time])
+        // plasma(sample_t sample, float time, float iterations, float sharpness, float scale, destination dest) {
+        return kernel.apply(extent: inputImage.extent, arguments: [src, time, iterations, sharpness, tileSize])
     }
 }
-
-
