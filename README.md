@@ -117,10 +117,7 @@ See this apps's model readme: [Here](https://github.com/Farini/Scene-Machine/blo
 - [X] Write Shader Snippets on SceneMachine
 
 - [ ] Improve App Help: http://swiftrien.blogspot.com/2015/06/adding-apple-help-to-os-x-application.html
-/////
 
-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
-/////
 
 ## Privacy Policy - Scene Machine
 
