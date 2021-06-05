@@ -192,18 +192,24 @@ enum AppBackgrounds: String, CaseIterable {
     case Lava1
     case Lava2
     case Mountains
+    case Grass
     case NightSky
     case CityDay
+    case CityDay2
     case CityNight
+    case Studio
     
     var content:String {
         switch self {
             case .Lava1: return "LavaWorldBlur.hdr"
             case .Lava2: return "LavaWorldBlur2.hdr"
             case .Mountains: return "SMB_3.hdr"
+            case .Grass: return "Grass.hdr"
             case .NightSky: return "NightSky.hdr"
             case .CityDay: return "CityDay.hdr"
+            case .CityDay2: return "CityDay2.hdr"
             case .CityNight: return "CityNight.hdr"
+            case .Studio: return "Studio.hdr"
         }
     }
 }

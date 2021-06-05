@@ -221,8 +221,8 @@ struct FXOtherView: View {
                 let filter = CameraRainDrops()
                 filter.imgSize = CGFloat(mainImage.size.width)
                 filter.inputImage = coreImage
-                //filter.tileCount = 4
-                //filter.time = 1//CGFloat(max(1, slider1))
+                filter.tileCount = CGFloat(stepCount1)
+                // filter.time = 1//CGFloat(max(1, slider1))
                 
                 guard let output = filter.outputImage(),
                       let cgOutput = context.createCGImage(output, from: output.extent)
@@ -231,7 +231,8 @@ struct FXOtherView: View {
                     return
                 }
                 
-                let filteredImage = NSImage(cgImage: cgOutput, size: output.extent.size)
+                let filteredImage = NSImage(cgImage: cgOutput, size: CGSize(width:filter.imgSize, height:filter.imgSize))
+                
                 
                 self.image = filteredImage
                 

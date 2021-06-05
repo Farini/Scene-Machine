@@ -1188,7 +1188,7 @@ extern "C" { namespace coreimage {
         // float maxBlur = mix(3., 6., rainAmount);
         // float minBlur = 2.;
         
-        float story = 0.;
+        float story = 0;
         // float heart = 0.;
         
 
@@ -1215,6 +1215,7 @@ extern "C" { namespace coreimage {
         
         
 // post process
+        
         t = (T+3.)*.5;                                        // make time sync with first lightnoing
         float colFade = sin(t*.2)*.5+.5+story;
         col *= mix(float3(1.), float3(.8, .9, 1.3), colFade);    // subtle color shift
@@ -1228,6 +1229,7 @@ extern "C" { namespace coreimage {
         col *= 1.-dot(uvh, UV);                            // vignette
         
         col *= fade;                                        // composite start and end fade
+         
 // end post process
         
         return float4(col, 1.);

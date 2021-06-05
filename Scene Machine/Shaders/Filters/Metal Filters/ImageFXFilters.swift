@@ -328,11 +328,13 @@ class CameraRainDrops: CIFilter {
         // rainDrops(sampler image, float2 size, float tileCount, float time, destination dest)
         let src = CISampler(image: inputImage)
         let vec = CIVector(cgPoint: CGPoint(x: imgSize, y: imgSize))
+        let count = tileCount
+        let fTime = time
         
         // rainDrops(sampler image, float2 size, float tileCount, float time, destination dest)
         return kernel.apply(extent: inputImage.extent, roiCallback: {
             (index, rect) in
             return rect // .insetBy(dx: 0, dy: 0)
-        }, arguments: [src, vec, tileCount, time])
+        }, arguments: [src, vec, count, fTime])
     }
 }

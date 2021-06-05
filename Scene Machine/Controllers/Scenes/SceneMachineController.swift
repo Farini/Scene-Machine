@@ -9,6 +9,7 @@ import Foundation
 import SceneKit
 import MetalKit
 import QuartzCore
+import SwiftUI
 
 /// The View on the Right side of the SplitView Scene Machine View
 enum MachineRightView:String, CaseIterable {
@@ -239,6 +240,18 @@ class SceneMachineController:ObservableObject {
                     self.presentingTempAlert.toggle()
                     self.tempAlertMessage = ""
                 }
+            }
+        }
+    }
+    
+    func saveScreenshot() {
+        print("Screenchot")
+        if let cam = scene.rootNode.childNode(withName: "camera", recursively: false)?.clone() {
+            if let image = ZStack(content: { (SceneView(scene: self.scene.copy() as? SCNScene, pointOfView: cam, options: [], preferredFramesPerSecond: 60, antialiasingMode: .none, delegate: nil, technique: nil)
+            )
+            }).frame(width: 2880, height: 2180).snapShot(uvSize: CGSize(width: 2880, height: 2180)) {
+                
+                saveUVMap(image: image)
             }
         }
     }

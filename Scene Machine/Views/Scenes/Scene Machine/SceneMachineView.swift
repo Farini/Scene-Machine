@@ -100,7 +100,7 @@ struct SceneMachineView: View {
                     Button(action: {
                         popGeoImport.toggle()
                     }, label: {
-                        Image(systemName:"square.and.arrow.down.fill")
+                        Image(systemName:"square.and.arrow.down.fill").font(.title2)
                     })
                     .help("Import geometry")
                     .popover(isPresented: $popGeoImport) {
@@ -128,6 +128,18 @@ struct SceneMachineView: View {
                         .frame(width:200)
                         .padding()
                     }
+                    
+                    // Screenshot
+                    Button(action:{
+                        print("Screenshot")
+                        let mScene = self.snapScene
+                        if let image = mScene.snapShot(uvSize: CGSize(width: 2880, height: 2180)) {
+
+                            controller.saveUVMap(image: image)
+                        }
+                    }, label:{
+                        Image(systemName: "camera.circle.fill").font(.title2)
+                    })
                     
                     // Save
                     Button("💾") {
@@ -322,6 +334,16 @@ struct SceneMachineView: View {
         
         newScene.background.contents = NSColor.darkGray
         return newScene
+    }
+    
+    var snapScene: some View {
+        ZStack {
+            let cam = controller.scene.rootNode.childNode(withName: "camera", recursively: false)!//.clone()
+            
+            SceneView(scene: controller.scene, pointOfView: cam, options:[], preferredFramesPerSecond: 60, antialiasingMode: .multisampling2X, delegate: nil, technique: nil)
+                .frame(width: 2880, height: 2180, alignment: .center)
+        }
+        .frame(width: 2880, height: 2180, alignment: .center)
     }
 }
 
