@@ -254,3 +254,18 @@ https://developer.apple.com/documentation/scenekit/scnmaterialproperty
 >Typically, you associate texture images with materials when creating 3D assets with third-party authoring tools, and the scene files containing those assets reference external image files. 
 >For best results when shipping assets in your app bundle, place scene files in a folder with the .scnassets extension, and 
 >place image files referenced as textures from those scenes in an Asset Catalog.
+
+
+## SceneMachine View - ToDo
+
+1. Scene Options - Data that should be passed between View & Controller and SAVED for continuation.
+
+- [X] Panel (Node options)
+- [ ] PIP Scene (is displaying)
+- [ ] SCNInteractionMode + SCNCameraController info
+- [ ] PointOfView
+- [ ] Autosave?
+- [ ] Display node count/stats
+- [ ] Scene name
+- [ ] Rendering Mode?
+

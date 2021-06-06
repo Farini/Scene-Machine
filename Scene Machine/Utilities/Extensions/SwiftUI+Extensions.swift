@@ -77,3 +77,9 @@ extension NumberFormatter {
     }
     
 }
+
+class ClosableWindow: NSWindow {
+    override func close() {
+        self.orderOut(NSApp)
+    }
+}

@@ -89,6 +89,7 @@ struct SceneMachineView: View {
                 }
                 .padding(.horizontal, 6)
             }
+            .frame(maxWidth:250)
             
             // Middle - Scene
             VStack {
@@ -132,14 +133,13 @@ struct SceneMachineView: View {
                     // Screenshot
                     Button(action:{
                         print("Screenshot")
-                        let mScene = self.snapScene
-                        if let image = mScene.snapShot(uvSize: CGSize(width: 2880, height: 2180)) {
-
-                            controller.saveUVMap(image: image)
-                        }
+                        // The View will take a screenshot and issue a NSSavePanel command.
+                        NotificationCenter.default.post(Notification(name: .smScreenshotNotification))
+                        
                     }, label:{
                         Image(systemName: "camera.circle.fill").font(.title2)
                     })
+                    .help("Take a screenshot of the scene")
                     
                     // Save
                     Button("💾") {
@@ -336,15 +336,6 @@ struct SceneMachineView: View {
         return newScene
     }
     
-    var snapScene: some View {
-        ZStack {
-            let cam = controller.scene.rootNode.childNode(withName: "camera", recursively: false)!//.clone()
-            
-            SceneView(scene: controller.scene, pointOfView: cam, options:[], preferredFramesPerSecond: 60, antialiasingMode: .multisampling2X, delegate: nil, technique: nil)
-                .frame(width: 2880, height: 2180, alignment: .center)
-        }
-        .frame(width: 2880, height: 2180, alignment: .center)
-    }
 }
 
 struct UVMapStack: View {
@@ -594,17 +585,36 @@ struct SMEventBackView: NSViewRepresentable {
 
 class SMEventSceneView:SCNView {
     
+    // Scene Options - Data that should be passed between and SAVED for continuation.
+    // 1. PIP Scene (is displaying)
+    // 2. SCNInteractionMode + SCNCameraController info
+    // 3. PointOfView
+    // 4. Autosave?
+    // 5. Display node count/stats
+    // 6. Scene name
+    // 7. Rendering Mode?
+    // 8. Panel (Node options)
+    
     // Main mouse events
     
     /// Detects where the mouse was down last, to not interfere with camera moves.
     var lastDown:NSPoint = .zero
     
     override func mouseDown(with event: NSEvent) {
+        
         print("mouse down")
-        lastDown = event.locationInWindow
+        if lastDown == event.locationInWindow {
+            
+        } else {
+            lastDown = event.locationInWindow
+            defaultCameraController.beginInteraction(event.locationInWindow, withViewport: self.currentViewport.size)
+        }
+        
+        
     }
-    
+
     override func mouseUp(with event: NSEvent) {
+        
         print("mouse up")
         
         // check what nodes are tapped
@@ -613,7 +623,10 @@ class SMEventSceneView:SCNView {
         
         // Check if moving camera in scene
         if windowPoint != lastDown {
-            print("dragged")
+            // print("dragged")
+//            defaultCameraController.continueInteraction(event.locationInWindow, withViewport: self.currentViewport.size, sensitivity: 1)
+            defaultCameraController.endInteraction(event.locationInWindow, withViewport: currentViewport.size, velocity: CGPoint.zero)
+            
             return
         }
         
@@ -647,6 +660,7 @@ class SMEventSceneView:SCNView {
             
             NotificationCenter.default.post(name: .hitTestNotification, object: result)
         }
+         
     }
     
     override func rightMouseDown(with event: NSEvent) {
@@ -707,5 +721,92 @@ class SMEventSceneView:SCNView {
     
     override func keyUp(with event: NSEvent) {
         print("Key up: \(event.keyCode)")
+        if event.keyCode == 123 {
+            defaultCameraController.translateInCameraSpaceBy(x: -1, y: 0, z: 0)
+        }
+        if event.keyCode == 124 {
+            defaultCameraController.translateInCameraSpaceBy(x: 1, y: 0, z: 0)
+        }
+        if event.keyCode == 125 {
+            defaultCameraController.translateInCameraSpaceBy(x: 0, y: 0, z: 1)
+        }
+        if event.keyCode == 126 {
+            defaultCameraController.translateInCameraSpaceBy(x: 0, y: 0, z: -1)
+        }
+        if event.keyCode == 83 {
+            print("top")
+            
+            // keypad 1
+            let emptyNode = SCNNode()
+//            emptyNode.camera = SCNCamera()
+            emptyNode.name = "placeholder"
+            // let bbox = scene!.rootNode.boundingBox.max.y
+            emptyNode.position = SCNVector3(0, 20, 0)
+            scene!.rootNode.addChildNode(emptyNode)
+            emptyNode.look(at: SCNVector3(x: 0, y: 0, z: 0))
+            
+//            defaultCameraController.clearRoll()
+            
+//            defaultCameraController.endInteraction(event.locationInWindow, withViewport: currentViewport.size, velocity: CGPoint.zero)
+//            defaultCameraController.inertiaEnabled = true
+//            defaultCameraController.worldUp = SCNVector3(0, 0, 1)
+            self.pointOfView = emptyNode
+            defaultCameraController.pointOfView = emptyNode
+            defaultCameraController.target = SCNVector3(0, 0, 0)
+            
+            defaultCameraController.interactionMode = .pan
+            
+            // Clear the node?
+            // emptyNode.removeFromParentNode()
+            
+        }
+    }
+    
+    override func viewDidMoveToWindow() {
+        NotificationCenter.default.addObserver(self, selector: #selector(screenshotNotification(_:)), name: .smScreenshotNotification, object: nil)
+//        self.defaultCameraController = SCNCameraController()
+//        defaultCameraController.beginInteraction(CGPoint.zero, withViewport: self.currentViewport.size)
+//        defaultCameraController.continueInteraction(<#T##location: CGPoint##CGPoint#>, withViewport: <#T##CGSize#>, sensitivity: <#T##CGFloat#>)
+//        defaultCameraController.endInteraction(<#T##location: CGPoint##CGPoint#>, withViewport: <#T##CGSize#>, velocity: <#T##CGPoint#>)
+        
+        defaultCameraController.interactionMode = .orbitTurntable
+        defaultCameraController.pointOfView = nil
+        
+        print("Default Controller POV: \(defaultCameraController.pointOfView?.description ?? "na")")
+        print("Default Controller TARGET: \(defaultCameraController.target)")
+        
+        //        defaultCameraController.translateInCameraSpaceBy(x: <#T##Float#>, y: <#T##Float#>, z: <#T##Float#>)
+        // defaultCameraController.worldUp
+//        self.defaultCameraController = // Create a
+    }
+    
+    // Other
+    @objc func screenshotNotification(_ notification:Notification) {
+        let image = self.snapshot()
+        
+        
+        // use NSSavePanel
+        let dialog = NSSavePanel() //NSOpenPanel();
+        
+        dialog.title                   = "UVMap layout";
+        dialog.showsResizeIndicator    = true;
+        dialog.showsHiddenFiles        = false;
+        dialog.allowedFileTypes = ["png", "jpg", "jpeg"]
+        dialog.message = "Save UVMap"
+        
+        if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
+            // Pathname of the file
+            if let result = dialog.url,
+               let imageData = image.tiffRepresentation {
+                do {
+                    try imageData.write(to: result)
+                } catch {
+                    print("Error. Could not save image")
+                }
+                
+            } else {
+                print("Could not save image to the specified URL")
+            }
+        }
     }
 }

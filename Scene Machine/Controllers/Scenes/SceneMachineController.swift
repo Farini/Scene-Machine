@@ -615,9 +615,7 @@ class SceneMachineController:ObservableObject {
 }
 
 
-extension Notification.Name {
-    static var hitTestNotification = Notification.Name("HitTestNotification")
-}
+
 
 
 //class ProgramDelegate:NSObject, SCNProgramDelegate {

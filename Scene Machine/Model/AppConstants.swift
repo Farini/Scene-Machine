@@ -213,3 +213,8 @@ enum AppBackgrounds: String, CaseIterable {
         }
     }
 }
+
+extension Notification.Name {
+    static var hitTestNotification = Notification.Name("HitTestNotification")
+    static var smScreenshotNotification = Notification.Name("smScreenshotNotification")
+}

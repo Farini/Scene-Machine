@@ -454,7 +454,28 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         blenderShortcutsWindow.makeKeyAndOrderFront(nil)
     }
+    
+    // Markdown Editor
+    @IBAction func newMarkdown(_ sender: NSMenuItem) {
+        
+        let view = MarkdownEditor()
+        let newWindow = ClosableWindow(
+            contentRect: NSRect(x: 0, y: 0, width: 600, height: 500),
+            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+            backing: .buffered, defer: false)
+        
+        newWindow.center()
+        
+        newWindow.title = "Markdown"
+        newWindow.isReleasedWhenClosed = true
+        newWindow.contentView = NSHostingView(rootView: view)
+        
+        newWindow.makeKeyAndOrderFront(self)
+    }
+    
 }
+
+
 
 /*
 extension NSImage.Name {

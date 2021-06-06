@@ -93,6 +93,7 @@ See this apps's model readme: [Here](https://github.com/Farini/Scene-Machine/blo
 - [X] Cleanup SceneMachineController
 - [X] Remove CIGenerators from Pedal2DMetal
 - [X] Under UVMap (ZStack), add image of the UV (if any)
+
 *New Features v 1.1*
 - [X] Export .dae format
 - [X] App Textures

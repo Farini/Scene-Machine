@@ -73,6 +73,8 @@
 		85B9137A26329A3A0065D6D2 /* CoreImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B9137826329A3A0065D6D2 /* CoreImage+Extensions.swift */; };
 		85B9138226329DED0065D6D2 /* MetalGenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B9138126329DED0065D6D2 /* MetalGenView.swift */; };
 		85B9138326329DED0065D6D2 /* MetalGenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B9138126329DED0065D6D2 /* MetalGenView.swift */; };
+		85C282FA266C1A8C00044A75 /* HighlightedTextEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 85C282F9266C1A8C00044A75 /* HighlightedTextEditor */; };
+		85C282FC266C1BDD00044A75 /* MarkdownEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85C282FB266C1BDD00044A75 /* MarkdownEditor.swift */; };
 		85CB435F263CABC0006E4B10 /* Kernels2.ci.metal in Sources */ = {isa = PBXBuildFile; fileRef = 85CB435E263CABC0006E4B10 /* Kernels2.ci.metal */; };
 		85CB4361263D0D9A006E4B10 /* DrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CB4360263D0D9A006E4B10 /* DrawingView.swift */; };
 		85D1BC61265C2E7D009D70DC /* MacNotesTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D1BC60265C2E7D009D70DC /* MacNotesTextView.swift */; };
@@ -210,6 +212,7 @@
 		85B9136E263299CB0065D6D2 /* HexagonFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexagonFilter.swift; sourceTree = "<group>"; };
 		85B9137826329A3A0065D6D2 /* CoreImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreImage+Extensions.swift"; sourceTree = "<group>"; };
 		85B9138126329DED0065D6D2 /* MetalGenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalGenView.swift; sourceTree = "<group>"; };
+		85C282FB266C1BDD00044A75 /* MarkdownEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownEditor.swift; sourceTree = "<group>"; };
 		85CB435E263CABC0006E4B10 /* Kernels2.ci.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Kernels2.ci.metal; sourceTree = "<group>"; };
 		85CB4360263D0D9A006E4B10 /* DrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingView.swift; sourceTree = "<group>"; };
 		85D1BC60265C2E7D009D70DC /* MacNotesTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MacNotesTextView.swift; sourceTree = "<group>"; };
@@ -243,6 +246,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85C282FA266C1A8C00044A75 /* HighlightedTextEditor in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -496,6 +500,7 @@
 				85885EF526520B1B00E98855 /* HelpCharacterModeling.swift */,
 				85D1BC60265C2E7D009D70DC /* MacNotesTextView.swift */,
 				85D1BC6F2660244B009D70DC /* HelpPencilKitView.swift */,
+				85C282FB266C1BDD00044A75 /* MarkdownEditor.swift */,
 			);
 			path = Help;
 			sourceTree = "<group>";
@@ -653,6 +658,9 @@
 			dependencies = (
 			);
 			name = "Scene Machine";
+			packageProductDependencies = (
+				85C282F9266C1A8C00044A75 /* HighlightedTextEditor */,
+			);
 			productName = "Scene Machine";
 			productReference = 856491CC2578100B00D1FE00 /* Scene Machine.app */;
 			productType = "com.apple.product-type.application";
@@ -702,6 +710,9 @@
 				Base,
 			);
 			mainGroup = 856491C32578100B00D1FE00;
+			packageReferences = (
+				85C282F8266C1A8C00044A75 /* XCRemoteSwiftPackageReference "HighlightedTextEditor" */,
+			);
 			productRefGroup = 856491CD2578100B00D1FE00 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -775,6 +786,7 @@
 				8515B372262743D000A886BD /* TerrainView.swift in Sources */,
 				85771BCD2633D08F001A2B88 /* InputViews.swift in Sources */,
 				85D1BC722660347D009D70DC /* MMModeView.swift in Sources */,
+				85C282FC266C1BDD00044A75 /* MarkdownEditor.swift in Sources */,
 				8515B47C262E4B5F00A886BD /* FXBlurrView.swift in Sources */,
 				857C473426371D06006C6A32 /* MetalNoiseView.swift in Sources */,
 				85B9137926329A3A0065D6D2 /* CoreImage+Extensions.swift in Sources */,
@@ -1102,6 +1114,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		85C282F8266C1A8C00044A75 /* XCRemoteSwiftPackageReference "HighlightedTextEditor" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kyle-n/HighlightedTextEditor";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		85C282F9266C1A8C00044A75 /* HighlightedTextEditor */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 85C282F8266C1A8C00044A75 /* XCRemoteSwiftPackageReference "HighlightedTextEditor" */;
+			productName = HighlightedTextEditor;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		856491D32578100B00D1FE00 /* Scene_Machine.xcdatamodeld */ = {
