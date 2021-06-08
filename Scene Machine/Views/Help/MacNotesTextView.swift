@@ -156,6 +156,10 @@ class CustomTextView: NSView {
         return scrollView
     }()
     
+    func getAttributedString() -> NSAttributedString? {
+        return textView.attributedString()
+    }
+    
     lazy var textView: NSTextView = {
         let contentSize = scrollView.contentSize
         let textStorage = NSTextStorage()

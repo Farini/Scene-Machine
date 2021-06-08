@@ -23,7 +23,7 @@ struct SMShaderEditView: View {
     @State var materials:[SCNMaterial] = []
     
     @State var selectedMaterial:SCNMaterial?
-    @State var shaderType:ShaderType = .Geometry
+    @State var shaderType:ShaderType = .Surface
     @State var text:String = "// Write shader snippet here."
     
     @State var popMaterial:Bool = false
@@ -68,6 +68,13 @@ struct SMShaderEditView: View {
                 
                 Button("💾") {
                     print("save")
+                    
+                    switch shaderType {
+                        case .Fragment: selectedMaterial?.shaderModifiers = [.fragment: text]
+                        case .Surface: selectedMaterial?.shaderModifiers = [.surface: text]
+                        case .Lighting: selectedMaterial?.shaderModifiers = [.lightingModel: text]
+                        case .Geometry: selectedMaterial?.shaderModifiers = [.geometry: text]
+                    }
                 }
             }
             .padding(.horizontal, 4)
@@ -115,6 +122,9 @@ struct SMShaderEditView: View {
                     isEditable: true,
                     font: .monospacedSystemFont(ofSize: 14, weight: .light)
                 )
+                .onChange(of: selectedMaterial, perform: { value in
+                    self.didSelectShaderType()
+                })
             }
             
             
@@ -235,6 +245,7 @@ struct SMShaderEditView: View {
     
     func loadMaterials() {
         self.materials = geometry.materials
+        self.selectedMaterial = geometry.materials.first
         self.didSelectShaderType()
     }
 }
