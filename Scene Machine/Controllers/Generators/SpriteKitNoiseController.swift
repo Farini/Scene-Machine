@@ -91,7 +91,7 @@ class SpriteKitNoiseController:ObservableObject {
         
         let data = image.tiffRepresentation
         
-        let dialog = NSSavePanel() //NSOpenPanel();
+        let dialog = NSSavePanel()
         
         dialog.title                   = "Choose a directory";
         dialog.showsResizeIndicator    = true;

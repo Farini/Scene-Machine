@@ -116,8 +116,9 @@ See this apps's model readme: [Here](https://github.com/Farini/Scene-Machine/blo
 - [X] Scene Explorer
 - [X] Interface Improvements
 - [X] Write Shader Snippets on SceneMachine
+- [X] Color coded Shader snippet editor
+- [X] Markdown Editor
 - [ ] Improvements with Help
-- [ ] Markdown Editor
 
 - [ ] Improve App Help: http://swiftrien.blogspot.com/2015/06/adding-apple-help-to-os-x-application.html
 

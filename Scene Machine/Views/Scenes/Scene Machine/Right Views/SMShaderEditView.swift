@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SceneKit
+import HighlightedTextEditor
 
 enum ShaderType:String, CaseIterable {
     case Geometry
@@ -32,6 +33,7 @@ struct SMShaderEditView: View {
         
         VStack {
             
+            // Toolbar
             HStack {
                 Text("Shader snippet")
                 Button("Material") {
@@ -77,25 +79,27 @@ struct SMShaderEditView: View {
                     }
                 }
             }
-            .padding(.horizontal, 4)
+            .padding(6)
             
             VSplitView {
                 switch shaderType {
                     case .Geometry:
-                        MacEditorTextView(
-                            text: .constant(geometryShaderTypeHeaders),
-                            isEditable: true,
-                            font: .monospacedSystemFont(ofSize: 14, weight: .light),
-                            fontColor: .gray
-                        )
+                        HighlightedTextEditor(text: .constant(geometryShaderTypeHeaders), highlightRules: rules)
+//                        MacEditorTextView(
+//                            text: .constant(geometryShaderTypeHeaders),
+//                            isEditable: true,
+//                            font: .monospacedSystemFont(ofSize: 14, weight: .light),
+//                            fontColor: .gray
+//                        )
                         .foregroundColor(.gray)
                     case .Surface:
-                        MacEditorTextView(
-                            text: .constant(surfaceShaderTypeHeaders),
-                            isEditable: true,
-                            font: .monospacedSystemFont(ofSize: 14, weight: .light),
-                            fontColor: .gray
-                        )
+                        HighlightedTextEditor(text: .constant(surfaceShaderTypeHeaders), highlightRules: rules)
+//                        MacEditorTextView(
+//                            text: .constant(surfaceShaderTypeHeaders),
+//                            isEditable: true,
+//                            font: .monospacedSystemFont(ofSize: 14, weight: .light),
+//                            fontColor: .gray
+//                        )
                         .foregroundColor(.gray)
                     case .Lighting:
                         MacEditorTextView(
@@ -117,11 +121,8 @@ struct SMShaderEditView: View {
                 
                 Divider().frame(height:6)
                 
-                MacEditorTextView(
-                    text: $text,
-                    isEditable: true,
-                    font: .monospacedSystemFont(ofSize: 14, weight: .light)
-                )
+                HighlightedTextEditor(text: $text, highlightRules: rules)
+                    
                 .onChange(of: selectedMaterial, perform: { value in
                     self.didSelectShaderType()
                 })
@@ -248,6 +249,42 @@ struct SMShaderEditView: View {
         self.selectedMaterial = geometry.materials.first
         self.didSelectShaderType()
     }
+    
+    // Rules
+//    private let rules: [HighlightRule] = [
+//        HighlightRule(pattern: betweenUnderscores, formattingRules: [
+//            TextFormattingRule(fontTraits: [.italic, .monoSpace]),
+//            TextFormattingRule(key: .foregroundColor, value: NSColor.red),
+//            TextFormattingRule(key: .underlineStyle) { content, range in
+//                if content.count > 10 { return NSUnderlineStyle.double.rawValue }
+//                else { return NSUnderlineStyle.single.rawValue }
+//            }
+//        ]),
+//        HighlightRule(pattern: metalFloat, formattingRules: [
+//            TextFormattingRule(fontTraits: [.monoSpace]),
+//            TextFormattingRule(key: .foregroundColor, value: NSColor.red),
+//            // TextFormattingRule(key: .font, value: NSFont.monospacedSystemFont(ofSize: 18, weight: .semibold))
+//        ]),
+//        HighlightRule(pattern: metalFloat2, formattingRules: [
+//            TextFormattingRule(fontTraits: [.monoSpace]),
+//            TextFormattingRule(key: .foregroundColor, value: NSColor.systemRed),
+//            // TextFormattingRule(key: .font, value: NSFont.monospacedSystemFont(ofSize: 18, weight: .semibold))
+//        ]),
+//        HighlightRule(pattern: metalFloat3, formattingRules: [
+//            TextFormattingRule(fontTraits: [.monoSpace]),
+//            TextFormattingRule(key: .foregroundColor, value: NSColor.orange),
+//            // TextFormattingRule(key: .font, value: NSFont.monospacedSystemFont(ofSize: 18, weight: .semibold))
+//        ]),
+//        HighlightRule(pattern: metalFloat4, formattingRules: [
+//            TextFormattingRule(fontTraits: [.monoSpace]),
+//            TextFormattingRule(key: .foregroundColor, value: NSColor.systemPink),
+//            // TextFormattingRule(key: .font, value: NSFont.monospacedSystemFont(ofSize: 18, weight: .semibold))
+//        ]),
+//        HighlightRule(pattern: codecomment, formattingRules: [
+//            TextFormattingRule(fontTraits: [.monoSpace]),
+//            TextFormattingRule(key: .foregroundColor, value: NSColor.gray),
+//            // TextFormattingRule(key: .font, value: NSFont.monospacedSystemFont(ofSize: 18, weight: .semibold))
+//        ])]
 }
 
 struct SMShaderEditView_Previews: PreviewProvider {
@@ -261,25 +298,22 @@ struct SMShaderEditView_Previews: PreviewProvider {
 
 fileprivate var surfaceShaderTypeHeaders:String {
     return """
-        /*
-        Access: ReadWrite
-        Stages: Fragment shader only
-        */
-        struct {
+        // Access: ReadWrite
+        // Stages: Fragment shader only
+        scn_node {
         float4x4    viewTransform;
         float4x4    inverseViewTransform; // transform from view space to world space
         float4x4    projectionTransform;
         float4x4    viewProjectionTransform;
         float4x4    viewToCubeTransform; // transform from view space to cube texture space (canonical Y Up space)
         float4      ambientLightingColor;
-        float4        fogColor;
-        float3        fogParameters; // x:-1/(end-start) y:1-start*x z:exp
+        float4      fogColor;
+        float3      fogParameters; // x:-1/(end-start) y:1-start*x z:exp
         float2      inverseResolution;
         float       time;
         float       sinTime;
         float       cosTime;
         float       random01;
-        // new in OSX 10.12 / iOS 10.0
         float       environmentIntensity;
         float4x4    inverseProjectionTransform;
         float4x4    inverseViewProjectionTransform;
@@ -290,12 +324,13 @@ fileprivate var surfaceShaderTypeHeaders:String {
         float4x4 inverseModelTransform;
         float4x4 modelViewTransform;
         float4x4 inverseModelViewTransform;
-        float4x4 normalTransform; // This is the inverseTransposeModelViewTransform, need for normal transformation
+        // This is the inverseTransposeModelViewTransform, need for normal transformation
+        float4x4 normalTransform;
         float4x4 modelViewProjectionTransform;
         float4x4 inverseModelViewProjectionTransform;
         float2x3 boundingBox;
         float2x3 worldBoundingBox;
-        } scn_node;
+        };
         
         struct SCNShaderSurface {
         float3 view;                     // Direction from the point on the surface toward the camera (V)
@@ -316,9 +351,9 @@ fileprivate var surfaceShaderTypeHeaders:String {
         float4 transparent;              // Transparent property of the fragment
         float2 transparentTexcoord;      // Transparent texture coordinates
         float4 reflective;               // Reflective property of the fragment
-        float metalness;                 // Metalness property of the fragment
+        float  metalness;                // Metalness property of the fragment
         float2 metalnessTexcoord;        // Metalness texture coordinates
-        float roughness;                 // Roughness property of the fragment
+        float  roughness;                // Roughness property of the fragment
         float2 roughnessTexcoord;        // Metalness texture coordinates
         float4 selfIllumination;         // Self illumination property of the fragment
         float2 selfIlluminationTexcoord; // Self illumination texture coordinates
@@ -334,19 +369,17 @@ fileprivate var surfaceShaderTypeHeaders:String {
 
 fileprivate var geometryShaderTypeHeaders:String {
     return """
-        /*
-        Access: ReadWrite
-        Stages: Vertex shader only
-        */
-        struct {
+        // Access: ReadWrite
+        // Stages: Vertex shader only
+        scn_frame {
         float4x4    viewTransform;
         float4x4    inverseViewTransform; // transform from view space to world space
         float4x4    projectionTransform;
         float4x4    viewProjectionTransform;
         float4x4    viewToCubeTransform; // transform from view space to cube texture space (canonical Y Up space)
         float4      ambientLightingColor;
-        float4        fogColor;
-        float3        fogParameters; // x:-1/(end-start) y:1-start*x z:exp
+        float4      fogColor;
+        float3      fogParameters; // x:-1/(end-start) y:1-start*x z:exp
         float2      inverseResolution;
         float       time;
         float       sinTime;
@@ -356,14 +389,15 @@ fileprivate var geometryShaderTypeHeaders:String {
         float       environmentIntensity;
         float4x4    inverseProjectionTransform;
         float4x4    inverseViewProjectionTransform;
-        } scn_frame;
+        };
         
-        struct {
+        _geometry {
         float4x4 modelTransform;
         float4x4 inverseModelTransform;
         float4x4 modelViewTransform;
         float4x4 inverseModelViewTransform;
-        float4x4 normalTransform; // This is the inverseTransposeModelViewTransform, need for normal transformation
+        // This is the inverseTransposeModelViewTransform, need for normal transformation
+        float4x4 normalTransform;
         float4x4 modelViewProjectionTransform;
         float4x4 inverseModelViewProjectionTransform;
         float2x3 boundingBox;
@@ -376,64 +410,60 @@ fileprivate var geometryShaderTypeHeaders:String {
         float4 tangent;
         float4 color;
         float2 texcoords[kSCNTexcoordCount];
-        } _geometry;
+        }
         """
 }
 
 fileprivate var lightingShaderTypeHeaders:String {
     return """
-        /*
-        Access: ReadOnly
-        Stages: Vertex shader and fragment shader
-        Structures: All the structures available from the SCNShaderModifierEntryPointSurface entry point
-        */
-        struct {
+        // Access: ReadOnly
+        // Stages: Vertex shader and fragment shader
+        // Structures: All the structures available from the SCNShaderModifierEntryPointSurface entry point
+        scn_frame {
         float4x4    viewTransform;
         float4x4    inverseViewTransform; // transform from view space to world space
         float4x4    projectionTransform;
         float4x4    viewProjectionTransform;
         float4x4    viewToCubeTransform; // transform from view space to cube texture space (canonical Y Up space)
         float4      ambientLightingColor;
-        float4        fogColor;
-        float3        fogParameters; // x:-1/(end-start) y:1-start*x z:exp
+        float4      fogColor;
+        float3      fogParameters; // x:-1/(end-start) y:1-start*x z:exp
         float2      inverseResolution;
         float       time;
         float       sinTime;
         float       cosTime;
         float       random01;
-        // new in OSX 10.12 / iOS 10.0
         float       environmentIntensity;
         float4x4    inverseProjectionTransform;
         float4x4    inverseViewProjectionTransform;
-        } scn_frame;
+        };
         
-        struct {
+        scn_node {
         float4x4 modelTransform;
         float4x4 inverseModelTransform;
         float4x4 modelViewTransform;
         float4x4 inverseModelViewTransform;
-        float4x4 normalTransform; // This is the inverseTransposeModelViewTransform, need for normal transformation
+        // This is the inverseTransposeModelViewTransform, need for normal transformation
+        float4x4 normalTransform;
         float4x4 modelViewProjectionTransform;
         float4x4 inverseModelViewProjectionTransform;
         float2x3 boundingBox;
         float2x3 worldBoundingBox;
-        } scn_node;
+        };
         
         
-        /*
-        Access: ReadWrite
-        Stages: Vertex shader and fragment shader
-        */
+        // Access: ReadWrite
+        // Stages: Vertex shader and fragment shader
+        
         struct SCNShaderLightingContribution {
         float3 ambient;
         float3 diffuse;
         float3 specular;
         } _lightingContribution;
         
-        /*
-        Access: ReadOnly
-        Stages: Vertex shader and fragment shader
-        */
+        // Access: ReadOnly
+        // Stages: Vertex shader and fragment shader
+        
         struct SCNShaderLight {
         float4 intensity;
         float3 direction; // Direction from the point on the surface toward the light (L)
@@ -450,15 +480,15 @@ fileprivate var fragmentShaderTypeHeaders:String {
         Structures: All the structures available from the SCNShaderModifierEntryPointSurface entry point
         */
         
-        struct {
+        scn_frame {
         float4x4    viewTransform;
         float4x4    inverseViewTransform; // transform from view space to world space
         float4x4    projectionTransform;
         float4x4    viewProjectionTransform;
         float4x4    viewToCubeTransform; // transform from view space to cube texture space (canonical Y Up space)
         float4      ambientLightingColor;
-        float4        fogColor;
-        float3        fogParameters; // x:-1/(end-start) y:1-start*x z:exp
+        float4      fogColor;
+        float3      fogParameters; // x:-1/(end-start) y:1-start*x z:exp
         float2      inverseResolution;
         float       time;
         float       sinTime;
@@ -468,9 +498,9 @@ fileprivate var fragmentShaderTypeHeaders:String {
         float       environmentIntensity;
         float4x4    inverseProjectionTransform;
         float4x4    inverseViewProjectionTransform;
-        } scn_frame;
+        };
         
-        struct {
+        scn_node {
         float4x4 modelTransform;
         float4x4 inverseModelTransform;
         float4x4 modelViewTransform;
@@ -480,15 +510,62 @@ fileprivate var fragmentShaderTypeHeaders:String {
         float4x4 inverseModelViewProjectionTransform;
         float2x3 boundingBox;
         float2x3 worldBoundingBox;
-        } scn_node;
+        };
         
-        /*
-        Access: ReadWrite
-        Stages: Fragment shader only
-        */
+        
+        // Access: ReadWrite
+        // Stages: Fragment shader only
+        
         struct SCNShaderOutput {
         float4 color;
         } _output;
 
         """
 }
+
+// MARK: - Text Editing Rules
+
+fileprivate let metalFloat = try! NSRegularExpression(pattern: #"(?<!//)\bfloat\b(?!u)"#, options: [])
+fileprivate let metalFloat2 = try! NSRegularExpression(pattern: #"\bfloat2\b"#, options: [])
+fileprivate let metalFloat3 = try! NSRegularExpression(pattern: #"\bfloat3\b"#, options: [])
+fileprivate let metalFloat4 = try! NSRegularExpression(pattern: "float4", options: [])
+
+// Matrices
+fileprivate let metalFloat4x4 = try! NSRegularExpression(pattern: "float4x4", options: [])
+
+
+fileprivate let codecomment = try! NSRegularExpression(pattern: #"//.*$"#, options: [.anchorsMatchLines])
+
+private let rules: [HighlightRule] = [
+    
+    HighlightRule(pattern: metalFloat, formattingRules: [
+        TextFormattingRule(fontTraits: [.monoSpace]),
+        TextFormattingRule(key: .foregroundColor, value: NSColor.red),
+        // TextFormattingRule(key: .font, value: NSFont.monospacedSystemFont(ofSize: 18, weight: .semibold))
+    ]),
+    HighlightRule(pattern: metalFloat2, formattingRules: [
+        TextFormattingRule(fontTraits: [.monoSpace]),
+        TextFormattingRule(key: .foregroundColor, value: NSColor.systemRed),
+        // TextFormattingRule(key: .font, value: NSFont.monospacedSystemFont(ofSize: 18, weight: .semibold))
+    ]),
+    HighlightRule(pattern: metalFloat3, formattingRules: [
+        TextFormattingRule(fontTraits: [.monoSpace]),
+        TextFormattingRule(key: .foregroundColor, value: NSColor.orange),
+        // TextFormattingRule(key: .font, value: NSFont.monospacedSystemFont(ofSize: 18, weight: .semibold))
+    ]),
+    HighlightRule(pattern: metalFloat4, formattingRules: [
+        TextFormattingRule(fontTraits: [.monoSpace]),
+        TextFormattingRule(key: .foregroundColor, value: NSColor.systemPink),
+        // TextFormattingRule(key: .font, value: NSFont.monospacedSystemFont(ofSize: 18, weight: .semibold))
+    ]),
+    // Matrices
+    HighlightRule(pattern: metalFloat4x4, formattingRules: [
+        TextFormattingRule(fontTraits: [.monoSpace]),
+        TextFormattingRule(key: .foregroundColor, value: NSColor.systemGreen),
+        // TextFormattingRule(key: .font, value: NSFont.monospacedSystemFont(ofSize: 18, weight: .semibold))
+    ]),
+    HighlightRule(pattern: codecomment, formattingRules: [
+        TextFormattingRule(fontTraits: [.monoSpace]),
+        TextFormattingRule(key: .foregroundColor, value: NSColor.gray),
+        // TextFormattingRule(key: .font, value: NSFont.monospacedSystemFont(ofSize: 18, weight: .semibold))
+    ])]

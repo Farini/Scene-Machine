@@ -199,7 +199,15 @@ class MaterialMachineController:ObservableObject {
     // MARK: - Saving
     
     func saveMaterialToDatabase() {
-        let savingMaterial:SceneMaterial = SceneMaterial(material: material)
+        
+        var savingMaterial:SceneMaterial!
+        
+        if dbMaterial == nil {
+            savingMaterial = SceneMaterial(material: material)
+        } else {
+            savingMaterial = dbMaterial
+            savingMaterial.updateWith(material: material)
+        }
         
         switch materialMode {
             case .Diffuse:
@@ -234,6 +242,8 @@ class MaterialMachineController:ObservableObject {
                     }
                 }
         }
+        
+        self.dbMaterial = savingMaterial
         
         LocalDatabase.shared.saveMaterial(material: savingMaterial)
         self.dbMaterials = LocalDatabase.shared.materials

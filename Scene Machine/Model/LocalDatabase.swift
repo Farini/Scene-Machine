@@ -17,6 +17,7 @@ class LocalDatabase:NSObject {
     /// Saves
     func saveMaterial(material:SceneMaterial) {
         
+        
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .secondsSince1970
         encoder.outputFormatting = .prettyPrinted
