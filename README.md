@@ -102,7 +102,7 @@ See this apps's model readme: [Here](https://github.com/Farini/Scene-Machine/blo
 - [X] Better Voronoi
 - [X] Plasma Generator
 
-### New Features v 1.2
+*New Features v 1.2*
 - [X] NormalMap shader, to transform images in Normal Maps
 - [X] Blender Shortcuts
 - [X] Export to `.scnassets` folder.

@@ -17,10 +17,46 @@ class Scene_MachineTests: XCTestCase {
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    
+    func testAppResources() throws {
+        
+        print("APP RESOURCES")
+        
+        let geometries = AppGeometries.allCases
+        let backgrounds = AppBackgrounds.allCases
+        let textures = AppTextures.allCases
+        
+        print("\n\n\t APP GEOMETRIES")
+        for geometry in geometries {
+            print("Geometry: \(geometry.rawValue)")
+        }
+        
+        print("\n\n\t APP BACKGROUNDS")
+        for background in backgrounds {
+            print("Background: \(background.rawValue)")
+        }
+        
+        print("\n\n\t APP TEXTURES")
+        for texture in textures {
+            print("Texture: \(texture.rawValue) Size: \(texture.image?.size ?? CGSize.zero)")
+        }
+    }
+    
+    func testFolders() throws {
+        let subdirectories = LocalDatabase.shared.getSubdirectories()
+        for dir in subdirectories {
+            print("Directory: \(dir.path)")
+        }
+    }
+    
+    func testMaterials() throws {
+        
+        let materials = LocalDatabase.shared.materials
+        for m in materials {
+            print("Material: \(m.name ?? "<untitled>")")
+        }
+        XCTAssert(materials.count > 0)
+        
     }
 
     func testPerformanceExample() throws {

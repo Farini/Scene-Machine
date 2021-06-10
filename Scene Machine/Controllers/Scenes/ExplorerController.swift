@@ -166,9 +166,9 @@ class ExplorerController:ObservableObject {
         }
         
         buttonB?.valueChangedHandler = {(_ button: GCControllerButtonInput, _ value: Float, _ pressed: Bool) -> Void in
-            guard let strongController = weakController else {
-                return
-            }
+//            guard let strongController = weakController else {
+//                return
+//            }
             // breaks
 //            strongController.controllerAttack()
         }

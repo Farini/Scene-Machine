@@ -14,13 +14,14 @@ struct ExplorerTest: View {
     
     var body: some View {
         VStack {
+            
+            // Buttons
             HStack {
                 Text("Explorer")
                 Button("Go") {
                     controller.goForward()
                 }
                 .keyboardShortcut("w", modifiers: [])
-                
                 
                 Button("Turn L") {
                     controller.turnLeft()
@@ -39,6 +40,7 @@ struct ExplorerTest: View {
                 Text(controller.turnData)
             }
             
+            // Scene
             ZStack(alignment: .topLeading) {
                 ExplorerSceneView(scene: controller.scene, controller: controller)
                 HStack {
@@ -52,16 +54,9 @@ struct ExplorerTest: View {
                         .padding()
                         .background(Color.black.opacity(0.2))
                 }
-                
-                
             }
-            
-//            SceneView(scene: controller.scene, pointOfView: controller.scene.rootNode.childNode(withName: "camnode", recursively: false)!, options: [], preferredFramesPerSecond: 60, antialiasingMode: .multisampling2X, delegate: nil, technique: nil)
-                
         }
     }
-    
-    
 }
 
 struct ExplorerTest_Previews: PreviewProvider {

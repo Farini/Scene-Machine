@@ -72,7 +72,6 @@
 		85B9137926329A3A0065D6D2 /* CoreImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B9137826329A3A0065D6D2 /* CoreImage+Extensions.swift */; };
 		85B9137A26329A3A0065D6D2 /* CoreImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B9137826329A3A0065D6D2 /* CoreImage+Extensions.swift */; };
 		85B9138226329DED0065D6D2 /* MetalGenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B9138126329DED0065D6D2 /* MetalGenView.swift */; };
-		85B9138326329DED0065D6D2 /* MetalGenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B9138126329DED0065D6D2 /* MetalGenView.swift */; };
 		85C282FA266C1A8C00044A75 /* HighlightedTextEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 85C282F9266C1A8C00044A75 /* HighlightedTextEditor */; };
 		85C282FC266C1BDD00044A75 /* MarkdownEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85C282FB266C1BDD00044A75 /* MarkdownEditor.swift */; };
 		85CB435F263CABC0006E4B10 /* Kernels2.ci.metal in Sources */ = {isa = PBXBuildFile; fileRef = 85CB435E263CABC0006E4B10 /* Kernels2.ci.metal */; };
@@ -839,7 +838,6 @@
 			files = (
 				85B9134D2631C13B0065D6D2 /* SwiftUI+Extensions.swift in Sources */,
 				85B91370263299CB0065D6D2 /* HexagonFilter.swift in Sources */,
-				85B9138326329DED0065D6D2 /* MetalGenView.swift in Sources */,
 				85B913412631C00E0065D6D2 /* GraphicsImageRenderer.swift in Sources */,
 				856491E92578100D00D1FE00 /* Scene_MachineTests.swift in Sources */,
 				85B9137A26329A3A0065D6D2 /* CoreImage+Extensions.swift in Sources */,
@@ -1048,13 +1046,14 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = FXF7BJD3VH;
 				INFOPLIST_FILE = "Scene MachineTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "cfarini.Scene-MachineTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -1069,13 +1068,14 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = FXF7BJD3VH;
 				INFOPLIST_FILE = "Scene MachineTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "cfarini.Scene-MachineTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
