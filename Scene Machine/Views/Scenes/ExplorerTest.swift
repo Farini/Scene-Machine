@@ -23,6 +23,11 @@ struct ExplorerTest: View {
                 }
                 .keyboardShortcut("w", modifiers: [])
                 
+                Button("Break") {
+                    controller.hitBreaks()
+                }
+                .keyboardShortcut("s", modifiers: [])
+                
                 Button("Turn L") {
                     controller.turnLeft()
                 }
@@ -45,12 +50,12 @@ struct ExplorerTest: View {
                 ExplorerSceneView(scene: controller.scene, controller: controller)
                 HStack {
                     Text(controller.renderData)
-                        .frame(width: 128, height:150)
+                        .frame(width: 128, height:80)
                         .padding()
                         .background(Color.black.opacity(0.2))
                     Spacer()
                     Text("Position: \(controller.posData)")
-                        .frame(width: 128, height:150)
+                        .frame(width: 128, height:80)
                         .padding()
                         .background(Color.black.opacity(0.2))
                 }
@@ -240,7 +245,7 @@ class ExplorerNSView:SCNView, SCNSceneRendererDelegate {
             return
         }
         
-//        protagonist.presentation.physicsBody?.resetTransform()
+        // Update the protagonist's transform
         protagonist.transform = protagonist.presentation.transform
         
         let angleY = protagonist.presentation.eulerAngles.z.toDegrees()
@@ -249,16 +254,24 @@ class ExplorerNSView:SCNView, SCNSceneRendererDelegate {
         let curangleY = protagonist.eulerAngles.z.toDegrees()
         renderString += String(format: "Curr: %.2f\n", arguments: [Double(curangleY)])
         
-        let body = protagonist.physicsBody!
+        // let body = protagonist.physicsBody!
         
-        let veloZ:String = "Z: \(body.velocity.z)"//String(format: "⏱ Speed \n Z: %.2f\n", [body.velocity.z])
-        let veloX:String = "X: \(body.velocity.x)"//String(format: " X: %.2f", [body.velocity.x])
+        // let veloZ:String = "Z: \(body.velocity.z)"//String(format: "⏱ Speed \n Z: %.2f\n", [body.velocity.z])
+        // let veloX:String = "X: \(body.velocity.x)"//String(format: " X: %.2f", [body.velocity.x])
         
-        renderString += veloZ.prefix(8)
-        renderString += "\n"
-        renderString += veloX.prefix(8)
+        // renderString += veloZ.prefix(8)
+        // renderString += "\n"
+        // renderString += veloX.prefix(8)
         // renderString += "\n \(body.velocity.toString())"
-        let position = protagonist.presentation.position.toString()
+        
+        var poString:String = ""
+        let pp = protagonist.presentation.position
+        let ppX = "\(pp.x)".prefix(5)
+        let ppY = "\(pp.y)".prefix(5)
+        let ppZ = "\(pp.z)".prefix(5)
+        poString = "\nX:\(ppX)\nY:\(ppY)\nZ:\(ppZ)"
+        
+        let position = poString//protagonist.presentation.position.toString()
         controller?.reportPosition(string: position)
         
         controller?.reportRenderer(string: renderString)

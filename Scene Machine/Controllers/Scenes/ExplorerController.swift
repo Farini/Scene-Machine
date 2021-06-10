@@ -24,21 +24,55 @@ class ExplorerController:ObservableObject {
     }
     
     func reportRenderer(string:String) {
-        self.renderData = string
+        DispatchQueue.main.async {
+            self.renderData = string
+        }
+        
     }
     
     func reportPosition(string:String) {
-        self.posData = string
+        DispatchQueue.main.async {
+            self.posData = string
+        }
+        
     }
     
     // MARK: - Moving
     
     func goForward() {
         let force = simd_make_float4(0, 0, 2, 0)
+//        let a = simd_mul
         let rotatedForce = simd_mul(hero.simdTransform, force)
         let vectorForce = SCNVector3(x:CGFloat(rotatedForce.x), y:CGFloat(rotatedForce.y), z:CGFloat(rotatedForce.z))
         
         hero.physicsBody!.applyForce(vectorForce, asImpulse: true)
+    }
+    
+    func hitBreaks() {
+        
+        let v = hero.simdTransform //.velocity ?? SCNVector3(0, 0, 0)
+        print("Breaking at speed: \(v)")
+        /*
+         simd_float4x4([
+         Position
+         [-0.23206632, 0.011173804, -0.97247446, 0.0],
+         Rotation
+         [-0.04701464, 0.9985666, 0.022692937, 0.0],
+         Scale
+         [0.971394, 0.05098994, -0.23122263, 0.0],
+         [-1.1025246, 0.046561405, -87.90251, 1.0]
+         ])
+         // ----
+         [[0.99971706, 0.0054734186, -0.014391317, 0.0],
+         [-0.0059202965, 0.9994374, -0.031149484, 0.0],
+         [0.014213592, 0.031227773, 0.9992479, 0.0],
+         [0.5451004, 0.03991383, 91.398224, 1.0]]
+         */
+        let force = simd_make_float4(0, 0, -2, 0)
+        let rotatedForce = simd_mul(hero.simdTransform, force)
+        let vectorForce = SCNVector3(x:CGFloat(rotatedForce.x), y:CGFloat(rotatedForce.y), z:CGFloat(rotatedForce.z))
+        
+        hero.physicsBody!.applyForce(vectorForce, asImpulse: false)
     }
     
     func turnLeft() {
@@ -372,6 +406,37 @@ class ExplorerController:ObservableObject {
                 input.rootNode.addChildNode(sNode)
             }
         }
+        
+        
+        /*
+         Additional....
+         Basic: Sphere, Box, Cone, Plane
+         + EggTree, SQTree, Building
+         + Statue, Post, Car
+         + Text
+         */
+        
+        // Posts
+        for idx in 1...50 {
+            if let post = AppGeometries.PostWithLamp.getGeometry() {
+                post.position = SCNVector3(idx * 12, 0, idx * 4)
+                post.scale = SCNVector3(5, 5, 5)
+                input.rootNode.addChildNode(post)
+            }
+        }
+        
+        // Statues
+        for idx in 1...20 {
+            // Spread
+            let prep:Double = idx > 10 ? Double(idx) * -1:Double(idx)
+            if let statue = AppGeometries.LibertyLady.getGeometry() {
+                statue.position = SCNVector3(prep * 18.0, 0.0, Double(idx) * (Bool.random() ? 4.0:-3.5))
+                input.rootNode.addChildNode(statue)
+                let body = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: statue, options: nil))
+                statue.physicsBody = body
+            }
+        }
+        
         
     }
     

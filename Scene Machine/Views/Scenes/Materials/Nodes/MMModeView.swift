@@ -45,8 +45,6 @@ struct MMModeView:View {
                 }
             }
             
-
-            
             // Intensity
             HStack {
                 Text("Intensity")
@@ -75,6 +73,7 @@ struct MMModeView:View {
                 }
             }
             .frame(width: 200, height: 200, alignment: .center)
+            .border(Color.gray, width: 0.5)
             .onDrop(of: ["public.file-url"], isTargeted: $activeLink) { providers -> Bool in
                 providers.first?.loadDataRepresentation(forTypeIdentifier: "public.file-url", completionHandler: { (data, error) in
                     if let data = data {

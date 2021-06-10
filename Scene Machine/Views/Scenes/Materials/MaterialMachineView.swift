@@ -34,16 +34,31 @@ struct MaterialMachineView: View {
                 
                 Section(header: Text("DB Materials")){
                     ForEach(controller.dbMaterials) { material in
-                        Text("\(material.name ?? "untitled")")
-                            .onTapGesture {
-                                controller.didSelectDBMaterial(dbMaterial: material)
-                            }
-                            .contextMenu(ContextMenu(menuItems: {
-                                Button("Delete") {
-                                    controller.dbMaterials.removeAll(where: { $0.id == material.id })
-                                    material.delete()
+                        HStack(alignment:.center) {
+                            Text("\(material.name ?? "untitled")")
+                                .onTapGesture {
+                                    controller.didSelectDBMaterial(dbMaterial: material)
                                 }
-                            }))
+                                .contextMenu(ContextMenu(menuItems: {
+                                    Button("Delete") {
+                                        controller.dbMaterials.removeAll(where: { $0.id == material.id })
+                                        material.delete()
+                                    }
+                                }))
+                            
+                            Spacer(minLength: 12)
+                            
+                            ZStack(alignment:.trailing) {
+                                let sc = material.imageScore()
+                                ForEach(0..<sc) { idx in
+                                    Circle()
+                                        .size(CGSize(width: 10, height: 10))
+                                        .offset(x: CGFloat(6 * idx), y: 5.5)
+                                        .foregroundColor(Color.white.opacity(0.1))
+                                        .help("Circle indicates how many images this material has")
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -104,7 +119,7 @@ struct MaterialMachineView: View {
                     
                     Divider()
                 }
-                .frame(minWidth: 400)
+                .frame(minWidth: 500)
                 
                 // Nodes
                 ScrollView(.horizontal, showsIndicators: true) {
@@ -115,8 +130,9 @@ struct MaterialMachineView: View {
                             controller.updateGeometryMaterial(material: value)
                         }
                 }
+                .frame(minWidth: 500)
             }
-            .frame(minWidth: 400, maxWidth: .infinity)
+            .frame(minWidth: 550, maxWidth: .infinity)
             
             // Right View: UV Map
             if controller.uvImage != nil {
@@ -126,7 +142,11 @@ struct MaterialMachineView: View {
                     }
                 }
             } else {
-                Text("No current Image").foregroundColor(.gray)
+                VStack {
+                    Spacer()
+                    Text("No current Image").foregroundColor(.gray)
+                    Spacer()
+                }
                 .frame(maxWidth:200)
             }
         }

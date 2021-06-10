@@ -13,11 +13,16 @@ import SceneKit
 /// An object that stores `SCNMaterial` properties
 class SceneMaterial: Codable, Identifiable, Equatable {
     
+    /// An identity assigned, to keep track and differentiate materials
     var id:UUID
+    
+    /// Name of the material
     var name:String?
     
+    /// Shading type (Physically based, phong, etc.)
     var lightModel:MaterialShading?
     
+    /// Parts of the material
     var diffuse:SubMaterialData?
     var metalness:SubMaterialData?
     var roughness:SubMaterialData?
@@ -246,6 +251,26 @@ class SceneMaterial: Codable, Identifiable, Equatable {
             }
         }
     }
+    
+    func imageScore() -> Int {
+        var score = 0
+        if diffuse?.imageURL != nil {
+            score += 1
+        }
+        if roughness?.imageURL != nil {
+            score += 1
+        }
+        if emission?.imageURL != nil {
+            score += 1
+        }
+        if occlusion?.imageURL != nil {
+            score += 1
+        }
+        if normal?.imageURL != nil {
+            score += 1
+        }
+        return score
+    }
 }
 
 /// An object that stores `SCNMaterialProperty` variables
@@ -260,9 +285,13 @@ class SubMaterialData:Codable {
     /// An Image associated with this material
     var imageURL:URL?
     
+    /// The intensity in wich this data displays
     var intensity:Double = 1.0
     
+    /// Wrapping methods for the image (if any)
     var wrapS:SCNWrapMode = .clamp
+    
+    /// Wrapping methods for the image (if any)
     var wrapT:SCNWrapMode = .clamp
     
     init() {

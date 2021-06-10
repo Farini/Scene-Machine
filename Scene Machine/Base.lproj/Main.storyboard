@@ -344,6 +344,12 @@
                                                 <action selector="openDrawingView:" target="Voe-Tx-rLC" id="ZV1-HV-4io"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem title="Explorer" id="8GO-71-Isq">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="newExplorer:" target="Voe-Tx-rLC" id="X5b-AV-RQi"/>
+                                            </connections>
+                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>

@@ -30,15 +30,19 @@ Assets included with the app are located in `AppConstants.swift`
 ### HDRI Images
 ✅ Lava1
 ✅ Lava2
-✅ SMB1
-✅ SMB2
 ✅ SMB3
 ✅ NightSky
 ✅ CityNight
+✅ CityDay
+✅ CityDay2
+✅ Studio
+✅ Grass
+- SMB2 (Deprecated)
+- SMB1 (Deprecated)
 
 # Drawing Model
 ## DrawingLayer
-```
+```Swift
 var id:UUID
 var name:String?
 
@@ -59,12 +63,12 @@ var sublayers:[DrawingLayer] = []
 ```
 
 ## PencilStroke
-```
+```Swift
 var points: [CGPoint] = [CGPoint]()
 ```
 
 ## PenPoint
-```
+```Swift
 /// The standart identifier for SwiftUI Views
 var id:UUID
 
@@ -82,12 +86,56 @@ var isCurve:Bool
 ```
 
 # Material Model
+The objective of Material Model is to store information about a `SCNMaterial`  into a json file.
 
 ## SCNMaterial
 ## SceneMaterial
+
+```Swift
+/// An identity assigned, to keep track and differentiate materials
+var id:UUID
+
+/// Name of the material
+var name:String?
+
+/// Shading type (Physically based, phong, etc.)
+var lightModel:MaterialShading?
+
+/// Parts of the material
+var diffuse:SubMaterialData?
+var metalness:SubMaterialData?
+var roughness:SubMaterialData?
+var normal:SubMaterialData?
+var occlusion:SubMaterialData?
+var emission:SubMaterialData?
+```
 ## SubMaterialData
 
+```Swift
+/// For materials that need a number only
+var spectrum:Double = 0
+
+/// A Color, for some material types
+var specColor:ColorData?
+
+/// An Image associated with this material
+var imageURL:URL?
+
+/// The intensity in wich this data displays
+var intensity:Double = 1.0
+
+/// Wrapping methods for the image (if any)
+var wrapS:SCNWrapMode = .clamp
+
+/// Wrapping methods for the image (if any)
+var wrapT:SCNWrapMode = .clamp
+```
+
 # Geometries
+
+## .obj file specs
+[Wikipedia](https://en.wikipedia.org/wiki/Wavefront_.obj_file)
+[FileFormat.info](https://www.fileformat.info/format/wavefrontobj/egff.htm)
 
 ## Collada .dae file specs
 [Khronos.org](https://www.khronos.org/files/collada_spec_1_5.pdf)

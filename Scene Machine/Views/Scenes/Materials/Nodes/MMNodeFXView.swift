@@ -28,27 +28,39 @@ struct MMNodeFXView:View {
     
     var body: some View {
         VStack {
+            
+            // Buttons
             HStack {
                 Text("FX")
                 Spacer()
-                Image(systemName: "photo.fill").font(.title)
-                    .onTapGesture {
-                        popFX.toggle()
-                    }
-                    .popover(isPresented: $popFX, content: {
-                        VStack {
-                            Button("Blur") {
-                                self.applyBlur()
-                            }
-                            Text("More effects coming soon.")
+                
+                // Select Effect
+                Button(action: {
+                    popFX.toggle()
+                }, label: {
+                    Image(systemName: "wand.and.stars")
+                })
+                .popover(isPresented: $popFX, content: {
+                    VStack {
+                        Button("Blur") {
+                            self.applyBlur()
                         }
-                        .padding()
-                    })
-                Button("✅") {
+                        Text("More effects coming soon.")
+                    }
+                    .padding()
+                })
+                // .disabled(effectImage == nil)
+                .help("Select an effect to apply to the image")
+                
+                // Apply
+                Button(action: {
                     guard let image = effectImage else { return }
                     controller.updateUVImage(image: image)
-                }
+                }, label: {
+                    Image(systemName:"rectangle.badge.checkmark")
+                })
                 .disabled(effectImage == nil)
+                .help("Apply effect")
             }
             
             
@@ -77,10 +89,12 @@ struct MMNodeFXView:View {
                 Image(nsImage: image)
                     .resizable()
                     .frame(width: 200, height: 200, alignment: .center)
+                    .border(Color.gray, width: 0.5)
             } else if let image = original {
                 Image(nsImage: image)
                     .resizable()
                     .frame(width: 200, height: 200, alignment: .center)
+                    .border(Color.gray, width: 0.5)
             }
             // Blur (disk, box)
             // Monochrome
@@ -140,8 +154,37 @@ struct MMNodeFXView:View {
     }
 }
 
+/* The popover that shows the Effects that can be applied */
+struct MMFXPopoverView: View {
+    
+    var body: some View {
+        VStack {
+            Button("Blur") {
+//                self.applyBlur()
+            }
+            // Color monochrome
+            // Color vibrance
+            // Crystalize
+            // Edge
+            // Bloom
+            // Sharpen
+            // Transparents
+            // Normal Map
+            
+            Text("More effects coming soon.")
+        }
+        .padding()
+    }
+}
+
 struct FXNode_Previews: PreviewProvider {
     static var previews: some View {
         MMNodeFXView(controller: MaterialMachineController(), original: nil, effectImage: nil)
+    }
+}
+
+struct FXPopover_Previews: PreviewProvider {
+    static var previews: some View {
+        MMFXPopoverView()
     }
 }
