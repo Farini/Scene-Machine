@@ -143,15 +143,18 @@ class ExplorerController:ObservableObject {
         guard let gameController = notification.object as? GCController else {
             return
         }
-//        unregisterGameController()
+        
+        print("Connecting controller...")
         self.turnData = "Controller ?connected?"
         registerGameController(gameController)
 //        HapticUtility.initHapticsFor(controller: gameController)
         
 //        self.overlay?.showHints()
     }
+    
     @objc
     func handleControllerDidDisconnect(_ notification: Notification) {
+        print("Disconnecting controller...")
 //        unregisterGameController()
 //
 //        guard let gameController = notification.object as? GCController else {
@@ -159,6 +162,7 @@ class ExplorerController:ObservableObject {
 //        }
 //        HapticUtility.deinitHapticsFor(controller: gameController)
     }
+    
     // Game controller
     private var gamePadCurrent: GCController?
     private var gamePadLeft: GCControllerDirectionPad?

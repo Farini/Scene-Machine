@@ -328,9 +328,9 @@
                                     </items>
                                 </menu>
                             </menuItem>
-                            <menuItem title="Materials" id="gyS-S0-KR6">
+                            <menuItem title="Scenes" id="gyS-S0-KR6">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Materials" id="cd2-qb-sQb">
+                                <menu key="submenu" title="Scenes" id="cd2-qb-sQb">
                                     <items>
                                         <menuItem title="Suzanne" id="Cya-K0-Gz3">
                                             <modifierMask key="keyEquivalentModifierMask"/>
@@ -344,7 +344,7 @@
                                                 <action selector="openDrawingView:" target="Voe-Tx-rLC" id="ZV1-HV-4io"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Explorer" id="8GO-71-Isq">
+                                        <menuItem title="Explorer Navigator" id="8GO-71-Isq">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="newExplorer:" target="Voe-Tx-rLC" id="X5b-AV-RQi"/>

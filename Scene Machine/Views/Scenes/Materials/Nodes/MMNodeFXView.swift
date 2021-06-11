@@ -8,6 +8,8 @@
 import SwiftUI
 import SceneKit
 
+
+
 /// Right Node View - Displays Effects applied to image of `MaterialMode`
 struct MMNodeFXView:View {
     
@@ -41,13 +43,17 @@ struct MMNodeFXView:View {
                     Image(systemName: "wand.and.stars")
                 })
                 .popover(isPresented: $popFX, content: {
-                    VStack {
-                        Button("Blur") {
-                            self.applyBlur()
-                        }
-                        Text("More effects coming soon.")
+                    MMFXPopoverView(controller:controller) { newImage in
+//                        controller.uvImage = newImage
+                        controller.updateUVImage(image: newImage)
                     }
-                    .padding()
+//                    VStack {
+//                        Button("Blur") {
+//                            self.applyBlur()
+//                        }
+//                        Text("More effects coming soon.")
+//                    }
+//                    .padding()
                 })
                 // .disabled(effectImage == nil)
                 .help("Select an effect to apply to the image")
@@ -154,27 +160,292 @@ struct MMNodeFXView:View {
     }
 }
 
+// Color monochrome
+// Color vibrance
+// Crystalize
+// Edge
+// Bloom
+// Sharpen
+// Transparents
+// Normal Map
+
+enum MMFXType:String, CaseIterable {
+    case Blur
+    case Monochrome
+    case Vibrance
+    case Crystalize
+    case Pixellate
+    case Edge
+    case Bloom
+    case Sharpen
+    case WHITransparent
+    case BLKTransparent
+    case NormalMap
+}
+
 /* The popover that shows the Effects that can be applied */
 struct MMFXPopoverView: View {
     
+    @ObservedObject var controller:MaterialMachineController
+    
+    @State var fxType:MMFXType = .Blur
+    
+    @State private var slider1:Float = 0
+    @State private var slider2:Float = 0
+    @State private var slider3:Float = 0
+    
+    @State private var color:Color = .black
+    @State private var color2:Color = .white
+    
+    /// The image with the effecct applied
+    @State var fxImage:NSImage = NSImage(size:CGSize(width: 1024, height: 1024))
+    
+    /// Backup of the image
+    @State var undoImage:NSImage = NSImage(size:CGSize(width: 1024, height: 1024))
+    
+    /// Completion function. Returns an image
+    var applied: (_ image:NSImage) -> Void = {_ in }
+    
     var body: some View {
-        VStack {
-            Button("Blur") {
-//                self.applyBlur()
+        HStack(alignment:.top) {
+            VStack {
+                
+                HStack {
+                    Text("FX")
+                    Spacer()
+                    Picker("", selection: $fxType) {
+                        ForEach(MMFXType.allCases, id:\.self) { fx in
+                            Text(fx.rawValue)
+                        }
+                    }
+                }
+                .frame(width:200)
+                
+                Divider()
+                    .frame(width:200)
+                
+                switch fxType {
+                    case .Blur:
+                        // Level Slider
+                        Slider(value: $slider1, in: 2.0...50.0, step: 1.0)
+                    case .Monochrome:
+                        ColorPicker("Color", selection: $color)
+                        SliderInputView(value: 0.5, vRange: 0...1, title: "Intensity") { newValue in
+                            self.slider1 = Float(newValue)
+                        }
+                        
+                    case .Vibrance:
+                        SliderInputView(value: 0.5, vRange: 0...1, title: "Intensity") { newValue in
+                            self.slider1 = Float(newValue)
+                        }
+                    case .Crystalize:
+                        Slider(value: $slider1, in: 2.0...50.0, step: 1.0)
+                        
+                    case .Pixellate:
+                        Slider(value: $slider1, in: 2.0...50.0, step: 1.0)
+                        
+                    case .Edge:
+                        SliderInputView(value: 0.5, vRange: 0...1, title: "Intensity") { newValue in
+                            self.slider1 = Float(newValue)
+                        }
+                    case .Bloom:
+                        // Radius
+                        Slider(value: $slider1, in: 2.0...30.0, step: 1.0)
+                        // Intensity
+                        SliderInputView(value: 0.5, vRange: 0...1, title: "Intensity") { newValue in
+                            self.slider2 = Float(newValue)
+                        }
+                    case .Sharpen:
+                        SliderInputView(value: 0.5, vRange: 0...1, title: "Sharpness") { newValue in
+                            self.slider1 = Float(newValue)
+                        }
+                    case .WHITransparent:
+                        SliderInputView(value: 0.5, vRange: 0...1, title: "Threshold") { newValue in
+                            self.slider1 = Float(newValue)
+                        }
+                    case .BLKTransparent:
+                        SliderInputView(value: 0.5, vRange: 0...1, title: "Threshold") { newValue in
+                            self.slider1 = Float(newValue)
+                        }
+                    case .NormalMap:
+                        Text("No input").foregroundColor(.gray)
+                        
+                }
+                
+                Divider()
+                    .frame(width:200)
+                
+                HStack {
+                    Button("Apply") {
+                        applied(fxImage)
+                    }
+                    Spacer()
+                    Button("Cancel") {
+                        applied(undoImage)
+                    }
+                }
+                
             }
-            // Color monochrome
-            // Color vibrance
-            // Crystalize
-            // Edge
-            // Bloom
-            // Sharpen
-            // Transparents
-            // Normal Map
+            .frame(width:200)
+            .padding()
             
-            Text("More effects coming soon.")
+            Divider()
+                .frame(height:250)
+            
+            VStack {
+                Text("Image")
+                Image(nsImage:fxImage)
+                    .resizable()
+                    .frame(width:250, height:250)
+            }
+            
         }
         .padding()
+        .onAppear() {
+            updateUIContext()
+        }
+        .onChange(of:fxType) { newfx in
+            updateUIContext()
+        }
+        .onChange(of:slider1) { value in
+            previewEffect()
+        }
+        .onChange(of:slider2) { value in
+            previewEffect()
+        }
+        .onChange(of:color) { value in
+            previewEffect()
+        }
+        
     }
+    
+    func updateUIContext() {
+        switch fxType {
+            case .Crystalize, .Pixellate, .Blur: self.slider1 = 2.0
+            case .Monochrome, .Vibrance, .Edge, .Sharpen: self.slider1 = 0.5
+            case .Bloom:
+                slider1 = 2.0
+                slider2 = 0.5
+            case .WHITransparent, .BLKTransparent: self.slider1 = 0.12
+            default: self.slider1 = 1.0
+        }
+        previewEffect()
+    }
+    
+    func previewEffect() {
+        
+        guard let mainImage = controller.uvImage else { return }
+        self.undoImage = mainImage
+        
+        guard let imageData = mainImage.tiffRepresentation,
+              let imageBitmap = NSBitmapImageRep(data:imageData),
+              let coreImage = CIImage(bitmapImageRep: imageBitmap) else {
+            return
+        }
+        
+        
+        let context = CIContext()
+        
+        switch fxType {
+            case .Blur:
+                let filter = CIFilter.discBlur()
+                filter.inputImage = coreImage
+                filter.radius = self.slider1
+                
+                self.createImage(from: filter, context: context)
+                
+            case .Monochrome:
+                let filter = CIFilter.colorMonochrome()
+                filter.inputImage = coreImage
+                filter.color = CIColor(cgColor: color.cgColor!)
+                filter.intensity = slider1
+                
+                self.createImage(from: filter, context: context)
+                
+            case .Vibrance:
+                let filter = CIFilter.vibrance()
+                filter.inputImage = coreImage
+                filter.amount = slider1
+                
+                self.createImage(from: filter, context: context)
+                
+            case .Crystalize:
+                let filter = CIFilter.crystallize()
+                filter.inputImage = coreImage
+                filter.center = CGPoint(x: mainImage.size.width / 2, y: mainImage.size.height / 2)
+                filter.radius = slider1
+                
+                self.createImage(from: filter, context: context)
+                
+            case .Pixellate:
+                let filter = CIFilter.pixellate()
+                filter.inputImage = coreImage
+                filter.center = CGPoint(x: mainImage.size.width / 2, y: mainImage.size.height / 2)
+                filter.scale = slider1
+                
+                self.createImage(from: filter, context: context)
+                
+            case .Edge:
+                let filter = CIFilter.edges()
+                filter.inputImage = coreImage
+                filter.intensity = self.slider1
+                self.createImage(from: filter, context: context)
+                
+            case .Bloom:
+                let filter = CIFilter.bloom()
+                filter.inputImage = coreImage
+                filter.radius = slider1
+                filter.intensity = slider2
+                self.createImage(from: filter, context: context)
+                
+            case .Sharpen:
+                let filter = CIFilter.sharpenLuminance()
+                filter.inputImage = coreImage
+                filter.sharpness = slider1
+                self.createImage(from: filter, context: context)
+                
+            case .WHITransparent:
+                let filter = WHITransparent()
+                filter.inputImage = coreImage
+                filter.threshold = slider1
+                self.createImage(from: filter, context: context)
+                
+            case .BLKTransparent:
+                let filter = BLKTransparent()
+                filter.inputImage = coreImage
+                filter.threshold = slider1
+                self.createImage(from: filter, context: context)
+                
+            case .NormalMap:
+                let filter = NormalMapFilter()
+                filter.inputImage = coreImage
+                filter.tileSize = Float(mainImage.size.width)
+                self.createImage(from: filter, context: context)
+        }
+                
+
+    }
+    
+    func createImage(from filter: CIFilter, context:CIContext) {
+        
+        print("Creating Image")
+        guard let mainImage = controller.uvImage else { return }
+        
+        guard let outputImage = filter.outputImage,
+              let cgImage = context.createCGImage(outputImage, from: outputImage.extent) else {
+            print("⚠️ No output image")
+            return
+        }
+        
+        // let cgImage = context.createCGImage(outputImage, from: CGRect(origin: .zero, size: controller.textureSize.size))
+        
+        let filteredImage = NSImage(cgImage: cgImage, size: NSSize(width: mainImage.size.width, height: mainImage.size.height))
+        self.fxImage = filteredImage
+        
+//        controller.updateImage(new: filteredImage, isPreview: isPreviewing)
+        
+    }
+    
 }
 
 struct FXNode_Previews: PreviewProvider {
@@ -185,6 +456,8 @@ struct FXNode_Previews: PreviewProvider {
 
 struct FXPopover_Previews: PreviewProvider {
     static var previews: some View {
-        MMFXPopoverView()
+        MMFXPopoverView(controller: MaterialMachineController())
+//        Text("Hi")
+        
     }
 }

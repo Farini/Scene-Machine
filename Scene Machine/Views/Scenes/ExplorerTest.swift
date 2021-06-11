@@ -99,7 +99,7 @@ struct ExplorerSceneView: NSViewRepresentable {
     }
     
     func updateNSView(_ nsView: ExplorerNSView, context: Context) {
-        print("updates")
+//        print("updates")
     }
     
 }
