@@ -51,6 +51,12 @@ struct MMMaterialNodeView:View {
                 Spacer()
             }
         }
+        .onAppear() {
+            self.materialName = material.name ?? "<untitled>"
+        }
+        .onChange(of: material) { newMaterial in
+            self.materialName = newMaterial.name ?? "<untitled>"
+        }
     }
     
     func imageForMode(mode:MaterialMode) -> NSImage? {

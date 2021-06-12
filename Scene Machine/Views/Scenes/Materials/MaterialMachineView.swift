@@ -32,7 +32,7 @@ struct MaterialMachineView: View {
                     }
                 }
                 
-                Section(header: Text("DB Materials")){
+                Section(header: Text("DB Materials")) {
                     ForEach(controller.dbMaterials) { material in
                         HStack(alignment:.center) {
                             Text("\(material.name ?? "untitled")")
@@ -46,17 +46,15 @@ struct MaterialMachineView: View {
                                     }
                                 }))
                             
-                            Spacer(minLength: 12)
+                            Spacer()
                             
-                            ZStack(alignment:.trailing) {
-                                let sc = material.imageScore()
-                                ForEach(0..<sc) { idx in
-                                    Circle()
-                                        .size(CGSize(width: 10, height: 10))
-                                        .offset(x: CGFloat(6 * idx), y: 5.5)
-                                        .foregroundColor(Color.white.opacity(0.1))
-                                        .help("Circle indicates how many images this material has")
-                                }
+                            // Properties indicator
+                            ZStack {
+                                Circle()
+                                    .foregroundColor(.black)
+                                    .frame(width: 16, height: 16, alignment: .center)
+                                Text("\(material.imageScore())")
+                                
                             }
                         }
                     }

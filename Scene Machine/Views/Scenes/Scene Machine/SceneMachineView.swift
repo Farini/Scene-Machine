@@ -18,11 +18,12 @@ struct SceneMachineView: View {
     @State private var popBackground:Bool = false
     
     
+    
     var body: some View {
         
         NavigationView {
             
-            // Geometries + Materials
+            // Nodes + Materials
             ScrollView {
                 VStack {
                     
@@ -31,6 +32,12 @@ struct SceneMachineView: View {
                         Text("●")
                         Text("Nodes")
                         Spacer()
+                        Button("+") {
+                            print("Add Node")
+                            let newNode = SCNNode()
+                            newNode.name = "Empty Node"
+                            controller.scene.rootNode.addChildNode(newNode)
+                        }
                     }
                     .font(.title2)
                     .foregroundColor(.orange)
@@ -38,22 +45,7 @@ struct SceneMachineView: View {
                     ForEach(controller.scene.rootNode.childNodes, id:\.self) { node in
                         SMNodeRow(controller: controller, node: node)
                             .padding(.vertical, 4)
-                            .contextMenu {
-                                if node.geometry != nil {
-                                    Button("Delete") {
-                                        controller.removeGeometry(geo: node.geometry!)
-                                    }
-                                }
-                                Button("Hide/Unhide") {
-                                    node.isHidden.toggle()
-                                }
-                                Button("Pause/Unpause") {
-                                    node.isPaused.toggle()
-                                }
-                            }
-                            .onTapGesture {
-                                controller.selectedNode = node
-                            }
+                            
                     }
                     
                     Divider()
@@ -89,7 +81,8 @@ struct SceneMachineView: View {
                 }
                 .padding(.horizontal, 6)
             }
-            .frame(maxWidth:250)
+            
+            
             
             // Middle - Scene
             VStack {
@@ -274,15 +267,8 @@ struct SceneMachineView: View {
                         case .UVMap:
                             if let node = controller.selectedNode,
                                let geometry:SCNGeometry = node.geometry {
-//                               let uvMap:[CGPoint] = controller.inspectUVMap(geometry: geometry) {
-                                ScrollView([.vertical, .horizontal], showsIndicators:true) {
-                                    HStack {
-//                                        UVMapStack(controller: controller, geometry: geometry, points: uvMap)
-                                        SMUVMapView(geometry: geometry) { snapShot in
-                                            controller.saveUVMap(image: snapShot)
-                                        }
-                                    }
-                                    .padding(30)
+                                SMUVMapView(geometry: geometry) { snapShot in
+                                    controller.saveUVMap(image: snapShot)
                                 }
                                 .frame(minWidth: 300, alignment: .trailing)
                             }
@@ -300,10 +286,6 @@ struct SceneMachineView: View {
                                let geometry = node.geometry {
                                 SMShaderEditView(controller: controller, geometry: geometry)
                                     .frame(minWidth: 350, idealWidth: 400)
-//                                VStack {
-//                                    Text("Shaders !! \(geometry.description)")
-//                                    Spacer()
-//                                }
                             } else {
                                 VStack {
                                     Text("No node selected")

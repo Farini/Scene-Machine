@@ -57,6 +57,8 @@
 		85954043261C3144001D9040 /* SpriteKitNoiseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85954042261C3144001D9040 /* SpriteKitNoiseController.swift */; };
 		8597BB7E25BCA8B200C705A0 /* ImageFXController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8597BB7D25BCA8B200C705A0 /* ImageFXController.swift */; };
 		8597BB8425BCAEF600C705A0 /* Metal.metal in Sources */ = {isa = PBXBuildFile; fileRef = 8597BB8325BCAEF600C705A0 /* Metal.metal */; };
+		859DC6BC26751E5500A315A5 /* SettingsFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859DC6BB26751E5500A315A5 /* SettingsFormView.swift */; };
+		859DC6BF267540B200A315A5 /* GeometryTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859DC6BE267540B200A315A5 /* GeometryTestView.swift */; };
 		85A4776026407D4800F93AB3 /* HelpMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A4775F26407D4800F93AB3 /* HelpMainView.swift */; };
 		85A4776D2642EE1C00F93AB3 /* FXOtherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A4776C2642EE1C00F93AB3 /* FXOtherView.swift */; };
 		85B913352631057E0065D6D2 /* SceneKit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B913342631057E0065D6D2 /* SceneKit+Extensions.swift */; };
@@ -203,6 +205,8 @@
 		85954042261C3144001D9040 /* SpriteKitNoiseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteKitNoiseController.swift; sourceTree = "<group>"; };
 		8597BB7D25BCA8B200C705A0 /* ImageFXController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFXController.swift; sourceTree = "<group>"; };
 		8597BB8325BCAEF600C705A0 /* Metal.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Metal.metal; sourceTree = "<group>"; };
+		859DC6BB26751E5500A315A5 /* SettingsFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFormView.swift; sourceTree = "<group>"; };
+		859DC6BE267540B200A315A5 /* GeometryTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryTestView.swift; sourceTree = "<group>"; };
 		85A4775F26407D4800F93AB3 /* HelpMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpMainView.swift; sourceTree = "<group>"; };
 		85A4776C2642EE1C00F93AB3 /* FXOtherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FXOtherView.swift; sourceTree = "<group>"; };
 		85B913342631057E0065D6D2 /* SceneKit+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SceneKit+Extensions.swift"; sourceTree = "<group>"; };
@@ -297,6 +301,7 @@
 				8515B36526263C6A00A886BD /* Materials */,
 				85CB4360263D0D9A006E4B10 /* DrawingView.swift */,
 				859241FE265B7FE9001D503D /* UVMapView.swift */,
+				859DC6BD2675408D00A315A5 /* Geometry */,
 				858C459E26658F8B00AB830B /* ExplorerTest.swift */,
 			);
 			path = Scenes;
@@ -435,6 +440,7 @@
 			isa = PBXGroup;
 			children = (
 				85771BCC2633D08F001A2B88 /* InputViews.swift */,
+				859DC6BA26751E2100A315A5 /* Settings */,
 			);
 			path = "UI Components";
 			sourceTree = "<group>";
@@ -502,6 +508,22 @@
 				85941FC62650730300A3CAF6 /* ShapeToolBar.swift */,
 			);
 			path = Toolbars;
+			sourceTree = "<group>";
+		};
+		859DC6BA26751E2100A315A5 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				859DC6BB26751E5500A315A5 /* SettingsFormView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		859DC6BD2675408D00A315A5 /* Geometry */ = {
+			isa = PBXGroup;
+			children = (
+				859DC6BE267540B200A315A5 /* GeometryTestView.swift */,
+			);
+			path = Geometry;
 			sourceTree = "<group>";
 		};
 		85A4775E26407D2900F93AB3 /* Help */ = {
@@ -762,6 +784,7 @@
 			files = (
 				85885EF626520B1B00E98855 /* HelpCharacterModeling.swift in Sources */,
 				85D1BC702660244B009D70DC /* HelpPencilKitView.swift in Sources */,
+				859DC6BF267540B200A315A5 /* GeometryTestView.swift in Sources */,
 				85DEFC682643AFC8003DEC36 /* MercurializeFilter.swift in Sources */,
 				856492222579547900D1FE00 /* ImageCompositionView.swift in Sources */,
 				8515B33D26254C8300A886BD /* GradientMakerView.swift in Sources */,
@@ -837,6 +860,7 @@
 				8515B480262E7DDA00A886BD /* FXColorView.swift in Sources */,
 				856491D02578100B00D1FE00 /* AppDelegate.swift in Sources */,
 				8541531B2648680B007C926B /* AppConstants.swift in Sources */,
+				859DC6BC26751E5500A315A5 /* SettingsFormView.swift in Sources */,
 				85941FC72650730300A3CAF6 /* ShapeToolBar.swift in Sources */,
 				8597BB7E25BCA8B200C705A0 /* ImageFXController.swift in Sources */,
 				85FFB73A2639DA0100E8FE0A /* MetalOverlaysView.swift in Sources */,
@@ -1015,7 +1039,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.3;
+				MARKETING_VERSION = 1.4;
 				MTL_ENABLE_INDEX_STORE = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "cfarini.Scene-Machine";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1043,7 +1067,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.3;
+				MARKETING_VERSION = 1.4;
 				MTL_ENABLE_INDEX_STORE = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "cfarini.Scene-Machine";
 				PRODUCT_NAME = "$(TARGET_NAME)";

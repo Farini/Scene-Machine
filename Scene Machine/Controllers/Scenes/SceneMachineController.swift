@@ -116,6 +116,7 @@ class SceneMachineController:ObservableObject {
     }
     
     /// Called mostly when removing a Geometry, to update the scene, and remove the node of the geometry selected.
+    /*
     func nodeTreeUpdate() {
         
         print("Removing a node....")
@@ -126,6 +127,7 @@ class SceneMachineController:ObservableObject {
         // Recursively get Materials
         let root = scene.rootNode
         var stack:[SCNNode] = [root]
+        
         while !stack.isEmpty {
             
             if let node = stack.first {
@@ -163,6 +165,7 @@ class SceneMachineController:ObservableObject {
             stack.removeFirst()
         }
     }
+    */
     
     // MARK: - UV Map
     
@@ -364,10 +367,27 @@ class SceneMachineController:ObservableObject {
     }
     
     /// Remove Geometry from list (and scene)
-    func removeGeometry(geo:SCNGeometry) {
-        self.geometries.removeAll(where: { $0 == geo })
-        self.nodeTreeUpdate()
+//    func removeGeometry(geo:SCNGeometry) {
+//        self.geometries.removeAll(where: { $0 == geo })
+//        self.nodeTreeUpdate()
+//    }
+    
+    /// Remove Node from list (and scene)
+    func removeNode(node:SCNNode) {
+        
+        self.nodes.removeAll(where: { $0 == node })
+        if let rNode = scene.rootNode.childNodes(passingTest: { sNode, pt in
+            return sNode == node
+        }).first {
+            rNode.removeFromParentNode()
+        }
+        if selectedNode == node { selectedNode = nil }
+//        self.nodeTreeUpdate()
     }
+    
+//    func addEmptyNode() {
+//
+//    }
     
     /// Changes the HDRI background of the Scene
     func changeBackground(back:AppBackgrounds) {

@@ -56,9 +56,10 @@ struct SMUVMapView: View {
             HStack {
                 Text("UVMap")
                 
-                Button("Load Image") {
-                    print("Load an image")
-                }
+//                Button("Load Image") {
+//                    print("Load an image")
+//                }
+                
                 
                 Picker(selection: $materialMode, label: Text("Material")){
                     ForEach(MaterialMode.allCases, id:\.self) { mmode in
@@ -71,33 +72,41 @@ struct SMUVMapView: View {
                 
                 Spacer()
                 
-                Button("💾 Save") {
-                    
+                Button("💾") {
                     if let image = uvTexture.snapShot(uvSize: CGSize(width: imgSize.width, height: imgSize.height)) {
-//                        controller.saveUVMap(image: image)
                         self.saveImgCallback(image)
                     }
                 }
+                .help("Saves this UVMap as an image.")
             }
+            .padding(.horizontal, 8)
             
-            ZStack {
-                
-                if let image = image {
-                    Image(nsImage: image)
-                        .resizable()
-                        .frame(width: imgSize.width, height: imgSize.height, alignment: .center)
+            // UV Map
+            ScrollView([.vertical, .horizontal], showsIndicators:true) {
+                HStack {
+                    ZStack {
+                        
+                        if let image = image {
+                            Image(nsImage: image)
+                                .resizable()
+                                .frame(width: imgSize.width, height: imgSize.height, alignment: .center)
+                        }
+                        
+                        if showUVEdges == true {
+                            UVShape(uv:points)
+                                .stroke(lineWidth: 0.5)
+                                .fill(Color.orange, style: FillStyle(eoFill: false, antialiased: true))
+                                .background(Color.gray.opacity(0.1))
+                                .frame(width: imgSize.width, height: imgSize.height, alignment: .center)
+                        }
+                        
+                    }
+                    .frame(width: imgSize.width, height: imgSize.height, alignment: .center)
                 }
-                
-                if showUVEdges == true {
-                    UVShape(uv:points)
-                        .stroke(lineWidth: 0.5)
-                        .fill(Color.orange, style: FillStyle(eoFill: false, antialiased: true))
-                        .background(Color.gray.opacity(0.1))
-                        .frame(width: imgSize.width, height: imgSize.height, alignment: .center)
-                }
-                
+                .padding(30)
             }
-            .frame(width: imgSize.width, height: imgSize.height, alignment: .center)
+            .frame(minWidth: 300, alignment: .trailing)
+            
         }
     }
     

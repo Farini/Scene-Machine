@@ -15,6 +15,10 @@ struct SMNodeRow: View {
     @ObservedObject var controller:SceneMachineController
     var node:SCNNode
     
+    // Renaming
+    @State private var isRenamingNode:Bool = false
+    @State private var nodeRenameStr:String = ""
+    
     private var formatter:NumberFormatter {
         let nf = NumberFormatter()
         nf.numberStyle = .decimal
@@ -25,7 +29,6 @@ struct SMNodeRow: View {
     }
     
     var body: some View {
-        
         
         VStack {
             let isSelected:Bool = controller.selectedNode == node
@@ -50,6 +53,10 @@ struct SMNodeRow: View {
                 Text(node.name ?? "< Untitled >")
                     .foregroundColor(isSelected ? .accentColor:.primary)
             }
+            .frame(maxWidth:250)
+            .onTapGesture {
+                controller.selectedNode = node
+            }
             
             HStack {
                 Text("⌖ \(node.position.toString())")
@@ -59,6 +66,10 @@ struct SMNodeRow: View {
                         self.node.isHidden.toggle()
                     }
             }
+            .frame(maxWidth:250)
+            .onTapGesture {
+                controller.selectedNode = node
+            }
             
             // Children
             if !node.childNodes.isEmpty {
@@ -67,14 +78,59 @@ struct SMNodeRow: View {
                     Text("● \(node.childNodes.count)")
                     Spacer()
                 }
+                .frame(maxWidth:250)
+                
                 ForEach(node.childNodes, id:\.self) { child in
                     SMNodeRow(controller: controller, node: child)
                         .padding(.leading, CGFloat(self.indent(node: child)))
                 }
             }
         }
-        .frame(width: 200)
         .background(controller.selectedNode == node ? Color.black.opacity(0.5):.clear)
+        
+        // Menu Options
+        .contextMenu {
+            Button("Add Empty") {
+                print("Add Node")
+                let newNode = SCNNode()
+                newNode.name = "Empty Node"
+                controller.scene.rootNode.addChildNode(newNode)
+            }
+            
+            Button("Rename") {
+                self.nodeRenameStr = node.name ?? "<untitled>"
+                isRenamingNode.toggle()
+            }
+            
+            Button("Delete") {
+                controller.removeNode(node: node)
+            }
+            Button("Hide/Unhide") {
+                node.isHidden.toggle()
+            }
+            Button("Pause/Unpause") {
+                node.isPaused.toggle()
+            }
+        }
+        
+        // Renaming Sheet
+        .sheet(isPresented: $isRenamingNode, content: {
+            HStack {
+                TextField("Rename", text: $nodeRenameStr)
+                    .frame(width:80)
+                
+                Button("Rename") {
+                    
+                    controller.scene.rootNode.childNodes { pNode, pt in
+                        return pNode == node
+                    }.first!.name = nodeRenameStr
+                    controller.selectedNode = node
+                    
+                    isRenamingNode.toggle()
+                }
+            }
+            .padding()
+        })
     }
     
     func indent(node:SCNNode) -> Int {
