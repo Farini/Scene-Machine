@@ -134,6 +134,9 @@ class ExplorerController:ObservableObject {
         NotificationCenter.default.addObserver(
             self, selector: #selector(self.handleControllerDidDisconnect),
             name: NSNotification.Name.GCControllerDidStopBeingCurrent, object: nil)
+        
+        // Post init deco
+        self.postInitDecoration()
     }
     
     // MARK: - Controller
@@ -258,7 +261,7 @@ class ExplorerController:ObservableObject {
         
         // Scene Deco
         // Spheres
-        self.createSceneDeco(input: scene)
+        // self.createSceneDeco(input: scene)
         
         // FLOOR
         let floor = SCNFloor()
@@ -321,6 +324,7 @@ class ExplorerController:ObservableObject {
     }
     
     // Scene deco
+    // [DEPRECATE] - TAKES TOO LONG TO LOAD
     class func createSceneDeco(input:SCNScene) {
         
         for orangeX in 0...30 {
@@ -454,7 +458,7 @@ class ExplorerController:ObservableObject {
             var rangeX:ClosedRange<Int> = 2...30
             var rangeZ:ClosedRange<Int> = -30...(-2)
             
-            var geometry:SCNGeometry = SCNSphere(radius: 0.2)
+            // var geometry:SCNGeometry = SCNSphere(radius: 0.2)
             
             // Material
             var materialColor:NSColor = .orange
@@ -490,10 +494,110 @@ class ExplorerController:ObservableObject {
             materialColor = .systemTeal
             materialRough = 0.5
             
+            rangeZ = 2...30
             
+            for px in rangeX {
+                for pz in rangeZ {
+                    let position = SCNVector3(5 * px, 2, 5 * pz)
+                    //                    let materialColor = NSColor.orange
+                    
+                    let material = SCNMaterial()
+                    material.lightingModel = .physicallyBased
+                    material.diffuse.contents = materialColor
+                    material.roughness.contents = materialRough
+                    
+                    let sphere = SCNSphere(radius: 0.2)
+                    sphere.firstMaterial = material
+                    
+                    let sNode = SCNNode(geometry: sphere)
+                    
+                    sNode.position = position
+                    
+                    // input.rootNode.addChildNode(sNode)
+                    nodes.append(sNode)
+                }
+            }
             
+            // Part 3
             
+            materialColor = .systemRed
+            materialRough = 0.8
             
+            rangeZ = -30...(-1)
+            rangeX = -30...(-1)
+            
+            for px in rangeX {
+                for pz in rangeZ {
+                    let position = SCNVector3(5 * px, 2, 5 * pz)
+                    //                    let materialColor = NSColor.orange
+                    
+                    let material = SCNMaterial()
+                    material.lightingModel = .physicallyBased
+                    material.diffuse.contents = materialColor
+                    material.roughness.contents = materialRough
+                    
+                    let sphere = SCNSphere(radius: 0.2)
+                    sphere.firstMaterial = material
+                    
+                    let sNode = SCNNode(geometry: sphere)
+                    
+                    sNode.position = position
+                    
+                    // input.rootNode.addChildNode(sNode)
+                    nodes.append(sNode)
+                }
+            }
+            
+            // Part 4
+            
+            materialColor = .systemBlue
+            materialRough = 0.1
+            
+            rangeZ = 1...30
+            rangeX = -30...(-1)
+            
+            for px in rangeX {
+                for pz in rangeZ {
+                    let position = SCNVector3(5 * px, 2, 5 * pz)
+                    //                    let materialColor = NSColor.orange
+                    
+                    let material = SCNMaterial()
+                    material.lightingModel = .physicallyBased
+                    material.diffuse.contents = materialColor
+                    material.roughness.contents = materialRough
+                    
+                    let sphere = SCNSphere(radius: 0.2)
+                    sphere.firstMaterial = material
+                    
+                    let sNode = SCNNode(geometry: sphere)
+                    
+                    sNode.position = position
+                    
+                    // input.rootNode.addChildNode(sNode)
+                    nodes.append(sNode)
+                }
+            }
+            
+            // Posts
+            
+            rangeZ = (-10)...30
+            
+            for pz in rangeZ {
+                let position = SCNVector3(0, 0, 10 * pz)
+                
+                let post = AppGeometries.PostWithLamp.getGeometry()!
+                
+                post.position = position
+                
+                // input.rootNode.addChildNode(sNode)
+                nodes.append(post)
+            }
+            
+            DispatchQueue.main.async {
+                for node in nodes {
+                    self.scene.rootNode.addChildNode(node)
+                }
+            }
             
         }
         
