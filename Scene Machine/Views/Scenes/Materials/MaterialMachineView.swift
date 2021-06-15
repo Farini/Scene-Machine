@@ -133,6 +133,11 @@ struct MaterialMachineView: View {
             .frame(minWidth: 550, maxWidth: .infinity)
             
             // Right View: UV Map
+            //
+            // Make 2 Options...
+            // 1. UVImage
+            // 2. Shader
+            
             if controller.uvImage != nil {
                 ZStack {
                     DrawingPadView(image: controller.uvImage!, mode: controller.materialMode) { newImage in

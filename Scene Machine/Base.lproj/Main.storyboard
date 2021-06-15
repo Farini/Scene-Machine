@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="18122"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -598,5 +599,110 @@
             </objects>
             <point key="canvasLocation" x="75" y="0.0"/>
         </scene>
+        <!--Window Controller-->
+        <scene sceneID="hdI-8q-Vby">
+            <objects>
+                <windowController id="vFF-sX-slB" sceneMemberID="viewController">
+                    <window key="window" title="Material" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" titleVisibility="hidden" id="vZD-Rz-O0v">
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+                        <rect key="contentRect" x="425" y="462" width="688" height="414"/>
+                        <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1415"/>
+                        <view key="contentView" id="xm4-oF-68G">
+                            <rect key="frame" x="0.0" y="0.0" width="688" height="414"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </view>
+                        <toolbar key="toolbar" implicitIdentifier="948C3913-DB23-4AEF-87AF-8EE0C963EB75" autosavesConfiguration="NO" displayMode="iconOnly" sizeMode="small" id="6MW-lh-es1">
+                            <allowedToolbarItems>
+                                <toolbarItem implicitItemIdentifier="NSToolbarShowColorsItem" id="MYv-Fs-rSZ"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarShowFontsItem" id="u8U-ce-JnO"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarPrintItem" id="tVq-61-pZp"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="HHa-9R-F7C"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="OGg-jX-KW9"/>
+                                <toolbarItem implicitItemIdentifier="4E4DC27C-238E-4B93-8EAD-B70BB51F8F41" label="Open file" paletteLabel="Open file" tag="-1" image="NSTouchBarFolderTemplate" bordered="YES" id="Zus-Yt-SS6">
+                                    <size key="minSize" width="30" height="25"/>
+                                    <size key="maxSize" width="30" height="25"/>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="5CD6E133-8B11-43C5-8847-DD76AAFF443F" label="Toolbar Item" paletteLabel="Toolbar Item" tag="-1" image="pencil.tip.crop.circle" catalog="system" bordered="YES" id="OpZ-xx-yIw">
+                                    <size key="minSize" width="27" height="25"/>
+                                    <size key="maxSize" width="27" height="25"/>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="00EF00CE-95C7-4139-AD48-9F12B05C9155" label="Load geometry" paletteLabel="Geometry" tag="-1" image="tray.and.arrow.down" catalog="system" bordered="YES" id="9i7-D6-dyh">
+                                    <size key="minSize" width="30" height="25"/>
+                                    <size key="maxSize" width="30" height="25"/>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="2230C846-7BF2-4DEC-862B-D3CB943480BF" label="Save" paletteLabel="Save" tag="-1" image="internaldrive" catalog="system" bordered="YES" id="f5T-eg-yTM">
+                                    <size key="minSize" width="30" height="25"/>
+                                    <size key="maxSize" width="30" height="25"/>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="7CD37D67-280A-455E-B2CD-6E98C690E8C7" label="Back" paletteLabel="Background" tag="-1" image="NSFlowViewTemplate" bordered="YES" id="dtk-bA-adg">
+                                    <size key="minSize" width="30" height="25"/>
+                                    <size key="maxSize" width="30" height="25"/>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="87EE9768-44A9-4F89-9921-4D305DCA68E3" label="Custom View" paletteLabel="Custom View" title="Single" sizingBehavior="auto" id="dBi-Kp-HcA">
+                                    <nil key="toolTip"/>
+                                    <popUpButton key="view" verticalHuggingPriority="750" id="dZ7-hK-Pc7">
+                                        <rect key="frame" x="0.0" y="14" width="107" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <popUpButtonCell key="cell" type="roundTextured" title="Single" bezelStyle="texturedRounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" pullsDown="YES" selectedItem="1g8-4o-Ff1" id="hX3-Hw-cvW">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="menu"/>
+                                            <menu key="menu" id="QrP-IX-SO9">
+                                                <items>
+                                                    <menuItem title="Single" state="on" hidden="YES" id="1g8-4o-Ff1"/>
+                                                    <menuItem title="Drawing" id="Np1-uC-5Pu"/>
+                                                    <menuItem title="Shader" id="zbY-BX-fWW"/>
+                                                </items>
+                                            </menu>
+                                        </popUpButtonCell>
+                                    </popUpButton>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="E783F29A-D065-4E90-9E21-25D854E4DFFC" label="sidebar.right" paletteLabel="sidebar.right" image="sidebar.right" catalog="system" sizingBehavior="auto" id="wcr-22-Y4K">
+                                    <nil key="toolTip"/>
+                                </toolbarItem>
+                            </allowedToolbarItems>
+                            <defaultToolbarItems>
+                                <toolbarItem reference="Zus-Yt-SS6"/>
+                                <toolbarItem reference="9i7-D6-dyh"/>
+                                <toolbarItem reference="f5T-eg-yTM"/>
+                                <toolbarItem reference="dtk-bA-adg"/>
+                                <toolbarItem reference="OGg-jX-KW9"/>
+                                <toolbarItem reference="wcr-22-Y4K"/>
+                                <toolbarItem reference="dBi-Kp-HcA"/>
+                            </defaultToolbarItems>
+                        </toolbar>
+                        <connections>
+                            <outlet property="delegate" destination="vFF-sX-slB" id="3Iy-Oy-Y0f"/>
+                        </connections>
+                    </window>
+                    <connections>
+                        <segue destination="2qn-zp-EDt" kind="relationship" relationship="window.shadowedContentViewController" id="fq7-0B-JqX"/>
+                    </connections>
+                </windowController>
+                <customObject id="Ijv-YT-gvh" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="801" y="231"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="g52-ck-kgx">
+            <objects>
+                <viewController id="2qn-zp-EDt" sceneMemberID="viewController">
+                    <view key="view" id="FMV-nc-Aju">
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="MHJ-Dz-0ke" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="858" y="662"/>
+        </scene>
     </scenes>
+    <resources>
+        <image name="NSFlowViewTemplate" width="18" height="10"/>
+        <image name="NSTouchBarFolderTemplate" width="18" height="14"/>
+        <image name="internaldrive" catalog="system" width="18" height="13"/>
+        <image name="pencil.tip.crop.circle" catalog="system" width="15" height="15"/>
+        <image name="sidebar.right" catalog="system" width="18" height="14"/>
+        <image name="tray.and.arrow.down" catalog="system" width="18" height="17"/>
+    </resources>
 </document>

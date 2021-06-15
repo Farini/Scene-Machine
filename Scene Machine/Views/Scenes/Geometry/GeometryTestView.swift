@@ -29,13 +29,15 @@ struct GeometryTestView: View {
                     Text("Geometry Info")
                     Spacer()
                     ScrollView {
-                        Text(geoinfo)
+                        HStack {
+                            Text(geoinfo)
+                            Spacer()
+                        }
+                        .padding(8)
                     }
                 }
                 .frame(width:300)
-                
             }
-            
         }
         .onAppear() {
             makeGeometry()

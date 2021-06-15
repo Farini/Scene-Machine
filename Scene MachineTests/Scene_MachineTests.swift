@@ -8,6 +8,19 @@
 import XCTest
 @testable import Scene_Machine
 
+extension CGFloat {
+    
+    /// Returns the value of this angle converted to Radians
+    func toRadians() -> CGFloat {
+        return self * .pi / 180.0
+    }
+    
+    /// Returns the value of this angle converted to Degrees
+    func toDegrees() -> CGFloat {
+        return self * 180 / .pi
+    }
+}
+
 class Scene_MachineTests: XCTestCase {
 
     override func setUpWithError() throws {
@@ -63,6 +76,12 @@ class Scene_MachineTests: XCTestCase {
         // This is an example of a performance test case.
         self.measure {
             // Put the code you want to measure the time of here.
+            
+            // This is taking 7.1 seconds!
+            let explorerTest = ExplorerController()
+            let children = explorerTest.scene.rootNode.childNodes
+            print("Direct Children: \(children.count)")
+            
         }
     }
 

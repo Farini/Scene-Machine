@@ -47,6 +47,12 @@ class SceneMaterial: Codable, Identifiable, Equatable {
      - Displacement
      */
     
+    // Shaders:
+    // Pointer to .txt file?
+    // 1. Surface
+    // 2. Fragment
+    // 3. LightingModel
+    
     // MARK: - Methods
     
     func make() -> SCNMaterial {

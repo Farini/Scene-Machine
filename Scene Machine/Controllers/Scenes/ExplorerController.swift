@@ -429,6 +429,9 @@ class ExplorerController:ObservableObject {
             }
         }
         
+        // Other
+        
+        
         // Statues
         for idx in 1...20 {
             // Spread
@@ -441,6 +444,58 @@ class ExplorerController:ObservableObject {
             }
         }
         
+        
+    }
+    
+    func postInitDecoration() {
+        
+        DispatchQueue(label: "Scene loader").async {
+            
+            var rangeX:ClosedRange<Int> = 2...30
+            var rangeZ:ClosedRange<Int> = -30...(-2)
+            
+            var geometry:SCNGeometry = SCNSphere(radius: 0.2)
+            
+            // Material
+            var materialColor:NSColor = .orange
+            var materialRough:Double = 0.15
+            
+            var nodes:[SCNNode] = []
+            
+            for px in rangeX {
+                for pz in rangeZ {
+                    
+                    let position = SCNVector3(5 * px, 2, 5 * pz)
+//                    let materialColor = NSColor.orange
+                    
+                    let material = SCNMaterial()
+                    material.lightingModel = .physicallyBased
+                    material.diffuse.contents = materialColor
+                    material.roughness.contents = materialRough
+                    
+                    let sphere = SCNSphere(radius: 0.2)
+                    sphere.firstMaterial = material
+                    
+                    let sNode = SCNNode(geometry: sphere)
+                    
+                    sNode.position = position
+                    
+                    // input.rootNode.addChildNode(sNode)
+                    nodes.append(sNode)
+                    
+                }
+            }
+            
+            // Part2
+            materialColor = .systemTeal
+            materialRough = 0.5
+            
+            
+            
+            
+            
+            
+        }
         
     }
     

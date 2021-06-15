@@ -59,6 +59,8 @@
 		8597BB8425BCAEF600C705A0 /* Metal.metal in Sources */ = {isa = PBXBuildFile; fileRef = 8597BB8325BCAEF600C705A0 /* Metal.metal */; };
 		859DC6BC26751E5500A315A5 /* SettingsFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859DC6BB26751E5500A315A5 /* SettingsFormView.swift */; };
 		859DC6BF267540B200A315A5 /* GeometryTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859DC6BE267540B200A315A5 /* GeometryTestView.swift */; };
+		859DC6C02677DAA600A315A5 /* ExplorerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 858C45A126667F0B00AB830B /* ExplorerController.swift */; };
+		859DC6C22677DC1300A315A5 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8541531A2648680B007C926B /* AppConstants.swift */; };
 		85A4776026407D4800F93AB3 /* HelpMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A4775F26407D4800F93AB3 /* HelpMainView.swift */; };
 		85A4776D2642EE1C00F93AB3 /* FXOtherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A4776C2642EE1C00F93AB3 /* FXOtherView.swift */; };
 		85B913352631057E0065D6D2 /* SceneKit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B913342631057E0065D6D2 /* SceneKit+Extensions.swift */; };
@@ -69,11 +71,9 @@
 		85B9135B263298790065D6D2 /* CausticNoise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B9135A263298790065D6D2 /* CausticNoise.swift */; };
 		85B9135C263298790065D6D2 /* CausticNoise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B9135A263298790065D6D2 /* CausticNoise.swift */; };
 		85B91362263298D20065D6D2 /* LensFlare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B91361263298D20065D6D2 /* LensFlare.swift */; };
-		85B91363263298D20065D6D2 /* LensFlare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B91361263298D20065D6D2 /* LensFlare.swift */; };
 		85B9136F263299CB0065D6D2 /* HexagonFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B9136E263299CB0065D6D2 /* HexagonFilter.swift */; };
 		85B91370263299CB0065D6D2 /* HexagonFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B9136E263299CB0065D6D2 /* HexagonFilter.swift */; };
 		85B9137926329A3A0065D6D2 /* CoreImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B9137826329A3A0065D6D2 /* CoreImage+Extensions.swift */; };
-		85B9137A26329A3A0065D6D2 /* CoreImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B9137826329A3A0065D6D2 /* CoreImage+Extensions.swift */; };
 		85B9138226329DED0065D6D2 /* MetalGenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B9138126329DED0065D6D2 /* MetalGenView.swift */; };
 		85C282FA266C1A8C00044A75 /* HighlightedTextEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 85C282F9266C1A8C00044A75 /* HighlightedTextEditor */; };
 		85C282FC266C1BDD00044A75 /* MarkdownEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85C282FB266C1BDD00044A75 /* MarkdownEditor.swift */; };
@@ -299,9 +299,9 @@
 				8515B371262743D000A886BD /* TerrainView.swift */,
 				855053712644F33500A577E2 /* Scene Machine */,
 				8515B36526263C6A00A886BD /* Materials */,
+				859DC6BD2675408D00A315A5 /* Geometry */,
 				85CB4360263D0D9A006E4B10 /* DrawingView.swift */,
 				859241FE265B7FE9001D503D /* UVMapView.swift */,
-				859DC6BD2675408D00A315A5 /* Geometry */,
 				858C459E26658F8B00AB830B /* ExplorerTest.swift */,
 			);
 			path = Scenes;
@@ -872,12 +872,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				859DC6C02677DAA600A315A5 /* ExplorerController.swift in Sources */,
 				85B9134D2631C13B0065D6D2 /* SwiftUI+Extensions.swift in Sources */,
 				85B91370263299CB0065D6D2 /* HexagonFilter.swift in Sources */,
+				859DC6C22677DC1300A315A5 /* AppConstants.swift in Sources */,
 				85B913412631C00E0065D6D2 /* GraphicsImageRenderer.swift in Sources */,
 				856491E92578100D00D1FE00 /* Scene_MachineTests.swift in Sources */,
-				85B9137A26329A3A0065D6D2 /* CoreImage+Extensions.swift in Sources */,
-				85B91363263298D20065D6D2 /* LensFlare.swift in Sources */,
 				85B9135C263298790065D6D2 /* CausticNoise.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
