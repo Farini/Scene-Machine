@@ -13,7 +13,7 @@ import SceneKit.ModelIO
 struct TerrainView: View {
     
     @ObservedObject var exporter:SceneExporter
-    @State var scene:SCNScene = TerrainView.createTerrain() //SCNScene(named: "Scenes.scnassets/Terrain.scn")!
+    @State var scene:SCNScene //= TerrainView.createTerrain() //SCNScene(named: "Scenes.scnassets/Terrain.scn")!
     
     @State private var dragOver = false
     
@@ -35,12 +35,72 @@ struct TerrainView: View {
     // Environment Lighting
     
     init() {
-        let theScene = TerrainView.createTerrain() //SCNScene(named: "Scenes.scnassets/Terrain.scn")!
+        // Initialize this just once
+        let terrain = TerrainView.createTerrain()
+        self.scene = terrain
+        
+        let theScene = terrain //SCNScene(named: "Scenes.scnassets/Terrain.scn")!
         self.exporter = SceneExporter(scene: theScene)
     }
     
     var body: some View {
         HSplitView {
+            List() {
+                Section(header: Text("Terrain")) {
+                    VStack {
+                        Text("Terrain").font(.title2).foregroundColor(.orange)
+                            .padding(8)
+                        Text("Drop image from finder to update the UV")
+                            .foregroundColor(.gray)
+                            .frame(maxWidth:180)
+                            .padding(.bottom, 6)
+                    }
+                    
+                }
+                Section(header: Text("Images")) {
+                    VStack {
+                        Text("Diffuse")
+                        SubMatImageArea(url: nil, active: true, image: nil) { droppedImage, droppedURL in
+                            print("Image dropped. Size: \(droppedImage.size)")
+                            self.diffuseImagePath = droppedURL.path
+                            self.textDropped()
+                        }
+                        .help("Color Map of the terrain")
+                        
+                        Text("Displacement")
+                        SubMatImageArea(url: nil, active: true, image: nil) { droppedImage, droppedURL in
+                            print("Image dropped. Size: \(droppedImage.size)")
+                            self.displaceImagePath = droppedURL.path
+                            self.textDropped()
+                        }
+                        .help("Height Map of the terrain")
+                    }
+                }
+                Section(header: Text("Setup")) {
+                    VStack {
+                        SliderInputView(value: 0.2, vRange: 0...1, title: "Intensity") { intensity in
+                            self.displacementIntensity = intensity
+                            self.textDropped()
+                        }
+                        
+                        Button("Export") {
+                            exportScene()
+                        }
+                    }
+                }
+                Group {
+                    SliderInputView(value: 0.2, vRange: 0...1, title: "Intensity") { intensity in
+                        self.displacementIntensity = intensity
+                        self.textDropped()
+                    }
+                    
+                    Button("Export") {
+                        exportScene()
+                    }
+                }
+            }
+            .frame(minWidth: 180, maxWidth: 200, maxHeight: .infinity, alignment: .center)
+            /*
             ScrollView {
                 VStack {
                     Text("Terrain").font(.title2).foregroundColor(.orange)
@@ -77,6 +137,7 @@ struct TerrainView: View {
                 }
             }
             .frame(minWidth: 160, maxWidth: 200, alignment: .center)
+            */
             
             SceneView(scene: scene, pointOfView: nil, options: .allowsCameraControl, preferredFramesPerSecond: 60, antialiasingMode: .multisampling4X, delegate: TerrainDelegate(), technique: nil)
             
@@ -89,8 +150,8 @@ struct TerrainView: View {
         let plane = SCNPlane(width: 4, height: 4)
         plane.widthSegmentCount = 200
         plane.heightSegmentCount = 200
-//        plane.cornerSegmentCount = 10
-//        plane.cornerRadius = 2
+        // plane.cornerSegmentCount = 10
+        // plane.cornerRadius = 2
         plane.name = "Terrain"
         
         // Material
@@ -108,14 +169,15 @@ struct TerrainView: View {
         plane.insertMaterial(material, at: 0)
         
         // Plane Mesh
-//        let planeMesh = MDLMesh(planeWithExtent: vector_float3(4, 4, 0), segments: vector_uint2(100, 100), geometryType: .quads, allocator: nil)
+        // let planeMesh = MDLMesh(planeWithExtent: vector_float3(4, 4, 0), segments: vector_uint2(100, 100), geometryType: .quads, allocator: nil)
         let planeMesh = MDLMesh(scnGeometry: plane)
         planeMesh.addNormals(withAttributeNamed: "normal", creaseThreshold: 0.2)
+        let vertexCount = planeMesh.vertexCount
+        let vertexDescr = planeMesh.vertexDescriptor
+        print("Vertex Count: \(vertexCount)")
+        print("Vertex Descr Attrib: \(vertexDescr.attributes)")
+        print("Vertex Descr Layout: \(vertexDescr.layouts)")
         
-        // SCNGeometry Node
-//        let planeNode = SCNNode(geometry: plane)
-//        planeNode.name = "Plane"
-//        planeNode.castsShadow = true
         
         // MDL Node
         let planeNode = SCNNode(mdlObject: planeMesh)

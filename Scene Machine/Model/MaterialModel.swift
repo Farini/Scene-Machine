@@ -48,10 +48,14 @@ class SceneMaterial: Codable, Identifiable, Equatable {
      */
     
     // Shaders:
-    // Pointer to .txt file?
     // 1. Surface
     // 2. Fragment
     // 3. LightingModel
+    
+    /// Shader snippets written in Metal
+    var surfaceShader:String?
+    var fragmentShader:String?
+    var lighShader:String?
     
     // MARK: - Methods
     

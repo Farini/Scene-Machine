@@ -9,6 +9,7 @@ import SceneKit
 import Cocoa
 import SwiftUI
 import GameController
+import CoreHaptics
 
 class ExplorerController:ObservableObject {
     
@@ -18,6 +19,8 @@ class ExplorerController:ObservableObject {
     @Published var turnData:String = "♦︎"
     @Published var renderData:String = "0"
     @Published var posData:String = ""
+    
+    // MARK: - UI Indicators + Updates
     
     func reportStatus(string:String) {
         self.turnData = string
@@ -94,7 +97,6 @@ class ExplorerController:ObservableObject {
         turnData = turnDescriptor
     }
     
-    // methods
     func turnRight() {
         var turnDescriptor:String = "→ "
         
@@ -115,9 +117,7 @@ class ExplorerController:ObservableObject {
         
     }
     
-    
-    
-    // Init
+    // MARK: - Init
     
     init() {
         let mainScene = ExplorerController.makeScene()
@@ -139,88 +139,10 @@ class ExplorerController:ObservableObject {
         self.postInitDecoration()
     }
     
-    // MARK: - Controller
-    
-    @objc
-    func handleControllerDidConnect(_ notification: Notification) {
-        guard let gameController = notification.object as? GCController else {
-            return
-        }
-        
-        print("Connecting controller...")
-        self.turnData = "Controller ?connected?"
-        registerGameController(gameController)
-//        HapticUtility.initHapticsFor(controller: gameController)
-        
-//        self.overlay?.showHints()
-    }
-    
-    @objc
-    func handleControllerDidDisconnect(_ notification: Notification) {
-        print("Disconnecting controller...")
-//        unregisterGameController()
-//
-//        guard let gameController = notification.object as? GCController else {
-//            return
-//        }
-//        HapticUtility.deinitHapticsFor(controller: gameController)
-    }
-    
-    // Game controller
-    private var gamePadCurrent: GCController?
-    private var gamePadLeft: GCControllerDirectionPad?
-    private var gamePadRight: GCControllerDirectionPad?
-    
-    func registerGameController(_ gameController: GCController) {
-        
-        var buttonA: GCControllerButtonInput?
-        var buttonB: GCControllerButtonInput?
-        var rightTrigger: GCControllerButtonInput?
-        
-        weak var weakController = self
-        
-        if let gamepad = gameController.extendedGamepad {
-            self.gamePadLeft = gamepad.leftThumbstick
-            self.gamePadRight = gamepad.rightThumbstick
-            buttonA = gamepad.buttonA
-            buttonB = gamepad.buttonB
-            rightTrigger = gamepad.rightTrigger
-        } else if let gamepad = gameController.microGamepad {
-            self.gamePadLeft = gamepad.dpad
-            buttonA = gamepad.buttonA
-            buttonB = gamepad.buttonX
-        }
-        
-        buttonA?.valueChangedHandler = {(_ button: GCControllerButtonInput, _ value: Float, _ pressed: Bool) -> Void in
-            guard let strongController = weakController else {
-                return
-            }
-            strongController.goForward()
-        }
-        
-        gamePadLeft?.valueChangedHandler = { (_ controllerDirection:GCControllerDirectionPad, xValue:Float, yValue:Float) -> Void in
-            if xValue > 0 && xValue > yValue {
-                self.turnRight()
-            } else if xValue < 0 && xValue < yValue {
-                self.turnLeft()
-            }
-        }
-        
-        buttonB?.valueChangedHandler = {(_ button: GCControllerButtonInput, _ value: Float, _ pressed: Bool) -> Void in
-//            guard let strongController = weakController else {
-//                return
-//            }
-            // breaks
-//            strongController.controllerAttack()
-        }
-        
-        rightTrigger?.pressedChangedHandler = buttonB?.valueChangedHandler
-        
-        
-    }
-    
+    /// Builds the Scene (Basics) to display
     class func makeScene() -> SCNScene {
         
+        // Initialize the Scene
         let scene = SCNScene()
         scene.background.contents = "Scenes.scnassets/HDRI/\(AppBackgrounds.CityDay.content)"
         scene.lightingEnvironment.contents = "Scenes.scnassets/HDRI/\(AppBackgrounds.CityDay.content)"
@@ -238,7 +160,7 @@ class ExplorerController:ObservableObject {
         camNode.camera = camera
         camNode.position = SCNVector3(0, 3, -4)
         
-        // --- Constraints
+        // Constraints
         
         let distanceConstraint = SCNDistanceConstraint(target: mainCharacter)
         distanceConstraint.maximumDistance = 4
@@ -259,10 +181,6 @@ class ExplorerController:ObservableObject {
         
         camNode.constraints = [distanceConstraint, replicatorConstraint, lookAtConstraint, accelerationConstraint]
         
-        // Scene Deco
-        // Spheres
-        // self.createSceneDeco(input: scene)
-        
         // FLOOR
         let floor = SCNFloor()
         let floorphy = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(geometry: floor, options: nil))
@@ -277,180 +195,18 @@ class ExplorerController:ObservableObject {
         scene.rootNode.addChildNode(mainCharacter)
         scene.rootNode.addChildNode(camNode)
         
-        
         return scene
     }
     
-    // Main Character
+    /// Main Character Node
     class func makeMainCharacter() -> SCNNode {
         
-        /*
-        // Geometry
-        let geometry = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0.1)
-        
-        // Material
-        let bMaterial = SCNMaterial.example
-        bMaterial.lightingModel = .physicallyBased
-        bMaterial.diffuse.contents = NSColor(calibratedWhite: 0.1, alpha: 1)
-        bMaterial.roughness.contents = 0.1
-        bMaterial.metalness.contents = 0.85
-        geometry.insertMaterial(bMaterial, at: 0)
-        
-        // Physics
-        let boxBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(geometry: geometry, options: nil))
-//        boxBody.angularVelocityFactor = SCNVector3(0, 0, 0)
-        
-        // Node
-        let boxNode = SCNNode(geometry: geometry)
-        boxNode.name = "protagonist"
-        boxNode.physicsBody = boxBody
-        boxNode.position = SCNVector3(0, 1, 0)
-        
-        let boxChild = SCNNode()
-        boxChild.name = "bullseye"
-        let bcg = SCNSphere(radius: 0.2)
-        let geoMaterial = SCNMaterial()
-        geoMaterial.lightingModel = .physicallyBased
-        geoMaterial.diffuse.contents = NSColor.white.withAlphaComponent(0.2)
-        bcg.insertMaterial(geoMaterial, at: 0)
-        
-        boxChild.geometry = bcg
-        boxChild.position = SCNVector3(0, 0.5, -1)
-        boxNode.addChildNode(boxChild)
-        */
         let proScene:SCNNode = SCNScene(named: "Scenes.scnassets/Ship.scn")!.rootNode.childNode(withName: "protagonist", recursively: false)!
         
-        return proScene//boxNode
+        return proScene
     }
     
-    // Scene deco
-    // [DEPRECATE] - TAKES TOO LONG TO LOAD
-    class func createSceneDeco(input:SCNScene) {
-        
-        for orangeX in 0...30 {
-            
-            for orangeZ in 0...30 {
-                
-                let position = SCNVector3(5 * orangeX, 2, 5 * orangeZ)
-                let materialColor = NSColor.orange
-                
-                let material = SCNMaterial()
-                material.lightingModel = .physicallyBased
-                material.diffuse.contents = materialColor
-                
-                let sphere = SCNSphere(radius: 0.2)
-                sphere.firstMaterial = material
-                
-                let sNode = SCNNode(geometry: sphere)
-                
-                sNode.position = position
-                
-                input.rootNode.addChildNode(sNode)
-            }
-        }
-        
-        for redX in -30...0 {
-            
-            for redZ in 0...30 {
-                
-                let position = SCNVector3(5 * redX, 2, 5 * redZ)
-                let materialColor = NSColor.red
-                
-                let material = SCNMaterial()
-                material.lightingModel = .physicallyBased
-                material.diffuse.contents = materialColor
-                
-                let sphere = SCNSphere(radius: 0.2)
-                sphere.firstMaterial = material
-                
-                let sNode = SCNNode(geometry: sphere)
-                
-                sNode.position = position
-                
-                input.rootNode.addChildNode(sNode)
-            }
-        }
-        
-        for bluX in -30...0 {
-            
-            for bluZ in -30...0 {
-                
-                let position = SCNVector3(5 * bluX, 2, 5 * bluZ)
-                let materialColor = NSColor.blue
-                
-                let material = SCNMaterial()
-                material.lightingModel = .physicallyBased
-                material.diffuse.contents = materialColor
-                
-                let sphere = SCNSphere(radius: 0.2)
-                sphere.firstMaterial = material
-                
-                let sNode = SCNNode(geometry: sphere)
-                
-                sNode.position = position
-                
-                input.rootNode.addChildNode(sNode)
-            }
-        }
-        
-        for greenX in 0...30 {
-            
-            for greenZ in -30...0 {
-                
-                let position = SCNVector3(5 * greenX, 2, 5 * greenZ)
-                let materialColor = NSColor.green
-                
-                let material = SCNMaterial()
-                material.lightingModel = .physicallyBased
-                material.diffuse.contents = materialColor
-                
-                let sphere = SCNSphere(radius: 0.2)
-                sphere.firstMaterial = material
-                
-                let sNode = SCNNode(geometry: sphere)
-                
-                sNode.position = position
-                
-                input.rootNode.addChildNode(sNode)
-            }
-        }
-        
-        
-        /*
-         Additional....
-         Basic: Sphere, Box, Cone, Plane
-         + EggTree, SQTree, Building
-         + Statue, Post, Car
-         + Text
-         */
-        
-        // Posts
-        for idx in 1...50 {
-            if let post = AppGeometries.PostWithLamp.getGeometry() {
-                post.position = SCNVector3(idx * 12, 0, idx * 4)
-                post.scale = SCNVector3(5, 5, 5)
-                input.rootNode.addChildNode(post)
-            }
-        }
-        
-        // Other
-        
-        
-        // Statues
-        for idx in 1...20 {
-            // Spread
-            let prep:Double = idx > 10 ? Double(idx) * -1:Double(idx)
-            if let statue = AppGeometries.LibertyLady.getGeometry() {
-                statue.position = SCNVector3(prep * 18.0, 0.0, Double(idx) * (Bool.random() ? 4.0:-3.5))
-                input.rootNode.addChildNode(statue)
-                let body = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: statue, options: nil))
-                statue.physicsBody = body
-            }
-        }
-        
-        
-    }
-    
+    /// Loads Scene decoration on a background thread AFTER the view has loaded.
     func postInitDecoration() {
         
         DispatchQueue(label: "Scene loader").async {
@@ -603,7 +359,75 @@ class ExplorerController:ObservableObject {
         
     }
     
-    // Floor
-    // Lights, cameras, etc.
+    // MARK: - Controller
+    
+    @objc
+    func handleControllerDidConnect(_ notification: Notification) {
+        guard let gameController = notification.object as? GCController else {
+            return
+        }
+        
+        print("Connecting controller...")
+        self.turnData = "Controller connected"
+        registerGameController(gameController)
+        
+        // Larn Haptics to implement
+        // HapticUtility.initHapticsFor(controller: gameController)
+        
+    }
+    
+    @objc
+    func handleControllerDidDisconnect(_ notification: Notification) {
+        print("Disconnecting controller...")
+    }
+    
+    private var gamePadCurrent: GCController?
+    private var gamePadLeft: GCControllerDirectionPad?
+    private var gamePadRight: GCControllerDirectionPad?
+    
+    func registerGameController(_ gameController: GCController) {
+        
+        var buttonA: GCControllerButtonInput?
+        var buttonB: GCControllerButtonInput?
+        var rightTrigger: GCControllerButtonInput?
+        
+        weak var weakController = self
+        
+        if let gamepad = gameController.extendedGamepad {
+            self.gamePadLeft = gamepad.leftThumbstick
+            self.gamePadRight = gamepad.rightThumbstick
+            buttonA = gamepad.buttonA
+            buttonB = gamepad.buttonB
+            rightTrigger = gamepad.rightTrigger
+        } else if let gamepad = gameController.microGamepad {
+            self.gamePadLeft = gamepad.dpad
+            buttonA = gamepad.buttonA
+            buttonB = gamepad.buttonX
+        }
+        
+        buttonA?.valueChangedHandler = {(_ button: GCControllerButtonInput, _ value: Float, _ pressed: Bool) -> Void in
+            guard let strongController = weakController else {
+                return
+            }
+            strongController.goForward()
+        }
+        
+        gamePadLeft?.valueChangedHandler = { (_ controllerDirection:GCControllerDirectionPad, xValue:Float, yValue:Float) -> Void in
+            if xValue > 0 && xValue > yValue {
+                self.turnRight()
+            } else if xValue < 0 && xValue < yValue {
+                self.turnLeft()
+            }
+        }
+        
+        buttonB?.valueChangedHandler = {(_ button: GCControllerButtonInput, _ value: Float, _ pressed: Bool) -> Void in
+            guard let strongController = weakController else {
+                return
+            }
+            strongController.hitBreaks()
+        }
+        
+        rightTrigger?.pressedChangedHandler = buttonB?.valueChangedHandler
+    }
     
 }
