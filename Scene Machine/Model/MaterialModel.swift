@@ -262,6 +262,7 @@ class SceneMaterial: Codable, Identifiable, Equatable {
         }
     }
     
+    /// Returns how many images are founf in this material
     func imageScore() -> Int {
         var score = 0
         if diffuse?.imageURL != nil {
@@ -280,6 +281,68 @@ class SceneMaterial: Codable, Identifiable, Equatable {
             score += 1
         }
         return score
+    }
+    
+    static func examples() -> [SceneMaterial] {
+        
+        var appMaterials:[SceneMaterial] = []
+        
+        let exm1 = SCNMaterial.example
+        let ex1 = SceneMaterial(material: exm1)
+        ex1.name = "SCN Example"
+        appMaterials.append(ex1)
+        
+        let rubber = SceneMaterial()
+        rubber.diffuse = SubMaterialData(spectrum: 1.0, sColor:  ColorData(r: 0.25, g: 0.25, b: 0.25, a: 1.0))
+        rubber.roughness = SubMaterialData(spectrum: 0.9, sColor: nil)
+        rubber.name = "Rubber"
+        appMaterials.append(rubber)
+        
+        let sleekPlastic = SceneMaterial()
+        sleekPlastic.diffuse = SubMaterialData(spectrum: 1.0, sColor: ColorData(r: 0.15, g: 0.15, b: 0.15, a: 1.0))
+        sleekPlastic.roughness = SubMaterialData(spectrum: 0.1, sColor: nil)
+        sleekPlastic.name = "Sleek plastic"
+        appMaterials.append(sleekPlastic)
+        
+        let goldenNugget = SceneMaterial()
+        goldenNugget.diffuse = SubMaterialData(spectrum: 1.0, sColor: ColorData(r: 1.0, g: 0.7, b: 0.3, a: 1.0))
+        goldenNugget.roughness = SubMaterialData(spectrum: 0.05, sColor: nil)
+        goldenNugget.name = "Gold"
+        appMaterials.append(goldenNugget)
+        
+        let silver = SceneMaterial()
+        silver.diffuse = SubMaterialData(spectrum: 1.0, sColor: ColorData(r: 0.6, g: 0.6, b: 0.601, a: 1.0))
+        silver.roughness = SubMaterialData(spectrum: 0.05, sColor: nil)
+        silver.name = "Silver"
+        appMaterials.append(silver)
+        
+        let caustic = SceneMaterial()
+        caustic.diffuse = SubMaterialData(spectrum: 1.0, sColor: ColorData(r: 0.75, g: 0.75, b: 0.78, a: 1.0))
+        if let bnd = Bundle.main.url(forResource: "/Scenes.scnassets/UVMaps/CausticNoise", withExtension: ".png") {
+            caustic.diffuse?.imageURL = bnd
+        }
+        caustic.roughness = SubMaterialData(spectrum: 0.05, sColor: nil)
+        caustic.name = "Caustic"
+        appMaterials.append(caustic)
+        
+        let wood = SceneMaterial()
+        wood.diffuse = SubMaterialData(spectrum: 1.0, sColor: ColorData(r: 0.75, g: 0.75, b: 0.78, a: 1.0))
+        if let url = URL.localURLForXCAsset(name: "WoodDiffuse") {
+            // code
+            wood.diffuse?.imageURL = url
+        }
+        wood.normal = SubMaterialData(spectrum: 1.0, sColor: nil)
+        if let url = URL.localURLForXCAsset(name: "WoodNormal") {
+            wood.normal!.imageURL = url
+        }
+        // wood.roughness = SubMaterialData(spectrum: 0.8, sColor: nil)
+        wood.name = "Wood"
+        appMaterials.append(wood)
+        
+        
+        
+        
+        return appMaterials
     }
 }
 

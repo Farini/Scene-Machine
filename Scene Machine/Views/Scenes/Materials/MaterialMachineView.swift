@@ -59,6 +59,34 @@ struct MaterialMachineView: View {
                         }
                     }
                 }
+                
+                Section(header: Text("App Materials")) {
+                    ForEach(SceneMaterial.examples()) { material in
+                        HStack(alignment:.center) {
+                            Text("\(material.name ?? "untitled")")
+                                .onTapGesture {
+                                    controller.didSelectDBMaterial(dbMaterial: material)
+                                }
+//                                .contextMenu(ContextMenu(menuItems: {
+//                                    Button("Delete") {
+//                                        controller.dbMaterials.removeAll(where: { $0.id == material.id })
+//                                        material.delete()
+//                                    }
+//                                }))
+                            
+                            Spacer()
+                            
+                            // Properties indicator
+                            ZStack {
+                                Circle()
+                                    .foregroundColor(.black)
+                                    .frame(width: 16, height: 16, alignment: .center)
+                                Text("\(material.imageScore())")
+                                
+                            }
+                        }
+                    }
+                }
             }
             .frame(minWidth: 0, maxWidth: 200, maxHeight: .infinity, alignment: .center)
             
