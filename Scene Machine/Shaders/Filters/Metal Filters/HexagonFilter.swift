@@ -10,6 +10,7 @@ import CoreImage
 
 // MARK: - Hexagons
 
+/// Simple Hexagons. Tiled, and scalable.
 class HexagonFilter: CIFilter {
     
     private var kernel:CIColorKernel
@@ -43,8 +44,7 @@ class HexagonFilter: CIFilter {
     }
 }
 
-// MARK: - Mixed Tiles + Noise
-
+/// Truchet Tiles
 class TruchetFilter: CIFilter {
     private var kernel:CIColorKernel
     var inputImage:CIImage?
@@ -87,6 +87,7 @@ class TruchetFilter: CIFilter {
     }
 }
 
+/// Very Basic Waves
 class WavesFilter: CIFilter {
     
     private var kernel:CIColorKernel
@@ -133,6 +134,7 @@ class WavesFilter: CIFilter {
     }
 }
 
+/// Moving Waves (Moving tiles) - Epitrochoidal style.
 class EpitrochoidalWaves:CIFilter {
     // epitrochoidal_taps
     private var kernel:CIColorKernel

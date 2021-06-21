@@ -37,12 +37,14 @@ extension View {
 
 extension NSView {
     
+    /// Extracts a representation of the view, and converts it to an `NSImage`
     func image() -> NSImage {
         let imageRepresentation = bitmapImageRepForCachingDisplay(in: bounds)!
         cacheDisplay(in: bounds, to: imageRepresentation)
         return NSImage(cgImage: imageRepresentation.cgImage!, size: bounds.size)
     }
     
+    /// Gets a GraphicsImageRenderer (See ImageRenderer) with the appropriate size.
     func asImage(size: CGSize) -> NSImage {
         let format = GraphicsImageRendererFormat()
         //        format.scale = 1.0
@@ -78,6 +80,8 @@ extension NumberFormatter {
     
 }
 
+/** A Closable window, that the user can close without crashing the app.
+ This is especially useful for non-permanent windows (no strong reference) that can be displayed multiple times */
 class ClosableWindow: NSWindow {
     override func close() {
         self.orderOut(NSApp)

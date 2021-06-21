@@ -287,8 +287,7 @@ class TileMaker: CIFilter {
     }
 }
 
-// MARK: - New
-
+/// Simulates Rain Water on a glass, or camera's lens
 class CameraRainDrops: CIFilter {
     
     private var kernel:CIKernel

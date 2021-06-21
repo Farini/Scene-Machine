@@ -8,44 +8,6 @@
 import Foundation
 import SceneKit
 
-// MARK: - Geometry Element
-
-extension SCNGeometryElement {
-    
-    /// Gets the `Element` vertices
-    func getVertices() -> [SCNVector3] {
-        
-        func vectorFromData<UInt: BinaryInteger>(_ float: UInt.Type, index: Int) -> SCNVector3 {
-            assert(bytesPerIndex == MemoryLayout<UInt>.size)
-            let vectorData = UnsafeMutablePointer<UInt>.allocate(capacity: bytesPerIndex)
-            let buffer = UnsafeMutableBufferPointer(start: vectorData, count: primitiveCount)
-            let stride = 3 * index
-//            let rangeStart = primitiveRange.lowerBound
-//            let rangeEnd = primitiveRange.upperBound
-            self.data.copyBytes(to: buffer, from: stride * bytesPerIndex..<(stride * bytesPerIndex) + 3)
-            return SCNVector3(
-                CGFloat.NativeType(vectorData[0]),
-                CGFloat.NativeType(vectorData[1]),
-                CGFloat.NativeType(vectorData[2])
-            )
-        }
-        
-        let vectors = [SCNVector3](repeating: SCNVector3Zero, count: self.primitiveCount)
-        return vectors.indices.map { index -> SCNVector3 in
-            switch bytesPerIndex {
-                case 2:
-                    return vectorFromData(Int16.self, index: index)
-                case 4:
-                    return vectorFromData(Int.self, index: index)
-                case 8:
-                    return SCNVector3Zero // vectorFromData(Float80.self, index: index)
-                default:
-                    return SCNVector3Zero
-            }
-        }
-    }
-}
-
 // MARK: - Geometry Source
 
 extension SCNGeometrySource {
@@ -85,7 +47,6 @@ extension SCNGeometrySource {
         }
     }
     
-    
     /// Use this to get a `UVMap` from the Geometry source
     var uv: [CGPoint] {
         let stride = self.dataStride
@@ -105,13 +66,15 @@ extension SCNGeometrySource {
             )
         }
         
+        // Initialize with .zero
         let vectors = [CGPoint](repeating: CGPoint.zero, count: self.vectorCount)
-        //        let vectors = [SCNVector3](repeating: SCNVector3Zero, count: self.vectorCount)
+        
+        // Collect Info
         return vectors.indices.map { index -> CGPoint in
             switch bytesPerComponent {
-                case 4:
+                case 4: // 4 * 8 (8 bits per byte) = 32 Bit
                     return vectorFromData(Float32.self, index: index)
-                case 8:
+                case 8: // 8 * 8 (8 bits per byte) = 64 Bit
                     return vectorFromData(Float64.self, index: index)
                 case 16:
                     return CGPoint.zero//vectorFromData(Float80.self, index: index)
@@ -122,7 +85,47 @@ extension SCNGeometrySource {
     }
 }
 
+// MARK: - Geometry Element
+
+extension SCNGeometryElement {
+    
+    /// Gets the `Element` vertices
+    func getVertices() -> [SCNVector3] {
+        
+        func vectorFromData<UInt: BinaryInteger>(_ float: UInt.Type, index: Int) -> SCNVector3 {
+            assert(bytesPerIndex == MemoryLayout<UInt>.size)
+            let vectorData = UnsafeMutablePointer<UInt>.allocate(capacity: bytesPerIndex)
+            let buffer = UnsafeMutableBufferPointer(start: vectorData, count: primitiveCount)
+            let stride = 3 * index
+//            let rangeStart = primitiveRange.lowerBound
+//            let rangeEnd = primitiveRange.upperBound
+            self.data.copyBytes(to: buffer, from: stride * bytesPerIndex..<(stride * bytesPerIndex) + 3)
+            return SCNVector3(
+                CGFloat.NativeType(vectorData[0]),
+                CGFloat.NativeType(vectorData[1]),
+                CGFloat.NativeType(vectorData[2])
+            )
+        }
+        
+        let vectors = [SCNVector3](repeating: SCNVector3Zero, count: self.primitiveCount)
+        return vectors.indices.map { index -> SCNVector3 in
+            switch bytesPerIndex {
+                case 2:
+                    return vectorFromData(Int16.self, index: index)
+                case 4:
+                    return vectorFromData(Int.self, index: index)
+                case 8:
+                    return SCNVector3Zero // vectorFromData(Float80.self, index: index)
+                default:
+                    return SCNVector3Zero
+            }
+        }
+    }
+}
+
 extension SCNVector3 {
+    
+    /// Handy function to print, or display 3D Coordinates
     func toString() -> String {
         let nf = NumberFormatter()
         nf.numberStyle = .decimal

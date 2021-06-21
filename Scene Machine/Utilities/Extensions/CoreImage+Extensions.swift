@@ -8,7 +8,7 @@
 import Cocoa
 import CoreImage
 
-/// Useful Dictionary function to sum 2 dictionaries
+/// Useful Dictionary function to sum 2 dictionaries (add a dictionary on top of another, that is)
 func + <T, U>(left: Dictionary<T, U>, right: Dictionary<T, U>) -> Dictionary<T, U> {
     
     var target = Dictionary<T, U>()
@@ -360,22 +360,29 @@ extension CGLineCap:Codable {}
 
 extension URL {
     
-    /// Returns the directories inside the ccurrent directory.
+    /// Returns the directories inside the current directory.
     func subDirectories() throws -> [URL] {
         guard hasDirectoryPath else { return [] }
         return try FileManager.default.contentsOfDirectory(at: self, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles]).filter(\.hasDirectoryPath)
     }
     
+    /// The folder where the app stores (sandbox) files
     static var appFolder:URL {
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else{
             fatalError("Default folder for ap not found")
         }
         return url
     }
-}
-
-
-extension URL {
+    
+    /// Discardable cache directory
+    static var cacheFolder:URL {
+        guard let url = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else {
+            fatalError("No Cache directory")
+        }
+        return url
+    }
+    
+    /// Cached (if not cached, adds automatically) images in App's *.xcassets folder
     static func localURLForXCAsset(name: String) -> URL? {
         let fileManager = FileManager.default
         guard let cacheDirectory = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first else {return nil}

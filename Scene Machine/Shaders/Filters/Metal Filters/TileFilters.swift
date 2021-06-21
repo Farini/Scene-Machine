@@ -305,8 +305,7 @@ class CircuitMaker: CIFilter {
     }
 }
 
-// MARK: - New
-
+/// Gives the original image an effect similar to corner radius.
 class CornerHoles: CIFilter {
     
     private var kernel:CIColorKernel
@@ -352,6 +351,7 @@ class CornerHoles: CIFilter {
     }
 }
 
+/// A Checkerboard that scales back and forth over time
 class ScalingCheckerboard: CIFilter {
     
     private var kernel:CIColorKernel
@@ -397,6 +397,7 @@ class ScalingCheckerboard: CIFilter {
     }
 }
 
+/// 3 Capsules overlapping in the center. Tiled.
 class TricapsuleGrid: CIFilter {
     
     private var kernel:CIColorKernel

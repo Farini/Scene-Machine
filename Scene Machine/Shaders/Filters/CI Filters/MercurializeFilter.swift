@@ -21,9 +21,8 @@
 import CoreImage
 import SceneKit
 
-class MercurializeFilter: CIFilter
-{
-    // MARK: Filter parameters
+/// Adds a Mercury effect (Metal reflecting surroundings)
+class MercurializeFilter: CIFilter {
     
     var inputImage: CIImage?
     
@@ -259,33 +258,27 @@ class MercurializeFilter: CIFilter
 }
 
 /// LightNode class - SceneKit node with light
-
 class LightNode: SCNNode {
     
-    required init(type: LightType)
-    {
+    required init(type: LightType) {
         super.init()
         
         light = SCNLight()
         light!.type = SCNLight.LightType(rawValue: type.rawValue)
     }
     
-    required init?(coder aDecoder: NSCoder)
-    {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    var color: CIColor = CIColor(red: 0, green: 0, blue: 0)
-    {
-        didSet
-        {
+    var color: CIColor = CIColor(red: 0, green: 0, blue: 0) {
+        didSet {
             light?.color = NSColor(ciColor: color)
         }
     }
 }
 
-enum LightType: String
-{
+enum LightType: String {
     case Ambient = "ambient"
     case Omni = "omni"
     case Directional = "directional"
