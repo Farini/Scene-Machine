@@ -69,9 +69,8 @@ struct SMMaterialView: View {
                             self.material.diffuse.contents = NSColor(diffuseColor)
                         })
                 }
+                
                 // Contents
-//                if let imgPath = material.diffuse.contents as? String,
-//                   let img = NSImage(contentsOfFile: imgPath) {
                 if let img = material.diffuse.contents as? NSImage {
                     Image(nsImage: img)
                         .resizable()
@@ -429,19 +428,12 @@ struct SMMaterialView: View {
     }
 }
 
+// MARK: - Previews
+
 struct SMMaterialView_Previews: PreviewProvider {
-    
-    
-    
     static var previews: some View {
         let control = SceneMachineController()
         control.selectedMaterial = MaterialExample().material
         return SMMaterialView(controller:control, material: control.selectedMaterial!)
     }
 }
-
-//struct MaterialDetail_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MaterialView(material:MaterialExample().material)
-//    }
-//}

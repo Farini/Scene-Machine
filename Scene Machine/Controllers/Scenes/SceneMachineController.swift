@@ -35,8 +35,7 @@ class SceneMachineController:ObservableObject {
     @Published var isNodeOptionSelected:Bool = false
     @Published var selectedMaterial:SCNMaterial?
     
-    
-    
+    // Cam + Lights
     @Published var cameras:[SCNCamera] = []
     @Published var lights:[SCNLight] = []
     
@@ -45,6 +44,7 @@ class SceneMachineController:ObservableObject {
     @Published var tempAlertMessage:String = ""
     @Published var popSaveDialogue:Bool = false
     
+    // Metal
     var device: MTLDevice!
 //    var outputTexture: MTLTexture?
     
@@ -114,58 +114,6 @@ class SceneMachineController:ObservableObject {
         
         device = MTLCreateSystemDefaultDevice()
     }
-    
-    /// Called mostly when removing a Geometry, to update the scene, and remove the node of the geometry selected.
-    /*
-    func nodeTreeUpdate() {
-        
-        print("Removing a node....")
-        
-        self.nodes = []
-        self.materials = []
-        
-        // Recursively get Materials
-        let root = scene.rootNode
-        var stack:[SCNNode] = [root]
-        
-        while !stack.isEmpty {
-            
-            if let node = stack.first {
-//                print("First from stack")
-                // nodes.append(node)
-                var shouldAdd:Bool = false
-                
-                if let geometry = node.geometry {
-//                    print("geometry")
-
-                    if geometries.contains(geometry) {
-//                        print("no remove")
-                        nodes.append(node)
-                        for material in geometry.materials {
-                            //self.materials.append(material)
-                            materials.append(material)
-                            shouldAdd = true
-                        }
-                    } else {
-
-                        print("Should remove: \(node.name ?? "na")")
-                        let removable:[SCNNode] = scene.rootNode.childNodes { pNode, pBol in
-                            return pNode.geometry == geometry
-                        }
-                        removable.first?.removeFromParentNode()
-                    }
-                } else {
-                    print("no geometry")
-                    stack.append(contentsOf: node.childNodes)
-                }
-                if shouldAdd {
-                    stack.append(contentsOf: node.childNodes)
-                }
-            }
-            stack.removeFirst()
-        }
-    }
-    */
     
     // MARK: - UV Map
     
@@ -255,6 +203,18 @@ class SceneMachineController:ObservableObject {
             }).frame(width: 2880, height: 2180).snapShot(uvSize: CGSize(width: 2880, height: 2180)) {
                 
                 saveUVMap(image: image)
+            }
+        }
+    }
+    
+    func substituteMaterials(current:SCNMaterial, candidate:SceneMaterial) {
+        for m in materials {
+            if m == current {
+                let newMaterial = candidate.make()
+                m.diffuse.contents = newMaterial.diffuse.contents
+                m.roughness.contents = newMaterial.roughness.contents
+                m.normal.contents = newMaterial.normal.contents
+                m.emission.contents = newMaterial.emission.contents
             }
         }
     }
@@ -365,12 +325,6 @@ class SceneMachineController:ObservableObject {
             }
         }
     }
-    
-    /// Remove Geometry from list (and scene)
-//    func removeGeometry(geo:SCNGeometry) {
-//        self.geometries.removeAll(where: { $0 == geo })
-//        self.nodeTreeUpdate()
-//    }
     
     /// Remove Node from list (and scene)
     func removeNode(node:SCNNode) {
@@ -488,7 +442,7 @@ class SceneMachineController:ObservableObject {
         dialog.canChooseDirectories = true
         dialog.allowsMultipleSelection = false
         dialog.isAccessoryViewDisclosed = true
-        dialog.allowedFileTypes = ["scn", "dae", "usz", "obj"]
+        dialog.allowedFileTypes = ["scn", "dae", "usz", "usdz", "obj"]
         
         if dialog.runModal() == NSApplication.ModalResponse.OK {
             if let url = dialog.url, url.isFileURL {
@@ -501,37 +455,61 @@ class SceneMachineController:ObservableObject {
     
     /// Loads a Scene chosen in the load Panel
     func loadScene(url:URL) {
-        if let scene = try? SCNScene(url: url, options: [SCNSceneSource.LoadingOption.convertToYUp:NSNumber(value:1)]) {
-            print("Scene in")
-            // Recursively get Materials
-            let root = scene.rootNode
-            var stack:[SCNNode] = [root]
-            while !stack.isEmpty {
-                if let node = stack.first {
-                    nodes.append(node)
-                    if let geometry = node.geometry {
-                        self.geometries.append(geometry)
-                        for material in geometry.materials {
-                            if let code:[SCNShaderModifierEntryPoint:String] = material.shaderModifiers {
-                                for shader in code {
-                                    // Print the shader code (for now)
-                                    print("Shader: \(shader)")
+        
+        DispatchQueue.init(label: "com.cfarini.loadingscene").async {
+            if let scene = try? SCNScene(url: url, options: [SCNSceneSource.LoadingOption.convertToYUp:NSNumber(value:1)]) {
+                print("Loading Scene")
+                
+                // Recursively get Materials
+                let root = scene.rootNode
+                var stack:[SCNNode] = [root]
+                var loadedStack:[SCNNode] = []
+                var loadedGeometries:[SCNGeometry] = []
+                var loadedMaterials:[SCNMaterial] = []
+                
+                while !stack.isEmpty {
+                    if let node = stack.first {
+                        // Add node to stack
+                        loadedStack.append(node)
+                        // Add Geometry
+                        if let geometry = node.geometry {
+                            loadedGeometries.append(geometry)
+                            for material in geometry.materials {
+                                if !loadedMaterials.contains(material) {
+                                    loadedMaterials.append(material)
                                 }
                             }
-                            self.materials.append(material)
                         }
+                        stack.append(contentsOf: node.childNodes)
+                        // self.nodes.append(node)
+                        // self.geometries.append(geometry)
+                    }
+                    stack.removeFirst()
+                }
+                
+                loadedStack = Array(Set(loadedStack))
+                loadedGeometries = Array(Set(loadedGeometries))
+                loadedMaterials = Array(Set(loadedMaterials))
+                
+                DispatchQueue.main.async {
+                    print("Finished loading. Updating UI.")
+                    self.nodes.append(contentsOf: loadedStack)
+                    self.geometries.append(contentsOf: loadedGeometries)
+                    self.materials.append(contentsOf: loadedMaterials)
+                    for node in loadedStack {
                         self.scene.rootNode.addChildNode(node)
                     }
-                    stack.append(contentsOf: node.childNodes)
                 }
-                stack.removeFirst()
-            }
-        } else {
-            tempAlertMessage = "Could not load the scene at \(url.absoluteString)."
-            presentingTempAlert.toggle()
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
-                self.presentingTempAlert.toggle()
-                self.tempAlertMessage = ""
+                        
+            } else {
+                
+                // Failed to load
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
+                    self.tempAlertMessage = "Could not load the scene at \(url.absoluteString)."
+                    self.presentingTempAlert.toggle()
+                    self.presentingTempAlert.toggle()
+                    self.tempAlertMessage = ""
+                }
             }
         }
     }

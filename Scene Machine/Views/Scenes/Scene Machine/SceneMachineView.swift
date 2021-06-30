@@ -16,8 +16,7 @@ struct SceneMachineView: View {
     
     @State private var popGeoImport:Bool = false
     @State private var popBackground:Bool = false
-    
-    
+    @State private var popMaterial:Bool = false
     
     var body: some View {
         
@@ -71,6 +70,17 @@ struct SceneMachineView: View {
                             self.selectedMaterial = material
                             controller.selectedMaterial = material
                         }
+                        .contextMenu(ContextMenu(menuItems: {
+                            
+                            ForEach(LocalDatabase.shared.materials) { smMaterial in
+                                Button(action: {
+                                    print("Tapped ma")
+                                    controller.substituteMaterials(current: material, candidate: smMaterial)
+                                }, label: {
+                                    Label("\(smMaterial.name ?? "untitled")", systemImage: "shield.checkerboard")
+                                })
+                            }
+                        }))
                     }
                     
                     if let material = selectedMaterial {
