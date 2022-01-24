@@ -13,10 +13,10 @@ Some challenges here includes:
 - `CGLineJoin` conforms to  `Codable`
 - `CGLineCap` conforms to `Codable`
 
-## Proposed Changes for v 1.4
+## Proposed Changes for v 1.5
 
 - [X] Material Data Model should have more static examples
-- [ ] Material Data Model should include shaders
+- [X] Material Data Model should include shaders
 - [ ] Material Data Model should include `PKDrawing` objects for layers
     - [ ] A layer should have a PKDrawing object
     - [ ] Image (NSImage) should be an optional property
@@ -27,6 +27,10 @@ Some challenges here includes:
 - [ ] Explorer Controller should use multiple `SCNPlane` objects
 - [ ] Explorer Controller should load more (different) geometries
 - [ ] Explorer Controller: Consider using `SCNPhysicsVehicle`
+
+## Future Implementations
+
+- [ ] Use Euclid: [Euclid](https://github.com/nicklockwood/Euclid/issues)
 
 ## Assets Included with the app
 Assets included with the app are located in `AppConstants.swift`

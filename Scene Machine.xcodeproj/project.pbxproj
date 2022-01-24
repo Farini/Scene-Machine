@@ -231,6 +231,7 @@
 		85D1BC732663418F009D70DC /* TileComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileComposerView.swift; sourceTree = "<group>"; };
 		85D3E7CA26390FAF00D693FA /* SceneMachineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneMachineView.swift; sourceTree = "<group>"; };
 		85D3E7CE26390FC500D693FA /* SceneMachineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneMachineController.swift; sourceTree = "<group>"; };
+		85DB9EF8279E666C0019084E /* Blender.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Blender.md; sourceTree = "<group>"; };
 		85DEFC672643AFC8003DEC36 /* MercurializeFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MercurializeFilter.swift; sourceTree = "<group>"; };
 		85E840962667FD6F00CFD8ED /* Generators.ci.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Generators.ci.metal; sourceTree = "<group>"; };
 		85E840982669E51E00CFD8ED /* SMShaderEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMShaderEditView.swift; sourceTree = "<group>"; };
@@ -529,6 +530,7 @@
 		85A4775E26407D2900F93AB3 /* Help */ = {
 			isa = PBXGroup;
 			children = (
+				85DB9EF8279E666C0019084E /* Blender.md */,
 				85A4775F26407D4800F93AB3 /* HelpMainView.swift */,
 				85885EF526520B1B00E98855 /* HelpCharacterModeling.swift */,
 				85D1BC60265C2E7D009D70DC /* MacNotesTextView.swift */,
@@ -1028,7 +1030,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_ASSET_PATHS = "\"Scene Machine/Preview Content\"";
 				DEVELOPMENT_TEAM = FXF7BJD3VH;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -1056,7 +1058,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_ASSET_PATHS = "\"Scene Machine/Preview Content\"";
 				DEVELOPMENT_TEAM = FXF7BJD3VH;
 				ENABLE_HARDENED_RUNTIME = YES;
