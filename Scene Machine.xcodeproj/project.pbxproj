@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		850BFCF027A1C2B000458404 /* GameUI in Frameworks */ = {isa = PBXBuildFile; productRef = 850BFCEF27A1C2B000458404 /* GameUI */; };
 		8515B33D26254C8300A886BD /* GradientMakerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B33C26254C8300A886BD /* GradientMakerView.swift */; };
 		8515B342262554A700A886BD /* GradientController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B341262554A700A886BD /* GradientController.swift */; };
 		8515B3472625EC6300A886BD /* FrontView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8515B3462625EC6300A886BD /* FrontView.swift */; };
@@ -147,6 +148,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		850BFCEB27A1C15100458404 /* GameUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GameUI; path = ../../../GameUI; sourceTree = "<group>"; };
+		850BFCED27A1C1CD00458404 /* SpaceUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SpaceUI; path = ../SpaceUI; sourceTree = "<group>"; };
+		850BFCEE27A1C26600458404 /* SpaceUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SpaceUI; path = ../SpaceUI; sourceTree = "<group>"; };
 		8515B33C26254C8300A886BD /* GradientMakerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientMakerView.swift; sourceTree = "<group>"; };
 		8515B341262554A700A886BD /* GradientController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientController.swift; sourceTree = "<group>"; };
 		8515B3462625EC6300A886BD /* FrontView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrontView.swift; sourceTree = "<group>"; };
@@ -252,6 +256,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				850BFCF027A1C2B000458404 /* GameUI in Frameworks */,
 				85C282FA266C1A8C00044A75 /* HighlightedTextEditor in Frameworks */,
 				8573D6982673F0D800213712 /* GameKit.framework in Frameworks */,
 			);
@@ -267,6 +272,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		850BFCEC27A1C1CD00458404 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				850BFCED27A1C1CD00458404 /* SpaceUI */,
+				850BFCEE27A1C26600458404 /* SpaceUI */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
 		8515B32D2624E63E00A886BD /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
@@ -360,6 +374,8 @@
 				856492042578AECF00D1FE00 /* README.md */,
 				856491CE2578100B00D1FE00 /* Scene Machine */,
 				856491E72578100D00D1FE00 /* Scene MachineTests */,
+				850BFCEC27A1C1CD00458404 /* Packages */,
+				850BFCEB27A1C15100458404 /* GameUI */,
 				856491CD2578100B00D1FE00 /* Products */,
 				8573D6962673F0D800213712 /* Frameworks */,
 			);
@@ -695,6 +711,7 @@
 			name = "Scene Machine";
 			packageProductDependencies = (
 				85C282F9266C1A8C00044A75 /* HighlightedTextEditor */,
+				850BFCEF27A1C2B000458404 /* GameUI */,
 			);
 			productName = "Scene Machine";
 			productReference = 856491CC2578100B00D1FE00 /* Scene Machine.app */;
@@ -1165,6 +1182,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		850BFCEF27A1C2B000458404 /* GameUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GameUI;
+		};
 		85C282F9266C1A8C00044A75 /* HighlightedTextEditor */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 85C282F8266C1A8C00044A75 /* XCRemoteSwiftPackageReference "HighlightedTextEditor" */;

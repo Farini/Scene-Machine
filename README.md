@@ -74,6 +74,10 @@ See this apps's model readme: [Here](https://github.com/Farini/Scene-Machine/blo
 
 > App Resources can be found on the readme file above, or on the `AppConstants.swift` file.
 
+### Blender
+Some good Blender shortcuts.
+Blender [Shortcuts](https://github.com/Farini/Scene-Machine/blob/main/Scene%20Machine/Views/Help/Blender.md)
+
 
 ## To-Do list
 

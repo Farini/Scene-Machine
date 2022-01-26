@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SceneKit
+import GameUI
 
 struct FrontView: View {
     
@@ -18,7 +19,8 @@ struct FrontView: View {
     }
     
     @State private var selection:NavigationItem? = .noise
-//    @Environment(\.managedObjectContext)
+    
+    var gameui:GameUI = GameUI()
     
     
     // To Open New Window:
@@ -47,9 +49,15 @@ struct FrontView: View {
                     Label("Scenes", systemImage: "film")
                 }
                 .tag(NavigationItem.scene)
+                
+                VStack {
+                    Text("Select menu item")
+                    Text("GameUI: \(gameui.text)")
+                }
+                
             }
             
-            Text("Select menu item")
+            
         }
     }
     
@@ -497,6 +505,8 @@ struct OpenSceneView: View {
                     .padding()
                     
                 }
+                
+                
             }
         }
     }

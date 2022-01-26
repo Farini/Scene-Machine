@@ -22,8 +22,7 @@ SHIFT-A. This is the AddMenu. In fact, it is the ToolBox that starts with the �
 
     F:          Controls the brush size
     SHIFT-F:    Controls the brush intensity
-
-
+    
 
 **BKEY** Border Select. 
 Draw a rectangle with the LeftMouse;
@@ -712,7 +711,7 @@ Set brush strength Shift-F
 Rotate brush texture Ctrl-F
 Invert stroke toggle Ctrl
 
-Selection Masking
+Selection Masking
 
 If you have a complex mesh, it is sometimes not easy to paint on all vertices. Suppose you only want to paint on a small area of the Mesh and keep the rest untouched. This is where “selection masking” comes into play. When this mode is enabled, a brush will only paint on the selected vertices or faces. The option is available from the header of the 3D Viewport (see icons surrounded by the yellow frame):
 
@@ -720,7 +719,7 @@ Selection masking has some advantages over the default paint mode:
 - The original mesh edges are shown, even when modifiers are active.
 - You can select faces to restrict painting to the vertices of the selected faces.
 
-Details About Selecting
+Details About Selecting
 
 The following standard selection operations are supported:
 
@@ -734,6 +733,10 @@ Ctrl-I – Invert selection Inverse.
 
 ## Grease Pencil
 Source: https://docs.blender.org/manual/en/latest/grease_pencil/selecting.html
+
+Mode:       Object Mode and Edit Mode
+Menu:       Add ‣ Grease Pencil
+Shortcut:   Shift-A
 
 Introduction
 
